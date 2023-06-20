@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "twisp",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authtwisp18a83f53",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
