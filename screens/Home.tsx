@@ -15,11 +15,11 @@ import * as Linking from 'expo-linking'
 
 import { AppContext } from '../AppContext';
 
-import Trending from '../components/HorizList/Trending';
-import ShortSweet from '../components/HorizList/ShortSweet';
-import ForYouCarousel from '../components/HorizList/ForYouCarousel';
-import ForYouGenre from '../components/HorizList/ForYouGenre';
-import NewList from '../components/HorizList/NewList';
+import Trending from '../components/lists/Trending';
+import ShortSweet from '../components/lists/ShortSweet';
+import ForYouCarousel from '../components/lists/ForYouCarousel';
+import ForYouGenre from '../components/lists/ForYouGenre';
+import NewList from '../components/lists/NewList';
 
 import { Auth, graphqlOperation, API } from 'aws-amplify';
 import {getUser} from '../src/graphql/queries';

@@ -19,9 +19,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getGenre, listStoryTags } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
-import GenreCarousel from '../components/HorizList/GenreCarousel';
-import GenreTrending from '../components/HorizList/GenreTrending';
-import NewGenreStories from '../components/HorizList/NewGenreStories';
+import GenreCarousel from '../components/lists/GenreCarousel';
+import GenreTrending from '../components/lists/GenreTrending';
+import NewGenreStories from '../components/lists/NewGenreStories';
 
 const GenreHome = ({navigation} : any) => {
 

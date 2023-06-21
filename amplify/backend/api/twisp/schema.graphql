@@ -4,6 +4,8 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type User @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}]) {
   type: String 
+  createdAt: String
+  updatedAt: String
   id: ID! 
   name: String
   email: String
@@ -12,15 +14,247 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   publisherName: String
   isPublisher: Boolean
   topthree: [String]
-  #following: [FollowingConn] @hasMany(indexName: "byFollower", fields: "id")
-  #followers: [FollowingConn] @hasMany(indexName: "byAuthor", fields: "id")
-  #Pinned: [PinnedStory] @hasMany(indexName: "byUser", fields: "id")
-  #Rated: [Rating] @hasMany (indexName: "byUser", fields: "id")
-  #Finished: [FinishedStory] @hasMany (indexName: "byUser", fields: "id")
+  following: [FollowConnection] @hasMany(indexName: "byFollower", fields: "id")
+  followers: [FollowConnection] @hasMany(indexName: "byAuthor", fields: "id")
+  Pinned: [PinnedStory] @hasMany(indexName: "byUser", fields: "id")
+  Rated: [Rating] @hasMany (indexName: "byUser", fields: "id")
+  Finished: [FinishedStory] @hasMany (indexName: "byUser", fields: "id")
   plan: String
-  #messageSent: [Message] @hasMany(indexName: "byUser", fields: "id")
-  #messageRec: [Message] @hasMany(indexName: "byOtherUser", fields: "id")
-  #prompts: [Prompt] @hasMany(indexName: "byUser", fields: "id")
-  #savedPrompts: [SavedPrompt] @hasMany(indexName: "byUser", fields: "id")
-  #inProgressStories: [InProgressStory] @hasMany(indexName: "byUser", fields: "id")
+  messageRec: [Message] @hasMany(indexName: "byUser", fields: "id")
+  inProgressStories: [InProgressStory] @hasMany(indexName: "byUser", fields: "id")
+  inProgressEroticStories: [InProgressEroticStory] @hasMany(indexName: "byUser", fields: "id")
+}
+
+type FollowConnection @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+    id: ID!
+    type: String
+    createdAt: String
+    updatedAt: String
+    followerID: ID @index(name: "byFollower", sortKeyFields: ["createdAt"])
+    follower: User @hasOne (fields: ["followerID"])
+    authorID: ID @index(name: "byAuthor", sortKeyFields: ["createdAt"])
+    author: User @hasOne (fields: ["authorID"])
+}
+
+type Story @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String 
+    @index(name: "storiesByDate", queryField: "storiesByDate", sortKeyFields: ["createdAt"]  )
+    @index(name: "storiesByUpdated", queryField: "storiesByUpdated", sortKeyFields: ["updatedAt"]  )
+  createdAt: String
+  updatedAt: String
+  title: String!
+  imageUri: String
+  audioUri: String!
+  publisher: User @hasOne (fields: ["publisherID"])
+  publisherID: ID @index(name: "byPublisher", sortKeyFields: ["createdAt"])
+  author: String
+  narrator: String
+  artist: String
+  time: Int
+  summary: String
+  description: String
+  nsfw: Boolean
+  comments: [Comment] @hasMany (indexName: "byStory", fields: ["id"])
+  tags: [Tag] @manyToMany (relationName: "StoryTag")
+  ratingAvg: Float
+  ratingAmt: Int
+  ratings: [Rating] @hasMany(indexName: "byStory", fields: ["id"])
+  reactions: [Reaction] @hasMany(indexName: "byStory", fields: ["id"])
+  genreID: ID @index(name: "byGenre", sortKeyFields: ["id"])
+  genre: Genre @hasOne (fields: ["genreID"])
+  hidden: Boolean
+  status: Boolean
+  numListens: Int
+  }
+
+  type EroticStory @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String 
+    @index(name: "EroticStoriesByDate", queryField: "EroticStoriesByDate", sortKeyFields: ["createdAt"]  )
+    @index(name: "EroticStoriesByUpdated", queryField: "EroticStoriesByUpdated", sortKeyFields: ["updatedAt"]  )
+  createdAt: String
+  updatedAt: String
+  title: String!
+  imageUri: String
+  audioUri: String!
+  publisher: User @hasOne (fields: ["publisherID"])
+  publisherID: ID @index(name: "byPublisher", sortKeyFields: ["createdAt"])
+  author: String
+  narrator: String
+  artist: String
+  time: Int
+  summary: String
+  description: String
+  nsfw: Boolean
+  comments: [Comment] @hasMany (indexName: "byEroticStory", fields: ["id"])
+  tags: [EroticTag] @manyToMany (relationName: "EroticStoryTag")
+  ratingAvg: Float
+  ratingAmt: Int
+  ratings: [Rating] @hasMany(indexName: "byEroticStory", fields: ["id"])
+  reactions: [Reaction] @hasMany(indexName: "byEroticStory", fields: ["id"])
+  genreID: ID @index(name: "byGenre", sortKeyFields: ["id"])
+  genre: Genre @hasOne (fields: ["genreID"])
+  hidden: Boolean
+  status: Boolean
+  numListens: Int
+  }
+
+type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  genre: String!
+  icon: String
+  color: String
+  imageUri: String
+  tags: [Tag] @manyToMany (relationName: "GenreTag")
+  eroticTags: [EroticTag] @manyToMany (relationName: "EroticaTag")
+}
+
+type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+  {
+    id: ID!
+    updatedAt: String
+    createdAt: String
+    type: String 
+      @index(name: "tagsByCreated", queryField: "tagsByCreated", sortKeyFields: ["createdAt"])
+      @index(name: "tagsByUpdated", queryField: "tagsByUpdated", sortKeyFields: ["updatedAt"])
+    tagName: String!
+    genre: [Genre] @manyToMany (relationName: "GenreTag")
+    stories: [Story] @manyToMany(relationName: "StoryTag")
+    count: Int
+  }
+
+  type EroticTag @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+  {
+    id: ID!
+    updatedAt: String
+    createdAt: String
+    type: String 
+      @index(name: "EroticTagsByCreated", queryField: "EroticTagsByCreated", sortKeyFields: ["createdAt"])
+      @index(name: "EroticTagsByUpdated", queryField: "EroticTagsByUpdated", sortKeyFields: ["updatedAt"])
+    tagName: String!
+    genre: [Genre] @manyToMany (relationName: "EroticaTag")
+    stories: [EroticStory] @manyToMany(relationName: "EroticStoryTag")
+    count: Int
+  }
+
+type PinnedStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String 
+  userID: ID @index(name: "byUser", sortKeyFields: ["createdAt"])
+  user: User @hasOne (fields: ["userID"])
+  storyID: ID
+  story: Story @hasOne (fields: ["storyID"])
+  eroticStoryID: ID
+  eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+  createdAt: String
+  updatedAt: String
+}
+
+type InProgressStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String @index(name: "inProgressStoriesByUpdated", queryField: "inProgressStoriesByUpdated", sortKeyFields: [ "updatedAt" ])
+  userID: ID @index(name: "byUser", sortKeyFields: ["updatedAt"])
+  user: User @hasOne (fields: ["userID"])
+  storyID: ID
+  story: Story @hasOne (fields: ["storyID"])
+  createdAt: String
+  updatedAt: String
+  time: Int
+}
+
+type InProgressEroticStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String @index(name: "inProgressEroticStoriesByUpdated", queryField: "inProgressEroticStoriesByUpdated", sortKeyFields: [ "updatedAt" ])
+  userID: ID @index(name: "byUser", sortKeyFields: ["updatedAt"])
+  user: User @hasOne (fields: ["userID"])
+  eroticStoryID: ID
+  eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+  createdAt: String
+  updatedAt: String
+  time: Int
+}
+
+type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String 
+  createdAt: String
+  updatedAt: String
+  userID: ID @index(name: "byUser", sortKeyFields: ["createdAt"])
+  user: User @hasOne (fields: ["userID"])
+  storyID: ID @index(name: "byStory", sortKeyFields: ["createdAt"])
+  story: Story @hasOne (fields: ["storyID"])
+  eroticStoryID: ID @index(name: "byEroticStory", sortKeyFields: ["createdAt"])
+  eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+}
+
+type Comment @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+  {
+    id: ID!
+    createdAt: String
+    updatedAt: String
+    type: String
+    storyID: ID! @index(name: "byStory", sortKeyFields: ["createdAt"])
+    story: Story @hasOne (fields: ["storyID"])
+    eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+    eroticStoryID: ID! @index(name: "byEroticStory", sortKeyFields: ["createdAt"])
+    content: String!
+    user: User @hasOne (fields: ["userID"])
+    userID: ID 
+    approved: Boolean
+}
+
+type Reaction @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String
+  createdAt: String
+  updatedAt: String
+  userID: ID
+  user: User @hasOne (fields: ["userID"])
+  storyID: ID @index(name: "byStory", sortKeyFields: ["id"])
+  story: User @hasOne (fields: ["storyID"])
+  eroticStoryID: ID! @index(name: "byEroticStory", sortKeyFields: ["id"])
+  eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+  reaction: String
+  icon: String
+}
+
+  type Rating @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+  {
+    id: ID!
+    createdAt: String
+    updatedAt: String
+    type: String @index(name: "ratingsByUpdated", queryField: "ratingsByUpdated", sortKeyFields: ["updatedAt"]  )
+    storyID: ID! @index(name: "byStory", sortKeyFields: ["id"])
+    story: Story @hasOne (fields: ["storyID"])
+    eroticStoryID: ID! @index(name: "byEroticStory", sortKeyFields: ["id"])
+    eroticStory: EroticStory @hasOne (fields: ["eroticStoryID"])
+    userID: ID! @index(name: "byUser", sortKeyFields: ["id"])
+    user: User @hasOne (fields: ["userID"])
+    rating: Int   
+}
+
+type Message @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+  {
+    id: ID!
+    type: String 
+    createdAt: String
+    updatedAt: String
+    title: String
+    subtitle: String
+    content: String
+    messageType: String
+    status: String
+    isReadByReceiver: Boolean
+    receiver: User @hasOne (fields: ["receiverID"])
+    receiverID: ID @index(name: "byUser", queryField: "messagesByUser", sortKeyFields: ["createdAt"])
 }

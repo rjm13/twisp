@@ -20,7 +20,7 @@ import { getUser } from '../src/graphql/queries';
 import {useNavigation} from '@react-navigation/native';
 
 import PinStory from '../components/functions/PinStory';
-import unPinStory from '../components/functions/UnPinStory';
+import unPinStory from './functions/UnPinStory';
 import ShareStory from '../components/functions/ShareStory';
 
 import { AppContext } from '../AppContext';

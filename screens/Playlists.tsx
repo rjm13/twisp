@@ -7,8 +7,8 @@ import {
 
 import {LinearGradient} from 'expo-linear-gradient';
 
-import PinnedStoryFlatList from '../components/HorizList/PinnedStoryFlatList';
-import FavedStoryFlatList from '../components/HorizList/FavedStoryFlatList';
+import PinnedStoryFlatList from '../components/lists/PinnedStoryFlatList';
+import FavedStoryFlatList from '../components/lists/FavedStoryFlatList';
 
 
 const PlaylistScreen = () => {
