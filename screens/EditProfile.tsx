@@ -10,7 +10,8 @@ import {
     TextInput, 
     Platform, 
     ActivityIndicator,
-    Keyboard 
+    Keyboard,
+    Modal
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -26,7 +27,6 @@ import ImageCompress from '../components/functions/CompressImage'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { Modal, Portal, Provider } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 
 
@@ -431,15 +431,20 @@ const handleUpdateNarratorBio = async () => {
     }
 
 //render the page
-    return (
-
-    <Provider>   
+    return ( 
     <View style={styles.container } >
-        <Portal>
 
 {/* //Update voice type  */}
-            <Modal visible={visible3} onDismiss={hideVoiceModal} contentContainerStyle={containerStyle}>
-                <View style={{ alignItems: 'center'}}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
                         paddingVertical: 16,
@@ -493,8 +498,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update artist pseudonym  */}
-            <Modal visible={visible10} onDismiss={hideArtistPseudModal} contentContainerStyle={containerStyle}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -530,8 +543,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update narrator pseudonym  */}
-            <Modal visible={visible11} onDismiss={hideNarratorPseudModal} contentContainerStyle={containerStyle}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -567,8 +588,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update pseudonym  */}
-            <Modal visible={visible7} onDismiss={hidePseudModal} contentContainerStyle={containerStyle}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -604,8 +633,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update about me blurb */}
-            <Modal visible={visible5} onDismiss={hideBioModal} contentContainerStyle={containerStyle}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -645,8 +682,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update narrator blurb */}
-            <Modal visible={visible6} onDismiss={hideNarratorBioModal} contentContainerStyle={containerStyle}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -686,8 +731,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update artist blurb */}
-            <Modal visible={visible4} onDismiss={hideArtistBioModal} contentContainerStyle={containerStyle}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Modal
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={{ alignItems: 'center'}}>
                     <Text style={{
                         fontSize: 16,
@@ -727,8 +780,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Update Image modal */}
-            <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                <View style={{ alignItems: 'center'}}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <View style={{ alignItems: 'center'}}>
                     <TouchableOpacity onPress={pickImage}>
                     <Image 
                         source={{ uri: image || imageU}} 
@@ -759,8 +820,16 @@ const handleUpdateNarratorBio = async () => {
             </Modal>
 
 {/* //Accents modal */}
-            <Modal visible={visible8} onDismiss={hideAccentsModal} contentContainerStyle={containerStyle}>
-                <View style={{height: 500}}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <View style={{height: 500}}>
                         <Text style={{fontSize: 18, color: '#fff', fontWeight: 'bold', alignSelf: 'center'}}>
                             Select Proficient Accents
                         </Text>
@@ -821,8 +890,16 @@ const handleUpdateNarratorBio = async () => {
                     </View> 
             </Modal>
 {/* //Styles modal */}
-            <Modal visible={visible9} onDismiss={hideStylesModal} contentContainerStyle={containerStyle}>
-                <View style={{height: 500}}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                <View style={{height: 500}}>
                         <Text style={{fontSize: 18, color: '#fff', fontWeight: 'bold', alignSelf: 'center'}}>
                             Select Art Styles
                         </Text>
@@ -881,9 +958,7 @@ const handleUpdateNarratorBio = async () => {
                             )}
                         
                     </View>
-                </Modal>
-    
-        </Portal>
+            </Modal>
 
 {/* primary visible content */}
             <ScrollView>
@@ -1064,8 +1139,7 @@ const handleUpdateNarratorBio = async () => {
                 <View style={{height: 100}}/>
             </ScrollView>
             <StatusBar style="light" />
-        </View>            
-    </Provider> 
+        </View> 
 );}
 
 export default EditProfile;

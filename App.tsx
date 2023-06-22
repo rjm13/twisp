@@ -8,7 +8,7 @@ import 'expo-dev-client';
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation'
 //import Constants from 'expo-constants';
-//import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 
 //import mobileAds from 'react-native-google-mobile-ads';
 //import Purchases from 'react-native-purchases';

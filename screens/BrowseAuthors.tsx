@@ -13,7 +13,7 @@ import {
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { Searchbar } from 'react-native-paper';
+//import { Searchbar } from 'react-native-paper';
 
 import {LinearGradient} from 'expo-linear-gradient';
 

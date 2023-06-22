@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import HistoryFlatList from '../components/HistoryFlatList';
+import HistoryFlatList from '../components/lists/HistoryFlatList';
 
 const Narrations = ({navigation} : any) => {
 

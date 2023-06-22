@@ -1,35 +1,38 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
     View, 
     StyleSheet, 
     Text, 
     FlatList, 
     Dimensions, 
-    RefreshControl,
-    ActivityIndicator
+    RefreshControl, 
+    ActivityIndicator 
 } from 'react-native';
 
-import { getUser } from '../../src/graphql/queries';
+import StoryTile from '../../components/StoryTile';
+
+import { finishedStoriesByDate, getUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
-import StoryTile from '../StoryTile';
 
 
-const AudioStoryList = () => {
+const HistoryList = () => {
 
-    //state for the array of pinned stories for that user
-    const [favedStories, setFavedStories] = useState([])
 
-    //update trigger for fetching the pinned stories
+//state for the array of pinned stories for that user
+    const [finishedStories, setFinishedStories] = useState([])
+
+//update trigger for fetching the pinned stories
     const [didUpdate, setDidUpdate] = useState(false);
 
-    //on render, get the user and then list the following connections for that user
+    const [nextToken, setNextToken] = useState()
+
     useEffect(() => {
+
+        const History = []
 
         const fetchStories = async () => {
 
             setIsLoading(true);
-
-            const Faved = []
 
             const userInfo = await Auth.currentAuthenticatedUser();
 
@@ -37,27 +40,77 @@ const AudioStoryList = () => {
 
             try {
 
-                const favedData = await API.graphql(graphqlOperation(
-                    getUser, {id: userInfo.attributes.sub
-                }))
+                const historyData = await API.graphql(graphqlOperation(
+                    getUser, {nextToken, id: userInfo.attributes.sub}))
 
-                if (favedData.data.getUser.Rated.items.length > 0) {
-                    for (let i = 0; i < favedData.data.getUser.Rated.items.length; i++) {
-                        if (favedData.data.getUser.Rated.items[i].rating > 7 && favedData.data.getUser.Rated.items[i].story.hidden === false && favedData.data.getUser.Rated.items[i].story.approved === 'approved') {    
-                            Faved.push(favedData.data.getUser.Rated.items[i].story) 
+                if (historyData.data.getUser.Finished.items.length > 0) {
+                    for (let i = 0; i < historyData.data.getUser.Finished.items.length; i++) {
+                        if (historyData.data.getUser.Finished.items[i].story.hidden === false && historyData.data.getUser.Finished.items[i].story.approved === 'approved') {
+                            History.push(historyData.data.getUser.Finished.items[i].story)
                         }
                     } 
+                    console.log(historyData.data.getUser.Finished.nextToken)
+                    if (historyData.data.getUser.Finished.nextToken) {
+                        setNextToken(historyData.data.getUser.Finished.nextToken)
+                        fetchStories();
+                        return;
+                    }
                 }
-                
-                setFavedStories(Faved);
+                   
+                setFinishedStories(History);
                 setIsLoading(false);
+              
             } catch (e) {
             console.log(e);
           }
         }
-        fetchStories(); 
-           
+           fetchStories(); 
       }, [didUpdate])
+
+//on render, get the user and then list the following connections for that user
+    // useEffect(() => {
+
+    //     const fetchStories = async () => {
+
+    //         setIsLoading(true);
+
+    //         const History = []
+
+    //         const userInfo = await Auth.currentAuthenticatedUser();
+
+    //         if (!userInfo) {return;}
+
+    //         try {
+
+    //             const historyData = await API.graphql(graphqlOperation(
+    //                 finishedStoriesByDate, {
+    //                     type: 'FinishedStory',
+    //                     sortDirection: 'DESC',
+    //                     filter: {
+    //                         userID: {
+    //                             eq: userInfo.attributes.sub
+    //                         },
+                           
+    //                     }
+    //             }))
+
+    //             if (historyData.data.finishedStoriesByDate.items.length > 0) {
+    //                 for (let i = 0; i < historyData.data.finishedStoriesByDate.items.length; i++) {
+    //                     if (historyData.data.finishedStoriesByDate.items[i].story.hidden === false && historyData.data.finishedStoriesByDate.items[i].story.approved === 'approved') {
+    //                         History.push(historyData.data.finishedStoriesByDate.items[i].story)
+    //                     }
+    //                 } 
+    //             }
+                   
+    //             setFinishedStories(History);
+    //             setIsLoading(false);
+              
+    //         } catch (e) {
+    //         console.log(e);
+    //       }
+    //     }
+    //        fetchStories(); 
+    //   }, [didUpdate])
 
 
     const [isFetching, setIsFetching] = useState(false);
@@ -100,16 +153,16 @@ const AudioStoryList = () => {
         />
       );}
 
-      const [isLoading, setIsLoading] = useState(false)
+      const [isLoading, setIsLoading] = useState(false);
 
     return (
             <View style={styles.container}>
 
                 <FlatList 
-                    data={favedStories}
+                    data={finishedStories}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
-                    extraData={favedStories}
+                    extraData={finishedStories}
                     maxToRenderPerBatch={20}
                     refreshControl={
                         <RefreshControl
@@ -120,25 +173,29 @@ const AudioStoryList = () => {
                     showsVerticalScrollIndicator={false}    
                     ListFooterComponent={ () => {
                         return (
-                            <View style={{ height:  100,}}/>
+                            <View style={{ height:  120, alignItems: 'center'}}/>
+                    );}}
+                    ListHeaderComponent={ () => {
+                        return (
+                            <View style={{ height:  40, alignItems: 'center'}}/>
                     );}}
                     ListEmptyComponent={ () => {
                         return (
-                            <View style={{alignItems: 'center'}}>
+                            <View>
                                 {isLoading === true ? (
                                 <View style={{margin: 30}}>
                                     <ActivityIndicator size='small' color='cyan' />
                                 </View>
                                 ) : (
                                 <View>
-                                    <Text style={{ color: 'white', margin: 20,}}>
-                                        There is nothing here! Tap the pin icon to add a story to your playlist.
+                                    <Text style={{ color: 'white', margin: 20, textAlign: 'center'}}>
+                                        There is nothing here! Go listen to some stories!
                                     </Text>
-
-                                    <Text style={{ textAlign: 'center', color: 'gray', margin: 20,}}>
+                                    <Text style={{ color: '#ffffffa5', margin: 20, textAlign: 'center'}}>
                                         (pull to refresh)
                                     </Text>
                                 </View>
+                                
                                 )}
                             </View>
                     );}}
@@ -209,4 +266,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AudioStoryList;
+export default HistoryList;

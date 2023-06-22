@@ -11,18 +11,18 @@ import {
     Keyboard,
     TouchableOpacity,
     Platform,
-    ActivityIndicator
+    ActivityIndicator,
+    Modal
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { StorageAccessFramework } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system';
-import * as DocumentPicker from 'expo-document-picker';
-import * as Sharing from 'expo-sharing';
+//import * as DocumentPicker from 'expo-document-picker';
+//import * as Sharing from 'expo-sharing';
 import * as Permissions from 'expo-permissions'
-import * as MediaLibrary from 'expo-media-library';
+//import * as MediaLibrary from 'expo-media-library';
 import { format, formatRelative, parseISO } from "date-fns";
-import { Modal, Portal, Provider } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -487,10 +487,18 @@ const ViewMessage = ({navigation} : any) => {
 
 
     return (
-        <Provider>
-            <Portal>
-                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+        <View >
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >
+                    <View style={{ backgroundColor: '#363636', padding: 20, margin: 20, borderRadius: 15, alignItems: 'center'}}>
                         <Text style={{
                             fontSize: 16,
                             paddingVertical: 16,
@@ -512,8 +520,6 @@ const ViewMessage = ({navigation} : any) => {
                         </View>
                     </View>
                 </Modal>
-            </Portal>
-        <View >
             <LinearGradient
                 colors={['#363636a5', '#363636a5', 'black']}
                 start={{ x: 0, y: 0 }}
@@ -701,7 +707,6 @@ const ViewMessage = ({navigation} : any) => {
                 
             </LinearGradient>
         </View>
-        </Provider>
     );
 }
 

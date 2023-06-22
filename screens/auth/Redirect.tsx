@@ -4,7 +4,7 @@ import { AppContext } from '../../AppContext';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getUser } from '../../src/graphql/queries';
 import { StatusBar } from 'expo-status-bar';
-import Purchases from "react-native-purchases";
+//import Purchases from "react-native-purchases";
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -42,11 +42,11 @@ const Redirect = ({route, navigation} : any) => {
     
           const ENTITLEMENT_ID = userInfo.attributes.sub
     
-          const purchaserInfo = await Purchases.getPurchaserInfo();
+          //const purchaserInfo = await Purchases.getPurchaserInfo();
     
-          if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
-            setPremium(true);
-          } 
+        //   if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
+        //     setPremium(true);
+        //   } 
         }
 
         performMagic();
@@ -77,13 +77,13 @@ const Redirect = ({route, navigation} : any) => {
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
                     // }
 
-                    const purchaserInfo = await Purchases.getPurchaserInfo();
+                    //const purchaserInfo = await Purchases.getPurchaserInfo();
 
-                    if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
-                        setPremium(true);
-                      } else {
-                        setPremium(false)
-                      }
+                    // if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
+                    //     setPremium(true);
+                    //   } else {
+                    //     setPremium(false)
+                    //   }
 
                     const date = new Date();
                     const year = date.getFullYear();

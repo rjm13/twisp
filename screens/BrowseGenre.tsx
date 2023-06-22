@@ -11,7 +11,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import AudioListByGenre from '../components/AudioListByGenre';
+import AudioListByGenre from '../components/lists/AudioListByGenre';
 
 const GenreHome = ({navigation} : any) => {
 

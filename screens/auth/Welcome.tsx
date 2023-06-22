@@ -6,13 +6,13 @@ import {
     TouchableOpacity, 
     Platform, 
     TouchableWithoutFeedback,
-    StyleSheet
+    StyleSheet,
+    Modal
 } from 'react-native';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
 import { createMessage } from '../../src/graphql/mutations';
-import {Modal, Provider, Portal} from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from "date-fns";
 import { AppContext } from '../../AppContext';
 
@@ -124,20 +124,25 @@ const Welcome = ({navigation} : any) => {
             }
     
     return (
-        <Provider>
-            <Portal>
-                <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                <View>
+                
+        <View style={{justifyContent: 'space-between', height: SCREEN_HEIGHT}}>
+            <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+            >
+                    <View style={{ backgroundColor: '#363636', padding: 20, margin: 20, borderRadius: 15, alignItems: 'center'}}>
                         {show && (
                             <View>
-                                <DateTimePicker
+                                {/* <DateTimePicker
                                     testID="dateTimePicker"
                                     value={date}
                                     mode='date'
                                     is24Hour={true}
                                     display={Platform.OS === "ios" ? "spinner" : "default"}
                                     onChange={onChange}
-                                />
+                                /> */}
                                 <TouchableWithoutFeedback onPress={hideModal}>
                                     <Text style={{color: '#fff', alignSelf: 'center', marginTop: 20, paddingHorizontal: 20, paddingVertical: 6, overflow: 'hidden', borderRadius: 13, backgroundColor: '#008080'}}>
                                         Select
@@ -148,8 +153,6 @@ const Welcome = ({navigation} : any) => {
                         )}
                     </View>
                 </Modal>
-            </Portal>
-        <View style={{justifyContent: 'space-between', height: SCREEN_HEIGHT}}>
             <View style={{marginTop: 100, alignItems: 'center'}}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold'}}>
@@ -213,7 +216,6 @@ const Welcome = ({navigation} : any) => {
                 
             </View>
         </View>
-        </Provider>
     )
 }
 

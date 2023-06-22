@@ -8,7 +8,8 @@ import {
     TouchableOpacity,  
     TextInput,
     ActivityIndicator,
-    Dimensions
+    Dimensions,
+    Modal
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {StatusBar} from 'expo-status-bar';
@@ -22,9 +23,7 @@ import { getUser } from '../src/graphql/queries';
 import { updateUser } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
-import Purchases from 'react-native-purchases';
-
-import { Modal, Portal, Provider } from 'react-native-paper';
+//import Purchases from 'react-native-purchases';
 
 const AccountScreen = ({navigation} : any) => {
 
@@ -235,11 +234,19 @@ const handleUpdateName = async () => {
 
 
     return (
-        <Provider>
-            <Portal>
-{/* //Update name  */}
-                <Modal visible={visible} onDismiss={hideNameModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+
+            <View>
+                {/* //Update name  */}
+                <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                    <View style={{ alignItems: 'center'}}>
                         <Text style={{
                             fontSize: 16,
                             paddingVertical: 16,
@@ -274,8 +281,16 @@ const handleUpdateName = async () => {
                 </Modal>
 
 {/* //Update Email Address */}
-                <Modal visible={visible4} onDismiss={hideEmailModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+                <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                    <View style={{ alignItems: 'center'}}>
                         <Text style={{
                             fontSize: 16,
                             paddingVertical: 16,
@@ -339,8 +354,16 @@ const handleUpdateName = async () => {
                 </Modal>
 
 {/* //Sign Out modal */}
-                <Modal visible={visible2} onDismiss={hideSignOutModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+                <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                    <View style={{ alignItems: 'center'}}>
                         <Text style={{
                             fontSize: 16,
                             paddingVertical: 16,
@@ -364,8 +387,16 @@ const handleUpdateName = async () => {
                 </Modal>
 
 {/* //delete account modal */}
-                <Modal visible={visible3} onDismiss={hideDeleteAccountModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+                <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                    <View style={{ alignItems: 'center'}}>
                         <Text style={{color: 'red', fontWeight: 'bold', fontSize: 17, textAlign: 'center'}}>
                             THIS ACTION CANNOT BE UNDONE
                         </Text>
@@ -407,8 +438,16 @@ const handleUpdateName = async () => {
                 </Modal>
 
 {/* //Reset password modal */}
-                <Modal visible={visible6} onDismiss={hidePassModal} contentContainerStyle={containerStyle}>
-                    <View style={{ alignItems: 'center'}}>
+                <Modal 
+                onDismiss={hideModal}
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                // onRequestClose={() => {
+                //   Alert.alert('Modal has been closed.');
+                //   setModalVisible(!visible);
+                // }}
+            >                    <View style={{ alignItems: 'center'}}>
                         <Text style={{
                             fontSize: 16,
                             paddingVertical: 16,
@@ -472,10 +511,6 @@ const handleUpdateName = async () => {
                         </View>
                     </View>
                 </Modal>
-
-            </Portal>
-            <View>
-                
                 <LinearGradient
                     colors={['#363636a5', '#363636a5', 'black']}
                     //style={styles.container}
@@ -566,7 +601,6 @@ const handleUpdateName = async () => {
                 </LinearGradient>
                 <StatusBar style="light" />
             </View>
-        </Provider>
         
     );
 }

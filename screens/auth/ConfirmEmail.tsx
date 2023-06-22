@@ -7,7 +7,8 @@ import {
     TextInput, 
     TouchableOpacity, 
     Keyboard, 
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,7 +16,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { Auth, graphqlOperation, API } from 'aws-amplify';
 import { createUser } from '../../src/graphql/mutations';
-import { ActivityIndicator } from 'react-native-paper';
 
 const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
 

@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { getUser } from '../src/graphql/queries';
-import { listFollowingConns } from '../src/graphql/queries';
+import { listFollowConnections } from '../src/graphql/queries';
 
 
 const FollowingScreen = ({navigation} : any) => {

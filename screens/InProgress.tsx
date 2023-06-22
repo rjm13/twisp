@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import InProgressList from '../components/InProgressList';
+import InProgressList from '../components/lists/InProgressList';
 
 const InProgress = ({navigation} : any) => {
 
