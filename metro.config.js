@@ -19,5 +19,6 @@ module.exports = (async () => {
     blacklistRE: exclusionList([/amplify\/#current-cloud-backend\/.*/]),
 
     },
+  
   };
 })();

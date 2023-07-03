@@ -59,7 +59,7 @@ const CreateUser = async () => {
             });
 
             if (user) {
-                navigation.navigate('ConfirmAccount', {username, password})
+                navigation.navigate('ConfirmEmail', {username, password})
             }
         } catch (error) {
             console.log('error signing up:', error);
@@ -257,7 +257,7 @@ const CreateUser = async () => {
                         I already have an account.
                     </Text>
                 </TouchableOpacity>
-            <StatusBar style={"dark"} backgroundColor='transparent'/>
+            <StatusBar style={"light"} backgroundColor='transparent'/>
         </View>
         </TouchableWithoutFeedback>
     );

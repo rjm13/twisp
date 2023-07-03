@@ -42,8 +42,8 @@ const Welcome = ({navigation} : any) => {
                     updatedAt: new Date(),
                     userID: userInfo.attributes.sub,
                     otherUserID: null,
-                    content: 'Welcome to Blip!\n\nYour home for audio short stories.\n\nBlip curates stories, but also allows authors to share their own. Sign up as an author, narrator, or illustrator\n\nWe hope you enjoy using Blip! Happy listening!',
-                    title: 'Welcome to Blip!',
+                    content: 'Welcome to Twisp!\n\nYour home for audio short stories.\n\Twisp curates stories, but also allows publishers to share their own.\n\nWe hope you enjoy using Twisp! Happy listening!',
+                    title: 'Welcome to Twisp!',
                     subtitle: null,
                     isReadbyUser: false,
                     isReadByOtherUser: true,
@@ -156,25 +156,17 @@ const Welcome = ({navigation} : any) => {
             <View style={{marginTop: 100, alignItems: 'center'}}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold'}}>
-                        Welcome to Blip!
+                        Welcome to Twisp!
                     </Text>
                     <Text style={{color: '#fff', fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
                         Your home for audio short stories
                     </Text>
 
                     <Text style={{color: '#fff', textAlign: 'center', marginTop: 40, marginHorizontal: 20}}>
-                        Blip curates stories, but also allows authors to share their own. Sign up as an:
+                        Twisp curates stories, but also allows authors to share their own.
                     </Text>
                     <View style={{flexDirection: 'row', marginTop: 20}}>
-                        <Text style={{color: 'cyan', textAlign: 'center', marginHorizontal: 20}}>
-                        Author
-                    </Text>
-                    <Text style={{color: 'pink', textAlign: 'center', marginHorizontal: 20}}>
-                        Narrator 
-                    </Text>
-                    <Text style={{color: '#27d995', textAlign: 'center', marginHorizontal: 20}}>
-                        Illustrator
-                    </Text>
+                        
                     </View>
                     
                     <Text style={{color: '#fff', textAlign: 'center', marginTop: 20, marginHorizontal: 20}}>

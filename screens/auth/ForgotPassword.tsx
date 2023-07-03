@@ -10,10 +10,14 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
+import useStyles from '../../styles';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { Auth } from 'aws-amplify';
 
 const ForgotPassword = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     const [email, setEmail] = useState('');
 
@@ -31,16 +35,16 @@ const ForgotPassword = ({navigation} : any) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+        <View style={[styles.container, {justifyContent: 'center'}]}>
             <LinearGradient
                 colors={['#00ffffa5','#000', '#000']}
-                style={styles.container}
+                style={[styles.container, {justifyContent: 'center'}]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
                 <View style={{ margin: 20}}>
                     <View>
-                        <Text style={styles.header}>
+                        <Text style={[styles.title, {marginTop: 10, marginBottom: 4}]}>
                             Email
                         </Text>
                         <View style={styles.inputfield}>
@@ -56,7 +60,7 @@ const ForgotPassword = ({navigation} : any) => {
                 </View>
 
                 <TouchableOpacity onPress={handleForgotPassword}>
-                    <View style={styles.button}>
+                    <View style={styles.buttonlayout}>
                         <Text style={styles.buttontext}>
                             Send Reset Code
                         </Text>
@@ -74,44 +78,5 @@ const ForgotPassword = ({navigation} : any) => {
         </TouchableWithoutFeedback>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        //alignItems: 'center',
-        flex: 1,
-        width: Dimensions.get('window').width
-    },
-    header: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginHorizontal: 20,
-        marginVertical: 10,
-    },
-    textInputTitle: {
-        color: '#fff',
-        fontWeight: 'normal',
-    },
-    inputfield: {
-        width: '90%',
-        height: 40,
-        backgroundColor: '#363636',
-        padding: 10,
-        borderRadius: 10,
-        alignSelf: 'center',
-    },
-    button: {
-       alignItems: 'center',
-       margin: 20,
-    },
-    buttontext: {
-        backgroundColor: 'cyan',
-        borderRadius: 17,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        overflow: 'hidden'
-    },
-});
 
 export default ForgotPassword;

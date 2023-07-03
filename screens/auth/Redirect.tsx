@@ -64,8 +64,6 @@ const Redirect = ({route, navigation} : any) => {
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
 
-                console.log(userInfo)
-
                 if (userInfo === 'The user is not authenticated') {
                     navigation.navigate('SignIn')
                 }
@@ -85,21 +83,21 @@ const Redirect = ({route, navigation} : any) => {
                     //     setPremium(false)
                     //   }
 
-                    const date = new Date();
-                    const year = date.getFullYear();
-                    const month = date.getMonth();
-                    const day = date.getDate();
-                    const c = new Date(year - 18, month, day).toISOString();
-                    const bd3 = new Date(userInfo.attributes.birthdate).toISOString()
+                    // const date = new Date();
+                    // const year = date.getFullYear();
+                    // const month = date.getMonth();
+                    // const day = date.getDate();
+                    // const c = new Date(year - 18, month, day).toISOString();
+                    // const bd3 = new Date(userInfo.attributes.birthdate).toISOString()
                 
-                    if (bd3 > c) {
-                        setNSFWOn(false);
-                        setADon(false);
-                    } 
-                    if (bd3 < c) {
-                        setNSFWOn(true);
-                        setADon(true)
-                    } 
+                    // if (bd3 > c) {
+                    //     setNSFWOn(false);
+                    //     setADon(false);
+                    // } 
+                    // if (bd3 < c) {
+                    //     setNSFWOn(true);
+                    //     setADon(true)
+                    // } 
 
                     const userData = await API.graphql(graphqlOperation(
                         getUser,{ id: userInfo.attributes.sub}))

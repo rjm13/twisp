@@ -234,11 +234,11 @@ function StoriesNavigator() {
         component={TagSearchStack}
         options={{ headerShown: false }}
       />
-      <StoriesStack.Screen
+      {/* <StoriesStack.Screen
         name="UserScreenStack"
         component={UserScreenStack}
         options={{ headerShown: false }}
-      />
+      /> */}
       <StoriesStack.Screen
         name="BrowseGenre"
         component={BrowseGenre}

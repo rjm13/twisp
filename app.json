@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "twisp",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,14 +16,55 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.msm.twisp",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ],
+        "NSCalendarsUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.",
+        "NSCameraUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.",
+        "NSContactsUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.",
+        "NSLocationWhenInUseUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.",
+        "NSMicrophoneUsageDescription": "Blip needs permission to access your microphone in order to record audio through the app.",
+        "NSMotionUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us.",
+        "NSPhotoLibraryAddUsageDescription": "In order to select an image to upload, Blip needs access to your photo library.",
+        "NSPhotoLibraryUsageDescription": "In order to select an image to upload, Blip needs access to your photo library.",
+        "NSRemindersUsageDescription": "This permission is not needed by the app, but it is required by an underlying API. If you see this dialog, contact us."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.msm.twisp"
+      "package": "com.msm.twisp",
+      "permissions": [
+        "RECROD_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_INTERNAL_STORAGE",
+        "USE_FINGERPRINT",
+        "INSTALL_SHORTCUT",
+        "C2D_MESSAGE",
+        "INTERNET",
+        "com.android.vending.BILLING",
+        "MANAGE_DOCUMENTS",
+        "ACESS_NETWORK_STATE",
+        "SYSTEM_ALERT_WINDOW",
+        "ACCESS_WIFI_STATE",
+        "ACCOUNT_MANAGER",
+        "BIND_AUTIOFILL_SERVICE",
+        "BIND_NOTIFICATION_LISTENER_SERVICE",
+        "CAPTURE_AUDIO_OUTPUT",
+        "MANAGE_MEDIA",
+        "MODIFY_AUDIO_SETTINGS",
+        "READ_MEDIA_AUDIO",
+        "READ_MEDIA_IMAGES",
+        "STATUS_BAR",
+        "USE_BIOMETRIC"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

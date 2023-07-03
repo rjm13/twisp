@@ -193,7 +193,7 @@ const SignIn = ({navigation} : any) => {
             </View>
 
         {signingIn === true ? (
-            <ActivityIndicator size="small" color={theme ? Colors.dark.loadingIcon : Colors.light.loadingIcon}/>
+            <ActivityIndicator size="small" color='cyan'/>
             ) : (
                 <TouchableOpacity onPress={signIn}>
                     <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
@@ -209,7 +209,7 @@ const SignIn = ({navigation} : any) => {
                     Create an account
                 </Text>
             </TouchableOpacity>
-        <StatusBar style={theme ? "light" : "dark"} backgroundColor='transparent'/>
+        <StatusBar style='light' backgroundColor='transparent'/>
         </View>
         </TouchableWithoutFeedback>
     );

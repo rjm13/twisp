@@ -44,7 +44,7 @@ return StyleSheet.create ({
       color: '#fff',
     },
     textInputTitle: {
-      color: '#000',
+      color: '#fff',
       fontWeight: 'normal',
     },
     inputfield: {
@@ -71,7 +71,7 @@ return StyleSheet.create ({
     buttontext: {
       fontSize: 16,
       fontWeight: '800',
-      color: '#fff',
+      color: '#000',
       textAlign: 'center'
     },
     optionsitem: {

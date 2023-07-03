@@ -13,11 +13,14 @@ import {
 
 import { LinearGradient } from 'expo-linear-gradient';
 
+import useStyles from '../../styles';
 
 import { Auth, graphqlOperation, API } from 'aws-amplify';
 import { createUser } from '../../src/graphql/mutations';
 
 const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
+
+    const styles = useStyles();
 
     const [loggingIn, setLoggingIn] = useState(false);
 
@@ -106,7 +109,7 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                 
                 <View style={{ margin: 20}}>
                     <View>
-                        <Text style={styles.header}>
+                        <Text style={[styles.title, {marginHorizontal: 0, marginTop: 10, marginBottom: 4}]}>
                             Confirmation Code
                         </Text>
                         <View style={styles.inputfield}>
@@ -124,7 +127,7 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                 </View>
 
                 <TouchableOpacity onPress={confirmSignUp}>
-                    <View style={styles.button}>
+                    <View style={styles.buttonlayout}>
                         {loggingIn === true ? (
                             <ActivityIndicator size='small' color='cyan'/>
                         ) : (

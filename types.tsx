@@ -16,6 +16,7 @@ export type RootStackParamList = {
     SplashCarousel: undefined;
     CreateMessage: undefined;
     Welcome: undefined;
+    UploadAudio: undefined;
   
   };
   

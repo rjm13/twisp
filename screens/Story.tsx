@@ -14,14 +14,14 @@ import {
     TextInput,
     ActivityIndicator,
     Platform,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Modal
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
-import { Modal, Portal, Provider } from 'react-native-paper';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -342,7 +342,7 @@ const StoryScreen  = ({navigation} : any) => {
                 <View style={{ margin: 10, flexDirection: 'row'}}>
                     <View>
                        <Image 
-                                source={ userImageUri ? { uri: imageU} : require('../assets/images/blankprofile.png')}
+                                source={ userImageUri ? { uri: imageU} : require('../assets/blankprofile.png')}
                                 style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'lightgray'}}
                         /> 
                     </View>
@@ -895,7 +895,7 @@ const StoryScreen  = ({navigation} : any) => {
                                             <View style={{backgroundColor: '#363636', padding: 20, marginVertical: 10, borderRadius: 15, }}>
                                                 <View style={{ flexDirection: 'row', }}>
                                                     <Image 
-                                                        source={ user?.imageUri ? { uri: userImage} : require('../assets/images/blankprofile.png')}
+                                                        source={ user?.imageUri ? { uri: userImage} : require('../assets/blankprofile.png')}
                                                         style={{ width: 40, height: 40, borderRadius: 25, backgroundColor: 'gray'}}
                                                     />
                                                 <TextInput 
