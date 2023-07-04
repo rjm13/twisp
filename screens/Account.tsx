@@ -234,70 +234,68 @@ const handleUpdateName = async () => {
 
 
     return (
-
-            <View>
-                {/* //Update name  */}
-                <Modal 
-                onDismiss={hideModal}
+        <View>
+{/* //Update name  */}
+            <Modal 
+                onDismiss={hideNameModal}
                 animationType="slide"
                 transparent={true}
                 visible={visible}
-                // onRequestClose={() => {
-                //   Alert.alert('Modal has been closed.');
-                //   setModalVisible(!visible);
-                // }}
-            >                    <View style={{ alignItems: 'center'}}>
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 16,
-                            color: '#fff'
-                        }}>
-                            Enter a new name
-                        </Text>
-                        <View style={{ borderWidth: 0.3, paddingVertical: 4, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
-                            <TextInput
-                                placeholder={user?.name}
-                                placeholderTextColor='gray'
-                                style={[styles.nametext, {textTransform: 'capitalize'}]}
-                                maxLength={30}
-                                multiline={false}
-                                onChangeText={val => setName(val)}
-                                //defaultValue={user?.name}
-                            />
-                        </View>
-                        <View style={styles.button}>
-                            <TouchableOpacity
-                                onPress={handleUpdateName}>
-                                <View style={styles.savebutton} >
-                                    {isUploading ? (
-                                        <ActivityIndicator size="small" color="#00ffff"/>
-                                    ) : 
-                                        <Text style={{overflow: 'hidden', borderRadius: 13, backgroundColor: 'cyan', color: '#000', paddingVertical: 5, paddingHorizontal: 20}}>Submit</Text> 
-                                    } 
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                onRequestClose={() => {setVisible(false);}}
+            >   
+                <TouchableOpacity onPress={() => {setVisible(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                    <View style={{ alignItems: 'center',backgroundColor: '#363636', padding: 20, margin: 20, borderRadius: 15,}}>
+                    <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
+                        Enter a new name
+                    </Text>
+
+                    <View style={{ borderWidth: 0.3, paddingVertical: 4, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
+                        <TextInput
+                            placeholder={user?.name}
+                            placeholderTextColor='gray'
+                            style={[styles.nametext, {marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
+                            maxLength={30}
+                            multiline={false}
+                            onChangeText={val => setName(val)}
+                            //defaultValue={user?.name}
+                        />
                     </View>
-                </Modal>
+
+                    <View style={styles.button}>
+                        <TouchableOpacity
+                            onPress={handleUpdateName}>
+                            <View style={styles.savebutton} >
+                                {isUploading ? (
+                                    <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                    <Text style={{overflow: 'hidden', borderRadius: 13, backgroundColor: 'cyan', color: '#000', paddingVertical: 5, paddingHorizontal: 20}}>
+                                        Submit
+                                    </Text> 
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    </View> 
+                </TouchableOpacity>
+                
+            </Modal>
 
 {/* //Update Email Address */}
-                <Modal 
-                onDismiss={hideModal}
+            <Modal 
+                onDismiss={hideEmailModal}
                 animationType="slide"
                 transparent={true}
-                visible={visible}
-                // onRequestClose={() => {
-                //   Alert.alert('Modal has been closed.');
-                //   setModalVisible(!visible);
-                // }}
-            >                    <View style={{ alignItems: 'center'}}>
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 16,
-                            color: '#fff'
-                        }}>
-                                Enter a new email
+                visible={visible4}
+                onRequestClose={() => {
+                  setVisible4(!visible4);
+                }}
+            >  
+                <TouchableOpacity onPress={() => {setVisible4(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                    <View style={{ alignItems: 'center'}}>
+                        <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
+                            Enter a new email
                         </Text>
+
                         <View style={{paddingVertical: 4, borderWidth: 0.3, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
                             <TextInput
                                 placeholder={authUser?.attributes.email}
@@ -351,24 +349,20 @@ const handleUpdateName = async () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+                </TouchableOpacity>
+            </Modal>
 
 {/* //Sign Out modal */}
-                <Modal 
-                onDismiss={hideModal}
+            <Modal 
+                onDismiss={hideSignOutModal}
                 animationType="slide"
                 transparent={true}
-                visible={visible}
-                // onRequestClose={() => {
-                //   Alert.alert('Modal has been closed.');
-                //   setModalVisible(!visible);
-                // }}
-            >                    <View style={{ alignItems: 'center'}}>
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 16,
-                            color: '#fff'
-                        }}>
+                visible={visible2}
+                onRequestClose={() => {setVisible2(!visible2);}}
+            >                    
+                <TouchableOpacity onPress={() => {setVisible2(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                    <View style={{ alignItems: 'center'}}>
+                        <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
                             Are you sure you want to log out?
                         </Text>
                         
@@ -384,19 +378,19 @@ const handleUpdateName = async () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+                </TouchableOpacity>
+            </Modal>
 
 {/* //delete account modal */}
-                <Modal 
-                onDismiss={hideModal}
+            <Modal 
+                onDismiss={hideDeleteAccountModal}
                 animationType="slide"
                 transparent={true}
-                visible={visible}
-                // onRequestClose={() => {
-                //   Alert.alert('Modal has been closed.');
-                //   setModalVisible(!visible);
-                // }}
-            >                    <View style={{ alignItems: 'center'}}>
+                visible={visible3}
+                onRequestClose={() => {setVisible3(!visible3);}}
+            >       
+                <TouchableOpacity onPress={() => {setVisible3(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                    <View style={{ alignItems: 'center'}}>
                         <Text style={{color: 'red', fontWeight: 'bold', fontSize: 17, textAlign: 'center'}}>
                             THIS ACTION CANNOT BE UNDONE
                         </Text>
@@ -435,24 +429,20 @@ const handleUpdateName = async () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+                </TouchableOpacity>
+            </Modal>
 
 {/* //Reset password modal */}
-                <Modal 
-                onDismiss={hideModal}
+            <Modal 
+                onDismiss={hidePassModal}
                 animationType="slide"
                 transparent={true}
-                visible={visible}
-                // onRequestClose={() => {
-                //   Alert.alert('Modal has been closed.');
-                //   setModalVisible(!visible);
-                // }}
-            >                    <View style={{ alignItems: 'center'}}>
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 16,
-                            color: '#fff'
-                        }}>
+                visible={visible6}
+                onRequestClose={() => {setVisible6(!visible6);}}
+            >      
+                <TouchableOpacity onPress={() => {setVisible6(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                    <View style={{ alignItems: 'center'}}>
+                        <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
                             Enter new password
                         </Text>
 
@@ -510,97 +500,92 @@ const handleUpdateName = async () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
-                <LinearGradient
-                    colors={['#363636a5', '#363636a5', 'black']}
-                    //style={styles.container}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
+                </TouchableOpacity>
+            </Modal>
+            
+            <LinearGradient
+                colors={['#363636a5', '#363636a5', 'black']}
+                //style={styles.container}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+            >
+                <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
+                    <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+                        <View style={{padding: 30, margin:-30}}>
+                            <FontAwesome5 
+                                name='chevron-left'
+                                color='#fff'
+                                size={20}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                     
-                    <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
-                        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-                            <View style={{padding: 30, margin:-30}}>
-                                <FontAwesome5 
-                                    name='chevron-left'
-                                    color='#fff'
-                                    size={20}
-                                />
+                    
+                    <Text style={styles.header}>
+                        Account
+                    </Text>
+                </View>
+                
+                <View style={{height: Dimensions.get('window').height, justifyContent: 'space-between'}}>
+                    <View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
+                            <View style={styles.subblock}>
+                                <Text style={[styles.paragraph, {textTransform: 'capitalize'}]}>
+                                {/* {authUser?.signInUserSession.idToken.payload["cognito:groups"][0]} */}
+                                    {premium === true ? 'Premium' : 'Basic'}
+                                </Text>
+                                <Text style={styles.subparagraph}>
+                                    Plan
+                                </Text>
+                            </View>
+                        </View>
+
+                        <TouchableWithoutFeedback onPress={showNameModal}>
+                            <View style={styles.emailcontainer }> 
+                                <Text style={ styles.words }>Name</Text>
+                                <Text style={ [styles.placeholdertext, {textTransform: 'capitalize'}] }>{user?.name}</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        
-                        
-                        <Text style={styles.header}>
-                            Account
-                        </Text>
+
+                        <TouchableWithoutFeedback onPress={showEmailModal}>
+                            <View style={styles.emailcontainer }> 
+                                <Text style={ styles.words }>Email</Text>
+                                <Text style={ styles.placeholdertext }>{authUser?.attributes.email}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback onPress={showPassModal}>
+                            <View style={styles.smallcontainer }>
+                                <Text style={ styles.words }>Reset Password</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+
+                        <TouchableWithoutFeedback onPress={showSignOutModal}>
+                            <View style={styles.smallcontainer }>
+                                <Text style={ styles.words }>Log Out</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+
                     </View>
-                    
-                    <View style={{height: Dimensions.get('window').height, justifyContent: 'space-between'}}>
 
-                        
-
-                            <View>
-
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
-                                    <View style={styles.subblock}>
-                                        <Text style={[styles.paragraph, {textTransform: 'capitalize'}]}>
-                                        {/* {authUser?.signInUserSession.idToken.payload["cognito:groups"][0]} */}
-                                            {premium === true ? 'Premium' : 'Basic'}
-                                        </Text>
-                                        <Text style={styles.subparagraph}>
-                                            Plan
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                <TouchableWithoutFeedback onPress={showNameModal}>
-                                    <View style={styles.emailcontainer }> 
-                                        <Text style={ styles.words }>Name</Text>
-                                        <Text style={ [styles.placeholdertext, {textTransform: 'capitalize'}] }>{user?.name}</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-
-                                <TouchableWithoutFeedback onPress={showEmailModal}>
-                                    <View style={styles.emailcontainer }> 
-                                        <Text style={ styles.words }>Email</Text>
-                                        <Text style={ styles.placeholdertext }>{authUser?.attributes.email}</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-
-                                <TouchableWithoutFeedback onPress={showPassModal}>
-                                    <View style={styles.smallcontainer }>
-                                        <Text style={ styles.words }>Reset Password</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-
-                                <TouchableWithoutFeedback onPress={showSignOutModal}>
-                                    <View style={styles.smallcontainer }>
-                                        <Text style={ styles.words }>Log Out</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-
+                    <View style={{marginBottom: 100}}>
+                        <TouchableWithoutFeedback onPress={showDeleteAccountModal}>
+                            <View style={styles.smallcontainer }>
+                                <Text style={{ fontSize: 16, marginVertical: 20, color: '#ffffffa5', }}>Delete Account</Text>
                             </View>
+                        </TouchableWithoutFeedback>
 
-                            <View style={{marginBottom: 100}}>
-                                <TouchableWithoutFeedback onPress={showDeleteAccountModal}>
-                                    <View style={styles.smallcontainer }>
-                                        <Text style={{ fontSize: 16, marginVertical: 20, color: '#ffffffa5', }}>Delete Account</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-
-                                <TouchableWithoutFeedback>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
-                                        
-                                    </View>
-                                </TouchableWithoutFeedback> 
+                        <TouchableWithoutFeedback>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
+                                
                             </View>
-
-                       
-                        
-                    </View>  
-                </LinearGradient>
-                <StatusBar style="light" />
-            </View>
+                        </TouchableWithoutFeedback> 
+                    </View>
+                </View>  
+            </LinearGradient>
+            <StatusBar style="light" />
+        </View>
         
     );
 }

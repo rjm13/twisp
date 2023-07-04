@@ -47,13 +47,16 @@ import TagSearchStack from '../screens/TagSearch';
 import BrowseGenre from '../screens/BrowseGenre';
 import ViewGenreTags from '../screens/ViewGenreTags';
 //import PromptsHome from '../screens/PromptsHome';
-
+import PublishingMain from '../screens/Publishing';
+import PublisherSetup from '../screens/PublisherSetup';
+import Publisher from '../screens/Publisher';
 import PremiumHome from '../screens/PremiumHome';
 
 import { AppContext } from '../AppContext';
 
 
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList, TabFourParamList } from '../types';
+
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -198,7 +201,21 @@ function HomeNavigator() {
         component={InProgress} 
         options={{ headerShown: false }} 
       />
-      
+       <HomeStack.Screen 
+        name="Publishing" 
+        component={PublishingMain} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="PublisherSetup" 
+        component={PublisherSetup} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="Publisher" 
+        component={Publisher} 
+        options={{ headerShown: false }} 
+      />
 
     </HomeStack.Navigator>
   );
