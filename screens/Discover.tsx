@@ -57,7 +57,7 @@ const AudioStoryHome = ({navigation} : any) => {
 
 
   //genre tile item should show genre name, color, and image
-  const Item = ({genre, id, PrimaryColor, imageUri} : any) => {
+  const Item = ({genre, id, color, imageUri} : any) => {
 
     //state that locks the after dark tile
     const [locked, setIsLocked] = useState(false);
@@ -81,7 +81,7 @@ const AudioStoryHome = ({navigation} : any) => {
             />
               <LinearGradient 
                 //colors={[PrimaryColor, PrimaryColor, PrimaryColor, PrimaryColor + '80']}
-                colors={[PrimaryColor, PrimaryColor, PrimaryColor, 'transparent']}
+                colors={[color, color, color, 'transparent']}
                 locations={[0.0, 0.33, 0.66, 1.0]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -113,7 +113,7 @@ const AudioStoryHome = ({navigation} : any) => {
       <Item 
           id={item.id}
           genre={item.genre}
-          PrimaryColor={item.PrimaryColor}
+          color={item.color}
           imageUri={item.imageUri}
       />
     );

@@ -68,6 +68,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   hidden: Boolean
   status: Boolean
   numListens: Int
+  approved: Boolean
   }
 
   type EroticStory @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

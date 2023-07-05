@@ -306,7 +306,7 @@ const GenreCarousel = ({genreid} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (
@@ -334,12 +334,19 @@ const GenreCarousel = ({genreid} : any) => {
             <Carousel
               data={carouselStories}
               renderItem={renderItem}
-              sliderWidth={Dimensions.get('window').width}
-              itemWidth={300}
-              layout={'default'} 
-              enableSnap={true}
-              enableMomentum={true}
-              decelerationRate='fast'
+              loop
+              width={Dimensions.get('window').width}
+              height={Dimensions.get('window').width / 2}
+              autoPlay={true}
+              scrollAnimationDuration={1000}
+              onSnapToItem={(index) => console.log('current index:', index)}
+              //extraData={true}
+            //   sliderWidth={Dimensions.get('window').width}
+            //   itemWidth={300}
+            //   layout={'default'} 
+            //   enableSnap={true}
+            //   enableMomentum={true}
+            //   decelerationRate='fast'
               //layoutCardOffset={0}
             />
         </SafeAreaView>

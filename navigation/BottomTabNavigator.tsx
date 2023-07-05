@@ -26,7 +26,7 @@ import ViewMessage from '../screens/ViewMessage';
 // import PublisherSetupScreen from '../screens/PublisherSetup';
 // import PublisherScreen from '../screens/Publisher';
 // import BecomeSomething from '../screens/BecomeSomething';
-// import MyStories from '../screens/MyStories';
+import MyStories from '../screens/MyStories';
 // import UploadAudio from '../screens/UploadAudio';
 
 //import SavedPrompts from '../screens/SavedPrompts';
@@ -214,6 +214,11 @@ function HomeNavigator() {
       <HomeStack.Screen 
         name="Publisher" 
         component={Publisher} 
+        options={{ headerShown: false }} 
+      />
+       <HomeStack.Screen 
+        name="MyStories" 
+        component={MyStories} 
         options={{ headerShown: false }} 
       />
 

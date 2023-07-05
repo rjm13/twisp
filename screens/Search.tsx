@@ -9,7 +9,7 @@ import {
     ScrollView
 } from 'react-native';
 
-//import { Searchbar } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {LinearGradient} from 'expo-linear-gradient';

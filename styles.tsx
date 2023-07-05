@@ -15,12 +15,16 @@ return StyleSheet.create ({
     container: {
         flex: 1,
         backgroundColor:  '#000',
-        alignItems: 'center',
-        width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT,
+        //width: SCREEN_WIDTH,
+        //height: SCREEN_HEIGHT,
       },
     title: {
         fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+      },
+      subtitle: {
+        fontSize: 16,
         fontWeight: 'bold',
         color: '#fff',
       },
@@ -90,6 +94,19 @@ return StyleSheet.create ({
     fontSize: 16,
     color: '#fff',
   },
+  tagtext: {
+    color: 'cyan',
+    fontSize: 14,
+    backgroundColor: '#1A4851a5',
+    borderColor: '#00ffffa5',
+    borderWidth: 0.5,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 13,
+    textTransform: 'lowercase',
+    overflow: 'hidden',
+    marginBottom: 1
+},
 });
 }
 
