@@ -30,10 +30,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
 import { formatRelative, parseISO } from "date-fns";
 import ShareStory from '../components/functions/ShareStory';
+import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { getStory, getUser } from '../src/graphql/queries';
-import { createComment, createFlag, createRating, updateRating, updateStory } from '../src/graphql/mutations';
+import { createComment, createRating, updateRating, updateStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 import PinStory from '../components/functions/PinStory';
@@ -41,6 +42,8 @@ import unPinStory from '../components/functions/UnPinStory';
 
 
 const StoryScreen  = ({navigation} : any) => {
+
+    //const styles = useStyles();
 
 //recieve story ID as props
     const route = useRoute();
@@ -50,19 +53,16 @@ const StoryScreen  = ({navigation} : any) => {
     const scrollRef = useRef();
     const [viewPosition, setViewPosition] = useState(0);
 
-    //focus to the comment box
+//focus to the comment box
     const focus = useRef(null)
 
-
-
-    //anchor to comments section
+//anchor to comments section
     const scrollToView = () => {
         scrollRef.current?.scrollTo({y: viewPosition + 1400, animated: true});
         focus.current.focus()
-        
-      }
+    }
 
-      const [commentUpdated, setCommentUpdated] = useState(false);
+    const [commentUpdated, setCommentUpdated] = useState(false);
 
 //use storyID to retrieve Story from AWS
     const [Story, setStory] = useState();
@@ -87,6 +87,7 @@ const StoryScreen  = ({navigation} : any) => {
             let tagarr = []
 
             try {
+
                 const storyData = await API.graphql(graphqlOperation(getStory, {id: storyID}))
 
                 for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
@@ -189,23 +190,12 @@ const StoryScreen  = ({navigation} : any) => {
     const [visible, setVisible] = useState(false);
     const showRatingModal = () => setVisible(true);
     const hideRatingModal = () => setVisible(false);
-    const containerStyle = {
-        backgroundColor: '#363636', 
-        padding: 20,
-        margin: 20,
-        borderRadius: 15,
-    };
 
 //Flag Modal
-    const [visibleFlag, setVisibleFlag] = useState(false);
-    const showFlagModal = () => setVisibleFlag(true);
-    const hideFlagModal = () => setVisibleFlag(false);
-    const containerStyleFlag = {
-        backgroundColor: '#363636', 
-        padding: 20,
-        margin: 20,
-        borderRadius: 15,
-    };
+    // const [visibleFlag, setVisibleFlag] = useState(false);
+    // const showFlagModal = () => setVisibleFlag(true);
+    // const hideFlagModal = () => setVisibleFlag(false);
+
 
 //rating functions
 
@@ -365,147 +355,145 @@ const StoryScreen  = ({navigation} : any) => {
         );
     }
     
-        const [commentList, setCommentList ] = useState([]);
+    const [commentList, setCommentList ] = useState([]);
     
     
-        const [user, setUser] = useState();
-        const [userImage, setUserImage] = useState('')
+    const [user, setUser] = useState();
+    const [userImage, setUserImage] = useState('')
     
-        useEffect(() => {
-            const fetchUser = async () => {
-    
-                const userInfo = await Auth.currentAuthenticatedUser(
-                    { bypassCache: true }
-                  );
-    
-                const userData = await API.graphql(
-                    graphqlOperation(
-                    getUser, { id: userInfo.attributes.sub}
-                ))
+    useEffect(() => {
+        const fetchUser = async () => {
 
-                setUser(userData.data.getUser);
+            const userInfo = await Auth.currentAuthenticatedUser(
+                { bypassCache: true }
+                );
 
-                for (let i = 0; i < userData.data.getUser.Pinned.items.length; i++) {
-                    if (userData.data.getUser.Pinned.items[i].storyID === storyID) {
-                        setQd(true);
-                    }
+            const userData = await API.graphql(
+                graphqlOperation(
+                getUser, { id: userInfo.attributes.sub}
+            ))
+
+            setUser(userData.data.getUser);
+
+            for (let i = 0; i < userData.data.getUser.Pinned.items.length; i++) {
+                if (userData.data.getUser.Pinned.items[i].storyID === storyID) {
+                    setQd(true);
                 }
-
-                for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {
-                    if (userData.data.getUser.Finished.items[i].storyID === storyID) {
-                        setIsFinished(true);
-                    }
-                }
-
-                for (let i = 0; i < userData.data.getUser.Rated.items.length; i++) {
-                    if (userData.data.getUser.Rated.items[i].storyID === storyID) {
-                        setIsRated(true);
-                        setRatingID(userData.data.getUser.Rated.items[i].id);
-                        setRatingNum(userData.data.getUser.Rated.items[i].rating);
-                    }
-                }
-
-                // if (isRated === false && isFinished === true ) {
-                //     showRatingModal();
-                // }
-                
-                const UserImage = await Storage.get(userData.data.getUser.imageUri)
-                setUserImage(UserImage)
             }
-        fetchUser();
-        
-        }, [update])
 
-        useEffect(() => {
-            if (isRated === false && isFinished === true ) {
-                showRatingModal();
-            } else {
-                hideRatingModal();
-            }
-        }, [isRated, isFinished])
-        
-        const renderItem = ({ item } : any) => (
-    
-            <Item 
-                //id={item.id}
-                content={item.content}
-                createdAt={item.createdAt}
-                userName={item.user && item.user.name}
-                userImageUri={item.user && item.user.imageUri}
-            />
-          );
-        
-        const [comment, setComment] = useState('');
-    
-        const handlePostComment = async () => {
-    
-            const poster = await Auth.currentAuthenticatedUser()
-    
-            if (comment.length > 0) {
-                try {
-                    await API.graphql(
-                            graphqlOperation(createComment, { input: 
-                                {
-                                    type: 'Comment',
-                                    createdAt: new Date(),
-                                    storyID: storyID,
-                                    content: comment,
-                                    userID: poster.attributes.sub,
-                                    approved: false
-                                }
-                            }))
-                        } catch (e) {
-                                console.error(e);
+            for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {
+                if (userData.data.getUser.Finished.items[i].storyID === storyID) {
+                    setIsFinished(true);
                 }
-                setComment('');
-                setCommentUpdated(!commentUpdated)
             }
+
+            for (let i = 0; i < userData.data.getUser.Rated.items.length; i++) {
+                if (userData.data.getUser.Rated.items[i].storyID === storyID) {
+                    setIsRated(true);
+                    setRatingID(userData.data.getUser.Rated.items[i].id);
+                    setRatingNum(userData.data.getUser.Rated.items[i].rating);
+                }
+            }
+
+            // if (isRated === false && isFinished === true ) {
+            //     showRatingModal();
+            // }
+            
+            const UserImage = await Storage.get(userData.data.getUser.imageUri)
+            setUserImage(UserImage)
         }
+    fetchUser();
+    
+    }, [update])
 
-      
+    useEffect(() => {
+        if (isRated === false && isFinished === true ) {
+            showRatingModal();
+        } else {
+            hideRatingModal();
+        }
+    }, [isRated, isFinished])
+        
+    const renderItem = ({ item } : any) => (
+
+        <Item 
+            //id={item.id}
+            content={item.content}
+            createdAt={item.createdAt}
+            userName={item.user && item.user.name}
+            userImageUri={item.user && item.user.imageUri}
+        />
+        );
+        
+    const [comment, setComment] = useState('');
+    
+    const handlePostComment = async () => {
+
+        const poster = await Auth.currentAuthenticatedUser()
+
+        if (comment.length > 0) {
+            try {
+                await API.graphql(
+                        graphqlOperation(createComment, { input: 
+                            {
+                                type: 'Comment',
+                                createdAt: new Date(),
+                                storyID: storyID,
+                                content: comment,
+                                userID: poster.attributes.sub,
+                                approved: false
+                            }
+                        }))
+                    } catch (e) {
+                            console.error(e);
+            }
+            setComment('');
+            setCommentUpdated(!commentUpdated)
+        }
+    }
 
     return (
-        <Provider>
             <View style={styles.container}>
-                <Portal>
 {/* Rate the story modal */}
-                    <Modal visible={visible} onDismiss={hideRatingModal} contentContainerStyle={containerStyle}>
-                        <View style={{alignItems: 'center'}}>
-                            <View style={{}}>
-                                <Text style={{margin: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
-                                    Leave a Rating
-                                </Text>
-                                <Text style={{margin: 20, textAlign: 'center', fontSize: 20, color: '#fff'}}>
-                                    {ratingNum}/10
-                                </Text>
-                            </View>
-                            <View style={{marginBottom: 20, flexDirection: 'row'}}>
-                                <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
-                                <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
-                            </View>
-                            {isUpdating === true ? (
-                                <ActivityIndicator size='large' color='cyan '/>
-                            ) :
-                            <TouchableOpacity onPress={SubmitRating}>
-                                <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
-                                        <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
-                                            Submit
-                                        </Text>
+                    <Modal visible={visible} onDismiss={hideRatingModal}>
+                        <TouchableOpacity onPress={hideRatingModal}>
+                            <View style={{alignItems: 'center'}}>
+                                <View style={{}}>
+                                    <Text style={{margin: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
+                                        Leave a Rating
+                                    </Text>
+                                    <Text style={{margin: 20, textAlign: 'center', fontSize: 20, color: '#fff'}}>
+                                        {ratingNum}/10
+                                    </Text>
                                 </View>
-                            </TouchableOpacity>
-                            }
-                        </View>
+                                <View style={{marginBottom: 20, flexDirection: 'row'}}>
+                                    <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
+                                    <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
+                                </View>
+                                {isUpdating === true ? (
+                                    <ActivityIndicator size='large' color='cyan '/>
+                                ) :
+                                <TouchableOpacity onPress={SubmitRating}>
+                                    <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
+                                            <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
+                                                Submit
+                                            </Text>
+                                    </View>
+                                </TouchableOpacity>
+                                }
+                            </View>
+                        </TouchableOpacity>
                     </Modal>
 {/* flag this story modal */}
-                    <Modal visible={visibleFlag} onDismiss={hideFlagModal} contentContainerStyle={containerStyleFlag}>
+                    {/* <Modal visible={visibleFlag} onDismiss={hideFlagModal} contentContainerStyle={containerStyleFlag}>
                         <View style={{alignItems: 'center'}}>
                             {isReported === false ? (
                             <View style={{}}>
@@ -607,8 +595,8 @@ const StoryScreen  = ({navigation} : any) => {
                             
                             
                         </View>
-                    </Modal>
-                </Portal>
+                    </Modal> */}
+                
 
                 <ImageBackground 
                     source={{uri: imageU}}
@@ -673,7 +661,7 @@ const StoryScreen  = ({navigation} : any) => {
                         <View style={{ height: 220, backgroundColor: 'transparent', alignItems: 'flex-start'}}>
                             {Story?.imageUri ? (
                                 <View style={{width: Dimensions.get('window').width - 20, marginTop: 186, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.artistID, status: 'artist'})}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
                                         <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#363636a5', flexDirection: 'row'}}>
                                             <FontAwesome5 
                                                 name='palette'
@@ -682,7 +670,7 @@ const StoryScreen  = ({navigation} : any) => {
                                                 style={{marginRight: 10}}
                                             />
                                             <Text style={{color: '#fff', textTransform: 'capitalize'}}>
-                                                {Story?.artist.artistPseudo}
+                                                {Story?.artist}
                                             </Text>
                                         </View> 
                                     </TouchableOpacity>
@@ -709,7 +697,7 @@ const StoryScreen  = ({navigation} : any) => {
                                     </Text>
 
                                     <View style={{ width: '100%', flexDirection: 'row', marginVertical: 10, justifyContent: 'space-between'}}>
-                                        <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.userID, status: 'publisher'})}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                                                 <FontAwesome5 
                                                     name='book-open'
@@ -723,7 +711,7 @@ const StoryScreen  = ({navigation} : any) => {
                                             </View>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.narratorID, status: 'narrator'})}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                                                 <FontAwesome5 
                                                     name='book-reader'
@@ -817,7 +805,7 @@ const StoryScreen  = ({navigation} : any) => {
                                                         color='#ffffffa5'
                                                         style={{marginRight: 6}}
                                                     />
-                                                    <Text style={{fontSize: 15, textTransform: 'capitalize', textAlign: 'center', color: Story?.genre?.PrimaryColor}}>
+                                                    <Text style={{fontSize: 15, textTransform: 'capitalize', textAlign: 'center', color: Story?.genre?.color}}>
                                                         {Story?.genre?.genre}
                                                     </Text>
                                                 </View>
@@ -833,7 +821,7 @@ const StoryScreen  = ({navigation} : any) => {
                                     />
                                 </View>
                                 
-                                {Story?.promptID ? (
+                                {/* {Story?.promptID ? (
                                     <TouchableWithoutFeedback onPress={() => navigation.navigate('PromptsHome', {promptID: Story?.promptID})}>
                                         <View style={{backgroundColor: '#3B4B80a5', borderRadius: 15, marginBottom: 20}}>
                                             <Text numberOfLines={5} style={{color: '#fff', padding: 10}}>
@@ -842,7 +830,7 @@ const StoryScreen  = ({navigation} : any) => {
                                         </View>
                                     </TouchableWithoutFeedback>
                                     
-                                ) : null}
+                                ) : null} */}
                                 
                                 
                                 <View>
@@ -878,12 +866,12 @@ const StoryScreen  = ({navigation} : any) => {
                                             </Text>
                                         </View>
                                         
-                                        <FontAwesome 
+                                        {/* <FontAwesome 
                                             name='flag'
                                             size={20}
                                             color='gray'
                                             onPress={showFlagModal}
-                                        />
+                                        /> */}
                                     </View>
                                     
                                     <View onLayout={e => setViewPosition(e.nativeEvent.layout.y)}>
@@ -959,7 +947,6 @@ const StoryScreen  = ({navigation} : any) => {
             </Animatable.View>
             <StatusBar style='light' backgroundColor='#0000004D' />
             </View>
-        </Provider>
     );
 }
 

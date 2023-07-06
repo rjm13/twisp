@@ -135,6 +135,35 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      published {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -267,6 +296,35 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           time
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      published {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
           __typename
         }
         nextToken
@@ -409,6 +467,35 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      published {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -469,6 +556,10 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -514,6 +605,10 @@ export const createFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -579,6 +674,10 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -624,6 +723,10 @@ export const updateFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -689,6 +792,10 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -734,6 +841,10 @@ export const deleteFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -801,6 +912,10 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -894,6 +1009,7 @@ export const createStory = /* GraphQL */ `
       hidden
       status
       numListens
+      approved
       __typename
     }
   }
@@ -956,6 +1072,10 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1049,6 +1169,7 @@ export const updateStory = /* GraphQL */ `
       hidden
       status
       numListens
+      approved
       __typename
     }
   }
@@ -1111,6 +1232,10 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1204,6 +1329,7 @@ export const deleteStory = /* GraphQL */ `
       hidden
       status
       numListens
+      approved
       __typename
     }
   }
@@ -1263,6 +1389,10 @@ export const createEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -1421,6 +1551,10 @@ export const updateEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1573,6 +1707,10 @@ export const deleteEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -2090,6 +2228,10 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2156,6 +2298,7 @@ export const createPinnedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -2284,6 +2427,10 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2350,6 +2497,7 @@ export const updatePinnedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -2478,6 +2626,10 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2544,6 +2696,7 @@ export const deletePinnedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -2672,6 +2825,10 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2738,6 +2895,7 @@ export const createInProgressStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       createdAt
@@ -2801,6 +2959,10 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2867,6 +3029,7 @@ export const updateInProgressStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       createdAt
@@ -2930,6 +3093,10 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2996,6 +3163,7 @@ export const deleteInProgressStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       createdAt
@@ -3056,6 +3224,10 @@ export const createInProgressEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -3188,6 +3360,10 @@ export const updateInProgressEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticStoryID
@@ -3314,6 +3490,10 @@ export const deleteInProgressEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -3448,6 +3628,10 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3514,6 +3698,7 @@ export const createFinishedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -3642,6 +3827,10 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3708,6 +3897,7 @@ export const updateFinishedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -3836,6 +4026,10 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3902,6 +4096,7 @@ export const deleteFinishedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -4048,6 +4243,7 @@ export const createComment = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStory {
@@ -4159,6 +4355,10 @@ export const createComment = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -4244,6 +4444,7 @@ export const updateComment = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStory {
@@ -4355,6 +4556,10 @@ export const updateComment = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -4440,6 +4645,7 @@ export const deleteComment = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStory {
@@ -4554,6 +4760,10 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -4618,6 +4828,10 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -4663,6 +4877,10 @@ export const createReaction = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -4796,6 +5014,10 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -4841,6 +5063,10 @@ export const updateReaction = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -4974,6 +5200,10 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -5019,6 +5249,10 @@ export const deleteReaction = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -5170,6 +5404,7 @@ export const createRating = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -5281,6 +5516,10 @@ export const createRating = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -5365,6 +5604,7 @@ export const updateRating = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -5476,6 +5716,10 @@ export const updateRating = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -5560,6 +5804,7 @@ export const deleteRating = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -5674,6 +5919,10 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -5739,6 +5988,10 @@ export const createMessage = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -5810,6 +6063,10 @@ export const updateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       receiverID
@@ -5875,6 +6132,10 @@ export const deleteMessage = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -5957,6 +6218,7 @@ export const createStoryTag = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       tag {
@@ -6054,6 +6316,7 @@ export const updateStoryTag = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       tag {
@@ -6151,6 +6414,7 @@ export const deleteStoryTag = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       tag {

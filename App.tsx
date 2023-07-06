@@ -187,7 +187,7 @@ export default function App() {
         }}>
             <Navigation colorScheme='dark'/>
             <StatusBar style='light' backgroundColor='#0000004D'/>
-            {/* <AudioPlayerWidget /> */}
+            <AudioPlayerWidget />
           </AppContext.Provider>
       </SafeAreaProvider>
 

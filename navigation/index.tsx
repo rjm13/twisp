@@ -9,6 +9,7 @@ import { AppContext } from '../AppContext';
 
 //show over top
 import StoryScreen from '../screens/Story';
+import UserScreen from '../screens/UserScreen';
 import UploadAudio from '../screens/UploadAudio';
 import TagSearchScreen from '../screens/TagSearch';
 import RedirectScreen from '../screens/auth/Redirect';
@@ -61,6 +62,7 @@ function RootNavigator() {
       <Stack.Screen name="ForgotPasswordCon" component={ForgotPasswordConScreen} />
       <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
       <Stack.Screen name="StoryScreen" component={StoryScreen} />
+      <Stack.Screen name="UserScreen" component={UserScreen} />
       <Stack.Screen name="Redirect" component={RedirectScreen} />
       <Stack.Screen name="TagSearchScreen" component={TagSearchScreen} />
       <Stack.Screen name="SplashCarousel" component={SplashCarousel} />

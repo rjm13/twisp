@@ -29,7 +29,7 @@ import uuid from 'react-native-uuid';
 import useStyles from '../styles';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, createStoryTag, createTag, updateUser, createGenreTag, createMessage, createUser  } from '../src/graphql/mutations';
+import { createStory, createStoryTag, createTag, createGenreTag, createMessage  } from '../src/graphql/mutations';
 import { listTags, getUser, listGenres, listGenreTags } from '../src/graphql/queries';
 
 const UploadAudio = ({navigation} : any) => { 
@@ -56,6 +56,7 @@ const UploadAudio = ({navigation} : any) => {
         ratingAmt: 0,
         hidden: false,
         status: false,
+        approved: false,
         numListens: 0,
     });
 
@@ -108,10 +109,10 @@ const UploadAudio = ({navigation} : any) => {
                 listGenreTags, {
                     nextToken,
                     filter: {
-                        tagID: {
+                        tagId: {
                             eq: extag
                         },
-                        genreID: {
+                        genreId: {
                             eq: data.genreID
                         }
                     }
@@ -136,7 +137,7 @@ const UploadAudio = ({navigation} : any) => {
         }
         else {
             await API.graphql(graphqlOperation(
-                createGenreTag, {input: {tagID: extag, genreID: data.genreID}}
+                createGenreTag, {input: {tagId: extag, genreId: data.genreID}}
             )) 
         }
     }
@@ -216,7 +217,7 @@ const UploadAudio = ({navigation} : any) => {
                     narrator: data.narrator,
                     artist: data.artist,
                     time: data.time,
-                    //approved: false,
+                    approved: false,
                     hidden: false,
                     status: false,
                     imageUri: s3ResponseImage.key,
@@ -242,7 +243,7 @@ const UploadAudio = ({navigation} : any) => {
                     //if the tag exists, create a StoryTag with the tagID and storyID
                     if (extag !== undefined) {
                         await API.graphql(graphqlOperation(
-                            createStoryTag, {input: {tagID: extag, storyID: result.data.createStory.id, }}
+                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
                         ))
 
                         ListAllGenreTags(extag);
@@ -250,27 +251,27 @@ const UploadAudio = ({navigation} : any) => {
                     //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
                     } else if (extag === undefined) {
                         let newTag = await API.graphql(graphqlOperation(
-                            createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0, nsfw: data.genreID === '1108a619-1c0e-4064-8fce-41f1f6262070' ? true : false}}
+                            createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
                         ))
 
                         if (newTag) {
                             await API.graphql(graphqlOperation(
-                                createStoryTag, {input: {tagID: newTag.data.createTag.id, storyID: result.data.createStory.id}}
+                                createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
                             ))
                             await API.graphql(graphqlOperation(
-                                createGenreTag, {input: {tagID: newTag.data.createTag.id, genreID: data.genreID}}
+                                createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
                             ))
                         }
                     }
                 }
             }
 
-        await API.graphql(
-            graphqlOperation(updateUser, { input: {
-                id: userInfo.attributes.sub,
-                numAuthored: numAuthored + 1
-            }
-        }));
+        // await API.graphql(
+        //     graphqlOperation(updateUser, { input: {
+        //         id: userInfo.attributes.sub,
+        //         numAuthored: numAuthored + 1
+        //     }
+        // }));
 
         await API.graphql(graphqlOperation(
             createMessage, {
@@ -278,16 +279,12 @@ const UploadAudio = ({navigation} : any) => {
                     type: 'Message',
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    userID: userInfo.attributes.sub,
-                    otherUserID: null,
+                    receiverID: userInfo.attributes.sub,
                     content: 'Your story, ' + data.title + ' is under review.\n\nIt may take up to 48 hours for approval. You will be notified when your story goes live.',
                     title: 'Thank you for submitting your story!',
                     subtitle: null,
-                    isReadbyUser: false,
-                    isReadByOtherUser: true,
-                    docID: null,
-                    request: null,
-                    status: 'noreply'
+                    isReadByReceiver: false,
+                    status: 'noreply',
                 }
             }
         ))
@@ -639,7 +636,7 @@ const UploadAudio = ({navigation} : any) => {
                     Story Title *
                 </Text>
 
-                <View style={[styles.inputfield, {}]}>
+                <View style={[styles.inputfield, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
                     <TextInput
                         placeholder='....'
                         placeholderTextColor='#ffffffa5'
@@ -777,7 +774,7 @@ const UploadAudio = ({navigation} : any) => {
 
                 <ScrollView 
                     scrollEnabled={false}
-                    style={{width: Dimensions.get('window').width - 40, marginHorizontal: 20, marginBottom: 0}} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    style={{width: Dimensions.get('window').width - 40, marginHorizontal: 20, marginBottom: 10}} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {TagsArray.map(({ name } : any, index) => (
                         <View key={index} style={{ marginTop: 10, marginRight: 10}}>
                             <TouchableOpacity onLongPress={() => RemoveFromTagArray(index)}>

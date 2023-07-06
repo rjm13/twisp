@@ -244,21 +244,21 @@ const ForYouCarousel = () => {
                             type: 'Story',
                             sortDirection: 'DESC',
                             filter: {
-                                approved: {
-                                    eq: 'approved'
-                                },
+                                // approved: {
+                                //     eq: 'approved'
+                                // },
                                 hidden: {
                                     eq: false
                                 },
                                 imageUri: {
                                     attributeExists: true
                                 },
-                                genreID: {
-                                    ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
-                                },
-                                nsfw: {
-                                    ne: nsfwOn === true ? true : null
-                                }
+                                // genreID: {
+                                //     ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
+                                // },
+                                // nsfw: {
+                                //     ne: nsfwOn === true ? true : null
+                                // }
                                 // ratingAvg: {
                                 //     gt: 6
                                 // },
@@ -269,6 +269,9 @@ const ForYouCarousel = () => {
                         }
                     )
                 )
+
+                console.log('response is')
+                console.log(response)
                 if (response) {
                     let randomarr = []
                     for (let i = 0; i < 10; i++) {
@@ -323,24 +326,25 @@ const ForYouCarousel = () => {
       );}
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{alignItems: 'center'}}>
             <Carousel
-              data={Storys}
-              renderItem={renderItem}
-              loop
-              width={Dimensions.get('window').width}
-              height={Dimensions.get('window').width / 2}
-              autoPlay={true}
-              scrollAnimationDuration={1000}
-              onSnapToItem={(index) => console.log('current index:', index)}
-              //extraData={true}
-            //   sliderWidth={Dimensions.get('window').width}
-            //   itemWidth={300}
-            //   layout={'default'} 
-            //   enableSnap={true}
-            //   enableMomentum={true}
-            //   decelerationRate='fast'
-              //layoutCardOffset={0}
+                data={Storys}
+                renderItem={renderItem}
+                width={Dimensions.get('window').width}
+                height={Dimensions.get('window').width*0.8}
+                scrollAnimationDuration={1000}
+                onSnapToItem={(index) => console.log('current index:', index)}
+                pagingEnabled={true}
+                snapEnabled={true}
+                mode="parallax"
+                modeConfig={{
+                    parallaxScrollingScale: 0.9,
+                    parallaxScrollingOffset: 70,
+                    parallaxAdjacentItemScale: 0.8,
+                }}
+                style={{
+                    width: Dimensions.get('window').width,
+                 }}
             />
         </SafeAreaView>
     );
@@ -348,7 +352,9 @@ const ForYouCarousel = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 20,
+        marginVertical: 0,
+        width: Dimensions.get('window').width*0.9,
+        alignSelf: 'center',
       },
     rowcontainer: {
         

@@ -132,6 +132,41 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      published {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          genre {
+            id
+            icon
+            color
+            genre
+          }
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -185,6 +220,10 @@ export const listUsers = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -248,6 +287,10 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -293,6 +336,10 @@ export const getFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -412,6 +459,10 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -443,6 +494,10 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
+          tag {
+            id
+            tagName
+          }
           createdAt
           updatedAt
           __typename
@@ -505,6 +560,7 @@ export const getStory = /* GraphQL */ `
       hidden
       status
       numListens
+      approved
       __typename
     }
   }
@@ -579,6 +635,7 @@ export const listStories = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       nextToken
@@ -638,6 +695,10 @@ export const getEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -907,6 +968,73 @@ export const getTag = /* GraphQL */ `
         items {
           id
           storyId
+          story {
+            id
+            type
+            createdAt
+            updatedAt
+            title
+            imageUri
+            audioUri
+            publisher {
+              type
+              createdAt
+              updatedAt
+              id
+              name
+              email
+              imageUri
+              bio
+              publisherName
+              isPublisher
+              topthree
+              plan
+              __typename
+            }
+            publisherID
+            author
+            narrator
+            artist
+            time
+            summary
+            description
+            nsfw
+            comments {
+              nextToken
+              __typename
+            }
+            tags {
+              nextToken
+              __typename
+            }
+        ratingAvg
+        ratingAmt
+        ratings {
+          nextToken
+          __typename
+        }
+        reactions {
+          nextToken
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        hidden
+        status
+        numListens
+        approved
+        __typename
+      }
+          
           tagId
           createdAt
           updatedAt
@@ -1066,6 +1194,10 @@ export const getPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1132,6 +1264,7 @@ export const getPinnedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -1255,6 +1388,7 @@ export const listPinnedStories = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -1342,6 +1476,10 @@ export const getInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1408,6 +1546,7 @@ export const getInProgressStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       createdAt
@@ -1470,6 +1609,7 @@ export const listInProgressStories = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         createdAt
@@ -1530,6 +1670,10 @@ export const getInProgressEroticStory = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -1726,6 +1870,10 @@ export const getFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1792,6 +1940,7 @@ export const getFinishedStory = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -1915,6 +2064,7 @@ export const listFinishedStories = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -2020,6 +2170,7 @@ export const getComment = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStory {
@@ -2134,6 +2285,10 @@ export const getComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -2177,6 +2332,7 @@ export const listComments = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStory {
@@ -2282,6 +2438,10 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2327,6 +2487,10 @@ export const getReaction = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -2553,6 +2717,7 @@ export const getRating = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       eroticStoryID
@@ -2667,6 +2832,10 @@ export const getRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        published {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -2709,6 +2878,7 @@ export const listRatings = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -2815,6 +2985,10 @@ export const getMessage = /* GraphQL */ `
           __typename
         }
         inProgressEroticStories {
+          nextToken
+          __typename
+        }
+        published {
           nextToken
           __typename
         }
@@ -2935,6 +3109,7 @@ export const getStoryTag = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       tag {
@@ -2993,6 +3168,7 @@ export const listStoryTags = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         tag {
@@ -3534,6 +3710,7 @@ export const storiesByDate = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       nextToken
@@ -3621,6 +3798,7 @@ export const storiesByUpdated = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       nextToken
@@ -3708,6 +3886,7 @@ export const storiesByPublisherIDAndCreatedAt = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       nextToken
@@ -3795,6 +3974,7 @@ export const storiesByGenreIDAndId = /* GraphQL */ `
         hidden
         status
         numListens
+        approved
         __typename
       }
       nextToken
@@ -4365,6 +4545,7 @@ export const pinnedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -4460,6 +4641,7 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         createdAt
@@ -4531,6 +4713,7 @@ export const inProgressStoriesByUserIDAndUpdatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         createdAt
@@ -4746,6 +4929,7 @@ export const finishedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -4841,6 +5025,7 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -4936,6 +5121,7 @@ export const finishedStoriesByEroticStoryIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -5015,6 +5201,7 @@ export const commentsByStoryIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStory {
@@ -5112,6 +5299,7 @@ export const commentsByEroticStoryIDAndCreatedAt = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStory {
@@ -5385,6 +5573,7 @@ export const ratingsByUpdated = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -5481,6 +5670,7 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -5577,6 +5767,7 @@ export const ratingsByEroticStoryIDAndId = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -5673,6 +5864,7 @@ export const ratingsByUserIDAndId = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         eroticStoryID
@@ -5816,6 +6008,7 @@ export const storyTagsByStoryId = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         tag {
@@ -5877,6 +6070,7 @@ export const storyTagsByTagId = /* GraphQL */ `
           hidden
           status
           numListens
+          approved
           __typename
         }
         tag {

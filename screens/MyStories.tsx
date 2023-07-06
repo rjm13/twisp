@@ -183,9 +183,9 @@ const MyStories = ({navigation} : any) => {
                     getUser, {id: userInfo.attributes.sub
                 }))
 
-                for (let i = 0; i < userStories.data.getUser.authored.items.length; i++) {
-                    if (userStories.data.getUser.authored.items[i].hidden === false && userStories.data.getUser.authored.items[i].approved === 'approved') {
-                        storiesarr.push(userStories.data.getUser.authored.items[i])
+                for (let i = 0; i < userStories.data.getUser.published.items.length; i++) {
+                    if (userStories.data.getUser.published.items[i].hidden === false) {
+                        storiesarr.push(userStories.data.getUser.published.items[i])
                     }
                 }
 

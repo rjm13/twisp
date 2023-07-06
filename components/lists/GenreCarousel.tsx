@@ -56,9 +56,9 @@ const GenreCarousel = ({genreid} : any) => {
                                     hidden: {
                                         eq: false
                                     },
-                                    approved: {
-                                        eq: 'approved'
-                                    },
+                                    // approved: {
+                                    //     eq: 'approved'
+                                    // },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
                                     },
@@ -332,22 +332,23 @@ const GenreCarousel = ({genreid} : any) => {
         <SafeAreaView style={{}}>
 
             <Carousel
-              data={carouselStories}
-              renderItem={renderItem}
-              loop
-              width={Dimensions.get('window').width}
-              height={Dimensions.get('window').width / 2}
-              autoPlay={true}
-              scrollAnimationDuration={1000}
-              onSnapToItem={(index) => console.log('current index:', index)}
-              //extraData={true}
-            //   sliderWidth={Dimensions.get('window').width}
-            //   itemWidth={300}
-            //   layout={'default'} 
-            //   enableSnap={true}
-            //   enableMomentum={true}
-            //   decelerationRate='fast'
-              //layoutCardOffset={0}
+                data={carouselStories}
+                renderItem={renderItem}
+                width={Dimensions.get('window').width}
+                height={Dimensions.get('window').width*0.8}
+                scrollAnimationDuration={1000}
+                onSnapToItem={(index) => console.log('current index:', index)}
+                pagingEnabled={true}
+                snapEnabled={true}
+                mode="parallax"
+                modeConfig={{
+                    parallaxScrollingScale: 0.9,
+                    parallaxScrollingOffset: 70,
+                    parallaxAdjacentItemScale: 0.8,
+                }}
+                style={{
+                    width: Dimensions.get('window').width,
+                 }}
             />
         </SafeAreaView>
 
@@ -356,7 +357,9 @@ const GenreCarousel = ({genreid} : any) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 20,
+        marginVertical: 0,
+        width: Dimensions.get('window').width*0.9,
+        alignSelf: 'center',
       },
     rowcontainer: {
         

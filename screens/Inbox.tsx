@@ -38,7 +38,7 @@ const Inbox = ({navigation} : any) => {
                 getUser, {id: userInfo.attributes.sub}
             ))
 
-            let arr = response.data.getUser.messageRec.items.concat(response.data.getUser.messageSent.items)
+            let arr = response.data.getUser.messageRec.items
 
             let sortmess = arr.sort((a, b) => a.updatedAt < b.updatedAt ? 1 : -1)
 
@@ -47,12 +47,12 @@ const Inbox = ({navigation} : any) => {
         getMessages();
     }, [didUpdate])
 
-    const Item = ({index, id, title, content, narrPseudo, publisherPseudo, request, artistPseudo, subtitle, userID, otherUserID, createdAt, isReadbyUser, isReadByOtherUser} : any) => {
+    const Item = ({index, id, title, content, psuedonym, subtitle, userID, createdAt, isReadbyReceiver} : any) => {
 
         return (
             <TouchableWithoutFeedback onPress={() => navigation.navigate('ViewMessage', {messageid: id})}>
                 <View style={{backgroundColor: index%2 === 0 ? '#303030a5' : 'transparent', alignItems: 'center', paddingVertical: 6, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    {isReadbyUser === true && currentUserID === userID ? null : isReadbyUser === false && currentUserID === userID ? (
+                    {isReadbyReceiver === false ? (
                         <View style={{}}>
                             <FontAwesome5 
                                 name='hand-point-right'
@@ -61,21 +61,12 @@ const Inbox = ({navigation} : any) => {
                                 style={{marginLeft: 20, marginRight: 0, alignSelf: 'center'}}
                             />
                         </View>
-                    ) : isReadByOtherUser === true && currentUserID !== userID ? null : isReadByOtherUser === false && currentUserID !== userID ? (
-                            <View style={{}}>
-                                <FontAwesome5 
-                                    name='hand-point-right'
-                                    size={20}
-                                    color='#00ffffa5'
-                                    style={{marginLeft: 20, marginRight: 0, alignSelf: 'center'}}
-                                />
-                        </View>
                     ) : null}
                     
-                    <View style={{marginRight: 20, marginVertical: 10, paddingHorizontal: 20, width: isReadbyUser === true && currentUserID === userID ? Dimensions.get('window').width : isReadbyUser === false && currentUserID === userID ? Dimensions.get('window').width - 40 : isReadByOtherUser === true && currentUserID !== userID ? Dimensions.get('window').width : isReadByOtherUser === false && currentUserID !== userID ? Dimensions.get('window').width - 40 : Dimensions.get('window').width}}>
+                    <View style={{marginRight: 20, marginVertical: 10, paddingHorizontal: 20, width: isReadbyReceiver === false ? Dimensions.get('window').width - 40 : Dimensions.get('window').width}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <Text style={{color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
-                                {subtitle === 'artist' && currentUserID === userID ? artistPseudo : subtitle === 'narrator' && currentUserID === userID ? narrPseudo : publisherPseudo}
+                                {psuedonym}
                             </Text>
                             <Text style={{color: '#fff', fontSize: 12}}>
                                 {format(parseISO(createdAt), "MMM do")}
@@ -96,16 +87,10 @@ const Inbox = ({navigation} : any) => {
 
     const renderItem = ({item, index}: any) => {
 
-        let narratorPseudo = 'test'
-        let artistPseudo = ''
         let pseudonym = ''
 
         if (item.user) {
-            pseudonym = item.user.pseudonym
-        }
-        if (item.otherUser) {
-            narratorPseudo = item.otherUser.narratorPseudo
-            artistPseudo = item.otherUser.artistPseudo
+            pseudonym = item.receiver.pseudonym
         }
 
         return (
@@ -114,16 +99,11 @@ const Inbox = ({navigation} : any) => {
                 title={item.title}
                 content={item.content}
                 subtitle={item.subtitle}
-                userID={item.userID}
-                otherUserID={item.otherUserID}
+                receiverID={item.ReceiverID}
                 createdAt={item.createdAt}
-                isReadbyUser={item.isReadbyUser}
-                isReadByOtherUser={item.isReadByOtherUser}
+                isReadbyReceiver={item.isReadbyReceiver}
                 index={index}
-                narrPseudo={narratorPseudo}
-                artistPseudo={artistPseudo}
-                request={item.request}
-                publisherPseudo={pseudonym}
+                pseudonym={pseudonym}
             />
         )
     }

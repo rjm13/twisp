@@ -103,6 +103,7 @@ export type User = {
   messageRec?: ModelMessageConnection | null,
   inProgressStories?: ModelInProgressStoryConnection | null,
   inProgressEroticStories?: ModelInProgressEroticStoryConnection | null,
+  published?: ModelStoryConnection | null,
 };
 
 export type ModelFollowConnectionConnection = {
@@ -172,6 +173,7 @@ export type Story = {
   hidden?: boolean | null,
   status?: boolean | null,
   numListens?: number | null,
+  approved?: boolean | null,
 };
 
 export type ModelCommentConnection = {
@@ -455,6 +457,12 @@ export type InProgressEroticStory = {
   time?: number | null,
 };
 
+export type ModelStoryConnection = {
+  __typename: "ModelStoryConnection",
+  items:  Array<Story | null >,
+  nextToken?: string | null,
+};
+
 export type UpdateUserInput = {
   type?: string | null,
   createdAt?: string | null,
@@ -545,6 +553,7 @@ export type CreateStoryInput = {
   hidden?: boolean | null,
   status?: boolean | null,
   numListens?: number | null,
+  approved?: boolean | null,
 };
 
 export type ModelStoryConditionInput = {
@@ -568,6 +577,7 @@ export type ModelStoryConditionInput = {
   hidden?: ModelBooleanInput | null,
   status?: ModelBooleanInput | null,
   numListens?: ModelIntInput | null,
+  approved?: ModelBooleanInput | null,
   and?: Array< ModelStoryConditionInput | null > | null,
   or?: Array< ModelStoryConditionInput | null > | null,
   not?: ModelStoryConditionInput | null,
@@ -619,6 +629,7 @@ export type UpdateStoryInput = {
   hidden?: boolean | null,
   status?: boolean | null,
   numListens?: number | null,
+  approved?: boolean | null,
 };
 
 export type DeleteStoryInput = {
@@ -1268,15 +1279,10 @@ export type ModelStoryFilterInput = {
   hidden?: ModelBooleanInput | null,
   status?: ModelBooleanInput | null,
   numListens?: ModelIntInput | null,
+  approved?: ModelBooleanInput | null,
   and?: Array< ModelStoryFilterInput | null > | null,
   or?: Array< ModelStoryFilterInput | null > | null,
   not?: ModelStoryFilterInput | null,
-};
-
-export type ModelStoryConnection = {
-  __typename: "ModelStoryConnection",
-  items:  Array<Story | null >,
-  nextToken?: string | null,
 };
 
 export type ModelEroticStoryFilterInput = {
@@ -1625,6 +1631,7 @@ export type ModelSubscriptionStoryFilterInput = {
   hidden?: ModelSubscriptionBooleanInput | null,
   status?: ModelSubscriptionBooleanInput | null,
   numListens?: ModelSubscriptionIntInput | null,
+  approved?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionStoryFilterInput | null > | null,
   or?: Array< ModelSubscriptionStoryFilterInput | null > | null,
 };
@@ -1983,6 +1990,35 @@ export type CreateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2118,6 +2154,35 @@ export type UpdateUserMutation = {
         createdAt?: string | null,
         updatedAt?: string | null,
         time?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2259,6 +2324,35 @@ export type DeleteUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2321,6 +2415,10 @@ export type CreateFollowConnectionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2367,6 +2465,10 @@ export type CreateFollowConnectionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -2432,6 +2534,10 @@ export type UpdateFollowConnectionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2478,6 +2584,10 @@ export type UpdateFollowConnectionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -2543,6 +2653,10 @@ export type DeleteFollowConnectionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2589,6 +2703,10 @@ export type DeleteFollowConnectionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -2656,6 +2774,10 @@ export type CreateStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -2748,6 +2870,7 @@ export type CreateStoryMutation = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -2812,6 +2935,10 @@ export type UpdateStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -2904,6 +3031,7 @@ export type UpdateStoryMutation = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -2968,6 +3096,10 @@ export type DeleteStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -3060,6 +3192,7 @@ export type DeleteStoryMutation = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -3122,6 +3255,10 @@ export type CreateEroticStoryMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -3280,6 +3417,10 @@ export type UpdateEroticStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -3434,6 +3575,10 @@ export type DeleteEroticStoryMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -3960,6 +4105,10 @@ export type CreatePinnedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4026,6 +4175,7 @@ export type CreatePinnedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -4155,6 +4305,10 @@ export type UpdatePinnedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4221,6 +4375,7 @@ export type UpdatePinnedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -4350,6 +4505,10 @@ export type DeletePinnedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4416,6 +4575,7 @@ export type DeletePinnedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -4545,6 +4705,10 @@ export type CreateInProgressStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4611,6 +4775,7 @@ export type CreateInProgressStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -4675,6 +4840,10 @@ export type UpdateInProgressStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4741,6 +4910,7 @@ export type UpdateInProgressStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -4805,6 +4975,10 @@ export type DeleteInProgressStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4871,6 +5045,7 @@ export type DeleteInProgressStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -4933,6 +5108,10 @@ export type CreateInProgressEroticStoryMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -5065,6 +5244,10 @@ export type UpdateInProgressEroticStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -5193,6 +5376,10 @@ export type DeleteInProgressEroticStoryMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -5327,6 +5514,10 @@ export type CreateFinishedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5393,6 +5584,7 @@ export type CreateFinishedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -5522,6 +5714,10 @@ export type UpdateFinishedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5588,6 +5784,7 @@ export type UpdateFinishedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -5717,6 +5914,10 @@ export type DeleteFinishedStoryMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5783,6 +5984,7 @@ export type DeleteFinishedStoryMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -5930,6 +6132,7 @@ export type CreateCommentMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -6042,6 +6245,10 @@ export type CreateCommentMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -6127,6 +6334,7 @@ export type UpdateCommentMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -6239,6 +6447,10 @@ export type UpdateCommentMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -6324,6 +6536,7 @@ export type DeleteCommentMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -6438,6 +6651,10 @@ export type DeleteCommentMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -6503,6 +6720,10 @@ export type CreateReactionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6549,6 +6770,10 @@ export type CreateReactionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -6682,6 +6907,10 @@ export type UpdateReactionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6728,6 +6957,10 @@ export type UpdateReactionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -6861,6 +7094,10 @@ export type DeleteReactionMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6907,6 +7144,10 @@ export type DeleteReactionMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -7058,6 +7299,7 @@ export type CreateRatingMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -7170,6 +7412,10 @@ export type CreateRatingMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -7254,6 +7500,7 @@ export type UpdateRatingMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -7366,6 +7613,10 @@ export type UpdateRatingMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -7450,6 +7701,7 @@ export type DeleteRatingMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -7564,6 +7816,10 @@ export type DeleteRatingMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -7631,6 +7887,10 @@ export type CreateMessageMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -7702,6 +7962,10 @@ export type UpdateMessageMutation = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -7769,6 +8033,10 @@ export type DeleteMessageMutation = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -7851,6 +8119,7 @@ export type CreateStoryTagMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -7949,6 +8218,7 @@ export type UpdateStoryTagMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -8047,6 +8317,7 @@ export type DeleteStoryTagMutation = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -8804,6 +9075,35 @@ export type GetUserQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -8860,6 +9160,10 @@ export type ListUsersQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null >,
@@ -8925,6 +9229,10 @@ export type GetFollowConnectionQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -8971,6 +9279,10 @@ export type GetFollowConnectionQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -9089,6 +9401,10 @@ export type GetStoryQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -9181,6 +9497,7 @@ export type GetStoryQuery = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -9257,6 +9574,7 @@ export type ListStoriesQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -9320,6 +9638,10 @@ export type GetEroticStoryQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -9763,6 +10085,10 @@ export type GetPinnedStoryQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -9829,6 +10155,7 @@ export type GetPinnedStoryQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -9954,6 +10281,7 @@ export type ListPinnedStoriesQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -10043,6 +10371,10 @@ export type GetInProgressStoryQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -10109,6 +10441,7 @@ export type GetInProgressStoryQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -10169,6 +10502,7 @@ export type ListInProgressStoriesQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -10232,6 +10566,10 @@ export type GetInProgressEroticStoryQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -10427,6 +10765,10 @@ export type GetFinishedStoryQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -10493,6 +10835,7 @@ export type GetFinishedStoryQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -10618,6 +10961,7 @@ export type ListFinishedStoriesQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -10725,6 +11069,7 @@ export type GetCommentQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -10839,6 +11184,10 @@ export type GetCommentQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -10884,6 +11233,7 @@ export type ListCommentsQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStory?:  {
         __typename: "EroticStory",
@@ -10991,6 +11341,10 @@ export type GetReactionQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -11037,6 +11391,10 @@ export type GetReactionQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -11266,6 +11624,7 @@ export type GetRatingQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -11380,6 +11739,10 @@ export type GetRatingQuery = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -11424,6 +11787,7 @@ export type ListRatingsQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID: string,
       eroticStory?:  {
@@ -11533,6 +11897,10 @@ export type GetMessageQuery = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -11656,6 +12024,7 @@ export type GetStoryTagQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -11716,6 +12085,7 @@ export type ListStoryTagsQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -12250,6 +12620,7 @@ export type StoriesByDateQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12331,6 +12702,7 @@ export type StoriesByUpdatedQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12412,6 +12784,7 @@ export type StoriesByPublisherIDAndCreatedAtQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12493,6 +12866,7 @@ export type StoriesByGenreIDAndIdQuery = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13010,6 +13384,7 @@ export type PinnedStoriesByUserIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -13099,6 +13474,7 @@ export type InProgressStoriesByUpdatedQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -13164,6 +13540,7 @@ export type InProgressStoriesByUserIDAndUpdatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -13361,6 +13738,7 @@ export type FinishedStoriesByUserIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -13450,6 +13828,7 @@ export type FinishedStoriesByStoryIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -13539,6 +13918,7 @@ export type FinishedStoriesByEroticStoryIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID?: string | null,
       eroticStory?:  {
@@ -13612,6 +13992,7 @@ export type CommentsByStoryIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStory?:  {
         __typename: "EroticStory",
@@ -13703,6 +14084,7 @@ export type CommentsByEroticStoryIDAndCreatedAtQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStory?:  {
         __typename: "EroticStory",
@@ -13958,6 +14340,7 @@ export type RatingsByUpdatedQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID: string,
       eroticStory?:  {
@@ -14048,6 +14431,7 @@ export type RatingsByStoryIDAndIdQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID: string,
       eroticStory?:  {
@@ -14138,6 +14522,7 @@ export type RatingsByEroticStoryIDAndIdQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID: string,
       eroticStory?:  {
@@ -14228,6 +14613,7 @@ export type RatingsByUserIDAndIdQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       } | null,
       eroticStoryID: string,
       eroticStory?:  {
@@ -14360,6 +14746,7 @@ export type StoryTagsByStoryIdQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -14416,6 +14803,7 @@ export type StoryTagsByTagIdQuery = {
         hidden?: boolean | null,
         status?: boolean | null,
         numListens?: number | null,
+        approved?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -14847,6 +15235,35 @@ export type OnCreateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -14981,6 +15398,35 @@ export type OnUpdateUserSubscription = {
         createdAt?: string | null,
         updatedAt?: string | null,
         time?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15121,6 +15567,35 @@ export type OnDeleteUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    published?:  {
+      __typename: "ModelStoryConnection",
+      items:  Array< {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -15182,6 +15657,10 @@ export type OnCreateFollowConnectionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -15228,6 +15707,10 @@ export type OnCreateFollowConnectionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -15292,6 +15775,10 @@ export type OnUpdateFollowConnectionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -15338,6 +15825,10 @@ export type OnUpdateFollowConnectionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -15402,6 +15893,10 @@ export type OnDeleteFollowConnectionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -15448,6 +15943,10 @@ export type OnDeleteFollowConnectionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -15514,6 +16013,10 @@ export type OnCreateStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -15606,6 +16109,7 @@ export type OnCreateStorySubscription = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -15669,6 +16173,10 @@ export type OnUpdateStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -15761,6 +16269,7 @@ export type OnUpdateStorySubscription = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -15824,6 +16333,10 @@ export type OnDeleteStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -15916,6 +16429,7 @@ export type OnDeleteStorySubscription = {
     hidden?: boolean | null,
     status?: boolean | null,
     numListens?: number | null,
+    approved?: boolean | null,
   } | null,
 };
 
@@ -15977,6 +16491,10 @@ export type OnCreateEroticStorySubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -16134,6 +16652,10 @@ export type OnUpdateEroticStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     author?: string | null,
@@ -16287,6 +16809,10 @@ export type OnDeleteEroticStorySubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -16803,6 +17329,10 @@ export type OnCreatePinnedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -16869,6 +17399,7 @@ export type OnCreatePinnedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -16997,6 +17528,10 @@ export type OnUpdatePinnedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17063,6 +17598,7 @@ export type OnUpdatePinnedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -17191,6 +17727,10 @@ export type OnDeletePinnedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17257,6 +17797,7 @@ export type OnDeletePinnedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -17385,6 +17926,10 @@ export type OnCreateInProgressStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17451,6 +17996,7 @@ export type OnCreateInProgressStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -17514,6 +18060,10 @@ export type OnUpdateInProgressStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17580,6 +18130,7 @@ export type OnUpdateInProgressStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -17643,6 +18194,10 @@ export type OnDeleteInProgressStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17709,6 +18264,7 @@ export type OnDeleteInProgressStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -17770,6 +18326,10 @@ export type OnCreateInProgressEroticStorySubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -17901,6 +18461,10 @@ export type OnUpdateInProgressEroticStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -18028,6 +18592,10 @@ export type OnDeleteInProgressEroticStorySubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -18161,6 +18729,10 @@ export type OnCreateFinishedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -18227,6 +18799,7 @@ export type OnCreateFinishedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -18355,6 +18928,10 @@ export type OnUpdateFinishedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -18421,6 +18998,7 @@ export type OnUpdateFinishedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -18549,6 +19127,10 @@ export type OnDeleteFinishedStorySubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -18615,6 +19197,7 @@ export type OnDeleteFinishedStorySubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID?: string | null,
     eroticStory?:  {
@@ -18761,6 +19344,7 @@ export type OnCreateCommentSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -18873,6 +19457,10 @@ export type OnCreateCommentSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -18957,6 +19545,7 @@ export type OnUpdateCommentSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -19069,6 +19658,10 @@ export type OnUpdateCommentSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -19153,6 +19746,7 @@ export type OnDeleteCommentSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStory?:  {
       __typename: "EroticStory",
@@ -19267,6 +19861,10 @@ export type OnDeleteCommentSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -19331,6 +19929,10 @@ export type OnCreateReactionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -19377,6 +19979,10 @@ export type OnCreateReactionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -19509,6 +20115,10 @@ export type OnUpdateReactionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -19555,6 +20165,10 @@ export type OnUpdateReactionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -19687,6 +20301,10 @@ export type OnDeleteReactionSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -19733,6 +20351,10 @@ export type OnDeleteReactionSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -19883,6 +20505,7 @@ export type OnCreateRatingSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -19995,6 +20618,10 @@ export type OnCreateRatingSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -20078,6 +20705,7 @@ export type OnUpdateRatingSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -20190,6 +20818,10 @@ export type OnUpdateRatingSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -20273,6 +20905,7 @@ export type OnDeleteRatingSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     } | null,
     eroticStoryID: string,
     eroticStory?:  {
@@ -20387,6 +21020,10 @@ export type OnDeleteRatingSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -20453,6 +21090,10 @@ export type OnCreateMessageSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -20523,6 +21164,10 @@ export type OnUpdateMessageSubscription = {
         __typename: "ModelInProgressEroticStoryConnection",
         nextToken?: string | null,
       } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -20589,6 +21234,10 @@ export type OnDeleteMessageSubscription = {
       } | null,
       inProgressEroticStories?:  {
         __typename: "ModelInProgressEroticStoryConnection",
+        nextToken?: string | null,
+      } | null,
+      published?:  {
+        __typename: "ModelStoryConnection",
         nextToken?: string | null,
       } | null,
     } | null,
@@ -20670,6 +21319,7 @@ export type OnCreateStoryTagSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -20767,6 +21417,7 @@ export type OnUpdateStoryTagSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -20864,6 +21515,7 @@ export type OnDeleteStoryTagSubscription = {
       hidden?: boolean | null,
       status?: boolean | null,
       numListens?: number | null,
+      approved?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
