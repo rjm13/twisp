@@ -110,6 +110,49 @@ export const getUser = /* GraphQL */ `
           type
           userID
           storyID
+          story {
+            id
+    		    type
+            createdAt
+            updatedAt
+            title
+            hidden
+            approved
+            status
+            imageUri
+            audioUri
+            publisher {
+              type
+              createdAt
+              updatedAt
+              id
+              name
+              email
+              imageUri
+              bio
+              publisherName
+              isPublisher
+              topthree
+              plan
+              __typename
+            }
+            publisherID
+            author
+            narrator
+            artist
+            time
+            summary
+            description
+            nsfw
+            comments {
+              nextToken
+              __typename
+            }
+            tags {
+              nextToken
+              __typename
+            }
+          }
           createdAt
           updatedAt
           time

@@ -33,9 +33,6 @@ import MyStories from '../screens/MyStories';
 import InProgress from '../screens/InProgress';
 
 
-import Terms from '../screens/Terms';
-
-
 import StoriesScreen from '../screens/Discover';
 import PlaylistScreen from '../screens/Playlists';
 import BrowseAuthor from '../screens/BrowseAuthors';
@@ -170,11 +167,6 @@ function HomeNavigator() {
         name="Following"
         component={Following}
         options={{ headerShown: false }}
-      />
-      <HomeStack.Screen 
-        name="Terms" 
-        component={Terms} 
-        options={{ headerShown: false }} 
       />
       <HomeStack.Screen 
         name="GenreHome" 

@@ -45,10 +45,12 @@ const InProgressList = () => {
 
                 if (progressData.data.getUser.inProgressStories.items.length > 0) {
                     for (let i = 0; i < progressData.data.getUser.inProgressStories.items.length; i++) {
-                        if (progressData.data.getUser.inProgressStories.items[i].story.hidden === false && progressData.data.getUser.inProgressStories.items[i].story.approved === 'approved') {
+                        if (progressData.data.getUser.inProgressStories.items[i].story.hidden === false) {
                             InProgress.push(progressData.data.getUser.inProgressStories.items[i])
                         }
                     } 
+
+                    console.log(progressData.data.getUser.inProgressStories.items)
                     
                     if (progressData.data.getUser.inProgressStories.nextToken) {
                         setNextToken(progressData.data.getUser.inProgressStories.nextToken)

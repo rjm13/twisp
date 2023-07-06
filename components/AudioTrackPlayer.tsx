@@ -177,9 +177,9 @@ useEffect(() => {
 }, [storyID])
 
 useEffect(() => {
-    if (premium === true) {
+    //if (premium === true) {
         setComplete(true)
-    }
+    //}
 }, [storyID])
 
     const onChangeHandler = () => {
@@ -734,7 +734,7 @@ const ProgressCheck = () => {
                                                     size={15}
                                                     style={{marginRight: 10}}
                                                 />
-                                                <Text style={[ { color: Story?.genre?.PrimaryColor, fontSize: 16, textTransform: 'capitalize' }]}>
+                                                <Text style={[ { color: Story?.genre?.color, fontSize: 16, textTransform: 'capitalize' }]}>
                                                     {Story?.genre?.genre} 
                                                 </Text>
                                             </View>

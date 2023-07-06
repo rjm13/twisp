@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/Twisp_Splash2.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -63,7 +63,8 @@
         "READ_MEDIA_AUDIO",
         "READ_MEDIA_IMAGES",
         "STATUS_BAR",
-        "USE_BIOMETRIC"
+        "USE_BIOMETRIC",
+        "FOREGROUND_SERVICE"
       ]
     },
     "web": {

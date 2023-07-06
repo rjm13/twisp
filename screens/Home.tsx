@@ -9,12 +9,9 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import {LinearGradient} from 'expo-linear-gradient';
-import * as Linking from 'expo-linking'
 
 import { AppContext } from '../AppContext';
-
 import Trending from '../components/lists/Trending';
 import ShortSweet from '../components/lists/ShortSweet';
 import ForYouCarousel from '../components/lists/ForYouCarousel';
