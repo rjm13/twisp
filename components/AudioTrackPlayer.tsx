@@ -12,8 +12,10 @@ import {
 } from 'react-native';
 
 //import PreStoryAd from './PreStoryAd';
+import * as Device from 'expo-device';
 
-import { Audio } from 'expo-av';
+//import {AdMobRewarded,setTestDeviceIDAsync} from 'expo-ads-admob';
+
 import Slider from '@react-native-community/slider';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -28,7 +30,10 @@ import { deletePinnedStory, createFinishedStory, updateStory, createInProgressSt
 
 import { AppContext } from '../AppContext';
 import * as RootNavigation from '../navigation/RootNavigation';
-//import ShareStory from './functions/ShareStory';
+import ShareStory from './functions/ShareStory';
+
+import TrackPlayer, {State, useProgress, Capability, usePlaybackState} from 'react-native-track-player';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -53,7 +58,38 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 
 const AudioPlayer  = () => {
-    
+
+    // const setUpTrackPlayer = async () => {
+    //     try {
+    //         console.log('attempting...')
+    //       await TrackPlayer.setupPlayer({});
+    //       await TrackPlayer.reset();
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   };
+
+    //   useEffect(() => {
+    //     TrackPlayer.updateOptions({
+    //       //stopWithApp: false,
+    //       capabilities: [
+    //         Capability.Play,
+    //         Capability.Pause,
+    //         //Capability.SkipToNext,
+    //         //Capability.SkipToPrevious,
+    //         Capability.Stop,
+    //     ],
+    //     compactCapabilities: [Capability.Play, Capability.Pause],
+    //     notificationCapabilities: [
+    //         Capability.Play,
+    //         Capability.Pause,
+    //         //Capability.SkipToNext,
+    //         //Capability.SkipToPrevious,
+    //       ],
+    //     });
+    //     setUpTrackPlayer();
+    //     //return () => TrackPlayer.destroy();
+    //   }, []);
 
 //get the global page state for the audio player
     const { isRootScreen } = useContext(AppContext);
@@ -76,17 +112,74 @@ const AudioPlayer  = () => {
 //minimize the player with animations
     const [isExpanded, setIsExpanded] = useState(false);
 
+//load the ad
 
-useEffect(() => {
-    if (premium === false && storyID !== null) {
-       //PreStoryAd(); 
-    }
-}, [storyID])
+    const [complete, setComplete] = useState(false);
+
+    // useEffect(() => {
+    //     //if (premium === false && storyID !== null) {
+    //     //PreStoryAd();
+
+    //     const PreStoryAdv = async () => {
+
+    //         const testID = Platform.select({
+    //             // https://developers.google.com/admob/ios/test-ads
+    //             ios: 'ca-app-pub-3940256099942544/1712485313',
+    //             // https://developers.google.com/admob/android/test-ads
+    //             android: 'ca-app-pub-3940256099942544/5224354917',
+    //         });
+        
+    //         const productionID = Platform.select({
+    //             // https://developers.google.com/admob/ios/test-ads
+    //             ios: 'ca-app-pub-8042132670790474/5004534539',
+    //             // https://developers.google.com/admob/android/test-ads
+    //             //android: 'ca-app-pub-8042132670790474/6243811623',
+    //             android: 'ca-app-pub-8042132670790474/6243811623'
+    //         });
+    //         // Is a real device and running in production.
+    //         const adUnitID = Device.isDevice && !__DEV__ ? productionID : testID;
+
+    //         AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad', () => {
+    //             console.log('FailedToLoad');
+    //             setComplete(true);
+    //           }
+    //           );
+              
+    //           AdMobRewarded.addEventListener('rewardedVideoDidFailToPresent', () => {
+    //             console.log('FailedToLoad');
+    //             setComplete(true);
+    //           }
+    //           );
+              
+    //           AdMobRewarded.addEventListener('rewardedVideoDidDismiss', () => {
+    //             console.log('Closed');
+    //             setComplete(true);
+    //             });
+
+    //         // Display a rewarded ad
+    //         await AdMobRewarded.setAdUnitID(adUnitID); // Test ID, Replace with your-admob-unit-id
+    //         await AdMobRewarded.requestAdAsync();
+    //         await AdMobRewarded.showAdAsync();
+
+
+    //     }
+
+    //     if (premium === false && storyID !== null) {
+    //         PreStoryAdv();
+    //     }
+       
+    // }, [storyID])
 
 
 //set the progress story ID
 useEffect(() => {
     setInProgressID(null);
+}, [storyID])
+
+useEffect(() => {
+    if (premium === true) {
+        setComplete(true)
+    }
 }, [storyID])
 
     const onChangeHandler = () => {
@@ -105,9 +198,14 @@ useEffect(() => {
 
     useEffect(() => {
         if (isPlaying === true) {
-            setPosition(0);
-            setIsPlaying(false);
-            ProgressCheck()
+            const DoStuff = async () => {
+                setPosition(0);
+                setInitialPosition(0);
+                setIsPlaying(false);
+                ProgressCheck()
+                await TrackPlayer.reset()
+            }
+            DoStuff()
         }
     }, [storyID])
 
@@ -127,7 +225,21 @@ useEffect(() => {
                     const imageresponse = await Storage.get(storyData.data.getStory.imageUri)
                     setAudioUri(response);
                     setImageU(imageresponse);
-                    setPosition(0);
+                    //setPosition(0);
+                    
+                    await TrackPlayer.add([{
+                        url: response,
+                        title: storyData.data.getStory.title,
+                        artist: storyData.data.getStory.author,
+                        artwork: imageresponse, // Load artwork from the network
+                        duration: storyData.data.getStory.time // Duration in seconds
+                    }]);
+                    let trackObject = await TrackPlayer.getQueue();
+                    console.log('slide length is')
+                    console.log(trackObject[0].duration)
+                    
+                    setSlideLength(trackObject[0].duration);
+                    
                 }
             } catch (e) {
                 console.log(e);
@@ -144,8 +256,6 @@ useEffect(() => {
             setUser(UserData.data.getUser)
 
             for (let i = 0; i < UserData.data.getUser.Rated.items.length; i++) {
-                // console.log(UserData.data.getUser.Rated.items[i].storyID)
-                // console.log(storyID)
                 if (UserData.data.getUser.Rated.items[i].storyID === storyID) {
                     setIsRated(true);
                 }
@@ -159,9 +269,16 @@ useEffect(() => {
             for (let i = 0; i < UserData.data.getUser.inProgressStories.items.length; i++) {
                 if (UserData.data.getUser.inProgressStories.items[i].storyID === storyID) {
                     setInProgressID(UserData.data.getUser.inProgressStories.items[i].id);
-                    setPosition(UserData.data.getUser.inProgressStories.items[i].time)
+                    setPosition(UserData.data.getUser.inProgressStories.items[i].time);
+                    setInitialPosition(UserData.data.getUser.inProgressStories.items[i].time);
+                    console.log('position is set as...')
+                    console.log(UserData.data.getUser.inProgressStories.items[i].time)
+                    return;
                 }
+                 console.log('position is...')
+                console.log(position)
             }
+           
         }
 
         if (isPlaying === true) {
@@ -174,28 +291,29 @@ useEffect(() => {
             fetchStory();
             fetchUser();
         }
-    
-        
-
     }, [storyID])
 
 
 
 //audio player
-    const [sound, setSound] = useState();
 
     const [isPlaying, setIsPlaying] = useState(false);
 
     const [position, setPosition] = useState(0); //position in milliseconds
 
+    const [initialposition, setInitialPosition] = useState(0); //position in milliseconds
+
     const [slideLength, setSlideLength] = useState(0); //slide length
 
-    const onClose = () => {
+    const onClose = async () => {
+        ProgressCheck();
         setStoryID(null);
         setStory(null);
         setPosition(0);
+        setInitialPosition(0)
         setIsPlaying(false);
-        ProgressCheck();
+        setComplete(false);
+        await TrackPlayer.reset()
     }
 
 //unpin a story
@@ -210,7 +328,6 @@ useEffect(() => {
             }
         }
     }
-  
 
 //rating state (if rated or not)
     const [isLiked, setIsLiked] = useState(false);
@@ -296,26 +413,34 @@ const AddToHistory = async () => {
 const AddProgress = async () => {
     let userInfo = await Auth.currentAuthenticatedUser();
 
-    let response = await API.graphql(graphqlOperation(
-        createInProgressStory, {input: {
-            userID: userInfo.attributes.sub,
-            storyID: storyID,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            time: position
-        }}
-    ))
-    setInProgressID(response.data.createInProgressStory.id)
+    if (storyID !== null) {
+        let response = await API.graphql(graphqlOperation(
+            createInProgressStory, {input: {
+                userID: userInfo.attributes.sub,
+                storyID: storyID,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                time: position
+            }}
+        ))
+        setInProgressID(response.data.createInProgressStory.id)
+    }    
 }
 
 //update the story that is in progress
 const UpdateProgress = async () => {
-    await API.graphql(graphqlOperation(
-        updateInProgressStory, {input: {
-            id: inProgressID,
-            time: position,
-        }}
-    ))
+    if (position !== 0) {
+        const response = await API.graphql(graphqlOperation(
+            updateInProgressStory, {input: {
+                id: inProgressID,
+                time: position,
+            }}
+        ))
+        console.log('update progress to')
+        console.log(response.data.updateInProgressStory.time)
+    }
+    
+    
 }
 
 //check if a progress story for this user already exists
@@ -335,7 +460,7 @@ const ProgressCheck = () => {
     }
 
     async function StoryPosition (value) { 
-        await sound.setPositionAsync(value);
+       TrackPlayer.seekTo(Math.round(value)/1000);
         setPosition(value);
     }
 
@@ -351,49 +476,44 @@ const ProgressCheck = () => {
         return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
     }  
 
+    const playbackState = usePlaybackState();
+    //const ifPlaying = playbackState === State.Playing;
+
+    useEffect(() => {
+        console.log('playback state is...')
+        console.log(playbackState)
+        console.log('complete is' + complete)
+    if (playbackState === 2) {
+        setIsPlaying(true)
+    } else if (playbackState === 3) {
+        setIsPlaying(false)
+    } else if (playbackState === State.Playing) {
+        setIsPlaying(true)
+    } else {
+        setIsPlaying(false)
+    }
+    }, [playbackState]);
+
 //audio play and pause control
     async function PlayPause() {
 
-        console.log('Loading Sound');
-        await Audio.setAudioModeAsync({
-            staysActiveInBackground: true,
-            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-            shouldDuckAndroid: false,
-            playThroughEarpieceAndroid: false,
-            allowsRecordingIOS: false,
-            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-            playsInSilentModeIOS: true,
-            
-          });
-          console.log(AudioUri)
-        const { sound } = await Audio.Sound.createAsync(
-            
-            {uri: AudioUri},
-            //require('../assets/zelda.mp3'),
-            {
-                shouldPlay: true,
-                rate: 1.0,
-                shouldCorrectPitch: false,
-                volume: 1.0,
-                isMuted: false,
-                isLooping: false,
-            },
-        );
-        setSound(sound);
+        console.log('stats are...')
+        console.log(position)
+        console.log(slideLength)
 
-        let time = await sound.getStatusAsync();
-        setSlideLength(time.durationMillis);
+        if (complete === false) {
+            return;
+        }
 
-        if (isPlaying === false) {
-            console.log('Playing Sound');
-            await sound.playAsync(); 
-            setIsPlaying(true);
-            await sound.setPositionAsync(position);
+        if (isPlaying === false && complete === true) {
+            TrackPlayer.play();
+            TrackPlayer.seekTo(position/1000);
+            //const positiontrack = await TrackPlayer.getDuration();
+            //setSlideLength(positiontrack*1000);
             ProgressCheck();
         }
-        if (isPlaying === true) {
-            await sound.pauseAsync();
-            setIsPlaying (false);     
+        if (isPlaying === true && complete === true) {
+            TrackPlayer.pause();  
             ProgressCheck();
         }    
     }
@@ -406,23 +526,13 @@ const ProgressCheck = () => {
             setPosition(0);
             setIsPlaying(false);
             AddToHistory();
+            console.log('added to history')
         }
       }, 1000);
     
-    useEffect(() => {
-        return sound
-        ? () => {
-            console.log('Unloading Sound');
-            sound.unloadAsync();
-        }
-            
-        : undefined;
-    }, [sound, storyID]);
-
     if (!Story) {
         return null;
     }
-
 
 
     return (
@@ -682,7 +792,7 @@ const ProgressCheck = () => {
                                             maximumTrackTintColor="#ffffffa5"
                                             thumbTintColor='#fff'
                                             //tapToSeek={true}
-                                            value={position}
+                                            value={initialposition}
                                             step={1000}
 
                                             minimumValue={0}
@@ -701,6 +811,7 @@ const ProgressCheck = () => {
     </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create ({
     container: {

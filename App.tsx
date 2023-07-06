@@ -7,11 +7,13 @@ import 'expo-dev-client';
 
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation'
-//import Constants from 'expo-constants';
+import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
 //import mobileAds from 'react-native-google-mobile-ads';
 //import Purchases from 'react-native-purchases';
+import TrackPlayer, {Capability} from 'react-native-track-player';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 import Amplify from '@aws-amplify/core';
 import config from './src/aws-exports';
@@ -20,16 +22,16 @@ Amplify.configure(config);
 import { AppContext } from './AppContext';
 
 import AudioPlayerWidget from './components/AudioPlayerWidget';
+import AudioTrackPlayer from './components/AudioTrackPlayer';
 
 
-
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false,
-//   }),
-// });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 
 // async function setup() {
@@ -51,6 +53,20 @@ import AudioPlayerWidget from './components/AudioPlayerWidget';
 
 export default function App() {
 
+  useEffect(() => {
+    (async () => {
+      //const { status } = await requestTrackingPermissionsAsync();
+
+      setTimeout(async () => {
+        const { status } = await requestTrackingPermissionsAsync();
+        if (status === 'granted') {
+          console.log('Yay! I have user permission to track data');
+        }
+      }, 500);
+
+      
+    })();
+  }, []);
 
   // useEffect(() => {
   //   const connectRevenueCat = async () => {
@@ -73,6 +89,38 @@ export default function App() {
 
   //   return () => TrackPlayer.destroy();
   // }, []);
+
+  const setUpTrackPlayer = async () => {
+    try {
+        console.log('attempting...')
+      await TrackPlayer.setupPlayer({});
+      await TrackPlayer.reset();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    TrackPlayer.updateOptions({
+      //stopWithApp: false,
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        //Capability.SkipToNext,
+        //Capability.SkipToPrevious,
+        Capability.Stop,
+    ],
+    compactCapabilities: [Capability.Play, Capability.Pause],
+    notificationCapabilities: [
+        Capability.Play,
+        Capability.Pause,
+        //Capability.SkipToNext,
+        //Capability.SkipToPrevious,
+      ],
+    });
+    setUpTrackPlayer();
+    //return () => TrackPlayer.destroy();
+  }, []);
 
 
   const isLoadingComplete = useCachedResources();
@@ -99,22 +147,22 @@ export default function App() {
   const responseListener = useRef();
 
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-  //     setNotification(notification);
-  //   });
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
 
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-  //     console.log(response);
-  //   });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
 
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(notificationListener.current);
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   // async function schedulePushNotification() {
   //   await Notifications.scheduleNotificationAsync({
@@ -127,36 +175,36 @@ export default function App() {
   //   });
   // }
 
-  // async function registerForPushNotificationsAsync() {
-  //   let token;
-  //   if (Constants.isDevice) {
-  //     const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  //     let finalStatus = existingStatus;
-  //     if (existingStatus !== 'granted') {
-  //       const { status } = await Notifications.requestPermissionsAsync();
-  //       finalStatus = status;
-  //     }
-  //     if (finalStatus !== 'granted') {
-  //       alert('Failed to get push token for push notification!');
-  //       return;
-  //     }
-  //     token = (await Notifications.getExpoPushTokenAsync()).data;
-  //     console.log(token);
-  //   } else {
-  //     alert('Must use physical device for Push Notifications');
-  //   }
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
   
-  //   if (Platform.OS === 'android') {
-  //     Notifications.setNotificationChannelAsync('default', {
-  //       name: 'default',
-  //       importance: Notifications.AndroidImportance.MAX,
-  //       vibrationPattern: [0, 250, 250, 250],
-  //       lightColor: '#FF231F7C',
-  //     });
-  //   }
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
   
-  //   return token;
-  // }
+    return token;
+  }
 
   if (!isLoadingComplete) {
     return null;
@@ -187,7 +235,8 @@ export default function App() {
         }}>
             <Navigation colorScheme='dark'/>
             <StatusBar style='light' backgroundColor='#0000004D'/>
-            <AudioPlayerWidget />
+            {/* <AudioPlayerWidget /> */}
+            <AudioTrackPlayer />
           </AppContext.Provider>
       </SafeAreaProvider>
 

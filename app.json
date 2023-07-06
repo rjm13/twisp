@@ -4,11 +4,11 @@
     "slug": "twisp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/TwispAppIcon.png",
     "userInterfaceStyle": "light",
     "scheme": "twisp",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Twisp_Splash2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -36,7 +36,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/TwispAppIcon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.msm.twisp",
@@ -73,6 +73,9 @@
       "eas": {
         "projectId": "eeb175b2-6fff-4535-aca9-b22b77127d5e"
       }
-    }
+    },
+    "plugins": [
+      "expo-tracking-transparency"
+    ]
   }
 }
