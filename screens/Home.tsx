@@ -3,7 +3,6 @@ import {
     StyleSheet, 
     ScrollView, 
     TouchableWithoutFeedback,
-    Text,
     View,
     Dimensions
 } from 'react-native';
@@ -103,7 +102,7 @@ const HomeScreen = ({navigation} : any) => {
     }, [])
 
     return (
-        <LinearGradient colors={['#3b4b80a5', '#000',]} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+        <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <ScrollView style={{ }} showsVerticalScrollIndicator={false}> 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 10, marginHorizontal: 20}}>
                     <View style={{ flexDirection: 'row'}}>

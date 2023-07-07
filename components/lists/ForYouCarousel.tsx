@@ -28,6 +28,10 @@ import TimeConversion from '../functions/TimeConversion';
 
 const ForYouCarousel = () => {
 
+    const [nextToken, setNextToken] = useState()
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
     const PinStory = async ({storyID} : any) => {
     
         let userInfo = await Auth.currentAuthenticatedUser();
@@ -48,8 +52,6 @@ const ForYouCarousel = () => {
         setUserPins(pins)
     
     }
-
-    const [nextToken, setNextToken] = useState()
 
     const unPinStory = async ({storyID} : any) => {
     
@@ -86,11 +88,12 @@ const ForYouCarousel = () => {
 
     //global context for nsfw filter
     const { nsfwOn } = useContext(AppContext);
-    const { userPins } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
+
+    //data for the flatlist. 
+    const [Storys, setStorys] = useState([]);
 
     //carousel tile
-    const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, primary} : any) => {
+    const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, color} : any) => {
 
         const [imageU, setImageU] = useState('');
         
@@ -128,7 +131,6 @@ const ForYouCarousel = () => {
             if ( isQ === false ) {
                 setQd(true);
                 PinStory({storyID: id})
-                //PinStory()
             }
             if ( isQ === true ) {
                 setQd(false);
@@ -158,10 +160,7 @@ const ForYouCarousel = () => {
                     <ImageBackground
                         source={{uri: imageU}}
                         style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
-                        imageStyle={{
-                            borderRadius: 15,
-                            
-                        }}
+                        imageStyle={{borderRadius: 15}}
                     >
                     <View 
                         style={{ 
@@ -171,7 +170,9 @@ const ForYouCarousel = () => {
                             borderTopRightRadius: isVisible === true ? 15 : 0,
                             borderTopLeftRadius: isVisible === true ? 15 : 0,
                             width: '100%',
+                            height: isVisible === true ? 280 : undefined,
                             padding: 10, 
+                            justifyContent: 'space-between'
                     }}>
                         <TouchableWithoutFeedback onPress={onShow}>
                             <View>
@@ -212,7 +213,6 @@ const ForYouCarousel = () => {
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
-
 
                         <View>
                             { isVisible ? (
@@ -268,9 +268,6 @@ const ForYouCarousel = () => {
             </View>
         );
     }
-
-    //data for the flatlist. 
-    const [Storys, setStorys] = useState([]);
 
     //get the data for the flatlist. Must have: image, not be hidden, be approved, not after dark
     useEffect( () => {
@@ -342,7 +339,7 @@ const ForYouCarousel = () => {
         if (item?.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (

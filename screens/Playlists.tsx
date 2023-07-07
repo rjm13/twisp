@@ -17,12 +17,8 @@ const PlaylistScreen = () => {
     const [SelectedId, setSelectedId] = useState(1);
 
     return (
-        <View >
-            <LinearGradient
-                colors={['#3b4b80a5','#000']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0.5 }}
-            >
+        <View style={{flex: 1, backgroundColor: '#000000'}}>
+            <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                 <View>
                     <View style={{ 
                         flexDirection: 'row', 

@@ -16,6 +16,7 @@ from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {LinearGradient} from 'expo-linear-gradient';
+//import useStyles from '../styles';
 //import PromptCarousel from '../components/HorizList/PromptCarousel';
 
 import { AppContext } from '../AppContext';
@@ -27,6 +28,8 @@ import { UserInterfaceIdiom } from 'expo-constants';
 
 
 const AudioStoryHome = ({navigation} : any) => {
+
+  //const styles = useStyles();
 
   //nsfw and after dark global app context
   const { nsfwOn } = useContext(AppContext);
@@ -216,27 +219,26 @@ const AudioStoryHome = ({navigation} : any) => {
 
 //return the primary function
     return (
-        <View >
-          <LinearGradient
-            colors={['#363636','#2f217966', '#000']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-        >
+        <View style={{flex: 1, backgroundColor: '#000000'}}>
+        <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <ScrollView>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 20, marginHorizontal: 20}}>
-              <Text style={{ color: 'white', marginHorizontal: 0, fontSize: 22, fontWeight: 'bold'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 0, marginHorizontal: 20}}>
+              {/* <Text style={{ color: 'white', marginHorizontal: 0, fontSize: 22, fontWeight: 'bold'}}>
                 Discover Stories
-              </Text>
+              </Text> */}
             </View>
         
             <View style={{ marginBottom: 20, marginHorizontal: 20, alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('SearchScreen')}>
-                  <View style={{alignItems: 'center', paddingHorizontal: 10, borderRadius: 8, flexDirection: 'row', backgroundColor: '#e0e0e0', height: 35, width: Dimensions.get('window').width - 40}}>
+                  <View style={{alignItems: 'center', paddingHorizontal: 10, borderRadius: 8, flexDirection: 'row', backgroundColor: '#e0e0e0', height: 40, width: Dimensions.get('window').width - 40}}>
                     <FontAwesome5 
                       name='search'
                       color='#000000a5'
                       size={18}
                     />
+                    <Text style={{marginLeft: 20, color: '#000000a5'}}>
+                      Search stories, authors
+                    </Text>
                   </View>
                 </TouchableWithoutFeedback>
             </View>
