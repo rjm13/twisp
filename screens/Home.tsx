@@ -10,7 +10,9 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LinearGradient} from 'expo-linear-gradient';
+import Linking from 'expo-linking'
 
+import useStyles from '../styles';
 import { AppContext } from '../AppContext';
 import Trending from '../components/lists/Trending';
 import ShortSweet from '../components/lists/ShortSweet';
@@ -19,10 +21,12 @@ import ForYouGenre from '../components/lists/ForYouGenre';
 import NewList from '../components/lists/NewList';
 
 import { Auth, graphqlOperation, API } from 'aws-amplify';
-import {getUser} from '../src/graphql/queries';
+import {getUser, listGenres} from '../src/graphql/queries';
 
 
 const HomeScreen = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     //deep link global context for sharing a story
     const { deepLink } = useContext(AppContext);
@@ -58,20 +62,17 @@ const HomeScreen = ({navigation} : any) => {
 
     //   }, [])
 
-    
       //if the app opens from a shared link, direct the user to that story screen
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     if (deepLink?.queryParams?.id) {
-    //         navigation.navigate('StoryScreen', {storyID: deepLink?.queryParams.id})
-    //     }
-    //     else {
-    //         return
-    //     }
+        if (deepLink?.queryParams?.id) {
+            navigation.navigate('StoryScreen', {storyID: deepLink?.queryParams.id})
+        }
+        else {
+            return
+        }
        
-    // } , [deepLink])
-
-    
+    } , [deepLink])
 
     //fetch the top 3 genres for the user
     useEffect(() => {
@@ -86,27 +87,26 @@ const HomeScreen = ({navigation} : any) => {
             
             if (User.data.getUser.topthree.length === 3) {
                 setTopThree(User.data.getUser.topthree)
+            } else {
+                const Genres = await API.graphql(graphqlOperation(
+                    listGenres, {filter: {
+                        genre: {
+                            ne: 'after dark'
+                        },
+                    }}
+                ))
+                setTopThree([Genres.data.listGenres.items[0], Genres.data.listGenres.items[1],Genres.data.listGenres.items[2]])
             }
         }
         fetchGenres();
 
     }, [])
 
-
     return (
-        <LinearGradient
-                colors={['#3b4b80a5', '#000',]}
-                style={styles.container}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-            >
+        <LinearGradient colors={['#3b4b80a5', '#000',]} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <ScrollView style={{ }} showsVerticalScrollIndicator={false}> 
-            
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 10, marginHorizontal: 20}}>
                     <View style={{ flexDirection: 'row'}}>
-                            <Text style={styles.pageheader}>
-                            For you
-                        </Text>
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => navigation.navigate('ProfileScreen')}>

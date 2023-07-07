@@ -32,6 +32,7 @@ Notifications.setNotificationHandler({
 
 export default function App() {
 
+//ask for permission to track data
   useEffect(() => {
     (async () => {
       setTimeout(async () => {
@@ -58,108 +59,44 @@ export default function App() {
   //   connectRevenueCat()
   // }, [])
 
-  const setUpTrackPlayer = async () => {
-      try {
-          console.log('attempting...')
-        await TrackPlayer.setupPlayer({});
-        await TrackPlayer.reset();
-      } catch (e) {
-        console.log(e);
-      }
+//set up track player
+  useEffect(() => {
+    const SetupService = async () => {
+      await TrackPlayer.setupPlayer({});
+      await TrackPlayer.reset();
+      await TrackPlayer.updateOptions({
+        android: {
+          appKilledPlaybackBehavior:
+            AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+        },
+        alwaysPauseOnInterruption: true,
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SeekTo,
+          Capability.JumpBackward,
+          Capability.JumpForward,
+          Capability.Stop,
+        ],
+        compactCapabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SeekTo,
+          Capability.JumpBackward,
+          Capability.JumpForward,
+          Capability.Stop,
+        ],
+        // notificationCapabilities: [
+        //   Capability.Play,
+        //   Capability.Pause,
+        // ],
+        //progressUpdateEventInterval: 2,
+        //icon: require('./../imgs/ic_logo_notification.png')
+      });
+      //await TrackPlayer.setRepeatMode(RepeatMode.Queue);
     };
-
-    useEffect(() => {
-      const SetupService = async () => {
-        await TrackPlayer.setupPlayer({});
-        await TrackPlayer.reset();
-        await TrackPlayer.updateOptions({
-          android: {
-            appKilledPlaybackBehavior:
-              AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-          },
-          // This flag is now deprecated. Please use the above to define playback mode.
-          // stoppingAppPausesPlayback: true,
-          capabilities: [
-            Capability.Play,
-            Capability.Pause,
-            // Capability.SkipToNext,
-            // Capability.SkipToPrevious,
-            // Capability.SeekTo,
-          ],
-          compactCapabilities: [
-            Capability.Play,
-            Capability.Pause,
-          ],
-          // notificationCapabilities: [
-          //   Capability.Play,
-          //   Capability.Pause,
-          // ],
-          progressUpdateEventInterval: 2,
-        });
-        //await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-      };
-      SetupService();
-    })
-
-  // useEffect(() => {
-    
-
-  //   setUpTrackPlayer();
-
-  //   TrackPlayer.updateOptions({
-  //     android: {
-  //       // This is the default behavior
-  //       appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback,
-  //   },
-  //   alwaysPauseOnInterruption: true,
-  //     //stopWithApp: false,
-  //     capabilities: [
-  //       Capability.Play,
-  //       Capability.Pause,
-  //       //Capability.SkipToNext,
-  //       //Capability.SkipToPrevious,
-  //       Capability.Stop,
-  //   ],
-  //   compactCapabilities: [
-  //     Capability.Play, 
-  //     Capability.Pause
-  //   ],
-  //   notificationCapabilities: [
-  //       Capability.Play,
-  //       Capability.Pause,
-  //       //Capability.SkipToNext,
-  //       //Capability.SkipToPrevious,
-  //     ],
-  //     //icon: require('./../imgs/ic_logo_notification.png')
-  //   });
-  //   //setUpTrackPlayer();
-  //   //return () => TrackPlayer.destroy();
-  // }, []);
-
-
-  const isLoadingComplete = useCachedResources();
-
-  const [storyID, setStoryID] = useState<string|null>(null);
-
-  const [userID, setUserID] = useState<string|null>(null);
-
-  const [isRootScreen, setIsRootScreen] = useState<boolean|null>(null);
-
-  const [nsfwOn, setNSFWOn] = useState<boolean|null>(false);
-
-  const [ADon, setADon] = useState<boolean|null>(false);
-
-  const [progUpdate, setProgUpdate] = useState<boolean>(false);
-
-  const [deepLink, setDeepLink] = useState(null);
-
-  const [premium, setPremium] = useState<boolean>(false);
-
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
+    SetupService();
+  })
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -209,6 +146,31 @@ export default function App() {
     return token;
   }
 
+  const isLoadingComplete = useCachedResources();
+
+  const [storyID, setStoryID] = useState<string|null>(null);
+
+  const [userID, setUserID] = useState<string|null>(null);
+
+  const [userPins, setUserPins] = useState([])
+
+  const [isRootScreen, setIsRootScreen] = useState<boolean>(false);
+
+  const [nsfwOn, setNSFWOn] = useState<boolean>(false);
+
+  const [ADon, setADon] = useState<boolean>(false);
+
+  const [progUpdate, setProgUpdate] = useState<boolean>(false);
+
+  const [deepLink, setDeepLink] = useState(null);
+
+  const [premium, setPremium] = useState<boolean>(false);
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   if (!isLoadingComplete) {
     return null;
   } else {
@@ -218,10 +180,8 @@ export default function App() {
         <AppContext.Provider value={{
           storyID,
           setStoryID: (id: string) => setStoryID(id),
-          // userID,
-          // setUserID: (id: string) => setUserID(id),
           userID,
-          setUserID: (user: {}) => setUserID(user),
+          setUserID: (user: string) => setUserID(user),
           isRootScreen,
           setIsRootScreen: (val: boolean) => setIsRootScreen(val),
           deepLink,
@@ -234,6 +194,8 @@ export default function App() {
           setProgUpdate: (val: boolean) => setProgUpdate(val),
           premium,
           setPremium: (val: boolean) => setPremium(val),
+          userPins,
+          setUserPins: (val: []) => setUserPins(val),
 
         }}>
             <Navigation colorScheme='dark'/>

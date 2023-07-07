@@ -2,22 +2,25 @@ import React from 'react';
 
 const context = {
     storyID: null,
-    setStoryID: (id: string | null) => {},
+    setStoryID: (id: string) => {},
+
+    userPins: [],
+    setUserPins: (val) => {},
 
     isRootScreen: null,
-    setIsRootScreen: (val: boolean | null) => {},
+    setIsRootScreen: (val: boolean) => {},
 
     userID: null,
-    setUserID: (id: string | null) => {},
+    setUserID: (id: string) => {},
 
     deepLink: null,
     setDeepLink: () => {},
 
     nsfwOn: false,
-    setNSFWOn: (val: boolean | null) => {},
+    setNSFWOn: (val: boolean) => {},
 
     ADon: false,
-    setADon: (val: boolean | null) => {},
+    setADon: (val: boolean) => {},
 
     progUpdate: false,
     setProgUpdate: (val: boolean) => {},

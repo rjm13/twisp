@@ -43,7 +43,7 @@ const AudioStoryList = () => {
 
                 if (pinnedData.data.getUser.Pinned.items.length > 0) {
                     for (let i = 0; i < pinnedData.data.getUser.Pinned.items.length; i++) {
-                        if (pinnedData.data.getUser.Pinned.items[i].story.hidden === false && pinnedData.data.getUser.Pinned.items[i].story.approved === 'approved') {
+                        if (pinnedData.data.getUser.Pinned.items[i].story.hidden === false) {
                             Pinned.push(pinnedData.data.getUser.Pinned.items[i].story)
                         } else {return;}
                     }

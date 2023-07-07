@@ -22,6 +22,9 @@ const Redirect = ({route, navigation} : any) => {
     const { userID } = useContext(AppContext);
     const { setUserID } = useContext(AppContext);
 
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
     const { nsfwOn } = useContext(AppContext);
     const { setNSFWOn } = useContext(AppContext);
 
@@ -30,6 +33,8 @@ const Redirect = ({route, navigation} : any) => {
 
     const { premium } = useContext(AppContext);
     const { setPremium } = useContext(AppContext);
+
+    const [nextToken, setNextToken] = useState()
 
     useEffect(() => {
         //TODO check to see if the user has a premium subscription
@@ -53,13 +58,13 @@ const Redirect = ({route, navigation} : any) => {
     
       }, [])
 
-
-
     useEffect(() => {
 
         setIsLoading(true);
 
         const fetchUser = async () => {
+
+            const pins = [];
 
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
@@ -101,12 +106,22 @@ const Redirect = ({route, navigation} : any) => {
 
                     const userData = await API.graphql(graphqlOperation(
                         getUser,{ id: userInfo.attributes.sub}))
-
-    
-                    console.log(userData.data.getUser)
         
                     if (userData.data.getUser) {
-                        setUserID(userData.data.getUser);
+                        setUserID(userData.data.getUser.id);
+
+                        const getThePins = async () => {
+                            for (let i = 0; i < userData.data.getUser.Pinned.items.length; i++) {
+                                pins.push(userData.data.getUser.Pinned.items[i].storyID)
+                            }
+                            if (userData.data.getUser.Pinned.nextToken) {
+                                setNextToken(userData.data.getUser.Pinned.nextToken)
+                                getThePins();
+                                return;
+                            }
+                            setUserPins(pins);
+                        }
+                        getThePins();
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'Root' }],
