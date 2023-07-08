@@ -55,6 +55,13 @@ export const getUser = /* GraphQL */ `
             updatedAt
             title
             hidden
+            genreID
+            genre {
+              id
+              genre
+              color
+              icon
+            }
             approved
             status
             imageUri

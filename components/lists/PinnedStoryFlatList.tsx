@@ -127,15 +127,15 @@ const AudioStoryList = () => {
 
         if (item.genre) {
             icon = item.genre.icon
-            genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            //genreName = item.genre.genre
+            primary = item.genre.color
         }
         
         return (
         <StoryTile 
           title={item.title}
           imageUri={item.imageUri}
-          genreName={genreName}
+          genreName={item.genre?.genre}
           icon={icon}
           primary={primary}
           audioUri={item.audioUri}

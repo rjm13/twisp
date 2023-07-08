@@ -19,9 +19,10 @@ import { getUser } from '../src/graphql/queries';
 
 import {useNavigation} from '@react-navigation/native';
 
-import PinStory from '../components/functions/PinStory';
-import unPinStory from './functions/UnPinStory';
+//import PinStory from '../components/functions/PinStory';
+//import unPinStory from './functions/UnPinStory';
 import ShareStory from '../components/functions/ShareStory';
+import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 import TimeConversion from './functions/TimeConversion';
@@ -41,6 +42,64 @@ const StoryTile = ({
     ratingAmt,
     icon
 } : any) => {
+
+    const [nextToken, setNextToken] = useState()
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
+    const PinStory = async ({id} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let pins = userPins
+    
+        let createPin = await API.graphql(graphqlOperation(
+            createPinnedStory, {input: {
+                userID: userInfo.attributes.sub, 
+                storyID: id,
+                type: "PinnedStory",
+                createdAt: new Date(),
+            }}
+        ))
+        console.log(createPin)
+    
+        pins.push(id);
+        setUserPins(pins)
+    
+    }
+
+    const unPinStory = async ({id} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let getPin = await API.graphql(graphqlOperation(
+            getUser, {nextToken, id: userInfo.attributes.sub}
+        ))
+    
+        const getThePins = async () => {
+            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
+                if (getPin.data.getUser.Pinned.items[i].storyID === id) {
+                    let deleteConnection = await API.graphql(graphqlOperation(
+                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                    ))
+                    console.log(deleteConnection)
+                }
+    
+                if (getPin.data.getUser.Pinned.nextToken) {
+                    setNextToken(getPin.data.getUser.Pinned.nextToken);
+                    getThePins();
+                    return;
+                }
+            }
+    
+                const index = userPins.indexOf(storyID);
+    
+                const x = userPins.splice(index, 1);
+    
+                setUserPins(x)
+        }
+        getThePins(); 
+    }
         
 //temporary signed image uri
     const [imageU, setImageU] = useState('')
@@ -88,26 +147,9 @@ const onQPress = () => {
 
 //on render, determine if the story in alraedy pinned or not
 useEffect(() => {
-    const fetchPin = async () => {
-
-        const userInfo = await Auth.currentAuthenticatedUser();
-
-        try {
-            let getPin = await API.graphql(graphqlOperation(
-                getUser, {id: userInfo.attributes.sub
-                }
-            ))
-
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === id) {
-                    setQd(true);
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    if (userPins.includes(id) === true) {
+        setQd(true)
     }
-    fetchPin();
 }, [])
 
 //play the audio story by setting the global context to the story id

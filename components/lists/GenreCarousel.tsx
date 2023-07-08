@@ -18,15 +18,74 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { AppContext } from '../../AppContext';
-import PinStory from '../functions/PinStory';
-import unPinStory from '../functions/UnPinStory';
+//import PinStory from '../functions/PinStory';
+//import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
 import { listStories, getUser } from '../../src/graphql/queries';
+import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
 
 const GenreCarousel = ({genreid} : any) => {
+
+    const [nextToken, setNextToken] = useState()
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
+    const PinStory = async ({storyID} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let pins = userPins
+    
+        let createPin = await API.graphql(graphqlOperation(
+            createPinnedStory, {input: {
+                userID: userInfo.attributes.sub, 
+                storyID: storyID,
+                type: "PinnedStory",
+                createdAt: new Date(),
+            }}
+        ))
+        console.log(createPin)
+    
+        pins.push(storyID);
+        setUserPins(pins)
+    
+    }
+
+    const unPinStory = async ({storyID} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let getPin = await API.graphql(graphqlOperation(
+            getUser, {nextToken, id: userInfo.attributes.sub}
+        ))
+    
+        const getThePins = async () => {
+            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
+                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+                    let deleteConnection = await API.graphql(graphqlOperation(
+                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                    ))
+                    console.log(deleteConnection)
+                }
+    
+                if (getPin.data.getUser.Pinned.nextToken) {
+                    setNextToken(getPin.data.getUser.Pinned.nextToken);
+                    getThePins();
+                    return;
+                }
+            }
+    
+                const index = userPins.indexOf(storyID);
+    
+                const x = userPins.splice(index, 1);
+    
+                setUserPins(x)
+        }
+        getThePins(); 
+    }
 
     const { nsfwOn } = useContext(AppContext);
 
@@ -139,28 +198,9 @@ const GenreCarousel = ({genreid} : any) => {
 
         //on render, determine if the story in alraedy pinned or not
         useEffect(() => {
-            const fetchPin = async () => {
-
-                const userInfo = await Auth.currentAuthenticatedUser();
-
-                try {
-
-                    let getPin = await API.graphql(graphqlOperation(
-                        getUser, {id: userInfo.attributes.sub
-                        }
-                    ))
-
-                    for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                        if (getPin.data.getUser.Pinned.items[i].storyID === id) {
-                            setQd(true);
-                        }
-                    }
-
-                } catch (error) {
-                    console.log(error)
-                }
+            if (userPins.includes(id) === true) {
+                setQd(true)
             }
-            fetchPin();
         }, [])
 
         return (

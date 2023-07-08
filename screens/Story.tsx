@@ -35,13 +35,72 @@ import useStyles from '../styles';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { getStory, getUser } from '../src/graphql/queries';
 import { createComment, createRating, updateRating, updateStory } from '../src/graphql/mutations';
+import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
-import PinStory from '../components/functions/PinStory';
-import unPinStory from '../components/functions/UnPinStory';
+//import PinStory from '../components/functions/PinStory';
+//import unPinStory from '../components/functions/UnPinStory';
 
 
 const StoryScreen  = ({navigation} : any) => {
+
+    const [nextToken, setNextToken] = useState()
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
+    const PinStory = async ({storyID} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let pins = userPins
+    
+        let createPin = await API.graphql(graphqlOperation(
+            createPinnedStory, {input: {
+                userID: userInfo.attributes.sub, 
+                storyID: storyID,
+                type: "PinnedStory",
+                createdAt: new Date(),
+            }}
+        ))
+        console.log(createPin)
+    
+        pins.push(storyID);
+        setUserPins(pins)
+    
+    }
+
+    const unPinStory = async ({storyID} : any) => {
+    
+        let userInfo = await Auth.currentAuthenticatedUser();
+    
+        let getPin = await API.graphql(graphqlOperation(
+            getUser, {nextToken, id: userInfo.attributes.sub}
+        ))
+    
+        const getThePins = async () => {
+            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
+                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+                    let deleteConnection = await API.graphql(graphqlOperation(
+                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                    ))
+                    console.log(deleteConnection)
+                }
+    
+                if (getPin.data.getUser.Pinned.nextToken) {
+                    setNextToken(getPin.data.getUser.Pinned.nextToken);
+                    getThePins();
+                    return;
+                }
+            }
+    
+                const index = userPins.indexOf(storyID);
+    
+                const x = userPins.splice(index, 1);
+    
+                setUserPins(x)
+        }
+        getThePins(); 
+    }
 
     //const styles = useStyles();
 
@@ -374,11 +433,9 @@ const StoryScreen  = ({navigation} : any) => {
             ))
 
             setUser(userData.data.getUser);
-
-            for (let i = 0; i < userData.data.getUser.Pinned.items.length; i++) {
-                if (userData.data.getUser.Pinned.items[i].storyID === storyID) {
-                    setQd(true);
-                }
+            
+            if (userPins.includes(id) === true) {
+                setQd(true)
             }
 
             for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {

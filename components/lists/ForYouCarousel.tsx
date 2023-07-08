@@ -58,7 +58,7 @@ const ForYouCarousel = () => {
         let userInfo = await Auth.currentAuthenticatedUser();
     
         let getPin = await API.graphql(graphqlOperation(
-            getUser, {id: userInfo.attributes.sub}
+            getUser, {nextToken, id: userInfo.attributes.sub}
         ))
     
         const getThePins = async () => {
@@ -70,11 +70,11 @@ const ForYouCarousel = () => {
                     console.log(deleteConnection)
                 }
     
-                // if (getPin.data.getUser.Pinned.nextToken) {
-                //     setNextToken(getPin.data.getUser.Pinned.nextToken);
-                //     getThePins();
-                //     return;
-                // }
+                if (getPin.data.getUser.Pinned.nextToken) {
+                    setNextToken(getPin.data.getUser.Pinned.nextToken);
+                    getThePins();
+                    return;
+                }
             }
     
                 const index = userPins.indexOf(storyID);

@@ -58,7 +58,6 @@ const AudioStoryHome = ({navigation} : any) => {
 
   }, [])
 
-
   //genre tile item should show genre name, color, and image
   const Item = ({genre, id, color, imageUri} : any) => {
 
@@ -219,7 +218,7 @@ const AudioStoryHome = ({navigation} : any) => {
 
 //return the primary function
     return (
-        <View style={{flex: 1, backgroundColor: '#000000'}}>
+      <View style={{flex: 1, backgroundColor: '#000000'}}>
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <ScrollView>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 0, marginHorizontal: 20}}>
@@ -237,7 +236,7 @@ const AudioStoryHome = ({navigation} : any) => {
                       size={18}
                     />
                     <Text style={{marginLeft: 20, color: '#000000a5'}}>
-                      Search stories, authors
+                      Search stories, authors, tags
                     </Text>
                   </View>
                 </TouchableWithoutFeedback>
