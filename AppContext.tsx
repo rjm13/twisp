@@ -7,6 +7,12 @@ const context = {
     userPins: [],
     setUserPins: (val) => {},
 
+    userRates: [],
+    setUserRates: (val) => {},
+
+    userFinished: [],
+    setUserFinished: (val) => {},
+
     isRootScreen: null,
     setIsRootScreen: (val: boolean) => {},
 

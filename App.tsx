@@ -152,7 +152,11 @@ export default function App() {
 
   const [userID, setUserID] = useState<string|null>(null);
 
-  const [userPins, setUserPins] = useState([])
+  const [userPins, setUserPins] = useState([]);
+
+  const [userRates, setUserRates] = useState([]);
+
+  const [userFinished, setUserFinished] = useState([]);
 
   const [isRootScreen, setIsRootScreen] = useState<boolean>(false);
 
@@ -195,7 +199,11 @@ export default function App() {
           premium,
           setPremium: (val: boolean) => setPremium(val),
           userPins,
-          setUserPins: (val: []) => setUserPins(val),
+          setUserPins: (val: []) => setUserRates(val),
+          userRates,
+          setUserRates: (val: []) => setUserFinished(val),
+          userFinished,
+          setUserFinished: (val: []) => setUserFinished(val),
 
         }}>
             <Navigation colorScheme='dark'/>

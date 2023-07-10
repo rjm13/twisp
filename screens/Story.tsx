@@ -33,7 +33,7 @@ import ShareStory from '../components/functions/ShareStory';
 import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getStory, getUser } from '../src/graphql/queries';
+import { getStory, getUser, getRating } from '../src/graphql/queries';
 import { createComment, createRating, updateRating, updateStory } from '../src/graphql/mutations';
 import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
@@ -44,9 +44,21 @@ import { AppContext } from '../AppContext';
 
 const StoryScreen  = ({navigation} : any) => {
 
+    //const styles = useStyles();
+
+//recieve story ID as props
+    const route = useRoute();
+    const {storyID, update} = route.params;
+
+//pin to playlist functions
     const [nextToken, setNextToken] = useState()
+
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
+    const { userRates } = useContext(AppContext);
+    const { setUserRates } = useContext(AppContext);
+    const { userFinished } = useContext(AppContext);
+    const { setUserFinished } = useContext(AppContext);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -101,13 +113,7 @@ const StoryScreen  = ({navigation} : any) => {
         }
         getThePins(); 
     }
-
-    //const styles = useStyles();
-
-//recieve story ID as props
-    const route = useRoute();
-    const {storyID, update} = route.params;
-
+    
 //ref to scroll to comment section
     const scrollRef = useRef();
     const [viewPosition, setViewPosition] = useState(0);
@@ -147,7 +153,7 @@ const StoryScreen  = ({navigation} : any) => {
 
             try {
 
-                const storyData = await API.graphql(graphqlOperation(getStory, {id: storyID}))
+                const storyData = await API.graphql(graphqlOperation(getStory, {nextToken, id: storyID}))
 
                 for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
                     tagarr.push({id: storyData.data.getStory.tags.items[i].tag.id, tagName: storyData.data.getStory.tags.items[i].tag.tagName})
@@ -205,6 +211,7 @@ const StoryScreen  = ({navigation} : any) => {
         return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
     } 
 
+//tag item
       const [Tags, setTags] = useState([])
 
     
@@ -264,6 +271,9 @@ const StoryScreen  = ({navigation} : any) => {
     //the rating average
     const [ratingNum, setRatingNum] = useState(0);
 
+    //the rating average
+    const [ratingOldNum, setRatingOldNum] = useState(0);
+
     //the rating id for the AWS
     const [ratingID, setRatingID] = useState();
 
@@ -284,6 +294,15 @@ const StoryScreen  = ({navigation} : any) => {
                     rating: ratingNum,
                 }}
             ))
+
+            let newRating =  Math.floor(
+                ((ratingNum + (Story?.ratingAvg * Story?.ratingAmt) - ratingOldNum)/(Story?.ratingAmt))*10)
+
+            await API.graphql(graphqlOperation(
+                updateStory, {input: {
+                    id: storyID, ratingAvg: newRating}}
+            ))
+
         } else {
             await API.graphql(graphqlOperation(
                 createRating, {input: {
@@ -295,30 +314,13 @@ const StoryScreen  = ({navigation} : any) => {
                     createdAt: new Date(),
                 }}
             ))
-        }
+            let newRating =  Math.floor(((ratingNum + (Story?.ratingAvg * Story?.ratingAmt))/(Story?.ratingAmt + 1))*10)
 
-        //determine the new average and update the story
-
-        let Average = []
-
-        let RatingAvg = await API.graphql(graphqlOperation(
-            getStory, {id: storyID}
-        ))
-
-        if (RatingAvg.data.getStory.rated.items.length > 0) {
-            for (let i = 0; i < RatingAvg.data.getStory.rated.items.length; i++) {
-                Average.push(RatingAvg.data.getStory.rated.items[i].rating) 
-            }
-            
-            let newRating =  Math.floor(((Average.reduce((a, b) => {return a + b}))/(RatingAvg?.data.getStory.rated.items.length))*10)
-            let newLength = RatingAvg.data.getStory.rated.items.length
-
-        await API.graphql(graphqlOperation(
+            await API.graphql(graphqlOperation(
                 updateStory, {input: {
-                    id: storyID, ratingAvg: newRating, ratingAmt: newLength}}
+                    id: storyID, ratingAvg: newRating, ratingAmt: Story?.ratingAmt + 1}}
             ))
         }
-
 
         hideRatingModal();
         setIsUpdating(false);
@@ -423,10 +425,12 @@ const StoryScreen  = ({navigation} : any) => {
     useEffect(() => {
         const fetchUser = async () => {
 
+            //get the use id
             const userInfo = await Auth.currentAuthenticatedUser(
                 { bypassCache: true }
                 );
 
+            //get the user information
             const userData = await API.graphql(
                 graphqlOperation(
                 getUser, { id: userInfo.attributes.sub}
@@ -434,22 +438,28 @@ const StoryScreen  = ({navigation} : any) => {
 
             setUser(userData.data.getUser);
             
+            //check if its pinned
             if (userPins.includes(id) === true) {
                 setQd(true)
             }
 
-            for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {
-                if (userData.data.getUser.Finished.items[i].storyID === storyID) {
-                    setIsFinished(true);
-                }
+            //check if it's rated
+            if (userRates.includes(id) === true) {
+                setIsRated(true);
+
+                const ratingData = await API.graphql(
+                    graphqlOperation(
+                    getRating, { id: id}
+                ))
+
+                setRatingID(ratingData.data.getRating.id);
+                setRatingNum(ratingData.data.getRating.rating);
+                setRatingOldNum(ratingData.data.getRating.rating);
             }
 
-            for (let i = 0; i < userData.data.getUser.Rated.items.length; i++) {
-                if (userData.data.getUser.Rated.items[i].storyID === storyID) {
-                    setIsRated(true);
-                    setRatingID(userData.data.getUser.Rated.items[i].id);
-                    setRatingNum(userData.data.getUser.Rated.items[i].rating);
-                }
+            //check if its been listened to or not
+            if (userFinished.includes(id) === true) {
+                setIsFinished(true);
             }
 
             // if (isRated === false && isFinished === true ) {
@@ -512,9 +522,9 @@ const StoryScreen  = ({navigation} : any) => {
     return (
             <View style={styles.container}>
 {/* Rate the story modal */}
-                    <Modal visible={visible} onDismiss={hideRatingModal}>
-                        <TouchableOpacity onPress={hideRatingModal}>
-                            <View style={{alignItems: 'center'}}>
+                    <Modal visible={visible} onDismiss={hideRatingModal} animationType="slide" transparent={true}>
+                        <TouchableOpacity onPress={hideRatingModal} style={{backgroundColor: '#000000'}}>
+                            <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
                                 <View style={{}}>
                                     <Text style={{margin: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
                                         Leave a Rating

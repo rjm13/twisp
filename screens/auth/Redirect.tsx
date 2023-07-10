@@ -25,6 +25,12 @@ const Redirect = ({route, navigation} : any) => {
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
+    const { userRates } = useContext(AppContext);
+    const { setUserRates } = useContext(AppContext);
+
+    const { userFinished } = useContext(AppContext);
+    const { setUserFinished } = useContext(AppContext);
+
     const { nsfwOn } = useContext(AppContext);
     const { setNSFWOn } = useContext(AppContext);
 
@@ -65,6 +71,8 @@ const Redirect = ({route, navigation} : any) => {
         const fetchUser = async () => {
 
             const pins = [];
+            const rates = [];
+            const finished = [];
 
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
@@ -121,7 +129,34 @@ const Redirect = ({route, navigation} : any) => {
                             }
                             setUserPins(pins);
                         }
+
+                        const getTheRatings = async () => {
+                            for (let i = 0; i < userData.data.getUser.Rated.items.length; i++) {
+                                rates.push(userData.data.getUser.Rated.items[i].storyID)
+                            }
+                            if (userData.data.getUser.Rated.nextToken) {
+                                setNextToken(userData.data.getUser.Rated.nextToken)
+                                getTheRatings();
+                                return;
+                            }
+                            setUserRates(rates);
+                        }
+
+                        const getTheFinished = async () => {
+                            for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {
+                                finished.push(userData.data.getUser.Finished.items[i].storyID)
+                            }
+                            if (userData.data.getUser.Finished.nextToken) {
+                                setNextToken(userData.data.getUser.Finished.nextToken)
+                                getTheFinished();
+                                return;
+                            }
+                            setUserFinished(finished);
+                        }
+
                         getThePins();
+                        getTheRatings();
+                        getTheFinished();
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'Root' }],
