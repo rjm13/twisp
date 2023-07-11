@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
     View,
     Text,
@@ -8,7 +8,8 @@ import {
     TouchableWithoutFeedback, 
     FlatList, 
     RefreshControl, 
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -16,12 +17,16 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Searchbar } from 'react-native-paper';
 
 import {LinearGradient} from 'expo-linear-gradient';
+import { AppContext } from '../AppContext';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { listUsers, getUser } from '../src/graphql/queries';
 
 
 const BrowseAuthor = ({navigation} : any) => {
+
+    const { userFollowing } = useContext(AppContext);
+    const { setUserFollowing } = useContext(AppContext);
 
     const [ users, setUsers ] = useState([]);
 
@@ -51,23 +56,7 @@ const BrowseAuthor = ({navigation} : any) => {
 //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-        let follarr = []
-
         const fetchUser = async () => {
-
-            const userInfo = await Auth.currentAuthenticatedUser();
-
-            setUser(userInfo.attributes.sub)
-
-            const userconns = await API.graphql(graphqlOperation(
-                getUser, {id: userInfo.attributes.sub}
-            ))
-
-            for (let i = 0; i < userconns.data.getUser.following.items.length; i++) {
-                follarr.push(userconns.data.getUser.following.items[i].authorID)
-            }
-            
-            setFollowing(follarr)
 
             try {
 
@@ -78,15 +67,20 @@ const BrowseAuthor = ({navigation} : any) => {
                             isPublisher: {
                                 eq: true
                             },
-                            pseudonym: {
+                            publisherName: {
                                 contains: searchQ.toLowerCase()
                             }
                         }
                 }))
 
-                setNextToken(followData.data.listUsers.nextToken)
                 setUsers(users.concat(followData.data.listUsers.items));
-                
+
+                if (followData.data.listUsers.nextToken) {
+                   setNextToken(followData.data.listUsers.nextToken) 
+                   fetchUser();
+                   return;
+                }
+
             } catch (e) {
             console.log(e);
           }
@@ -95,8 +89,6 @@ const BrowseAuthor = ({navigation} : any) => {
       }, [didUpdate])
 
       //search bar
-
-      
       function SearchBar () {
 
         const [searchQuery, setSearchQuery] = useState(searchQ);
@@ -106,7 +98,7 @@ const BrowseAuthor = ({navigation} : any) => {
         return (
           <View>
             <Searchbar
-              placeholder={'Search Authors'}
+              placeholder={'Search authors'}
               placeholderTextColor='#000000a5'
               onChangeText={onChangeSearch}
               value={searchQuery}
@@ -114,13 +106,13 @@ const BrowseAuthor = ({navigation} : any) => {
               onIconPress={() => {setSearchQ(searchQuery); setNextToken(null); setUsers([]); setDidUpdate(!didUpdate);}}
               onSubmitEditing={() => {setSearchQ(searchQuery); setNextToken(null); setUsers([]); setDidUpdate(!didUpdate);}}
               style={{
-                height: 35,
+                height: 40,
                 marginLeft: 40,
                 borderRadius: 8,
                 backgroundColor: '#e0e0e0',
-                width: Dimensions.get('window').width - 100
+                width: Dimensions.get('window').width - 100,
               }}
-              inputStyle={{fontSize: 16,}}
+              inputStyle={{fontSize: 16, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
           </View>
         );
@@ -146,7 +138,7 @@ const BrowseAuthor = ({navigation} : any) => {
         useEffect(() => {
             const fetchInfo = async () => {
 
-            if (following.includes(id)) {
+            if (userFollowing.includes(id)) {
                 setIsFollowing(true)
             };    
             }
@@ -215,7 +207,7 @@ const BrowseAuthor = ({navigation} : any) => {
             <Item 
                 name={item.name}
                 id={item.id}
-                pseudonym={item.pseudonym}
+                pseudonym={item.publisherName}
                 imageUri={item.imageUri}
                 bio={item.bio}
                 numAuthored={item.numAuthored}

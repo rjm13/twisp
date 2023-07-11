@@ -112,6 +112,11 @@ return StyleSheet.create ({
     overflow: 'hidden',
     marginBottom: 1
 },
+accountcontainer: {
+  width: '100%',
+  paddingHorizontal: 20,
+  paddingVertical: 16,
+},
 });
 }
 

@@ -12,6 +12,7 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   imageUri: String
   bio: String
   publisherName: String
+  website: String
   isPublisher: Boolean
   topthree: [String]
   following: [FollowConnection] @hasMany(indexName: "byFollower", fields: "id")

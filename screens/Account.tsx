@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { 
     View, 
-    Text, 
-    StyleSheet, 
+    Text,
     TouchableWithoutFeedback, 
     TouchableOpacity,  
     TextInput,
@@ -265,16 +264,8 @@ const handleUpdateName = async () => {
             </Modal>
 
 {/* //Update Email Address */}
-            <Modal 
-                onDismiss={hideEmailModal}
-                animationType="slide"
-                transparent={true}
-                visible={visible4}
-                onRequestClose={() => {
-                  setVisible4(!visible4);
-                }}
-            >  
-                <TouchableOpacity onPress={() => {setVisible4(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+            {/* <Modal animationType="slide" transparent={true} visible={visible4} onRequestClose={() => {setVisible4(!visible4);}}>  
+                <TouchableOpacity onPress={() => {setVisible4(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ alignItems: 'center'}}>
                         <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
                             Enter a new email
@@ -334,29 +325,25 @@ const handleUpdateName = async () => {
                         </View>
                     </View>
                 </TouchableOpacity>
-            </Modal>
+            </Modal> */}
 
 {/* //Sign Out modal */}
-            <Modal 
-                onDismiss={hideSignOutModal}
-                animationType="slide"
-                transparent={true}
-                visible={visible2}
-                onRequestClose={() => {setVisible2(!visible2);}}
-            >                    
+            <Modal animationType="slide" transparent={true} visible={visible2} onRequestClose={() => {setVisible2(!visible2);}}>                    
                 <TouchableOpacity onPress={() => {setVisible2(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
                     <View style={{ alignItems: 'center'}}>
                         <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
                             Are you sure you want to log out?
                         </Text>
                         
-                        <View style={styles.button}>
+                        <View style={{alignItems: 'center', marginVertical: 30,}}>
                             <TouchableOpacity onPress={signOut}>
-                                <View style={styles.savebutton} >
+                                <View style={styles.buttonlayout} >
                                     {isUploading ? (
                                         <ActivityIndicator size="small" color="#00ffff"/>
                                     ) : 
-                                        <Text style={{overflow: 'hidden', borderRadius: 13, backgroundColor: 'cyan', color: '#000', paddingVertical: 5, paddingHorizontal: 20}}>Log Out</Text> 
+                                       <Text style={styles.buttontext}>
+                                            Log Out
+                                        </Text> 
                                     } 
                                 </View>
                             </TouchableOpacity>
@@ -366,14 +353,8 @@ const handleUpdateName = async () => {
             </Modal>
 
 {/* //delete account modal */}
-            <Modal 
-                onDismiss={hideDeleteAccountModal}
-                animationType="slide"
-                transparent={true}
-                visible={visible3}
-                onRequestClose={() => {setVisible3(!visible3);}}
-            >       
-                <TouchableOpacity onPress={() => {setVisible3(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+            <Modal animationType="slide" transparent={true} visible={visible3} onRequestClose={() => {setVisible3(!visible3);}}>       
+                <TouchableOpacity onPress={() => {setVisible3(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ alignItems: 'center'}}>
                         <Text style={{color: 'red', fontWeight: 'bold', fontSize: 17, textAlign: 'center'}}>
                             THIS ACTION CANNOT BE UNDONE
@@ -392,9 +373,9 @@ const handleUpdateName = async () => {
                             Once confirmed, your account cannot be recovered. All stories and images will remain on the app. All subscriptions cannot be recovered. For additional information, please contact support.
                         </Text>
                         
-                        <View style={styles.button}>
+                        <View style={{alignItems: 'center', marginVertical: 30}}>
                             <TouchableOpacity onLongPress={DeleteAccount} onPress={() => setConfirmDelete(true)}>
-                                <View style={styles.savebutton} >
+                                <View style={{justifyContent: 'center', alignItems: 'center',}} >
                                     {isUploading ? (
                                         <ActivityIndicator size="small" color="#00ffff"/>
                                     ) : 
@@ -417,24 +398,18 @@ const handleUpdateName = async () => {
             </Modal>
 
 {/* //Reset password modal */}
-            <Modal 
-                onDismiss={hidePassModal}
-                animationType="slide"
-                transparent={true}
-                visible={visible6}
-                onRequestClose={() => {setVisible6(!visible6);}}
-            >      
-                <TouchableOpacity onPress={() => {setVisible6(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+            <Modal animationType="slide" transparent={true} visible={visible6} onRequestClose={() => {setVisible6(!visible6);}}>      
+                <TouchableOpacity onPress={() => {setVisible6(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ alignItems: 'center'}}>
-                        <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
+                        <Text style={[styles.subtitle, {marginBottom: 20}]}>
                             Enter new password
                         </Text>
 
-                        <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between', borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8, borderWidth: 0.3, paddingVertical: 4}}>  
+                        <View style={[styles.inputfield, {flexDirection: 'row', alignItems: 'center'}]}>
                             <TextInput
                                 placeholder=''
                                 placeholderTextColor='#00ffffa5'
-                                style={[styles.nametext, {width: '80%', paddingVertical: 4}]}
+                                style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
                                 maxLength={18}
                                 onChangeText={val => setPassword(val)}
                                 secureTextEntry={passVisible === true ? true : false}
@@ -446,20 +421,15 @@ const handleUpdateName = async () => {
                                 onPress={() => setPassVisible(!passVisible)}
                             />
                         </View>
-
-                        <Text style={{
-                            fontSize: 16,
-                            paddingVertical: 16,
-                            color: '#fff'
-                        }}>
+                        <Text style={[styles.subtitle, {marginVertical: 20}]}>
                             Enter old password
                         </Text>
 
-                        <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4, borderWidth: 0.3, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>  
+                        <View style={[styles.inputfield, {flexDirection: 'row', alignItems: 'center'}]}>
                             <TextInput
                                 placeholder=''
                                 placeholderTextColor='gray'
-                                style={[styles.nametext, {width: '80%', paddingVertical: 4}]}
+                                style={[styles.paragraph, {flexDirection: 'row', fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
                                 maxLength={18}
                                 onChangeText={val => setOldPassword(val)}
                                 secureTextEntry={oldPassVisible === true ? true : false}
@@ -472,13 +442,15 @@ const handleUpdateName = async () => {
                             />
                         </View>
 
-                        <View style={styles.button}>
+                        <View style={{alignItems: 'center', marginVertical: 30,}}>
                             <TouchableOpacity onPress={handleUpdatePassword}>
-                                <View style={styles.savebutton} >
+                                <View style={styles.buttonlayout} >
                                     {isUploading ? (
                                         <ActivityIndicator size="small" color="#00ffff"/>
                                     ) :
-                                        <Text style={{overflow: 'hidden', borderRadius: 13, backgroundColor: 'cyan',color: '#000', paddingVertical: 5, paddingHorizontal: 20}}>Submit</Text>                               
+                                        <Text style={styles.buttontext}>
+                                            Submit
+                                        </Text>                               
                                     } 
                                 </View>
                             </TouchableOpacity>
@@ -500,7 +472,7 @@ const handleUpdateName = async () => {
                     </TouchableWithoutFeedback>
                     
                     
-                    <Text style={styles.header}>
+                    <Text style={[styles.h1, {marginHorizontal: 40, marginVertical: 20,}]}>
                         Account
                     </Text>
                 </View>
@@ -509,40 +481,40 @@ const handleUpdateName = async () => {
                     <View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
-                            <View style={styles.subblock}>
-                                <Text style={[styles.paragraph, {textTransform: 'capitalize'}]}>
+                            <View style={{ width: '75%'}}>
+                                <Text style={styles.subtitle}>
+                                    Plan
+                                </Text>
+                                <Text style={[styles.infotext, {textTransform: 'capitalize'}]}>
                                 {/* {authUser?.signInUserSession.idToken.payload["cognito:groups"][0]} */}
                                     {premium === true ? 'Premium' : 'Basic'}
-                                </Text>
-                                <Text style={styles.subparagraph}>
-                                    Plan
                                 </Text>
                             </View>
                         </View>
 
                         <TouchableWithoutFeedback onPress={showNameModal}>
-                            <View style={styles.emailcontainer }> 
-                                <Text style={ styles.words }>Name</Text>
-                                <Text style={ [styles.placeholdertext, {textTransform: 'capitalize'}] }>{user?.name}</Text>
+                            <View style={styles.accountcontainer }> 
+                                <Text style={ styles.subtitle }>Name</Text>
+                                <Text style={ [styles.infotext, {textTransform: 'capitalize'}] }>{user?.name}</Text>
                             </View>
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback onPress={showEmailModal}>
-                            <View style={styles.emailcontainer }> 
-                                <Text style={ styles.words }>Email</Text>
-                                <Text style={ styles.placeholdertext }>{authUser?.attributes.email}</Text>
+                            <View style={styles.accountcontainer }> 
+                                <Text style={ styles.subtitle }>Email</Text>
+                                <Text style={ styles.infotext }>{authUser?.attributes.email}</Text>
                             </View>
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback onPress={showPassModal}>
-                            <View style={styles.smallcontainer }>
-                                <Text style={ styles.words }>Reset Password</Text>
+                            <View style={styles.accountcontainer }>
+                                <Text style={ styles.subtitle }>Reset Password</Text>
                             </View>
                         </TouchableWithoutFeedback>
 
                         <TouchableWithoutFeedback onPress={showSignOutModal}>
-                            <View style={styles.smallcontainer }>
-                                <Text style={ styles.words }>Log Out</Text>
+                            <View style={styles.accountcontainer }>
+                                <Text style={ styles.subtitle }>Log Out</Text>
                             </View>
                         </TouchableWithoutFeedback>
 
@@ -550,7 +522,7 @@ const handleUpdateName = async () => {
 
                     <View style={{marginBottom: 100}}>
                         <TouchableWithoutFeedback onPress={showDeleteAccountModal}>
-                            <View style={styles.smallcontainer }>
+                            <View style={styles.accountcontainer }>
                                 <Text style={{ fontSize: 16, marginVertical: 20, color: '#ffffffa5', }}>Delete Account</Text>
                             </View>
                         </TouchableWithoutFeedback>
@@ -568,68 +540,5 @@ const handleUpdateName = async () => {
         
     );
 }
-
-const styles = StyleSheet.create ({
-    container: {
-        //flex: 1
-    },
-    header: {
-        color: '#fff',
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginHorizontal: 40,
-        marginVertical: 20,
-    },
-    paragraph: {
-        fontSize: 16,
-        color: '#ffffff'
-    },
-    subparagraph: {
-        fontSize: 12,
-        color: '#ffffffa5'
-    },
-    subblock: {
-        width: '75%',
-    },
-    emailcontainer: {
-        flexDirection: 'row',
-        justifyContent: "space-between",
-        alignSelf: 'center',
-        alignItems: "center",
-        width: '100%',
-        paddingHorizontal: 20,
-    },
-    placeholdertext: {
-        fontSize: 16,
-        color: '#ffffffa5',
-        textAlign: 'right',
-    },
-    words: {
-        fontSize: 16,
-        marginVertical: 20,
-        color: '#fff',
-    },
-    button: {
-        alignItems: 'center',
-        marginVertical: 30,
-    },
-    savebutton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    nametext: {
-        fontSize: 16,
-        color: '#00FFFF',
-        //textAlign: 'center',
-    },
-    smallcontainer: {
-        flexDirection: 'row',
-        justifyContent: "space-between",
-        alignSelf: 'center',
-        alignItems: "center",
-        width: '100%',
-        paddingHorizontal: 20,
-    },
-});
 
 export default AccountScreen;
