@@ -13,6 +13,9 @@ const context = {
     userFinished: [],
     setUserFinished: (val) => {},
 
+    userFollowing: [],
+    setUserFollowing: (val) => {},
+
     isRootScreen: null,
     setIsRootScreen: (val: boolean) => {},
 

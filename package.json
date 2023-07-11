@@ -31,6 +31,7 @@
     "expo": "~48.0.18",
     "expo-av": "^13.2.1",
     "expo-dev-client": "~2.2.1",
+    "expo-device": "~5.2.1",
     "expo-document-picker": "~11.2.2",
     "expo-image-manipulator": "~11.1.1",
     "expo-image-picker": "~14.1.1",
@@ -40,6 +41,7 @@
     "expo-permissions": "~14.1.1",
     "expo-splash-screen": "^0.18.2",
     "expo-status-bar": "~1.4.4",
+    "expo-tracking-transparency": "~3.0.3",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-animatable": "^1.3.3",
@@ -55,9 +57,7 @@
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "^0.19.6",
-    "stream": "^0.0.2",
-    "expo-tracking-transparency": "~3.0.3",
-    "expo-device": "~5.2.1"
+    "stream": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -65,7 +65,9 @@
     "@types/react-native": "^0.72.2",
     "@types/react-native-modal-dropdown": "^1.0.1",
     "@types/react-native-vector-icons": "^6.4.13",
+    "metro": "^0.77.0",
     "metro-config": "^0.71.1",
+    "metro-core": "^0.77.0",
     "typescript": "^4.9.4"
   },
   "private": true

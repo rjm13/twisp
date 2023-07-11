@@ -3,7 +3,6 @@ import {
     View, 
     Text, 
     StyleSheet, 
-    ScrollView, 
     TouchableWithoutFeedback, 
     TouchableOpacity,  
     TextInput,
@@ -23,9 +22,12 @@ import { getUser } from '../src/graphql/queries';
 import { updateUser } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
+import useStyles from '../styles';
 //import Purchases from 'react-native-purchases';
 
 const AccountScreen = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     const { premium } = useContext(AppContext);
     const { setPremium } = useContext(AppContext);
@@ -36,8 +38,6 @@ const AccountScreen = ({navigation} : any) => {
     const [ confirmCode, setConfirmCode] = useState('');
     const [ Password, setPassword] = useState('');
     const [ oldPassword, setOldPassword] = useState('');
-
-
 
     const [passVisible, setPassVisible] = useState(true);
     const [oldPassVisible, setOldPassVisible] = useState(true);
@@ -56,7 +56,6 @@ const handleUpdateName = async () => {
 
         let result = await API.graphql(graphqlOperation(
             updateUser, { input: updatedUser }
-        
             ))
         console.log(result);
 
@@ -80,8 +79,6 @@ const handleUpdateName = async () => {
 
             //console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
 
-            
-
             setAuthUser(userInfo);
 
             if (!userInfo) {return;}
@@ -95,7 +92,6 @@ const handleUpdateName = async () => {
                     setUser(userData.data.getUser);
                 }
 
-
             } catch (e) {
                 console.log(e);
             }
@@ -108,12 +104,6 @@ const handleUpdateName = async () => {
     const [visible, setVisible] = useState(false);
     const showNameModal = () => setVisible(true);
     const hideNameModal = () => setVisible(false);
-    const containerStyle = {
-        backgroundColor: '#363636', 
-        padding: 20,
-        margin: 20,
-        borderRadius: 15,
-    };
 
 //EmailModal
     const [visible4, setVisible4] = useState(false);
@@ -236,24 +226,18 @@ const handleUpdateName = async () => {
     return (
         <View>
 {/* //Update name  */}
-            <Modal 
-                onDismiss={hideNameModal}
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-                onRequestClose={() => {setVisible(false);}}
-            >   
-                <TouchableOpacity onPress={() => {setVisible(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
-                    <View style={{ alignItems: 'center',backgroundColor: '#363636', padding: 20, margin: 20, borderRadius: 15,}}>
-                    <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
+            <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => {setVisible(false);}}>   
+                <TouchableOpacity onPress={() => {setVisible(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ alignItems: 'center',backgroundColor: '#000'}}>
+                    <Text style={[styles.subtitle, {marginBottom: 20}]}>
                         Enter a new name
                     </Text>
 
-                    <View style={{ borderWidth: 0.3, paddingVertical: 4, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
+                    <View style={styles.inputfield}>
                         <TextInput
                             placeholder={user?.name}
                             placeholderTextColor='gray'
-                            style={[styles.nametext, {marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
+                            style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
                             maxLength={30}
                             multiline={false}
                             onChangeText={val => setName(val)}
@@ -261,14 +245,14 @@ const handleUpdateName = async () => {
                         />
                     </View>
 
-                    <View style={styles.button}>
+                    <View style={{alignItems: 'center', marginVertical: 30,}}>
                         <TouchableOpacity
                             onPress={handleUpdateName}>
-                            <View style={styles.savebutton} >
+                            <View style={styles.buttonlayout} >
                                 {isUploading ? (
                                     <ActivityIndicator size="small" color="#00ffff"/>
                                 ) : 
-                                    <Text style={{overflow: 'hidden', borderRadius: 13, backgroundColor: 'cyan', color: '#000', paddingVertical: 5, paddingHorizontal: 20}}>
+                                    <Text style={styles.buttontext}>
                                         Submit
                                     </Text> 
                                 } 
@@ -503,12 +487,7 @@ const handleUpdateName = async () => {
                 </TouchableOpacity>
             </Modal>
             
-            <LinearGradient
-                colors={['#363636a5', '#363636a5', 'black']}
-                //style={styles.container}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-            >
+            <LinearGradient colors={['#363636a5', '#363636a5', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                 <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
                     <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                         <View style={{padding: 30, margin:-30}}>

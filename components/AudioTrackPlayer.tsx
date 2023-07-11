@@ -59,37 +59,14 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const AudioPlayer  = () => {
 
-    // const setUpTrackPlayer = async () => {
-    //     try {
-    //         console.log('attempting...')
-    //       await TrackPlayer.setupPlayer({});
-    //       await TrackPlayer.reset();
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   };
+    //pin to playlist functions
+    const [nextToken, setNextToken] = useState()
 
-    //   useEffect(() => {
-    //     TrackPlayer.updateOptions({
-    //       //stopWithApp: false,
-    //       capabilities: [
-    //         Capability.Play,
-    //         Capability.Pause,
-    //         //Capability.SkipToNext,
-    //         //Capability.SkipToPrevious,
-    //         Capability.Stop,
-    //     ],
-    //     compactCapabilities: [Capability.Play, Capability.Pause],
-    //     notificationCapabilities: [
-    //         Capability.Play,
-    //         Capability.Pause,
-    //         //Capability.SkipToNext,
-    //         //Capability.SkipToPrevious,
-    //       ],
-    //     });
-    //     setUpTrackPlayer();
-    //     //return () => TrackPlayer.destroy();
-    //   }, []);
+    const { userPins } = useContext(AppContext);
+    const { setUserPins } = useContext(AppContext);
+
+    const { userFinished } = useContext(AppContext);
+    const { setUserFinished } = useContext(AppContext);
 
 //get the global page state for the audio player
     const { isRootScreen } = useContext(AppContext);
@@ -209,7 +186,7 @@ useEffect(() => {
         }
     }, [storyID])
 
-//fetch the story attributes and audioUri from the s3 bucket
+//fetch the story and user attributes and audioUri from the s3 bucket
     useEffect(() => {
 
         const fetchStory = async () => {
@@ -271,14 +248,9 @@ useEffect(() => {
                     setInProgressID(UserData.data.getUser.inProgressStories.items[i].id);
                     setPosition(UserData.data.getUser.inProgressStories.items[i].time);
                     setInitialPosition(UserData.data.getUser.inProgressStories.items[i].time);
-                    console.log('position is set as...')
-                    console.log(UserData.data.getUser.inProgressStories.items[i].time)
                     return;
                 }
-                 console.log('position is...')
-                console.log(position)
             }
-           
         }
 
         if (isPlaying === true) {
@@ -292,8 +264,6 @@ useEffect(() => {
             fetchUser();
         }
     }, [storyID])
-
-
 
 //audio player
 
@@ -317,16 +287,37 @@ useEffect(() => {
     }
 
 //unpin a story
-    const unPinStory = async () => {
+    const unPinStory = async ({storyID} : any) => {
+        
+        let userInfo = await Auth.currentAuthenticatedUser();
 
-        for (let i = 0; i < user.Pinned.items.length; i++) {
-            if (user.Pinned.items[i] === storyID) {
-                await API.graphql(graphqlOperation(
-                    deletePinnedStory, {id: user.Pinned.items[i].id}
-                ))
+        let getPin = await API.graphql(graphqlOperation(
+            getUser, {nextToken, id: userInfo.attributes.sub}
+        ))
 
+        const getThePins = async () => {
+            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
+                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+                    let deleteConnection = await API.graphql(graphqlOperation(
+                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                    ))
+                    console.log(deleteConnection)
+                }
+
+                if (getPin.data.getUser.Pinned.nextToken) {
+                    setNextToken(getPin.data.getUser.Pinned.nextToken);
+                    getThePins();
+                    return;
+                }
             }
+
+                const index = userPins.indexOf(storyID);
+
+                const x = userPins.splice(index, 1);
+
+                setUserPins(x)
         }
+        getThePins(); 
     }
 
 //rating state (if rated or not)
@@ -350,6 +341,7 @@ useEffect(() => {
 
 //add the story to the history list when finished by creating a new history item
 const AddToHistory = async () => {
+    
     //check if the story is already in the history
     let userInfo = await Auth.currentAuthenticatedUser();
 
@@ -371,8 +363,10 @@ const AddToHistory = async () => {
             updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
         ))
 
+        setUserFinished(userFinished.push(storyID))
+
         //unpin the story, if pinned
-        unPinStory();
+        unPinStory(storyID);
 
         //delete the inProgress story, if it exists
         await API.graphql(graphqlOperation(
@@ -400,6 +394,9 @@ const AddToHistory = async () => {
         ))
 
         setProgUpdate(!progUpdate);
+
+          //unpin the story, if pinned
+          unPinStory(storyID);
 
         setInProgressID(null);
         RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
@@ -430,14 +427,12 @@ const AddProgress = async () => {
 //update the story that is in progress
 const UpdateProgress = async () => {
     if (position !== 0) {
-        const response = await API.graphql(graphqlOperation(
+        await API.graphql(graphqlOperation(
             updateInProgressStory, {input: {
                 id: inProgressID,
                 time: position,
             }}
         ))
-        console.log('update progress to')
-        console.log(response.data.updateInProgressStory.time)
     }
     
     
@@ -480,9 +475,6 @@ const ProgressCheck = () => {
     //const ifPlaying = playbackState === State.Playing;
 
     useEffect(() => {
-        console.log('playback state is...')
-        console.log(playbackState)
-        console.log('complete is' + complete)
     if (playbackState === 2) {
         setIsPlaying(true)
     } else if (playbackState === 3) {
@@ -496,10 +488,6 @@ const ProgressCheck = () => {
 
 //audio play and pause control
     async function PlayPause() {
-
-        console.log('stats are...')
-        console.log(position)
-        console.log(slideLength)
 
         if (complete === false) {
             return;

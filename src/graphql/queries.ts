@@ -48,56 +48,6 @@ export const getUser = /* GraphQL */ `
           type
           userID
           storyID
-          story {
-            id
-    		    type
-            createdAt
-            updatedAt
-            title
-            hidden
-            genreID
-            genre {
-              id
-              genre
-              color
-              icon
-            }
-            approved
-            status
-            imageUri
-            audioUri
-            publisher {
-              type
-              createdAt
-              updatedAt
-              id
-              name
-              email
-              imageUri
-              bio
-              publisherName
-              isPublisher
-              topthree
-              plan
-              __typename
-            }
-            publisherID
-            author
-            narrator
-            artist
-            time
-            summary
-            description
-            nsfw
-            comments {
-              nextToken
-              __typename
-            }
-            tags {
-              nextToken
-              __typename
-            }
-          }
           eroticStoryID
           createdAt
           updatedAt
@@ -160,49 +110,6 @@ export const getUser = /* GraphQL */ `
           type
           userID
           storyID
-          story {
-            id
-    		    type
-            createdAt
-            updatedAt
-            title
-            hidden
-            approved
-            status
-            imageUri
-            audioUri
-            publisher {
-              type
-              createdAt
-              updatedAt
-              id
-              name
-              email
-              imageUri
-              bio
-              publisherName
-              isPublisher
-              topthree
-              plan
-              __typename
-            }
-            publisherID
-            author
-            narrator
-            artist
-            time
-            summary
-            description
-            nsfw
-            comments {
-              nextToken
-              __typename
-            }
-            tags {
-              nextToken
-              __typename
-            }
-          }
           createdAt
           updatedAt
           time
@@ -245,12 +152,6 @@ export const getUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            icon
-            color
-            genre
-          }
           hidden
           status
           numListens
@@ -587,10 +488,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
-          tag {
-            id
-            tagName
-          }
           createdAt
           updatedAt
           __typename
@@ -1061,73 +958,6 @@ export const getTag = /* GraphQL */ `
         items {
           id
           storyId
-          story {
-            id
-            type
-            createdAt
-            updatedAt
-            title
-            imageUri
-            audioUri
-            publisher {
-              type
-              createdAt
-              updatedAt
-              id
-              name
-              email
-              imageUri
-              bio
-              publisherName
-              isPublisher
-              topthree
-              plan
-              __typename
-            }
-            publisherID
-            author
-            narrator
-            artist
-            time
-            summary
-            description
-            nsfw
-            comments {
-              nextToken
-              __typename
-            }
-            tags {
-              nextToken
-              __typename
-            }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        approved
-        __typename
-      }
-          
           tagId
           createdAt
           updatedAt
@@ -3601,18 +3431,18 @@ export const listEroticaTags = /* GraphQL */ `
     }
   }
 `;
-export const followConnectionsByFollowerIDAndCreatedAt = /* GraphQL */ `
-  query FollowConnectionsByFollowerIDAndCreatedAt(
+export const connectionsByFollower = /* GraphQL */ `
+  query ConnectionsByFollower(
     $followerID: ID!
-    $createdAt: ModelStringKeyConditionInput
+    $updatedAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelFollowConnectionFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    followConnectionsByFollowerIDAndCreatedAt(
+    connectionsByFollower(
       followerID: $followerID
-      createdAt: $createdAt
+      updatedAt: $updatedAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -3662,8 +3492,8 @@ export const followConnectionsByFollowerIDAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const followConnectionsByAuthorIDAndCreatedAt = /* GraphQL */ `
-  query FollowConnectionsByAuthorIDAndCreatedAt(
+export const connectionsByAuthor = /* GraphQL */ `
+  query ConnectionsByAuthor(
     $authorID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -3671,7 +3501,7 @@ export const followConnectionsByAuthorIDAndCreatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    followConnectionsByAuthorIDAndCreatedAt(
+    connectionsByAuthor(
       authorID: $authorID
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -3899,8 +3729,8 @@ export const storiesByUpdated = /* GraphQL */ `
     }
   }
 `;
-export const storiesByPublisherIDAndCreatedAt = /* GraphQL */ `
-  query StoriesByPublisherIDAndCreatedAt(
+export const storiesByPublisher = /* GraphQL */ `
+  query StoriesByPublisher(
     $publisherID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -3908,7 +3738,7 @@ export const storiesByPublisherIDAndCreatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    storiesByPublisherIDAndCreatedAt(
+    storiesByPublisher(
       publisherID: $publisherID
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -3987,18 +3817,18 @@ export const storiesByPublisherIDAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const storiesByGenreIDAndId = /* GraphQL */ `
-  query StoriesByGenreIDAndId(
+export const storiesByGenre = /* GraphQL */ `
+  query StoriesByGenre(
     $genreID: ID!
-    $id: ModelIDKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelStoryFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    storiesByGenreIDAndId(
+    storiesByGenre(
       genreID: $genreID
-      id: $id
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -4579,8 +4409,8 @@ export const EroticTagsByUpdated = /* GraphQL */ `
     }
   }
 `;
-export const pinnedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
-  query PinnedStoriesByUserIDAndCreatedAt(
+export const pinnedStoriesByUser = /* GraphQL */ `
+  query PinnedStoriesByUser(
     $userID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -4588,7 +4418,7 @@ export const pinnedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    pinnedStoriesByUserIDAndCreatedAt(
+    pinnedStoriesByUser(
       userID: $userID
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -4747,8 +4577,8 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
     }
   }
 `;
-export const inProgressStoriesByUserIDAndUpdatedAt = /* GraphQL */ `
-  query InProgressStoriesByUserIDAndUpdatedAt(
+export const inProgressStoriesByUser = /* GraphQL */ `
+  query InProgressStoriesByUser(
     $userID: ID!
     $updatedAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -4756,7 +4586,7 @@ export const inProgressStoriesByUserIDAndUpdatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    inProgressStoriesByUserIDAndUpdatedAt(
+    inProgressStoriesByUser(
       userID: $userID
       updatedAt: $updatedAt
       sortDirection: $sortDirection
@@ -4961,8 +4791,8 @@ export const inProgressEroticStoriesByUserIDAndUpdatedAt = /* GraphQL */ `
     }
   }
 `;
-export const finishedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
-  query FinishedStoriesByUserIDAndCreatedAt(
+export const finishedStoriesByUser = /* GraphQL */ `
+  query FinishedStoriesByUser(
     $userID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -4970,7 +4800,7 @@ export const finishedStoriesByUserIDAndCreatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    finishedStoriesByUserIDAndCreatedAt(
+    finishedStoriesByUser(
       userID: $userID
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -5249,8 +5079,8 @@ export const finishedStoriesByEroticStoryIDAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const commentsByStoryIDAndCreatedAt = /* GraphQL */ `
-  query CommentsByStoryIDAndCreatedAt(
+export const commentsByStory = /* GraphQL */ `
+  query CommentsByStory(
     $storyID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -5258,7 +5088,7 @@ export const commentsByStoryIDAndCreatedAt = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    commentsByStoryIDAndCreatedAt(
+    commentsByStory(
       storyID: $storyID
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -5445,8 +5275,8 @@ export const commentsByEroticStoryIDAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const reactionsByStoryIDAndId = /* GraphQL */ `
-  query ReactionsByStoryIDAndId(
+export const reactionsByStory = /* GraphQL */ `
+  query ReactionsByStory(
     $storyID: ID!
     $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -5454,7 +5284,7 @@ export const reactionsByStoryIDAndId = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    reactionsByStoryIDAndId(
+    reactionsByStory(
       storyID: $storyID
       id: $id
       sortDirection: $sortDirection
@@ -5912,8 +5742,8 @@ export const ratingsByEroticStoryIDAndId = /* GraphQL */ `
     }
   }
 `;
-export const ratingsByUserIDAndId = /* GraphQL */ `
-  query RatingsByUserIDAndId(
+export const ratingsByUser = /* GraphQL */ `
+  query RatingsByUser(
     $userID: ID!
     $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -5921,7 +5751,7 @@ export const ratingsByUserIDAndId = /* GraphQL */ `
     $limit: Int
     $nextToken: String
   ) {
-    ratingsByUserIDAndId(
+    ratingsByUser(
       userID: $userID
       id: $id
       sortDirection: $sortDirection

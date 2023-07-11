@@ -70,9 +70,10 @@ const Redirect = ({route, navigation} : any) => {
 
         const fetchUser = async () => {
 
-            const pins = [];
-            const rates = [];
-            const finished = [];
+            let pins = [];
+            let rates = [];
+            let finished = [];
+            let following = [];
 
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
@@ -154,9 +155,21 @@ const Redirect = ({route, navigation} : any) => {
                             setUserFinished(finished);
                         }
 
+                        const getTheFollowing = async () => {
+                            for (let i = 0; i < userData.data.getUser.Following.items.length; i++) {
+                                following.push(userData.data.getUser.Following.items[i].storyID)
+                            }
+                            if (userData.data.getUser.Following.nextToken) {
+                                setNextToken(userData.data.getUser.Following.nextToken)
+                                getTheFollowing();
+                                return;
+                            }
+                            setUserFinished(following);
+                        }
+
                         getThePins();
                         getTheRatings();
-                        getTheFinished();
+                        getTheFollowing();
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'Root' }],

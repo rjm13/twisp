@@ -158,6 +158,8 @@ export default function App() {
 
   const [userFinished, setUserFinished] = useState([]);
 
+  const [userFollowing, setUserFollowing] = useState([]);
+
   const [isRootScreen, setIsRootScreen] = useState<boolean>(false);
 
   const [nsfwOn, setNSFWOn] = useState<boolean>(false);
@@ -203,7 +205,9 @@ export default function App() {
           userRates,
           setUserRates: (val: []) => setUserFinished(val),
           userFinished,
-          setUserFinished: (val: []) => setUserFinished(val),
+          setUserFinished: (val: []) => setUserFollowing(val),
+          userFollowing,
+          setUserFollowing: (val: []) => setUserFollowing(val),
 
         }}>
             <Navigation colorScheme='dark'/>

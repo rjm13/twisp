@@ -18,6 +18,11 @@ return StyleSheet.create ({
         //width: SCREEN_WIDTH,
         //height: SCREEN_HEIGHT,
       },
+      h1: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#fff',
+      },
     title: {
         fontSize: 18,
         fontWeight: 'bold',

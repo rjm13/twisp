@@ -320,6 +320,8 @@ const StoryScreen  = ({navigation} : any) => {
                 updateStory, {input: {
                     id: storyID, ratingAvg: newRating, ratingAmt: Story?.ratingAmt + 1}}
             ))
+
+            setUserRates(userRates.push(storyID))
         }
 
         hideRatingModal();
@@ -461,10 +463,6 @@ const StoryScreen  = ({navigation} : any) => {
             if (userFinished.includes(id) === true) {
                 setIsFinished(true);
             }
-
-            // if (isRated === false && isFinished === true ) {
-            //     showRatingModal();
-            // }
             
             const UserImage = await Storage.get(userData.data.getUser.imageUri)
             setUserImage(UserImage)

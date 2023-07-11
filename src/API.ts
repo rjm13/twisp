@@ -12434,17 +12434,17 @@ export type ListEroticaTagsQuery = {
   } | null,
 };
 
-export type FollowConnectionsByFollowerIDAndCreatedAtQueryVariables = {
+export type ConnectionsByFollowerQueryVariables = {
   followerID: string,
-  createdAt?: ModelStringKeyConditionInput | null,
+  updatedAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelFollowConnectionFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type FollowConnectionsByFollowerIDAndCreatedAtQuery = {
-  followConnectionsByFollowerIDAndCreatedAt?:  {
+export type ConnectionsByFollowerQuery = {
+  connectionsByFollower?:  {
     __typename: "ModelFollowConnectionConnection",
     items:  Array< {
       __typename: "FollowConnection",
@@ -12489,7 +12489,7 @@ export type FollowConnectionsByFollowerIDAndCreatedAtQuery = {
   } | null,
 };
 
-export type FollowConnectionsByAuthorIDAndCreatedAtQueryVariables = {
+export type ConnectionsByAuthorQueryVariables = {
   authorID: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -12498,8 +12498,8 @@ export type FollowConnectionsByAuthorIDAndCreatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type FollowConnectionsByAuthorIDAndCreatedAtQuery = {
-  followConnectionsByAuthorIDAndCreatedAt?:  {
+export type ConnectionsByAuthorQuery = {
+  connectionsByAuthor?:  {
     __typename: "ModelFollowConnectionConnection",
     items:  Array< {
       __typename: "FollowConnection",
@@ -12708,7 +12708,7 @@ export type StoriesByUpdatedQuery = {
   } | null,
 };
 
-export type StoriesByPublisherIDAndCreatedAtQueryVariables = {
+export type StoriesByPublisherQueryVariables = {
   publisherID: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -12717,8 +12717,8 @@ export type StoriesByPublisherIDAndCreatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type StoriesByPublisherIDAndCreatedAtQuery = {
-  storiesByPublisherIDAndCreatedAt?:  {
+export type StoriesByPublisherQuery = {
+  storiesByPublisher?:  {
     __typename: "ModelStoryConnection",
     items:  Array< {
       __typename: "Story",
@@ -12790,17 +12790,17 @@ export type StoriesByPublisherIDAndCreatedAtQuery = {
   } | null,
 };
 
-export type StoriesByGenreIDAndIdQueryVariables = {
+export type StoriesByGenreQueryVariables = {
   genreID: string,
-  id?: ModelIDKeyConditionInput | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelStoryFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type StoriesByGenreIDAndIdQuery = {
-  storiesByGenreIDAndId?:  {
+export type StoriesByGenreQuery = {
+  storiesByGenre?:  {
     __typename: "ModelStoryConnection",
     items:  Array< {
       __typename: "Story",
@@ -13328,7 +13328,7 @@ export type EroticTagsByUpdatedQuery = {
   } | null,
 };
 
-export type PinnedStoriesByUserIDAndCreatedAtQueryVariables = {
+export type PinnedStoriesByUserQueryVariables = {
   userID: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -13337,8 +13337,8 @@ export type PinnedStoriesByUserIDAndCreatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type PinnedStoriesByUserIDAndCreatedAtQuery = {
-  pinnedStoriesByUserIDAndCreatedAt?:  {
+export type PinnedStoriesByUserQuery = {
+  pinnedStoriesByUser?:  {
     __typename: "ModelPinnedStoryConnection",
     items:  Array< {
       __typename: "PinnedStory",
@@ -13484,7 +13484,7 @@ export type InProgressStoriesByUpdatedQuery = {
   } | null,
 };
 
-export type InProgressStoriesByUserIDAndUpdatedAtQueryVariables = {
+export type InProgressStoriesByUserQueryVariables = {
   userID: string,
   updatedAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -13493,8 +13493,8 @@ export type InProgressStoriesByUserIDAndUpdatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type InProgressStoriesByUserIDAndUpdatedAtQuery = {
-  inProgressStoriesByUserIDAndUpdatedAt?:  {
+export type InProgressStoriesByUserQuery = {
+  inProgressStoriesByUser?:  {
     __typename: "ModelInProgressStoryConnection",
     items:  Array< {
       __typename: "InProgressStory",
@@ -13680,7 +13680,7 @@ export type InProgressEroticStoriesByUserIDAndUpdatedAtQuery = {
   } | null,
 };
 
-export type FinishedStoriesByUserIDAndCreatedAtQueryVariables = {
+export type FinishedStoriesByUserQueryVariables = {
   userID: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -13689,8 +13689,8 @@ export type FinishedStoriesByUserIDAndCreatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type FinishedStoriesByUserIDAndCreatedAtQuery = {
-  finishedStoriesByUserIDAndCreatedAt?:  {
+export type FinishedStoriesByUserQuery = {
+  finishedStoriesByUser?:  {
     __typename: "ModelFinishedStoryConnection",
     items:  Array< {
       __typename: "FinishedStory",
@@ -13950,7 +13950,7 @@ export type FinishedStoriesByEroticStoryIDAndCreatedAtQuery = {
   } | null,
 };
 
-export type CommentsByStoryIDAndCreatedAtQueryVariables = {
+export type CommentsByStoryQueryVariables = {
   storyID: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -13959,8 +13959,8 @@ export type CommentsByStoryIDAndCreatedAtQueryVariables = {
   nextToken?: string | null,
 };
 
-export type CommentsByStoryIDAndCreatedAtQuery = {
-  commentsByStoryIDAndCreatedAt?:  {
+export type CommentsByStoryQuery = {
+  commentsByStory?:  {
     __typename: "ModelCommentConnection",
     items:  Array< {
       __typename: "Comment",
@@ -14134,7 +14134,7 @@ export type CommentsByEroticStoryIDAndCreatedAtQuery = {
   } | null,
 };
 
-export type ReactionsByStoryIDAndIdQueryVariables = {
+export type ReactionsByStoryQueryVariables = {
   storyID: string,
   id?: ModelIDKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -14143,8 +14143,8 @@ export type ReactionsByStoryIDAndIdQueryVariables = {
   nextToken?: string | null,
 };
 
-export type ReactionsByStoryIDAndIdQuery = {
-  reactionsByStoryIDAndId?:  {
+export type ReactionsByStoryQuery = {
+  reactionsByStory?:  {
     __typename: "ModelReactionConnection",
     items:  Array< {
       __typename: "Reaction",
@@ -14571,7 +14571,7 @@ export type RatingsByEroticStoryIDAndIdQuery = {
   } | null,
 };
 
-export type RatingsByUserIDAndIdQueryVariables = {
+export type RatingsByUserQueryVariables = {
   userID: string,
   id?: ModelIDKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
@@ -14580,8 +14580,8 @@ export type RatingsByUserIDAndIdQueryVariables = {
   nextToken?: string | null,
 };
 
-export type RatingsByUserIDAndIdQuery = {
-  ratingsByUserIDAndId?:  {
+export type RatingsByUserQuery = {
+  ratingsByUser?:  {
     __typename: "ModelRatingConnection",
     items:  Array< {
       __typename: "Rating",

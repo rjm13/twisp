@@ -30,10 +30,13 @@ import StoryTile from '../../components/StoryTile';
 
 
 
-const AudioListByAuthor = ({user, status} : any) => {
+const AudioListByAuthor = ({status} : any) => {
 
     const { nsfwOn } = useContext(AppContext);
     const { ADon } = useContext(AppContext);
+
+    const { userFollowing } = useContext(AppContext);
+    const { setUserFollowing } = useContext(AppContext);
 
     const navigation = useNavigation();
 
@@ -114,12 +117,16 @@ const AudioListByAuthor = ({user, status} : any) => {
                     // } 
                     // setAudioSamples(audiosam);
 
-                    for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
-                        if (currentuser.data.getUser.following.items[i].authorID === response.data.getUser.id ) {
-                            setFollowing(true);
-                            setFollowingConnID(currentuser.data.getUser.following.items[i].id)
-                        }
+                    if (userFollowing.includes(userID)) {
+                        setFollowing(true);
+                        //setFollowingConnID(currentuser.data.getUser.following.items[i].id)
                     }
+
+                    // for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
+                    //     if (currentuser.data.getUser.following.items[i].authorID === response.data.getUser.id ) {
+                            
+                    //     }
+                    // }
 
                     // for (let i = 0; i < response.data.getUser.narrated.items.length; i++) {
                     //     if (response.data.getUser.narrated.items[i].hidden === false && 
@@ -305,10 +312,10 @@ const AudioListByAuthor = ({user, status} : any) => {
         extrapolate: 'clamp',
         });
 
-    const [User, setUser] = useState(null);
+        const [User, setUser] = useState(null);
 
-    const route = useRoute();
-    const {userID} = route.params
+        const route = useRoute();
+        const {userID} = route.params
 
 
       const [currentUser, setCurrentUser] = useState(null)
@@ -324,12 +331,33 @@ const AudioListByAuthor = ({user, status} : any) => {
             createFollowConnection, {input: {followerID: currentUser.id, authorID: User.id}}
         ))
         setFollowingConnID(response.data.createFollowingConn.id)
+        setUserFollowing(userFollowing.push(userID))
     }
 
     const unFollowUser = async () => {
-        await API.graphql(graphqlOperation(
-            deleteFollowConnection, {input: {"id": followingConnID}}
-        ))
+
+        let userInfo = await Auth.currentAuthenticatedUser();
+
+        const currentuser = await API.graphql(
+            graphqlOperation(
+                getUser, {id: userInfo.attributes.sub }
+            )
+        )
+
+        for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
+            if (currentuser.data.getUser.following.items[i].authorID === userID ) {
+                await API.graphql(graphqlOperation(
+                    deleteFollowConnection, {input: {"id": currentuser.data.getUser.following.items[i].id}}
+                ))
+                const index = userFollowing.indexOf(userID);
+    
+                const x = userFollowing.splice(index, 1);
+    
+                setUserFollowing(x)
+            }
+        }
+
+        
     }
 
     function FollowButton () {

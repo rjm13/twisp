@@ -2,7 +2,6 @@ import React from 'react';
 import { 
     View, 
     Text, 
-    StyleSheet, 
     ScrollView, 
     TouchableWithoutFeedback, 
     Linking,
@@ -13,8 +12,12 @@ import {StatusBar} from 'expo-status-bar';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
+import useStyles from '../styles';
+
 
 const AboutScreen = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     const pkg = require('../package.json');
 
@@ -23,13 +26,7 @@ const AboutScreen = ({navigation} : any) => {
     return (
         <View>
             
-            <LinearGradient
-                colors={['#363636a5', '#363636a5', 'black']}
-                //style={styles.container}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-            >
-                
+            <LinearGradient colors={['#363636a5', '#363636a5', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}> 
                 <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
                     <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                             <View style={{padding: 30, margin:-30}}>
@@ -40,7 +37,7 @@ const AboutScreen = ({navigation} : any) => {
                                 />
                             </View>
                         </TouchableWithoutFeedback>
-                    <Text style={styles.header}>
+                    <Text style={[styles.h1, {marginHorizontal: 40, marginVertical: 20,}]}>
                         About
                     </Text>
                 </View>
@@ -48,11 +45,11 @@ const AboutScreen = ({navigation} : any) => {
                 <ScrollView style={{ height: '86%'}}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
-                        <View style={styles.subblock}>
+                        <View style={{width: '75%'}}>
                             <Text style={styles.paragraph}>
                                 Version
                             </Text>
-                            <Text style={styles.subparagraph}>
+                            <Text style={styles.subtext}>
                                 {appVersion}
                             </Text>
                         </View>
@@ -104,29 +101,5 @@ const AboutScreen = ({navigation} : any) => {
         </View>
     );
 }
-
-const styles = StyleSheet.create ({
-    container: {
-        //flex: 1
-    },
-    header: {
-        color: '#fff',
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginHorizontal: 40,
-        marginVertical: 20,
-    },
-    paragraph: {
-        fontSize: 16,
-        color: '#ffffff'
-    },
-    subparagraph: {
-        fontSize: 12,
-        color: '#ffffffa5'
-    },
-    subblock: {
-        width: '75%',
-    },
-});
 
 export default AboutScreen;
