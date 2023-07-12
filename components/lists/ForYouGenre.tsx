@@ -13,7 +13,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HorzStoryTile from '../HorzStoryTile';
 import { AppContext } from '../../AppContext';
 
-import { getGenre, storiesByUpdated, listStories } from '../../src/graphql/queries';
+import { getGenre, storiesByGenre, listStories } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 
@@ -53,19 +53,17 @@ const ForYouGenre = ({genreid} : any) => {
                 try {
                     const response = await API.graphql(
                         graphqlOperation(
-                            storiesByUpdated, {
+                            storiesByGenre, {
                                 nextToken,
+                                genreID: genreid,
                                 type: 'Story',
                                 sortDirection: 'DESC',
                                 filter: {
                                     // ratingAvg: {
                                     //     gt: 6
                                     // },
-                                    genreID: {
-                                        eq: genreid
-                                    },
                                     approved: {
-                                        eq: 'approved'
+                                        eq: true
                                     },
                                     hidden: {
                                         eq: false
@@ -78,18 +76,16 @@ const ForYouGenre = ({genreid} : any) => {
                         )
                     )
 
-                    console.log(response.data.storiesByUpdated.items.length)
-
-                    if (response.data.storiesByUpdated.items.length > 0) {
-                        for (let i = 0; i < response.data.storiesByUpdated.items.length; i++) {
-                            if (i === response.data.storiesByUpdated.items.length - 1 ) {
-                                genreArr.push(response.data.storiesByUpdated.items[i])
+                    if (response.data.storiesByGenre.items.length > 0) {
+                        for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                            if (i === response.data.storiesByGenre.items.length - 1 ) {
+                                genreArr.push(response.data.storiesByGenre.items[i])
                                 if (genreArr.length === 8) {
                                     setTagStories(genreArr);
                                     return
                                 }
-                                if (response.data.storiesByUpdated.nextToken) {
-                                    setNextToken(response.data.storiesByUpdated.nextToken)
+                                if (response.data.storiesByGenre.nextToken) {
+                                    setNextToken(response.data.storiesByGenre.nextToken)
                                     fetchStorys()
                                     return
                                 } 
@@ -102,7 +98,7 @@ const ForYouGenre = ({genreid} : any) => {
                                     setTagStories(genreArr);
                                     return
                                 }
-                                else {genreArr.push(response.data.storiesByUpdated.items[i])}
+                                else {genreArr.push(response.data.storiesByGenre.items[i])}
                                 setTagStories(genreArr);
                                 
                             }

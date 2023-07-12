@@ -48,7 +48,7 @@ const ShortSweet = () => {
                                         eq: false
                                     },
                                     approved: {
-                                        eq: 'approved'
+                                        eq: true
                                     },
                                     time: {
                                         //under 30 minutes
@@ -59,9 +59,6 @@ const ShortSweet = () => {
                                     },
                                     ratingAvg: {
                                         gt: 6
-                                    },
-                                    genreID: {
-                                        ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
                                     },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
