@@ -16,7 +16,7 @@ import {StatusBar} from 'expo-status-bar';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import { getUser } from '../src/graphql/queries';
+import { storiesByPublisher } from '../src/graphql/queries';
 import { updateStory } from '../src/graphql/mutations';
 
 
@@ -137,7 +137,7 @@ const MyStories = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (
@@ -180,13 +180,12 @@ const MyStories = ({navigation} : any) => {
             try {
 
                 const userStories = await API.graphql(graphqlOperation(
-                    getUser, {id: userInfo.attributes.sub
+                    storiesByPublisher, {
+                        publisherID: userInfo.attributes.sub
                 }))
 
-                for (let i = 0; i < userStories.data.getUser.published.items.length; i++) {
-                    if (userStories.data.getUser.published.items[i].hidden === false) {
-                        storiesarr.push(userStories.data.getUser.published.items[i])
-                    }
+                for (let i = 0; i < userStories.data.storiesByPublisher.items.length; i++) {
+                    storiesarr.push(userStories.data.storiesByPublisher.items[i])
                 }
 
                 setStories(storiesarr);
@@ -218,11 +217,7 @@ const MyStories = ({navigation} : any) => {
     const showModal = () => setVisible(true);
 
     const hideModal = () => setVisible(false);
-    const containerStyle = {
-        backgroundColor: '#363636', 
-        margin: 20,
-        borderRadius: 15
-    };
+
 
     const [confirm, setConfirm] = useState(false);
 

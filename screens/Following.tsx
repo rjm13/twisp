@@ -10,15 +10,17 @@ import {
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
 import {LinearGradient} from 'expo-linear-gradient';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { getUser } from '../src/graphql/queries';
-import { listFollowConnections } from '../src/graphql/queries';
+import { connectionsByFollower } from '../src/graphql/queries';
+
+import useStyles from '../styles';
 
 
 const FollowingScreen = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     const [ users, setUsers ] = useState([]);
 
@@ -38,6 +40,8 @@ const FollowingScreen = ({navigation} : any) => {
         }, 2000);
       }
 
+      const [nextToken, setNextToken] = useState()
+
 //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
@@ -51,16 +55,23 @@ const FollowingScreen = ({navigation} : any) => {
 
             try {
                 const userData = await API.graphql(graphqlOperation(
-                    getUser, {id: userInfo.attributes.sub}
+                    connectionsByFollower, {
+                        nextToken,
+                        followerID: userInfo.attributes.sub
+                    }
                 ))
 
-                if (userData) {setUser(userData.data.getUser);}
+                for (let i = 0; i < userData.data.connectionsByFollower.items.length; i++) {
+                    Following.push(userData.data.connectionsByFollower.items[i].author)  
+                }
+                
+                if (userData.data.connectionsByFollower.nextToken) {
+                    setNextToken(userData.data.connectionsByFollower.nextToken)
+                    fetchUser();
+                    return;
+                }
 
-                for (let i = 0; i < userData.data.getUser.following.items.length; i++) {
-                    Following.push(userData.data.getUser.following.items[i].author) 
-
-                setUsers(Following);
-              } 
+              setUsers(Following);
             } catch (e) {
             console.log(e);
           }
@@ -88,7 +99,7 @@ const FollowingScreen = ({navigation} : any) => {
 
     
         return (
-            <View style={styles.tile}>
+            <View style={{backgroundColor: '#383838a5', marginHorizontal: 20, marginVertical: 10, padding: 20, borderRadius: 15,}}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
                     <TouchableWithoutFeedback onPress={() => navigation.navigate('UserScreen', {userID: id, status: 'publisher'})}>
                         <View style={{ flexDirection: 'row'}}>
@@ -103,7 +114,7 @@ const FollowingScreen = ({navigation} : any) => {
                             />
                         
                             <View style={{ marginHorizontal: 10}}>
-                                <Text style={styles.name}>
+                                <Text style={styles.paragraph}>
                                     {pseudonym}
                                 </Text> 
                                 
@@ -115,7 +126,7 @@ const FollowingScreen = ({navigation} : any) => {
                                         color='#ffffffa5'
                                         style={{ marginRight: 5}}
                                     />
-                                    <Text style={styles.userId}>
+                                    <Text style={{fontSize: 12, color: '#ffffffa5', marginRight: 15, marginLeft: 5,}}>
                                         {numAuthored === null ? 0 : numAuthored}
                                     </Text> 
                                 </View> 
@@ -140,7 +151,7 @@ const FollowingScreen = ({navigation} : any) => {
             author={item}
             name={item.name}
             id={item.id}
-            pseudonym={item.pseudonym}
+            pseudonym={item.publisherName}
             imageUri={item.imageUri}
             authored={item.authored}
             bio={item.bio}
@@ -152,35 +163,19 @@ const FollowingScreen = ({navigation} : any) => {
 
     return (
     <View >
-        <LinearGradient
-        colors={['#363636', 'black', 'black']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-          <View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 60, marginHorizontal: 20}}>
-                  <TouchableWithoutFeedback onPress={ () => navigation.goBack()}>
-                      <View style={{padding: 30, margin: -30}}>
-                        <FontAwesome5 
-                            name='chevron-left'
-                            color='#fff'
-                            size={20}
-                        />
-                    </View>
-                  </TouchableWithoutFeedback>
-                  
-                  
-
-              
-            <View style={{ 
-                flexDirection: 'row', 
-                justifyContent: 'flex-start', 
-                width: '100%', 
-                alignItems: 'flex-end',
-                marginHorizontal: 20,
-                //height: 50,
-                }}>
-        
+        <LinearGradient colors={['#363636', 'black', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+            <View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 60, marginHorizontal: 20}}>
+                    <TouchableWithoutFeedback onPress={ () => navigation.goBack()}>
+                        <View style={{padding: 30, margin: -30}}>
+                            <FontAwesome5 
+                                name='chevron-left'
+                                color='#fff'
+                                size={20}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-start', width: '100%', alignItems: 'flex-end', marginHorizontal: 20,}}>
                 <TouchableWithoutFeedback onPress={() => setSelectedId(1)}>
                     <Text style={{ 
                         color: SelectedId ===  1 ? '#fff' : '#ffffffa5',

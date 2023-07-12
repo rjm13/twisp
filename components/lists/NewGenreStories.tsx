@@ -8,7 +8,7 @@ import {
 import { AppContext } from '../../AppContext';
 import HorzStoryTile from '../HorzStoryTile';
 
-import { storiesByDate } from '../../src/graphql/queries';
+import { storiesByGenre } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 
@@ -27,15 +27,13 @@ const NewGenreStories = ({genreid} : any) => {
                 try {
                     const response = await API.graphql(
                         graphqlOperation(
-                            storiesByDate, {
+                            storiesByGenre, {
+                                genreID: genreid,
                                 type: 'Story',
                                 sortDirection: 'DESC',
                                 filter: {
-                                    genreID: {
-                                        eq: genreid
-                                    },
                                     approved: {
-                                        eq: 'approved'
+                                        eq: true
                                     },
                                     hidden: {
                                         eq: false
@@ -43,12 +41,11 @@ const NewGenreStories = ({genreid} : any) => {
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
                                     }
-                                    
                                 }
                             } 
                         )
                     )
-                    setTagStories(response.data.storiesByDate.items.splice(0,9));
+                    setTagStories(response.data.storiesByGenre.items.splice(0,9));
                 } catch (e) {
                     console.log(e);}
             }

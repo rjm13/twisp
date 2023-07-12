@@ -9,7 +9,7 @@ import {
     ActivityIndicator 
 } from 'react-native';
 
-import { getUser } from '../../src/graphql/queries';
+import { pinnedStoriesByUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 
 import StoryTile from '../StoryTile';
@@ -37,16 +37,13 @@ const AudioStoryList = () => {
             try {
 
                 const pinnedData = await API.graphql(graphqlOperation(
-
-                    getUser, {id: userInfo.attributes.sub}
+                    pinnedStoriesByUser, {
+                        userID: userInfo.attributes.sub,
+                    }
                 ))
 
-                if (pinnedData.data.getUser.Pinned.items.length > 0) {
-                    for (let i = 0; i < pinnedData.data.getUser.Pinned.items.length; i++) {
-                        if (pinnedData.data.getUser.Pinned.items[i].story.hidden === false) {
-                            Pinned.push(pinnedData.data.getUser.Pinned.items[i].story)
-                        } else {return;}
-                    }
+                for (let i = 0; i < pinnedData.data.pinnedStoriesByUser.items.length; i++) {
+                    Pinned.push(pinnedData.data.pinnedStoriesByUser.items[i].story)
                 }
                      
                 setPinnedStories(Pinned);

@@ -22,7 +22,7 @@ import { AppContext } from '../../AppContext';
 //import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
-import { listStories, getUser } from '../../src/graphql/queries';
+import { storiesByGenre, getUser } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
@@ -106,18 +106,16 @@ const GenreCarousel = ({genreid} : any) => {
                 try {
                     const response = await API.graphql(
                         graphqlOperation(
-                            listStories, {
-                                
+                            storiesByGenre, {
+                                nextToken,
+                                genreID: genreid,
                                 filter: {
-                                    genreID: {
-                                        eq: genreid
-                                    },
                                     hidden: {
                                         eq: false
                                     },
-                                    // approved: {
-                                    //     eq: 'approved'
-                                    // },
+                                    approved: {
+                                        eq: true
+                                    },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
                                     },
@@ -131,10 +129,10 @@ const GenreCarousel = ({genreid} : any) => {
                     if (response) {
                         let randomarr = []
                         for (let i = 0; i < 10; i++) {
-                            let x = Math.floor(Math.random() * response.data.listStories.items.length)
+                            let x = Math.floor(Math.random() * response.data.storiesByGenre.items.length)
                             if (randomarr.includes(x) === false) {
                                 randomarr.push(x)
-                                RandomStories.push(response.data.listStories.items[x])
+                                RandomStories.push(response.data.storiesByGenre.items[x])
                             }
                             
                         }

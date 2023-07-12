@@ -7,7 +7,6 @@ import {
     ScrollView,
     FlatList,
     Dimensions,
-    Image
 } from 'react-native';
 
 import {useRoute} from '@react-navigation/native'
@@ -36,8 +35,7 @@ const GenreHome = ({navigation} : any) => {
         id: 1,
         genre: 'random',
         icon: 'dumpster-fire',
-        PrimaryColor: 'gray',
-        SecondaryColor: '#fff',
+        color: 'gray',
         imageUri: null,
     });
 
@@ -60,7 +58,6 @@ const [trendingTags, setTrendingTags] = useState([]);
                     )
                     setGenreInfo(response.data.getGenre);
 
-                    if (genreRoute !== '1108a619-1c0e-4064-8fce-41f1f6262070') {
                         for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
                             if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4 && response.data.getGenre.tags.items[i].tag.nsfw === false) {
                                 if (response.data.getGenre.tags.items[i].tag.count > 0) {
@@ -68,17 +65,16 @@ const [trendingTags, setTrendingTags] = useState([]);
                                 }
                             }
                         }
-                    }
 
-                    if (genreRoute === '1108a619-1c0e-4064-8fce-41f1f6262070') {
-                        for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                            if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4) {
-                                if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                                    Tags.push(response.data.getGenre.tags.items[i].tag)
-                                }
-                            }
-                        }
-                    }
+                    // if (genreRoute === '1108a619-1c0e-4064-8fce-41f1f6262070') {
+                    //     for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
+                    //         if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4) {
+                    //             if (response.data.getGenre.tags.items[i].tag.count > 0) {
+                    //                 Tags.push(response.data.getGenre.tags.items[i].tag)
+                    //             }
+                    //         }
+                    //     }
+                    // }
                     
                     setTrendingTags(Tags);
                 } catch (e) {
@@ -107,21 +103,18 @@ const [trendingTags, setTrendingTags] = useState([]);
         //         )) 
         //         for (let i = 0; i < response.data.listStoryTags.items.length; i++) {
         //             if (imageU === '') {
-        //                 if (response.data.listStoryTags.items[i]?.story.approved === 'approved') {
+        //                 if (response.data.listStoryTags.items[i]?.story.approved === true) {
         //                     let im = await Storage.get(response.data.listStoryTags.items[i]?.story.imageUri)
         //                     setImageU(im)
         //                 }
         //             }
         //             else if (imageU2 === '') {
-        //                 if (response.data.listStoryTags.items[i]?.story.approved === 'approved') {
+        //                 if (response.data.listStoryTags.items[i]?.story.approved === true) {
         //                     let im2 = await Storage.get(response.data.listStoryTags.items[i]?.story.imageUri)
         //                     setImageU2(im2)
         //                 }
         //             }
-        //         }
-                
-                
-                
+        //         }  
         //     }
         //     fetchImages()
         // }, [])
@@ -160,7 +153,7 @@ const [trendingTags, setTrendingTags] = useState([]);
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={[GenreInfo.PrimaryColor, '#212121', '#000', '#000',]}
+                colors={[GenreInfo.color, '#212121', '#000', '#000',]}
                 style={{height: '100%'}}
                 start={{ x: 1, y: 1 }}
                 end={{ x: 0.5, y: 0.5 }}

@@ -11,7 +11,7 @@ import {
 
 import StoryTile from '../../components/StoryTile';
 
-import { getUser } from '../../src/graphql/queries';
+import { inProgressStoriesByUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 
 
@@ -41,19 +41,15 @@ const InProgressList = () => {
             try {
 
                 const progressData = await API.graphql(graphqlOperation(
-                    getUser, {nextToken, id: userInfo.attributes.sub}))
+                    inProgressStoriesByUser, {nextToken, userID: userInfo.attributes.sub}))
 
-                if (progressData.data.getUser.inProgressStories.items.length > 0) {
-                    for (let i = 0; i < progressData.data.getUser.inProgressStories.items.length; i++) {
-                        if (progressData.data.getUser.inProgressStories.items[i].story.hidden === false) {
-                            InProgress.push(progressData.data.getUser.inProgressStories.items[i])
-                        }
+                if (progressData.data.inProgressStoriesByUser.items.length > 0) {
+                    for (let i = 0; i < progressData.data.inProgressStoriesByUser.items.length; i++) {
+                        InProgress.push(progressData.data.inProgressStoriesByUser.items[i])  
                     } 
-
-                    console.log(progressData.data.getUser.inProgressStories.items)
                     
-                    if (progressData.data.getUser.inProgressStories.nextToken) {
-                        setNextToken(progressData.data.getUser.inProgressStories.nextToken)
+                    if (progressData.data.inProgressStoriesByUser.nextToken) {
+                        setNextToken(progressData.data.inProgressStoriesByUser.nextToken)
                         fetchStories();
                         return;
                     }
@@ -105,7 +101,7 @@ const InProgressList = () => {
                 ratingAvg={item.story.ratingAvg}
                 ratingAmt={item.story.ratingAmt}
             /> 
-            <View style={{width: Dimensions.get('window').width - 50}}>
+            <View style={{width: Dimensions.get('window').width - 50, marginBottom: 20}}>
                 <View style={{width:  percent +'%', height: 1, backgroundColor: '#00ffff', marginLeft: 26, marginTop: -4, alignSelf: 'flex-start'}}/>
                <View style={{marginHorizontal: 20, marginTop: 6, flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={{color: 'gray'}}>

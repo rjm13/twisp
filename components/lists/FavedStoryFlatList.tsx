@@ -9,7 +9,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 
-import { getUser } from '../../src/graphql/queries';
+import { ratingsByUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 import StoryTile from '../StoryTile';
 
@@ -38,14 +38,18 @@ const AudioStoryList = () => {
             try {
 
                 const favedData = await API.graphql(graphqlOperation(
-                    getUser, {id: userInfo.attributes.sub
+                    ratingsByUser, {
+                        userID: userInfo.attributes.sub,
+                        filter: {
+                            rating: {
+                                gt: 6
+                            }
+                        }
                 }))
 
-                if (favedData.data.getUser.Rated.items.length > 0) {
-                    for (let i = 0; i < favedData.data.getUser.Rated.items.length; i++) {
-                        if (favedData.data.getUser.Rated.items[i].rating > 7 && favedData.data.getUser.Rated.items[i].story.hidden === false && favedData.data.getUser.Rated.items[i].story.approved === 'approved') {    
+                if (favedData.data.ratingsByUser.items.length > 0) {
+                    for (let i = 0; i < favedData.data.ratingsByUser.items.length; i++) {
                             Faved.push(favedData.data.getUser.Rated.items[i].story) 
-                        }
                     } 
                 }
                 

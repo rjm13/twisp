@@ -7,7 +7,7 @@ import {
 
 import HorzStoryTile from '../HorzStoryTile';
 
-import { finishedStoriesByDate } from '../../src/graphql/queries';
+import { storiesByGenre } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 import { AppContext } from '../../AppContext';
 
@@ -19,83 +19,87 @@ const GenreTrending = ({genreid} : any) => {
 //fetch the stories for a specific genre for promoted carousel      
     const [stories, setStories] = useState([]);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        let trendingids = []
+    //     let trendingids = []
 
-        let count = []
+    //     let count = []
 
-        let finalTrends = []
+    //     let finalTrends = []
 
-        //const map = trendingStories.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+    //     //const map = trendingStories.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
 
-        const fetchStorys = async () => {
+    //     const fetchStorys = async () => {
 
-            const date = new Date();
+    //         const date = new Date();
 
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const day = date.getDate();
+    //         const year = date.getFullYear();
+    //         const month = date.getMonth();
+    //         const day = date.getDate();
         
-            //const c = new Date(year + 1, month, day) // PLUS 1 YEAR
-            const newdate = new Date(year, month - 1, day).toISOString() // PLUS 1 MONTH
-            //const f = new Date(year, month, day  + 1) // PLUS 1 DAY
+    //         //const c = new Date(year + 1, month, day) // PLUS 1 YEAR
+    //         const newdate = new Date(year, month - 1, day).toISOString() // PLUS 1 MONTH
+    //         //const f = new Date(year, month, day  + 1) // PLUS 1 DAY
                 
 
-            //get all of the finished stories for the last month, in order of most recent
-                try {
-                    const response = await API.graphql(
-                        graphqlOperation(
-                            finishedStoriesByDate, {
-                                createdAt: {
-                                    gt: newdate
-                                },
-                                type: 'FinishedStory',
-                                sortDirection: 'DESC',
-                                filter: {
-                                    genreID: {
-                                        eq: genreid
-                                    },
-                                    nsfw: {
-                                        ne: nsfwOn === true ? true : null
-                                    }
-                                }
-                            } 
-                        )
-                    )
+    //         //get all of the finished stories for the last month, in order of most recent
+    //             try {
+    //                 const response = await API.graphql(
+    //                     graphqlOperation(
+    //                         storiesByGenre, {
+    //                             genreID: genreid,
+    //                             // createdAt: {
+    //                             //     gt: newdate
+    //                             // },
+    //                             //type: 'FinishedStory',
+    //                             //sortDirection: 'DESC',
+    //                             filter: {
+    //                                 nsfw: {
+    //                                     ne: nsfwOn === true ? true : null
+    //                                 },
+    //                                 approved: {
+    //                                     eq: true
+    //                                 },
+    //                                 hidden: {
+    //                                     eq: false
+    //                                 }
+    //                             }
+    //                         } 
+    //                     )
+    //                 )
 
-                    for(let i = 0; i < response.data.finishedStoriesByDate.items.length; i++) {
-                        if (response.data.finishedStoriesByDate.items[i].story.approved === 'approved' && response.data.finishedStoriesByDate.items[i].story.hidden === false)
-                        trendingids.push(response.data.finishedStoriesByDate.items[i].story.id)     
-                    }
-                    let pp = trendingids.filter( (ele, ind) => ind === trendingids.findIndex( elem => elem === ele))
+    //                 for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+    //                     trendingids.push(response.data.storiesByGenre.items[i].id)   
+    //                 }
 
-                    for(let i = 0; i < pp.length; i++) {
-                        count.push({
-                            count: trendingids.filter(x => x==pp[i]).length,
-                            story: pp[i]
-                        })
-                    }
+    //                 let pp = trendingids.filter( (ele, ind) => ind === trendingids.findIndex( elem => elem === ele))
 
-                    let sortarr = count.sort((a, b) => a.count < b.count ? 1 : -1).slice(0,10)
+    //                 for(let i = 0; i < pp.length; i++) {
+    //                     count.push({
+    //                         count: trendingids.filter(x => x==pp[i]).length,
+    //                         story: pp[i]
+    //                     })
+    //                 }
+
+    //                 let sortarr = count.sort((a, b) => a.count < b.count ? 1 : -1).slice(0,10)
                     
-                    //filter the top 8 and add them to the array
-                    for (let i = 0; i < sortarr.length; i++) {
-                        let final = response.data.finishedStoriesByDate.items.find((element) => {
-                            return element.storyID === sortarr[i].story;
-                        })
-                        finalTrends.push(final.story)
-                    }
+    //                 //filter the top 8 and add them to the array
+    //                 for (let i = 0; i < sortarr.length; i++) {
+    //                     let final = response.data.storiesByGenre.items.find((element) => {
+    //                         return element.id === sortarr[i];
+    //                     })
+    //                     finalTrends.push(final)
+    //                 }
 
-                    setStories(finalTrends);
+    //                 setStories(finalTrends);
                   
-                } catch (e) {
-                    console.log(e);}
-        }
+    //             } catch (e) {
+    //                 console.log(e);}
+    //     }
 
-        fetchStorys();
+    //     fetchStorys();
 
-    },[])
+    // },[])
 
     const renderItem = ({ item }: any) => {
 

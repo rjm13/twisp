@@ -19,8 +19,8 @@ import { Searchbar } from 'react-native-paper';
 import {LinearGradient} from 'expo-linear-gradient';
 import { AppContext } from '../AppContext';
 
-import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { listUsers, getUser } from '../src/graphql/queries';
+import { API, graphqlOperation, Storage } from "aws-amplify";
+import { listUsers } from '../src/graphql/queries';
 
 
 const BrowseAuthor = ({navigation} : any) => {
@@ -148,7 +148,7 @@ const BrowseAuthor = ({navigation} : any) => {
         return (
             <View style={styles.tile}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('UserScreenStack', {userID: id, status: 'publisher'})}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('UserScreen', {userID: id, status: 'publisher'})}>
                         <View style={{ flexDirection: 'row'}}>
                             <Image 
                                 source={ imageUri ? { uri: imageU} : require('../assets/blankprofile.png')}
@@ -218,12 +218,8 @@ const BrowseAuthor = ({navigation} : any) => {
     return (
 
     <View >
-        <LinearGradient
-        colors={['#363636', 'black', 'black']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-          <View>
+        <LinearGradient colors={['#363636', 'black', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+            <View>
                 <View style={{ width: Dimensions.get('window').width, flexDirection: 'row', alignItems: 'center', marginTop: 60, marginHorizontal: 20}}>
                     <TouchableWithoutFeedback onPress={ () => navigation.goBack()}>
                         <View style={{padding: 30, margin: -30}}>
@@ -238,7 +234,6 @@ const BrowseAuthor = ({navigation} : any) => {
                     <SearchBar />
 
                 </View>
-            
           </View>
                 <View style={{ alignItems: 'center', marginTop: 20, height: '84%'}}>
                     <FlatList

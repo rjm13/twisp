@@ -14,6 +14,7 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   publisherName: String
   website: String
   isPublisher: Boolean
+  numAuthored: Int
   topthree: [String]
   following: [FollowConnection] @hasMany(indexName: "byFollower", fields: "id")
   followers: [FollowConnection] @hasMany(indexName: "byAuthor", fields: "id")
@@ -71,6 +72,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   status: Boolean
   numListens: Int
   approved: Boolean
+  numListens: Int
   }
 
   type EroticStory @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

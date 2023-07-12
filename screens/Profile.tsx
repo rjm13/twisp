@@ -48,12 +48,7 @@ const ProfileScreen = ({navigation} : any) => {
             }
 
             for (let i = 0; i < userData.data.getUser.messageRec.items.length; i++) {
-                if (userData.data.getUser.messageRec.items[i].isReadByOtherUser === false ) {
-                    count++
-                }
-            }
-            for (let i = 0; i < userData.data.getUser.messageSent.items.length; i++) {
-                if (userData.data.getUser.messageSent.items[i].isReadbyUser === false ) {
+                if (userData.data.getUser.messageRec.items[i].isReadByReceiver === false ) {
                     count++
                 }
             }

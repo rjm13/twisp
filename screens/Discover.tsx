@@ -17,11 +17,10 @@ from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {LinearGradient} from 'expo-linear-gradient';
 //import useStyles from '../styles';
-//import PromptCarousel from '../components/HorizList/PromptCarousel';
 
 import { AppContext } from '../AppContext';
 
-import { listGenres, tagsByUpdated, getUser } from '../src/graphql/queries';
+import { listGenres, tagsByUpdated, inProgressStoriesByUser } from '../src/graphql/queries';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { UserInterfaceIdiom } from 'expo-constants';
 
@@ -194,17 +193,17 @@ const AudioStoryHome = ({navigation} : any) => {
     const fetchProgressStory = async () => {
       let userInfo = await Auth.currentAuthenticatedUser();
       let response = await API.graphql(graphqlOperation(
-        getUser, {id: userInfo.attributes.sub}
+        inProgressStoriesByUser, {userID: userInfo.attributes.sub}
       ))
-      if (response.data.getUser.inProgressStories.items.length > 0) {
-        setProgressStory(response.data.getUser.inProgressStories.items[0].story)
-        let imageUri = await Storage.get(response.data.getUser.inProgressStories.items[0].story.imageUri)
+      if (response.data.inProgressStoriesByUser.items.length > 0) {
+        setProgressStory(response.data.inProgressStoriesByUser.items[0].story)
+        let imageUri = await Storage.get(response.data.inProgressStoriesByUser.items[0].story.imageUri)
         setImageU(imageUri)
-        setPercent((Math.ceil(((response.data.getUser.inProgressStories.items[0].time)/(response.data.getUser.inProgressStories.items[0].story.time))*100) + 10).toString())
-        setTimeLeft(Math.ceil(((response.data.getUser.inProgressStories.items[0].story.time)-(response.data.getUser.inProgressStories.items[0].time))/60000))
+        setPercent((Math.ceil(((response.data.inProgressStoriesByUser.items[0].time)/(response.data.inProgressStoriesByUser.items[0].story.time))*100) + 10).toString())
+        setTimeLeft(Math.ceil(((response.data.inProgressStoriesByUser.items[0].story.time)-(response.data.inProgressStoriesByUser.items[0].time))/60000))
         setProgressExists(true);
       }
-      if (response.data.getUser.inProgressStories.items.length === 0) {
+      if (response.data.getUser.inProgressStoriesByUser.items.length === 0) {
         setProgressStory({})
         setImageU('')
         setPercent('0')
@@ -221,11 +220,7 @@ const AudioStoryHome = ({navigation} : any) => {
       <View style={{flex: 1, backgroundColor: '#000000'}}>
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <ScrollView>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 0, marginHorizontal: 20}}>
-              {/* <Text style={{ color: 'white', marginHorizontal: 0, fontSize: 22, fontWeight: 'bold'}}>
-                Discover Stories
-              </Text> */}
-            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 0, marginHorizontal: 20}}/ >
         
             <View style={{ marginBottom: 20, marginHorizontal: 20, alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('SearchScreen')}>
@@ -272,16 +267,6 @@ const AudioStoryHome = ({navigation} : any) => {
                           <Text style={{color: 'gray', textTransform: 'capitalize', fontSize: 11}}>
                             {progressStory?.author}
                           </Text>
-
-                          {/* <FontAwesome5 
-                            name='book-reader'
-                            color='gray'
-                            size={12}
-                            style={{marginRight: 6, marginLeft: 10}}
-                          />
-                          <Text style={{color: 'gray', textTransform: 'capitalize', fontSize: 11}}>
-                            {progressStory?.narrator}
-                          </Text> */}
                         </View>
                         <Text style={{color: '#fff', fontSize: 11, marginTop: 12}}>
                           {timeLeft} minutes left
@@ -295,23 +280,6 @@ const AudioStoryHome = ({navigation} : any) => {
             </View>
             </TouchableWithoutFeedback>
             ) : null}
-
-            {/* <View style={{marginTop: 20}}>
-              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                <Text style={[styles.header, {marginHorizontal: 20}]}>
-                  Recent Prompts
-                </Text>
-                <TouchableWithoutFeedback onPress={() => navigation.navigate('PromptsHome', {promptID: null})}>
-                  <Text style={{color: '#ffffffa5', marginTop: 0, marginHorizontal: 20}}>
-                        See more
-                    </Text> 
-                </TouchableWithoutFeedback>
-              </View>
-              
-              <View style={{marginTop: 20}}>
-                <PromptCarousel />
-              </View>
-            </View> */}
 
             <View style={{ marginHorizontal: 20, height: '100%'}}>
               <View>

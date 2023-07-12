@@ -1,10 +1,8 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import { 
     View, 
-    StyleSheet, 
     Text, 
     FlatList, 
-    Dimensions, 
     RefreshControl, 
     TouchableWithoutFeedback, 
     ActivityIndicator, 
@@ -13,13 +11,16 @@ import {
 
 import { AppContext } from '../../AppContext';
 
-import { listStories } from '../../src/graphql/queries';
+import { storiesByGenre } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 import StoryTile from '../../components/StoryTile';
+import useStyles from '../../styles';
 
 
 const AudioStoryList = ({genreID} : any) => {
+
+    const styles = useStyles();
 
     const { nsfwOn } = useContext(AppContext);
 
@@ -61,12 +62,10 @@ const AudioStoryList = ({genreID} : any) => {
             try {
 
                 const genreData = await API.graphql(graphqlOperation(
-                    listStories, {
+                    storiesByGenre, {
                         nextToken,
+                        genreID: genreID,
                         filter: {
-                            genreID: {
-                                eq: genreID
-                            },
                             title: {
                                 beginsWith: selectedLetter.toUpperCase()
                             },
@@ -74,7 +73,7 @@ const AudioStoryList = ({genreID} : any) => {
                                 eq: false
                             },
                             approved: {
-                                eq: 'approved'
+                                eq: true
                             },
                             nsfw: {
                                 ne: nsfwOn === true ? true : null
@@ -82,16 +81,16 @@ const AudioStoryList = ({genreID} : any) => {
                         }
                 }))
                 
-                for(let i = 0; i < genreData.data.listStories.items.length; i++ ){
-                    genresarr.push(genreData.data.listStories.items[i])
+                for(let i = 0; i < genreData.data.storiesByGenre.items.length; i++ ){
+                    genresarr.push(genreData.data.storiesByGenre.items[i])
                 }
                 
                 if(genreData.data.listStories.nextToken !== null) {
-                    fetchStories(genreData.data.listStories.nextToken)
+                    fetchStories(genreData.data.storiesByGenre.nextToken)
                     return
                 }
 
-                if (genreData.data.listStories.nextToken === null) {
+                if (genreData.data.storiesByGenre.nextToken === null) {
                     setIsLoading(false);
                     return
                 }
@@ -212,66 +211,5 @@ const AudioStoryList = ({genreID} : any) => {
 
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-       width: Dimensions.get('window').width, 
-       height: '93%'
-    },
-    tile: {
-        backgroundColor: '#363636a5',
-        marginHorizontal: 10,
-        marginVertical: 5,
-        padding: 20,
-        borderRadius: 15,
-    },
-    name: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#fff',
-        flexWrap: 'wrap',
-        width: 225,
-    },
-    userId: {
-        fontSize: 12,
-        color: '#ffffffa5',
-        marginRight: 15,
-        marginLeft: 5,
-    },
-    icontext: {
-        fontSize: 10,
-        color: '#ffffffa5',
-        marginTop: 5,
-    },
-    popupblock: {
-        marginTop: 10,
-    },
-    paragraph: {
-        color: '#ffffffB3'
-    },
-    playbutton: {
-        borderWidth: 0.5,
-        paddingHorizontal: 15,
-        paddingVertical: 3,
-        borderRadius: 15,
-        borderColor: '#ffffffa5',
-        color: '#ffffffa5',
-    },
-    time: {
-        fontSize: 14,
-        fontWeight: 'normal',
-        color: '#ffffffa5',
-        marginHorizontal: 5,
-    },
-    category: {
-        fontSize: 14,
-        color: 'gray',
-        //fontStyle: 'italic',
-        marginVertical: 3,
-        textTransform: 'capitalize'
-
-    },
-
-});
 
 export default AudioStoryList;

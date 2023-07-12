@@ -11,12 +11,7 @@ const InProgress = ({navigation} : any) => {
 
     return (
         <View style={styles.container}>
-            <LinearGradient
-                colors={['black', '#363636a5', 'black']}
-                //style={styles.container}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-            >
+            <LinearGradient colors={['black', '#363636a5', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <View style={{marginHorizontal: 20, marginTop: 50}}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center'}}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>

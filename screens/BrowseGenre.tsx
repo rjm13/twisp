@@ -12,8 +12,11 @@ import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import AudioListByGenre from '../components/lists/AudioListByGenre';
+import useStyles from '../styles';
 
 const GenreHome = ({navigation} : any) => {
+
+    const styles = useStyles();
 
 //route params from the StoriesScreen to specifiy the genre
     const route = useRoute();
@@ -37,7 +40,7 @@ const GenreHome = ({navigation} : any) => {
                                 style={{padding: 30}}
                                 onPress={() => navigation.goBack()}
                             /> 
-                            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
+                            <Text style={[styles.h1, {textTransform: 'capitalize'}]}>
                                 Browse {genreName}
                             </Text>
                         </View>

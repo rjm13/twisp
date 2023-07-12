@@ -4633,6 +4633,11 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens

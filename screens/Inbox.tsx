@@ -15,7 +15,7 @@ import { format, parseISO } from "date-fns";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
-import { getUser } from '../src/graphql/queries';
+import { messagesByUser } from '../src/graphql/queries';
 
 
 const Inbox = ({navigation} : any) => {
@@ -35,10 +35,10 @@ const Inbox = ({navigation} : any) => {
             setCurrentUserID(userInfo.attributes.sub)
 
             const response = await API.graphql(graphqlOperation(
-                getUser, {id: userInfo.attributes.sub}
+                messagesByUser, {userID: userInfo.attributes.sub}
             ))
 
-            let arr = response.data.getUser.messageRec.items
+            let arr = response.data.messagesByUser.items
 
             let sortmess = arr.sort((a, b) => a.updatedAt < b.updatedAt ? 1 : -1)
 
