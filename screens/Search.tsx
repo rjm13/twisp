@@ -69,13 +69,13 @@ const SearchScreen = ({navigation} : any) => {
                 />)}}
               iconColor='#000000a5'
               style={{
-                height: 35,
+                height: 40,
                 marginLeft: 40,
                 borderRadius: 8,
                 backgroundColor: '#e0e0e0',
-                width: Dimensions.get('window').width - 100 
+                width: Dimensions.get('window').width - 100,
               }}
-              inputStyle={{fontSize: 16,}}
+              inputStyle={{fontSize: 16, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
           </View>
         );
@@ -131,14 +131,14 @@ const SearchScreen = ({navigation} : any) => {
                           {title: {
                               contains: newSearch
                           },
+                          type: {
+                            eq: 'Story'
+                          },
                           approved: {
-                              eq: 'approved'
+                              eq: true
                           },
                           hidden: {
                               eq: false
-                          },
-                          genreID: {
-                            ne: ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : ''
                           },
                           nsfw: {
                             ne: nsfwOn === true ? true : null
@@ -147,14 +147,14 @@ const SearchScreen = ({navigation} : any) => {
                           {summary: {
                             contains: newSearch
                             },
+                            type: {
+                              eq: 'Story'
+                            },
                             approved: {
-                                eq: 'approved'
+                                eq: true
                             },
                             hidden: {
                                 eq: false
-                            },
-                            genreID: {
-                              ne: ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : ''
                             },
                             nsfw: {
                               ne: nsfwOn === true ? true : null

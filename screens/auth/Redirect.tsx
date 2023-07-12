@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext, useLayoutEffect} from "react";
 import { View, Text, ActivityIndicator, Dimensions, TouchableWithoutFeedback, Platform } from "react-native";
 import { AppContext } from '../../AppContext';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { getUser } from '../../src/graphql/queries';
+import { getUser, pinnedStoriesByUser, ratingsByUser, connectionsByFollower, finishedStoriesByUser } from '../../src/graphql/queries';
 import { StatusBar } from 'expo-status-bar';
 //import Purchases from "react-native-purchases";
 
@@ -30,6 +30,9 @@ const Redirect = ({route, navigation} : any) => {
 
     const { userFinished } = useContext(AppContext);
     const { setUserFinished } = useContext(AppContext);
+
+    const { userFollowing } = useContext(AppContext);
+    const { setUserFollowing } = useContext(AppContext);
 
     const { nsfwOn } = useContext(AppContext);
     const { setNSFWOn } = useContext(AppContext);
@@ -119,57 +122,79 @@ const Redirect = ({route, navigation} : any) => {
                     if (userData.data.getUser) {
                         setUserID(userData.data.getUser.id);
 
-                        const getThePins = async () => {
-                            for (let i = 0; i < userData.data.getUser.Pinned.items.length; i++) {
-                                pins.push(userData.data.getUser.Pinned.items[i].storyID)
+                        const getThePins = async (nextPinToken : any) => {
+
+                            const userPinData = await API.graphql(graphqlOperation(
+                                pinnedStoriesByUser,{ nextPinToken, userID: userInfo.attributes.sub}))
+
+                            for (let i = 0; i < userPinData.data.pinnedStoriesByUser.items.length; i++) {
+                                pins.push(userPinData.data.pinnedStoriesByUser.items[i].storyID)
                             }
-                            if (userData.data.getUser.Pinned.nextToken) {
-                                setNextToken(userData.data.getUser.Pinned.nextToken)
-                                getThePins();
-                                return;
+                            
+                            if (userPinData.data.pinnedStoriesByUser.nextToken !== null) {
+                                //setNextToken(userPinData.data.pinnedStoriesByUser.nextToken)
+                                getThePins(userPinData.data.pinnedStoriesByUser.nextToken);
+                                //return;
                             }
+
                             setUserPins(pins);
                         }
+                        
+                        const getTheRatings = async (nextRatingToken : any) => {
+                            const userRatingData = await API.graphql(graphqlOperation(
+                                ratingsByUser,{ 
+                                    nextRatingToken,
+                                    userID: userInfo.attributes.sub}))
 
-                        const getTheRatings = async () => {
-                            for (let i = 0; i < userData.data.getUser.Rated.items.length; i++) {
-                                rates.push(userData.data.getUser.Rated.items[i].storyID)
+                            for (let i = 0; i < userRatingData.data.ratingsByUser.items.length; i++) {
+                                rates.push(userRatingData.data.ratingsByUser.items[i].storyID)
                             }
-                            if (userData.data.getUser.Rated.nextToken) {
-                                setNextToken(userData.data.getUser.Rated.nextToken)
-                                getTheRatings();
-                                return;
+                            if (userRatingData.data.getUser.Rated.nextToken) {
+                                //setNextToken(userRatingData.data.ratingsByUser.nextToken)
+                                getTheRatings(userRatingData.data.ratingsByUser.nextToken);
+                                //return;
                             }
                             setUserRates(rates);
                         }
 
-                        const getTheFinished = async () => {
-                            for (let i = 0; i < userData.data.getUser.Finished.items.length; i++) {
-                                finished.push(userData.data.getUser.Finished.items[i].storyID)
+                        const getTheFinished = async (nextFinishToken : any) => {
+
+                            const userFinishData = await API.graphql(graphqlOperation(
+                                finishedStoriesByUser,{ 
+                                    nextFinishToken,
+                                    userID: userInfo.attributes.sub}))
+
+                            for (let i = 0; i < userFinishData.data.finishedStoriesByUser.items.length; i++) {
+                                finished.push(userFinishData.data.finishedStoriesByUser.items[i].storyID)
                             }
-                            if (userData.data.getUser.Finished.nextToken) {
-                                setNextToken(userData.data.getUser.Finished.nextToken)
-                                getTheFinished();
+                            if (userFinishData.data.finishedStoriesByUser.nextToken) {
+                                //setNextToken(userFinishData.data.finishedStoriesByUser.nextToken)
+                                getTheFinished(userFinishData.data.finishedStoriesByUser.nextToken);
                                 return;
                             }
                             setUserFinished(finished);
                         }
 
-                        const getTheFollowing = async () => {
-                            for (let i = 0; i < userData.data.getUser.Following.items.length; i++) {
-                                following.push(userData.data.getUser.Following.items[i].storyID)
+                        const getTheFollowing = async (nextFollowToken : any) => {
+
+                            const userFollowingData = await API.graphql(graphqlOperation(
+                                connectionsByFollower,{ nextFollowToken, followerID: userInfo.attributes.sub}))
+
+                            for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
+                                following.push(userFollowingData.data.connectionsByFollower.items[i].storyID)
                             }
-                            if (userData.data.getUser.Following.nextToken) {
-                                setNextToken(userData.data.getUser.Following.nextToken)
-                                getTheFollowing();
-                                return;
+                            if (userFollowingData.data.connectionsByFollower.nextToken) {
+                                //setNextToken(userFollowingData.data.connectionsByFollower.nextToken)
+                                getTheFollowing(userFollowingData.data.connectionsByFollower.nextToken);
+                                //return;
                             }
-                            setUserFinished(following);
+                            setUserFollowing(following);
                         }
 
-                        getThePins();
-                        getTheRatings();
-                        getTheFollowing();
+                        getThePins(null);
+                        getTheRatings(null);
+                        getTheFinished(null);
+                        getTheFollowing(null);
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'Root' }],

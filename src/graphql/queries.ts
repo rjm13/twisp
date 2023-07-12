@@ -488,6 +488,10 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
+          tag {
+            id
+            tagName
+          }
           createdAt
           updatedAt
           __typename

@@ -95,6 +95,14 @@ const ForYouCarousel = () => {
     //carousel tile
     const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, color} : any) => {
 
+           //on render, determine if the story in alraedy pinned or not
+           useEffect(() => {
+                if (userPins.includes(id) === true) {
+                    setQd(true)
+                }
+        }, [])
+
+
         const [imageU, setImageU] = useState('');
         
         useEffect(() => {
@@ -137,13 +145,6 @@ const ForYouCarousel = () => {
                 unPinStory({storyID: id});
             }  
         };
-
-    //on render, determine if the story in alraedy pinned or not
-        useEffect(() => {
-            if (userPins.includes(id) === true) {
-                setQd(true)
-            }
-        }, [])
 
         return (
             <View style={styles.container}>
