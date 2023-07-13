@@ -5,6 +5,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 //import { Switch } from 'react-native-paper';
 //import ToggleSwitch from 'toggle-switch-react-native'
 
+import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
+import { updateUser } from '../src/graphql/mutations';
+import { getUser } from '../src/graphql/queries';
+
 import {AppContext} from '../AppContext';
 
 const Settings = ({navigation} : any) => {
@@ -18,13 +22,28 @@ const Settings = ({navigation} : any) => {
     const { setPremium } = useContext(AppContext);
     const { premium } = useContext(AppContext);
 
+    useEffect(() => {
+        //set the nsfw switch
+        setIsSwitchOn(nsfwOn);
+        //set the erotic switch
+        setIsAfterDarkOn(isAfterDarkOn);
+    }, [])
+
 
 //explicit content switch
     const [isSwitchOn, setIsSwitchOn] = useState(nsfwOn);
 
-    const onToggleSwitch = () => {
+    const onToggleSwitch = async () => {
         if (premium === true) {
-            setIsSwitchOn(!isSwitchOn); setNSFWOn(!nsfwOn);
+            setIsSwitchOn(!isSwitchOn); 
+            const userInfo = await Auth.currentAuthenticatedUser();
+            await API.graphql(graphqlOperation(
+                updateUser, {input: {
+                    id: userInfo.attributes.sub,
+                    setting1: !nsfwOn
+                } }
+            ))
+            setNSFWOn(!nsfwOn);
         } else if (premium === false) {
             return;
         }
@@ -33,9 +52,17 @@ const Settings = ({navigation} : any) => {
 //autoplay switch
     const [isAfterDarkOn, setIsAfterDarkOn] = React.useState(ADon);
 
-    const onAfterDarkSwitch = () => {
+    const onAfterDarkSwitch = async () => {
         if (premium === true) {
-            setIsAfterDarkOn(!isAfterDarkOn); setADon(!ADon);
+            setIsAfterDarkOn(!isAfterDarkOn); 
+            const userInfo = await Auth.currentAuthenticatedUser();
+            await API.graphql(graphqlOperation(
+                updateUser, {input: {
+                    id: userInfo.attributes.sub,
+                    setting2: !ADon
+                } }
+            ))
+            setADon(!ADon);
         } else if (premium === false) {
             return;
         }

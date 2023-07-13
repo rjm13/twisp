@@ -17,7 +17,7 @@ import { AppContext } from '../AppContext';
 import StoryTile from '../components/StoryTile';
 
 
-import { getTag } from '../src/graphql/queries';
+import { getTag, storyTagsByTagId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const TagSearchScreen = ({navigation} : any) => {
@@ -40,26 +40,25 @@ const TagSearchScreen = ({navigation} : any) => {
 
         const fetchTags = async () => {
             let response = await API.graphql(graphqlOperation(
-                getTag, {
-                    id: mainTag,
+                storyTagsByTagId, {
+                    tagId: mainTag,
                 }
             ))
 
-            if (response.data.getTag.stories.items.length > 0) {
-                for(let i = 0; i < response.data.getTag.stories.items.length; i++) {
+            if (response.data.storyTagsByTagId.items.length > 0) {
+                for(let i = 0; i < response.data.storyTagsByTagId.items.length; i++) {
                     if (
-                        //response.data.getTag.stories.items[i].story.approved === 'approved' && 
-                    response.data.getTag.stories.items[i].story.hidden === false) {
+                    response.data.storyTagsByTagId.items[i].story.hidden === false) {
                         if (nsfwOn === false) {
                             if (ADon === false) {
-                                stories.push(response.data.getTag.stories.items[i].story)
+                                stories.push(response.data.storyTagsByTagId.items[i].story)
                             } else {
-                                stories.push(response.data.getTag.stories.items[i].story)
+                                stories.push(response.data.storyTagsByTagId.items[i].story)
                             }
                             
                         }
-                        if (nsfwOn === true && response.data.getTag.stories.items[i].story.nsfw === false) {
-                            stories.push(response.data.getTag.stories.items[i].story)
+                        if (nsfwOn === true && response.data.storyTagsByTagId.items[i].story.nsfw === false) {
+                            stories.push(response.data.storyTagsByTagId.items[i].story)
                         }  
                     }   
                 }

@@ -103,7 +103,6 @@ const EditProfile = ({navigation} : any) => {
                     setUser(userData.data.getUser);
                     let imageresponse = await Storage.get(userData.data.getUser.imageUri)
                     setImageU(imageresponse)
-                    setVoiceState(userData.data.getUser.voice);
                 }
 
                 console.log(userData.data.getUser);
@@ -120,6 +119,11 @@ const EditProfile = ({navigation} : any) => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
+    //Website Modal
+    const [visible2, setVisible2] = useState(false);
+    const showWebsiteModal = () => setVisible2(true);
+    const hideWebsiteModal = () => setVisible2(false);
+
 //BioModal
     const [visible5, setVisible5] = useState(false);
     const showBioModal = () => setVisible5(true);
@@ -134,6 +138,7 @@ const EditProfile = ({navigation} : any) => {
     const [ Bio, setBio ] = useState('');
     const [image, setImage] = useState('');
     const [Pseudonym, setPseudonym] = useState('');
+    const [website, setWebsite] = useState('');
 
 //if true, s3 is performing an action. also used to determine if anything is updating
     const [isUploading, setIsUploading ] = useState(false);
@@ -182,6 +187,26 @@ const EditProfile = ({navigation} : any) => {
         }
     }
 
+    //update the author's pseudonym
+    const handleUpdateWebsite = async () => {
+
+        setIsUploading(true);
+
+        if ( website.length !== 0 ) {
+
+            const updatedUser = { id: user?.id, website: website.toLowerCase() }
+
+            let result = await API.graphql(graphqlOperation(
+                updateUser, { input: updatedUser }
+            
+                ))
+            console.log(result);
+
+        setIsUploading(false);
+        hideWebsiteModal();
+        }
+    }
+
 //update the users bio text
     const handleUpdateBio = async () => {
 
@@ -209,16 +234,16 @@ const EditProfile = ({navigation} : any) => {
 
 {/* //Update pseudonym  */}
         <Modal animationType="slide" transparent={true} visible={visible7} onRequestClose={() => {setVisible7(!visible7);}}>            
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible7(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{ alignItems: 'center'}}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible7(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
                     <Text style={{
                         fontSize: 16,
                         paddingVertical: 16,
                         color: '#fff'
                     }}>
-                        Enter a new pseudonym
+                        Enter a new publisher name
                     </Text>
-                    <View style={{ borderWidth: 0.3, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
+                    <View style={styles.inputfield}>
                         <TextInput
                             placeholder={user?.pseudonym}
                             placeholderTextColor='gray'
@@ -246,10 +271,49 @@ const EditProfile = ({navigation} : any) => {
             </TouchableWithoutFeedback>
         </Modal>
 
+{/* //Update pseudonym  */}
+        <Modal animationType="slide" transparent={true} visible={visible2} onRequestClose={() => {setVisible2(!visible2);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible2(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    <Text style={{
+                        fontSize: 16,
+                        paddingVertical: 16,
+                        color: '#fff'
+                    }}>
+                        Enter a new publisher website
+                    </Text>
+                    <View style={styles.inputfield}>
+                        <TextInput
+                            placeholder={user?.website}
+                            placeholderTextColor='gray'
+                            style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
+                            maxLength={20}
+                            multiline={false}
+                            onChangeText={val => setPseudonym(val)}
+                        />
+                    </View>
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={handleUpdateWebsite}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
 {/* //Update about me blurb */}
         <Modal animationType="slide" transparent={true} visible={visible5} onRequestClose={() => {setVisible5(!visible5);}}>                
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible5(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{ alignItems: 'center'}}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible5(false)}} style={{ alignItems: 'center',  }}>
+                <View style={{ alignItems: 'center',  height: Dimensions.get('window').height, backgroundColor: '#000', justifyContent: 'center'}}>
                     <Text style={{
                         fontSize: 16,
                         color: '#fff'
@@ -257,7 +321,7 @@ const EditProfile = ({navigation} : any) => {
                         Update Bio
                     </Text>
                     <View style={{ marginTop: 10, borderWidth: 0.2, borderColor: '#363636a5', width: '100%', alignItems: 'center', borderRadius: 8}}>
-                        <View style={{ borderWidth: 0.3, borderColor: '#ffffffa5', width: '100%', alignItems: 'center', borderRadius: 8}}>
+                        <View style={[styles.inputfield, {height: 200}]}>                            
                             <TextInput 
                                 placeholder={user?.bio || 'Say something about yourself'}
                                 placeholderTextColor='#ffFFFFa5'
@@ -265,6 +329,7 @@ const EditProfile = ({navigation} : any) => {
                                 maxLength={250}
                                 multiline={true}
                                 numberOfLines={10}
+                                textAlignVertical='top'
                                 onChangeText={val => setBio(val)}
                                 defaultValue={user?.bio || ''}
                             />
@@ -291,8 +356,8 @@ const EditProfile = ({navigation} : any) => {
 
 {/* //Update Image modal */}
         <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => {setVisible(!visible);}}>            
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{ alignItems: 'center'}}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible(false)}} style={{ }}>
+                <View style={{ height: Dimensions.get('window').height, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={pickImage}>
                     <Image 
                         source={{ uri: image || imageU}} 
@@ -336,14 +401,16 @@ const EditProfile = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
                     
-                    <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold', marginHorizontal: 40}}>
+                    <Text style={[styles.h1, {marginHorizontal: 40, marginVertical: 20,}]}>
                         Edit Profile
                     </Text>
                 </View>
 
                 <TouchableWithoutFeedback onPress={showModal}>
                     <View style={{ flexDirection: 'row', justifyContent: "space-between", alignSelf: 'center', alignItems: "center", width: '100%', paddingHorizontal: 20,}}>
-                        <Text style={ styles.paragraph }>Photo</Text>
+                        <Text style={ [styles.paragraph, {fontSize: 16}] }>
+                            Photo
+                        </Text>
                         <Image 
                             source={user?.imageUri ? { uri: imageU} : require('../assets/blankprofile.png')} 
                             style={{ width: 60,height: 60, borderRadius: 50, margin: 16,}} 
@@ -358,16 +425,30 @@ const EditProfile = ({navigation} : any) => {
                                 <Text style={{ color: '#fff', fontSize: 16}}>
                                     Publisher Name
                                 </Text>
-                                <Text style={{ color: 'gray', fontSize: 12}}>
-                                    Author
+                                <Text style={[styles.infotext, {textTransform: 'capitalize'}]}>
+                                    {user?.publisherName}
                                 </Text>
                             </View>
-                            <Text style={{color: '#ffffffa5', fontSize: 16, fontWeight: 'normal', textTransform: 'capitalize'}}>
-                                {user?.pseudonym}
-                            </Text>
+                            
                         </View>
                     </TouchableWithoutFeedback>    
                     ) : null}
+
+                {user?.isPublisher === true ? (
+                    <TouchableWithoutFeedback onPress={showWebsiteModal}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
+                            <View>
+                                <Text style={{ color: '#fff', fontSize: 16}}>
+                                    Publisher website
+                                </Text>
+                                <Text style={[styles.infotext, {textTransform: 'capitalize'}]}>
+                                    {user?.website}
+                                </Text>
+                            </View>
+                            
+                        </View>
+                    </TouchableWithoutFeedback>    
+                ) : null}
 
                 {user?.isPublisher === true ? (
                 <View>

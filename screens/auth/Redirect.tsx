@@ -120,6 +120,14 @@ const Redirect = ({route, navigation} : any) => {
                         getUser,{ id: userInfo.attributes.sub}))
         
                     if (userData.data.getUser) {
+
+                        if (userData.data.getUser.setting1) {
+                            setNSFWOn(userData.data.getUser.setting1);
+                        } 
+                        if (userData.data.getUser.setting2) {
+                            setADon(userData.data.getUser.setting2)
+                        } 
+
                         setUserID(userData.data.getUser.id);
 
                         const getThePins = async (nextPinToken : any) => {

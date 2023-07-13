@@ -17,7 +17,9 @@ export const createUser = /* GraphQL */ `
       imageUri
       bio
       publisherName
+      website
       isPublisher
+      numAuthored
       topthree
       following {
         items {
@@ -164,6 +166,11 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      setting1
+      setting2
+      setting3
+      setting4
+      setting5
       __typename
     }
   }
@@ -183,7 +190,9 @@ export const updateUser = /* GraphQL */ `
       imageUri
       bio
       publisherName
+      website
       isPublisher
+      numAuthored
       topthree
       following {
         items {
@@ -330,6 +339,11 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      setting1
+      setting2
+      setting3
+      setting4
+      setting5
       __typename
     }
   }
@@ -349,7 +363,9 @@ export const deleteUser = /* GraphQL */ `
       imageUri
       bio
       publisherName
+      website
       isPublisher
+      numAuthored
       topthree
       following {
         items {
@@ -496,6 +512,11 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      setting1
+      setting2
+      setting3
+      setting4
+      setting5
       __typename
     }
   }
@@ -521,7 +542,9 @@ export const createFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -560,6 +583,11 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       authorID
@@ -573,7 +601,9 @@ export const createFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -612,6 +642,11 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       __typename
@@ -639,7 +674,9 @@ export const updateFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -678,6 +715,11 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       authorID
@@ -691,7 +733,9 @@ export const updateFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -730,6 +774,11 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       __typename
@@ -757,7 +806,9 @@ export const deleteFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -796,6 +847,11 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       authorID
@@ -809,7 +865,9 @@ export const deleteFollowConnection = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -848,6 +906,11 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       __typename
@@ -877,7 +940,9 @@ export const createStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -916,6 +981,11 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -1037,7 +1107,9 @@ export const updateStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -1076,6 +1148,11 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -1197,7 +1274,9 @@ export const deleteStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -1236,6 +1315,11 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -1357,7 +1441,9 @@ export const createEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -1396,6 +1482,11 @@ export const createEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -1516,7 +1607,9 @@ export const updateEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -1555,6 +1648,11 @@ export const updateEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -1675,7 +1773,9 @@ export const deleteEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -1714,6 +1814,11 @@ export const deleteEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       publisherID
@@ -2193,7 +2298,9 @@ export const createPinnedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -2232,6 +2339,11 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -2253,9 +2365,16 @@ export const createPinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2320,9 +2439,16 @@ export const createPinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2392,7 +2518,9 @@ export const updatePinnedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -2431,6 +2559,11 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -2452,9 +2585,16 @@ export const updatePinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2519,9 +2659,16 @@ export const updatePinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2591,7 +2738,9 @@ export const deletePinnedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -2630,6 +2779,11 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -2651,9 +2805,16 @@ export const deletePinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2718,9 +2879,16 @@ export const deletePinnedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2790,7 +2958,9 @@ export const createInProgressStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -2829,6 +2999,11 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -2850,9 +3025,16 @@ export const createInProgressStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -2924,7 +3106,9 @@ export const updateInProgressStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -2963,6 +3147,11 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -2984,9 +3173,16 @@ export const updateInProgressStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3058,7 +3254,9 @@ export const deleteInProgressStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3097,6 +3295,11 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -3118,9 +3321,16 @@ export const deleteInProgressStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3192,7 +3402,9 @@ export const createInProgressEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3231,6 +3443,11 @@ export const createInProgressEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -3252,9 +3469,16 @@ export const createInProgressEroticStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3325,7 +3549,9 @@ export const updateInProgressEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3364,6 +3590,11 @@ export const updateInProgressEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -3385,9 +3616,16 @@ export const updateInProgressEroticStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3458,7 +3696,9 @@ export const deleteInProgressEroticStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3497,6 +3737,11 @@ export const deleteInProgressEroticStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -3518,9 +3763,16 @@ export const deleteInProgressEroticStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3593,7 +3845,9 @@ export const createFinishedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3632,6 +3886,11 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -3653,9 +3912,16 @@ export const createFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3720,9 +3986,16 @@ export const createFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3792,7 +4065,9 @@ export const updateFinishedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -3831,6 +4106,11 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -3852,9 +4132,16 @@ export const updateFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3919,9 +4206,16 @@ export const updateFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -3991,7 +4285,9 @@ export const deleteFinishedStory = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4030,6 +4326,11 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -4051,9 +4352,16 @@ export const deleteFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4118,9 +4426,16 @@ export const deleteFinishedStory = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4198,9 +4513,16 @@ export const createComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4264,9 +4586,16 @@ export const createComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4323,7 +4652,9 @@ export const createComment = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4362,6 +4693,11 @@ export const createComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       userID
@@ -4399,9 +4735,16 @@ export const updateComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4465,9 +4808,16 @@ export const updateComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4524,7 +4874,9 @@ export const updateComment = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4563,6 +4915,11 @@ export const updateComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       userID
@@ -4600,9 +4957,16 @@ export const deleteComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4666,9 +5030,16 @@ export const deleteComment = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4725,7 +5096,9 @@ export const deleteComment = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4764,6 +5137,11 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       userID
@@ -4793,7 +5171,9 @@ export const createReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4832,6 +5212,11 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -4845,7 +5230,9 @@ export const createReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -4884,6 +5271,11 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -4905,9 +5297,16 @@ export const createReaction = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -4979,7 +5378,9 @@ export const updateReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5018,6 +5419,11 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -5031,7 +5437,9 @@ export const updateReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5070,6 +5478,11 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -5091,9 +5504,16 @@ export const updateReaction = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5165,7 +5585,9 @@ export const deleteReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5204,6 +5626,11 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       storyID
@@ -5217,7 +5644,9 @@ export const deleteReaction = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5256,6 +5685,11 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       eroticStoryID
@@ -5277,9 +5711,16 @@ export const deleteReaction = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5359,9 +5800,16 @@ export const createRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5426,9 +5874,16 @@ export const createRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5484,7 +5939,9 @@ export const createRating = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5523,6 +5980,11 @@ export const createRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       rating
@@ -5559,9 +6021,16 @@ export const updateRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5626,9 +6095,16 @@ export const updateRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5684,7 +6160,9 @@ export const updateRating = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5723,6 +6201,11 @@ export const updateRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       rating
@@ -5759,9 +6242,16 @@ export const deleteRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5826,9 +6316,16 @@ export const deleteRating = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -5884,7 +6381,9 @@ export const deleteRating = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5923,6 +6422,11 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       rating
@@ -5956,7 +6460,9 @@ export const createMessage = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -5995,6 +6501,11 @@ export const createMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       receiverID
@@ -6028,7 +6539,9 @@ export const updateMessage = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -6067,6 +6580,11 @@ export const updateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       receiverID
@@ -6100,7 +6618,9 @@ export const deleteMessage = /* GraphQL */ `
         imageUri
         bio
         publisherName
+        website
         isPublisher
+        numAuthored
         topthree
         following {
           nextToken
@@ -6139,6 +6659,11 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
         __typename
       }
       receiverID
@@ -6173,9 +6698,16 @@ export const createStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -6271,9 +6803,16 @@ export const updateStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -6369,9 +6908,16 @@ export const deleteStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -6467,9 +7013,16 @@ export const createEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -6564,9 +7117,16 @@ export const updateEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID
@@ -6661,9 +7221,16 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           publisherName
+          website
           isPublisher
+          numAuthored
           topthree
           plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
           __typename
         }
         publisherID

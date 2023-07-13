@@ -33,7 +33,7 @@ import ShareStory from '../components/functions/ShareStory';
 import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getStory, getUser, getRating } from '../src/graphql/queries';
+import { getStory, getUser, getRating, commentsByStory } from '../src/graphql/queries';
 import { createComment, createRating, updateRating, updateStory } from '../src/graphql/mutations';
 import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
@@ -166,7 +166,10 @@ const StoryScreen  = ({navigation} : any) => {
                     setImageU(response);
                 }
 
-                setCommentList(storyData.data.getStory.comments.items)
+                const storyComments = await API.graphql(graphqlOperation(commentsByStory, {nextToken, storyID: storyID}))
+
+
+                setCommentList(storyComments.data.commentsByStory.items)
 
             } catch (e) {
                 console.log(e);
@@ -175,6 +178,13 @@ const StoryScreen  = ({navigation} : any) => {
     }, [storyID, commentUpdated])
 
     const [imageU, setImageU] = useState()
+
+         //on render, determine if the story in alraedy pinned or not
+         useEffect(() => {
+            if (userPins.includes(storyID) === true) {
+                setQd(true)
+            }
+    }, [storyID])
         
 
 //rating state (if rated or not)
@@ -506,7 +516,7 @@ const StoryScreen  = ({navigation} : any) => {
                                 storyID: storyID,
                                 content: comment,
                                 userID: poster.attributes.sub,
-                                approved: false
+                                approved: true,
                             }
                         }))
                     } catch (e) {
