@@ -33,8 +33,12 @@ const context = {
 
     progUpdate: false,
     setProgUpdate: (val: boolean) => {},
+
     premium: false,
     setPremium: (val: boolean) => {},
+
+    playbackSpeed: 1,
+    setPlaybackSpeed: (val: number) => {},
 }
 
 export const AppContext = React.createContext(context);

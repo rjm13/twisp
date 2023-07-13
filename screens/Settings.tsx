@@ -1,5 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, StyleSheet, Text, Dimensions, Switch, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { View, 
+        StyleSheet, 
+        Text, 
+        Dimensions, 
+        Switch, 
+        ScrollView, 
+        TouchableWithoutFeedback,
+        Platform
+    } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 //import { Switch } from 'react-native-paper';
@@ -9,9 +17,26 @@ import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { updateUser } from '../src/graphql/mutations';
 import { getUser } from '../src/graphql/queries';
 
+import Slider from '@react-native-community/slider';
+import TrackPlayer, {State, useProgress, Capability, usePlaybackState} from 'react-native-track-player';
+
 import {AppContext} from '../AppContext';
 
 const Settings = ({navigation} : any) => {
+
+    const { setPlaybackSpeed } = useContext(AppContext);
+    const { playbackSpeed } = useContext(AppContext);
+
+    const [position, setPosition] = useState(playbackSpeed); //position in milliseconds
+
+    function SetPosition(value : any) {
+        setPosition(Math.floor(value / 0.1)/10)
+    }
+
+    const PlaybackSpeedChange = async () => {
+        setPlaybackSpeed(position)
+        await TrackPlayer.setRate(position)
+    }
 
     const { setNSFWOn } = useContext(AppContext);
     const { nsfwOn } = useContext(AppContext);
@@ -114,7 +139,7 @@ const Settings = ({navigation} : any) => {
 
             <View style={{ marginHorizontal: 20, marginVertical: 20}}>
                 <Text style={styles.header}>
-                    Playback
+                    Content Filters
                 </Text>
             </View>
 
@@ -225,6 +250,43 @@ const Settings = ({navigation} : any) => {
                         value={isRecsOn}
                     />
                 </View> */}
+            </View>
+
+            <View style={{ marginHorizontal: 20, marginVertical: 20}}>
+                <Text style={styles.header}>
+                    Playback
+                </Text>
+            </View>
+
+            <View style={styles.optionslist}>
+                <View style={[styles.optionsitem, {flexDirection: 'row', justifyContent: 'space-between'}]}>
+                    <Text style={{fontSize: 16, color: premium === true ? '#ffffff' : 'gray'}}>
+                        Playback Speed
+                    </Text>
+                    <Text style={{fontSize: 16, color: '#ffffff', marginRight: 20}}>
+                        {position}x
+                    </Text>
+                </View>
+
+                <View style={{ alignItems: 'center', marginTop: Platform.OS === 'ios' ? 20 : 10}}>
+                    <Slider
+                        style={{width: '80%', height: 10, alignSelf: 'center'}}
+                        minimumTrackTintColor="cyan"
+                        maximumTrackTintColor="#ffffffa5"
+                        thumbTintColor='#fff'
+                        tapToSeek={true}
+                        value={playbackSpeed}
+                        step={0.1}
+
+                        minimumValue={0.1}
+                        maximumValue={2} //function set to the length of the audio file
+                        onValueChange={SetPosition} //function: when slider changes, slider value = SetPosition
+                        onSlidingComplete={PlaybackSpeedChange}
+                    />
+                </View>
+
+                <View style={styles.optionsitem}>
+                </View>  
             </View>
 
             {/* <View style={{ marginHorizontal: 20, marginVertical: 20}}>

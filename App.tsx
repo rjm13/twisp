@@ -166,6 +166,8 @@ export default function App() {
 
   const [ADon, setADon] = useState<boolean>(false);
 
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
+
   const [progUpdate, setProgUpdate] = useState<boolean>(false);
 
   const [deepLink, setDeepLink] = useState(null);
@@ -208,6 +210,8 @@ export default function App() {
           setUserFinished: (val: []) => setUserFinished(val),
           userFollowing,
           setUserFollowing: (val: []) => setUserFollowing(val),
+          playbackSpeed,
+          setPlaybackSpeed: (val: number) => setPlaybackSpeed(val),
 
         }}>
             <Navigation colorScheme='dark'/>
