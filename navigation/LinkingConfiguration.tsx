@@ -2,6 +2,7 @@ import * as Linking from 'expo-linking';
 
 
 export default {
+  
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
@@ -9,16 +10,14 @@ export default {
         screens: {
           Home: {
             screens: {
-              HomeScreen: 'one',
-              ProfileScreen: 'Profile',
-              EditProfileScreen: 'EditProfile'
+              HomeScreen: 'Home',
+              ProfileScreen: 'ProfileScreen',
+              EditProfileScreen: 'EditProfileScreen'
             },
           },
           Stories: {
             screens: {
-              StoriesScreen: 'two',
-              BrowseAuthor: 'BrowseAuthor',
-              BrowseNarrator: 'BrowseNarrator',
+              StoriesScreen: 'StoriesScreen',
               GenreHome: 'GenreHome',
               SearchScreen: 'SearchScreen',
             },
@@ -39,4 +38,13 @@ export default {
         },
     },
   },
-}};
+},
+async getInitialURL() {
+  // variable for url
+let deepLink
+  // Check if app was opened from a deep link
+  deepLink = await Linking.getInitialURL()
+  // Don't handle it now - wait until Navigation is ready
+  console.log('DeepLink URL:', deepLink)
+},
+};

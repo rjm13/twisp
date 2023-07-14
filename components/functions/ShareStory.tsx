@@ -15,7 +15,7 @@ const handleShareWithLinking = async ({id, title}: any) => {
       const result = await Share.share({
         message: title + ', : ' + deepUri,
         url: deepUri,
-        title: 'Check out this short story on Blip!'
+        title: 'Check out this short story!'
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

@@ -4,6 +4,8 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import { ColorSchemeName, Appearance } from 'react-native';
 import { AppContext } from '../AppContext';
 
+import * as Linking from 'expo-linking';
+
 //set storyID to null or move to home stack
 //import SimpleAudioPlayer from '../screens/SimpleAudioPlayer';
 
@@ -34,9 +36,84 @@ export default function Navigation(
   { colorScheme }: { colorScheme: ColorSchemeName }
   ) {
 
+    const { deepLink, setDeepLink } = useContext(AppContext);
+
+    const linking = {
+      prefixes: [Linking.createURL('/')],
+      config: {
+        screens: {
+          Root: {
+            screens: {
+              Home: {
+                screens: {
+                  HomeScreen: 'Home',
+                  ProfileScreen: 'ProfileScreen',
+                  EditProfileScreen: 'EditProfileScreen'
+                },
+              },
+              Stories: {
+                screens: {
+                  StoriesScreen: 'StoriesScreen',
+                  GenreHome: 'GenreHome',
+                  SearchScreen: 'SearchScreen',
+                },
+              },
+              Playlist: {
+                screens: {
+                  PlaylistScreen: 'three',
+                },
+              },
+              
+            },
+          },
+          StoryScreen: {
+            path: 'storyscreen/ : id?',
+            //path: 'storyscreen/:id?',
+            parse: {
+              id: (id: String) => `${id}`,
+            },
+        },
+      },
+    },
+    };
+
+    function _handleOpenUrl(event) {
+      console.log('handleOpenUrl', event.url);
+      setDeepLink(event.url)
+    
+    }
+
+    Linking.getInitialURL()
+    .then((url) => {
+      if (url) {
+        console.log('launch url', url);
+        _handleOpenUrl({url});
+      }
+    })
+    .catch((err) => console.error('launch url error', err));
+
+  useEffect(() => {
+    const linking = Linking.addEventListener('url', _handleOpenUrl);
+    return () => {
+      linking.remove();
+    };
+  }, []);
+    // open url if deepLink is defined
+const openDeepLink = async () => {
+	if (deepLink) Linking.openURL(deepLink)
+}
+
+// check when react navigation is ready
+const onNavigationReady = async () => {
+	// if deep link exists, open when navigation is ready
+	await openDeepLink()
+}
+
+
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
+      linking={linking}
+      //onReady={onNavigationReady}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
       ref={navigationRef}
       >

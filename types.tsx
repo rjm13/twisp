@@ -11,7 +11,6 @@ export type RootStackParamList = {
     ModalNavigator: undefined;
     Drawer: undefined;
     Redirect: undefined;
-    SimpleAudioPlayer: undefined;
     TagSearchScreen: undefined;
     SplashCarousel: undefined;
     CreateMessage: undefined;
@@ -28,7 +27,7 @@ export type RootStackParamList = {
   };
   
   export type TabOneParamList = {
-    HomeScreen: undefined;
+    Home: undefined;
     ProfileScreen: undefined;
     EditProfileScreen: undefined;
     NotificationSetting: undefined;

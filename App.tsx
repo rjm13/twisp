@@ -170,7 +170,7 @@ export default function App() {
 
   const [progUpdate, setProgUpdate] = useState<boolean>(false);
 
-  const [deepLink, setDeepLink] = useState(null);
+  const [deepLink, setDeepLink] = useState<string|null>(null);
 
   const [premium, setPremium] = useState<boolean>(false);
 

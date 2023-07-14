@@ -18,7 +18,7 @@ import {updateUser} from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 
-//import Purchases, { PurchasesOffering } from 'react-native-purchases';
+import Purchases, { PurchasesOffering } from 'react-native-purchases';
 
 const PremiumHome = ({navigation} : any) => {
 
@@ -56,9 +56,9 @@ const PremiumHome = ({navigation} : any) => {
                 }
                 Purchases.setDebugLogsEnabled(true);
                 if (Platform.OS == "android") {
-                Purchases.setup("goog_wSkOaqDFxXdkMqDferfIVDqSIuv", userInfo.attributes.sub);
+                //Purchases.setup("goog_wSkOaqDFxXdkMqDferfIVDqSIuv", userInfo.attributes.sub);
                 } else {
-                Purchases.setup("appl_kWcWMJjdDmIvLdsnnGavdbkSevg", userInfo.attributes.sub);
+                //Purchases.setup("appl_kWcWMJjdDmIvLdsnnGavdbkSevg", userInfo.attributes.sub);
                 }
                 }
             catch (error) {
@@ -146,7 +146,7 @@ const PremiumHome = ({navigation} : any) => {
 
                     <View style={{alignSelf: 'center', justifyContent: 'center', alignContent: 'center', marginHorizontal: 20}}>
                         <Text style={{ textAlign: 'center', color: '#fff', fontSize: 32, fontWeight: 'bold'}}>
-                           Blip Premium
+                           Twisp Premium
                         </Text>
                     </View>
 

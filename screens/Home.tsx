@@ -9,7 +9,7 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LinearGradient} from 'expo-linear-gradient';
-import Linking from 'expo-linking'
+import * as Linking from 'expo-linking'
 
 import useStyles from '../styles';
 import { AppContext } from '../AppContext';
@@ -35,40 +35,47 @@ const HomeScreen = ({navigation} : any) => {
     const [TopThree, setTopThree] = useState([])
 
     //set the listener to open a shared a story on app start up
-    // useEffect(() => {
-
-    //     async function getInitialURL(params : any) {
-    
-    //         if(!params) return;
+    useEffect(() => {
         
-    //         const initialURL = await Linking.getInitialURL();
-            
-    //         if (initialURL)  {
-    //             let response = Linking.parse(initialURL)
-    //             setDeepLink(response)
-    //         }
-    //         if (params) {
-    //             let response = Linking.parse(params)
-                    
-    //             setDeepLink(response)
-    //         }
-    //     }
-    
-    //     // listen for new url events coming from Expo
-    //     Linking.addEventListener('url', event => {getInitialURL(event.url);});
-    
-    //     return (() => {Linking.removeEventListener('url', event => {getInitialURL(event.url);});})
 
-    //   }, [])
+        // async function getInitialURL(params : any) {
+    
+        //     if(!params) return;
+        
+        //     const initialURL = await Linking.getInitialURL();
+            
+        //     if (initialURL)  {
+        //         let response = Linking.parse(initialURL)
+        //         setDeepLink(response)
+        //     }
+        //     if (params) {
+        //         let response = Linking.parse(params)
+                    
+        //         setDeepLink(response)
+        //     }
+        // }
+
+        const handleEvent = (e : any) => {console.log(e)}
+    
+        // listen for new url events coming from Expo
+            //Linking.addEventListener('url', event => {if (event) {getInitialURL(event.url);}}); 
+            //const subscribe = Linking.addEventListener('url', e => {if (e) {handleEvent(e)}}); 
+            //return (() => {Linking.removeEventListener('url', event => {getInitialURL(event.url);});})
+            //return () => subscribe.remove();
+
+      }, [])
 
       //if the app opens from a shared link, direct the user to that story screen
     useEffect(() => {
 
-        if (deepLink?.queryParams?.id) {
-            navigation.navigate('StoryScreen', {storyID: deepLink?.queryParams.id})
-        }
-        else {
-            return
+        if (deepLink) {
+
+            let response = Linking.parse(deepLink)
+
+            navigation.navigate('StoryScreen', {storyID: response?.queryParams?.id})
+
+            setDeepLink(null)
+            
         }
        
     } , [deepLink])

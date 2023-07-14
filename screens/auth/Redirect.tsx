@@ -59,7 +59,7 @@ const Redirect = ({route, navigation} : any) => {
           //const purchaserInfo = await Purchases.getPurchaserInfo();
     
         //   if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
-        //     setPremium(true);
+             setPremium(true);
         //   } 
         }
 
@@ -88,7 +88,7 @@ const Redirect = ({route, navigation} : any) => {
                 else {
 
                     // if (userInfo.signInUserSession.idToken.payload["cognito:groups"].includes('Premium') === true) {
-                    //     setPremium(true)
+                    setPremium(true)
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
                     // }
 
