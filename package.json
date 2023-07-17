@@ -1,12 +1,15 @@
 {
   "name": "twisp",
-  "version": "1.0.0",
+  "version": "1.1.10",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "aws-export": "echo 'Update Expo AWS_EXPORTS secret with value: \n\n' && cat aws-exports.js |base64",
+    "eas-build-pre-install": "echo $AWS_EXPORTS | base64 -di > ./src/aws-exports.js"
+
   },
   "dependencies": {
     "@aws-amplify/analytics": "^6.3.2",

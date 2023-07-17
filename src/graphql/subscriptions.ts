@@ -50,7 +50,6 @@ export const onCreateUser = /* GraphQL */ `
           type
           userID
           storyID
-          eroticStoryID
           createdAt
           updatedAt
           __typename
@@ -65,7 +64,6 @@ export const onCreateUser = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -81,7 +79,6 @@ export const onCreateUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           __typename
         }
         nextToken
@@ -120,20 +117,6 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      inProgressEroticStories {
-        items {
-          id
-          type
-          userID
-          eroticStoryID
-          createdAt
-          updatedAt
-          time
-          __typename
-        }
-        nextToken
-        __typename
-      }
       published {
         items {
           id
@@ -144,6 +127,7 @@ export const onCreateUser = /* GraphQL */ `
           imageUri
           audioUri
           publisherID
+          creatorID
           author
           narrator
           artist
@@ -220,7 +204,6 @@ export const onUpdateUser = /* GraphQL */ `
           type
           userID
           storyID
-          eroticStoryID
           createdAt
           updatedAt
           __typename
@@ -235,7 +218,6 @@ export const onUpdateUser = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -251,7 +233,6 @@ export const onUpdateUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           __typename
         }
         nextToken
@@ -290,20 +271,6 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      inProgressEroticStories {
-        items {
-          id
-          type
-          userID
-          eroticStoryID
-          createdAt
-          updatedAt
-          time
-          __typename
-        }
-        nextToken
-        __typename
-      }
       published {
         items {
           id
@@ -314,6 +281,7 @@ export const onUpdateUser = /* GraphQL */ `
           imageUri
           audioUri
           publisherID
+          creatorID
           author
           narrator
           artist
@@ -390,7 +358,6 @@ export const onDeleteUser = /* GraphQL */ `
           type
           userID
           storyID
-          eroticStoryID
           createdAt
           updatedAt
           __typename
@@ -405,7 +372,6 @@ export const onDeleteUser = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -421,7 +387,6 @@ export const onDeleteUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           __typename
         }
         nextToken
@@ -460,20 +425,6 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      inProgressEroticStories {
-        items {
-          id
-          type
-          userID
-          eroticStoryID
-          createdAt
-          updatedAt
-          time
-          __typename
-        }
-        nextToken
-        __typename
-      }
       published {
         items {
           id
@@ -484,6 +435,7 @@ export const onDeleteUser = /* GraphQL */ `
           imageUri
           audioUri
           publisherID
+          creatorID
           author
           narrator
           artist
@@ -508,6 +460,315 @@ export const onDeleteUser = /* GraphQL */ `
       setting3
       setting4
       setting5
+      __typename
+    }
+  }
+`;
+export const onCreateCreatorProfile = /* GraphQL */ `
+  subscription OnCreateCreatorProfile(
+    $filter: ModelSubscriptionCreatorProfileFilterInput
+  ) {
+    onCreateCreatorProfile(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
+      userID
+      user {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
+          nextToken
+          __typename
+        }
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      imageUri
+      bio
+      penName
+      website
+      numAuthored
+      stories {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const onUpdateCreatorProfile = /* GraphQL */ `
+  subscription OnUpdateCreatorProfile(
+    $filter: ModelSubscriptionCreatorProfileFilterInput
+  ) {
+    onUpdateCreatorProfile(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
+      userID
+      user {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
+          nextToken
+          __typename
+        }
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      imageUri
+      bio
+      penName
+      website
+      numAuthored
+      stories {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const onDeleteCreatorProfile = /* GraphQL */ `
+  subscription OnDeleteCreatorProfile(
+    $filter: ModelSubscriptionCreatorProfileFilterInput
+  ) {
+    onDeleteCreatorProfile(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
+      userID
+      user {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
+          nextToken
+          __typename
+        }
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      imageUri
+      bio
+      penName
+      website
+      numAuthored
+      stories {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -565,10 +826,6 @@ export const onCreateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -621,10 +878,6 @@ export const onCreateFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -696,10 +949,6 @@ export const onUpdateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -752,10 +1001,6 @@ export const onUpdateFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -827,10 +1072,6 @@ export const onDeleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -883,10 +1124,6 @@ export const onDeleteFollowConnection = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -958,7 +1195,58 @@ export const onCreateStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      publisherID
+      creator {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
           nextToken
           __typename
         }
@@ -973,7 +1261,7 @@ export const onCreateStory = /* GraphQL */ `
         setting5
         __typename
       }
-      publisherID
+      creatorID
       author
       narrator
       artist
@@ -988,7 +1276,6 @@ export const onCreateStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           content
           userID
           approved
@@ -1018,7 +1305,6 @@ export const onCreateStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -1034,7 +1320,6 @@ export const onCreateStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           reaction
           icon
           __typename
@@ -1122,7 +1407,58 @@ export const onUpdateStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      publisherID
+      creator {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
           nextToken
           __typename
         }
@@ -1137,7 +1473,7 @@ export const onUpdateStory = /* GraphQL */ `
         setting5
         __typename
       }
-      publisherID
+      creatorID
       author
       narrator
       artist
@@ -1152,7 +1488,6 @@ export const onUpdateStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           content
           userID
           approved
@@ -1182,7 +1517,6 @@ export const onUpdateStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -1198,7 +1532,6 @@ export const onUpdateStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           reaction
           icon
           __typename
@@ -1286,7 +1619,58 @@ export const onDeleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
+        published {
+          nextToken
+          __typename
+        }
+        setting1
+        setting2
+        setting3
+        setting4
+        setting5
+        __typename
+      }
+      publisherID
+      creator {
+        type
+        createdAt
+        updatedAt
+        id
+        name
+        email
+        imageUri
+        bio
+        publisherName
+        website
+        isPublisher
+        numAuthored
+        topthree
+        following {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        Pinned {
+          nextToken
+          __typename
+        }
+        Rated {
+          nextToken
+          __typename
+        }
+        Finished {
+          nextToken
+          __typename
+        }
+        plan
+        messageRec {
+          nextToken
+          __typename
+        }
+        inProgressStories {
           nextToken
           __typename
         }
@@ -1301,7 +1685,7 @@ export const onDeleteStory = /* GraphQL */ `
         setting5
         __typename
       }
-      publisherID
+      creatorID
       author
       narrator
       artist
@@ -1316,7 +1700,6 @@ export const onDeleteStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           content
           userID
           approved
@@ -1346,7 +1729,6 @@ export const onDeleteStory = /* GraphQL */ `
           updatedAt
           type
           storyID
-          eroticStoryID
           userID
           rating
           __typename
@@ -1362,7 +1744,6 @@ export const onDeleteStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          eroticStoryID
           reaction
           icon
           __typename
@@ -1393,501 +1774,6 @@ export const onDeleteStory = /* GraphQL */ `
       status
       numListens
       approved
-      __typename
-    }
-  }
-`;
-export const onCreateEroticStory = /* GraphQL */ `
-  subscription OnCreateEroticStory(
-    $filter: ModelSubscriptionEroticStoryFilterInput
-  ) {
-    onCreateEroticStory(filter: $filter) {
-      id
-      type
-      createdAt
-      updatedAt
-      title
-      imageUri
-      audioUri
-      publisher {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      publisherID
-      author
-      narrator
-      artist
-      time
-      summary
-      description
-      nsfw
-      comments {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          content
-          userID
-          approved
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      tags {
-        items {
-          id
-          eroticStoryId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      ratingAvg
-      ratingAmt
-      ratings {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          userID
-          rating
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      reactions {
-        items {
-          id
-          type
-          createdAt
-          updatedAt
-          userID
-          storyID
-          eroticStoryID
-          reaction
-          icon
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      genreID
-      genre {
-        id
-        genre
-        icon
-        color
-        imageUri
-        tags {
-          nextToken
-          __typename
-        }
-        eroticTags {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      hidden
-      status
-      numListens
-      __typename
-    }
-  }
-`;
-export const onUpdateEroticStory = /* GraphQL */ `
-  subscription OnUpdateEroticStory(
-    $filter: ModelSubscriptionEroticStoryFilterInput
-  ) {
-    onUpdateEroticStory(filter: $filter) {
-      id
-      type
-      createdAt
-      updatedAt
-      title
-      imageUri
-      audioUri
-      publisher {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      publisherID
-      author
-      narrator
-      artist
-      time
-      summary
-      description
-      nsfw
-      comments {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          content
-          userID
-          approved
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      tags {
-        items {
-          id
-          eroticStoryId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      ratingAvg
-      ratingAmt
-      ratings {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          userID
-          rating
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      reactions {
-        items {
-          id
-          type
-          createdAt
-          updatedAt
-          userID
-          storyID
-          eroticStoryID
-          reaction
-          icon
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      genreID
-      genre {
-        id
-        genre
-        icon
-        color
-        imageUri
-        tags {
-          nextToken
-          __typename
-        }
-        eroticTags {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      hidden
-      status
-      numListens
-      __typename
-    }
-  }
-`;
-export const onDeleteEroticStory = /* GraphQL */ `
-  subscription OnDeleteEroticStory(
-    $filter: ModelSubscriptionEroticStoryFilterInput
-  ) {
-    onDeleteEroticStory(filter: $filter) {
-      id
-      type
-      createdAt
-      updatedAt
-      title
-      imageUri
-      audioUri
-      publisher {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      publisherID
-      author
-      narrator
-      artist
-      time
-      summary
-      description
-      nsfw
-      comments {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          content
-          userID
-          approved
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      tags {
-        items {
-          id
-          eroticStoryId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      ratingAvg
-      ratingAmt
-      ratings {
-        items {
-          id
-          createdAt
-          updatedAt
-          type
-          storyID
-          eroticStoryID
-          userID
-          rating
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      reactions {
-        items {
-          id
-          type
-          createdAt
-          updatedAt
-          userID
-          storyID
-          eroticStoryID
-          reaction
-          icon
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      genreID
-      genre {
-        id
-        genre
-        icon
-        color
-        imageUri
-        tags {
-          nextToken
-          __typename
-        }
-        eroticTags {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      hidden
-      status
-      numListens
       __typename
     }
   }
@@ -2139,18 +2025,6 @@ export const onCreateEroticTag = /* GraphQL */ `
         nextToken
         __typename
       }
-      stories {
-        items {
-          id
-          eroticStoryId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       count
       __typename
     }
@@ -2178,18 +2052,6 @@ export const onUpdateEroticTag = /* GraphQL */ `
         nextToken
         __typename
       }
-      stories {
-        items {
-          id
-          eroticStoryId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       count
       __typename
     }
@@ -2209,18 +2071,6 @@ export const onDeleteEroticTag = /* GraphQL */ `
         items {
           id
           genreId
-          eroticTagId
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      stories {
-        items {
-          id
-          eroticStoryId
           eroticTagId
           createdAt
           updatedAt
@@ -2285,10 +2135,6 @@ export const onCreatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -2332,6 +2178,29 @@ export const onCreatePinnedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -2372,79 +2241,6 @@ export const onCreatePinnedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       createdAt
@@ -2504,10 +2300,6 @@ export const onUpdatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -2551,6 +2343,29 @@ export const onUpdatePinnedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -2591,79 +2406,6 @@ export const onUpdatePinnedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       createdAt
@@ -2723,10 +2465,6 @@ export const onDeletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -2770,6 +2508,29 @@ export const onDeletePinnedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -2810,79 +2571,6 @@ export const onDeletePinnedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       createdAt
@@ -2942,10 +2630,6 @@ export const onCreateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -2989,6 +2673,29 @@ export const onCreateInProgressStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -3089,10 +2796,6 @@ export const onUpdateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -3136,6 +2839,29 @@ export const onUpdateInProgressStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -3236,10 +2962,6 @@ export const onDeleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -3283,6 +3005,29 @@ export const onDeleteInProgressStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -3323,444 +3068,6 @@ export const onDeleteInProgressStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      createdAt
-      updatedAt
-      time
-      __typename
-    }
-  }
-`;
-export const onCreateInProgressEroticStory = /* GraphQL */ `
-  subscription OnCreateInProgressEroticStory(
-    $filter: ModelSubscriptionInProgressEroticStoryFilterInput
-  ) {
-    onCreateInProgressEroticStory(filter: $filter) {
-      id
-      type
-      userID
-      user {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      createdAt
-      updatedAt
-      time
-      __typename
-    }
-  }
-`;
-export const onUpdateInProgressEroticStory = /* GraphQL */ `
-  subscription OnUpdateInProgressEroticStory(
-    $filter: ModelSubscriptionInProgressEroticStoryFilterInput
-  ) {
-    onUpdateInProgressEroticStory(filter: $filter) {
-      id
-      type
-      userID
-      user {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      createdAt
-      updatedAt
-      time
-      __typename
-    }
-  }
-`;
-export const onDeleteInProgressEroticStory = /* GraphQL */ `
-  subscription OnDeleteInProgressEroticStory(
-    $filter: ModelSubscriptionInProgressEroticStoryFilterInput
-  ) {
-    onDeleteInProgressEroticStory(filter: $filter) {
-      id
-      type
-      userID
-      user {
-        type
-        createdAt
-        updatedAt
-        id
-        name
-        email
-        imageUri
-        bio
-        publisherName
-        website
-        isPublisher
-        numAuthored
-        topthree
-        following {
-          nextToken
-          __typename
-        }
-        followers {
-          nextToken
-          __typename
-        }
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       createdAt
@@ -3823,10 +3130,6 @@ export const onCreateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -3870,6 +3173,29 @@ export const onCreateFinishedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -3910,79 +3236,6 @@ export const onCreateFinishedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       __typename
@@ -4042,10 +3295,6 @@ export const onUpdateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -4089,6 +3338,29 @@ export const onUpdateFinishedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -4129,79 +3401,6 @@ export const onUpdateFinishedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       __typename
@@ -4261,10 +3460,6 @@ export const onDeleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -4308,6 +3503,29 @@ export const onDeleteFinishedStory = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -4348,79 +3566,6 @@ export const onDeleteFinishedStory = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       __typename
@@ -4466,6 +3611,29 @@ export const onCreateComment = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -4508,79 +3676,6 @@ export const onCreateComment = /* GraphQL */ `
         approved
         __typename
       }
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticStoryID
       content
       user {
         type
@@ -4622,10 +3717,6 @@ export const onCreateComment = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -4685,6 +3776,29 @@ export const onUpdateComment = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -4727,79 +3841,6 @@ export const onUpdateComment = /* GraphQL */ `
         approved
         __typename
       }
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticStoryID
       content
       user {
         type
@@ -4841,10 +3882,6 @@ export const onUpdateComment = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -4904,6 +3941,29 @@ export const onDeleteComment = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -4946,79 +4006,6 @@ export const onDeleteComment = /* GraphQL */ `
         approved
         __typename
       }
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticStoryID
       content
       user {
         type
@@ -5060,10 +4047,6 @@ export const onDeleteComment = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -5135,10 +4118,6 @@ export const onCreateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5194,10 +4173,6 @@ export const onCreateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5207,79 +4182,6 @@ export const onCreateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       reaction
@@ -5339,10 +4241,6 @@ export const onUpdateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5398,10 +4296,6 @@ export const onUpdateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5411,79 +4305,6 @@ export const onUpdateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       reaction
@@ -5543,10 +4364,6 @@ export const onDeleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5602,10 +4419,6 @@ export const onDeleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -5615,79 +4428,6 @@ export const onDeleteReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       reaction
@@ -5735,6 +4475,29 @@ export const onCreateRating = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -5775,79 +4538,6 @@ export const onCreateRating = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       userID
@@ -5891,10 +4581,6 @@ export const onCreateRating = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -5953,6 +4639,29 @@ export const onUpdateRating = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -5993,79 +4702,6 @@ export const onUpdateRating = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       userID
@@ -6109,10 +4745,6 @@ export const onUpdateRating = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -6171,6 +4803,29 @@ export const onDeleteRating = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -6211,79 +4866,6 @@ export const onDeleteRating = /* GraphQL */ `
         status
         numListens
         approved
-        __typename
-      }
-      eroticStoryID
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
         __typename
       }
       userID
@@ -6327,10 +4909,6 @@ export const onDeleteRating = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -6406,10 +4984,6 @@ export const onCreateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -6479,10 +5053,6 @@ export const onUpdateMessage = /* GraphQL */ `
           __typename
         }
         inProgressStories {
-          nextToken
-          __typename
-        }
-        inProgressEroticStories {
           nextToken
           __typename
         }
@@ -6558,10 +5128,6 @@ export const onDeleteMessage = /* GraphQL */ `
           nextToken
           __typename
         }
-        inProgressEroticStories {
-          nextToken
-          __typename
-        }
         published {
           nextToken
           __typename
@@ -6615,6 +5181,29 @@ export const onCreateStoryTag = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -6717,6 +5306,29 @@ export const onUpdateStoryTag = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -6819,6 +5431,29 @@ export const onDeleteStoryTag = /* GraphQL */ `
           __typename
         }
         publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
         author
         narrator
         artist
@@ -6862,315 +5497,6 @@ export const onDeleteStoryTag = /* GraphQL */ `
         __typename
       }
       tag {
-        id
-        updatedAt
-        createdAt
-        type
-        tagName
-        genre {
-          nextToken
-          __typename
-        }
-        stories {
-          nextToken
-          __typename
-        }
-        count
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onCreateEroticStoryTag = /* GraphQL */ `
-  subscription OnCreateEroticStoryTag(
-    $filter: ModelSubscriptionEroticStoryTagFilterInput
-  ) {
-    onCreateEroticStoryTag(filter: $filter) {
-      id
-      eroticStoryId
-      eroticTagId
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticTag {
-        id
-        updatedAt
-        createdAt
-        type
-        tagName
-        genre {
-          nextToken
-          __typename
-        }
-        stories {
-          nextToken
-          __typename
-        }
-        count
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateEroticStoryTag = /* GraphQL */ `
-  subscription OnUpdateEroticStoryTag(
-    $filter: ModelSubscriptionEroticStoryTagFilterInput
-  ) {
-    onUpdateEroticStoryTag(filter: $filter) {
-      id
-      eroticStoryId
-      eroticTagId
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticTag {
-        id
-        updatedAt
-        createdAt
-        type
-        tagName
-        genre {
-          nextToken
-          __typename
-        }
-        stories {
-          nextToken
-          __typename
-        }
-        count
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteEroticStoryTag = /* GraphQL */ `
-  subscription OnDeleteEroticStoryTag(
-    $filter: ModelSubscriptionEroticStoryTagFilterInput
-  ) {
-    onDeleteEroticStoryTag(filter: $filter) {
-      id
-      eroticStoryId
-      eroticTagId
-      eroticStory {
-        id
-        type
-        createdAt
-        updatedAt
-        title
-        imageUri
-        audioUri
-        publisher {
-          type
-          createdAt
-          updatedAt
-          id
-          name
-          email
-          imageUri
-          bio
-          publisherName
-          website
-          isPublisher
-          numAuthored
-          topthree
-          plan
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
-          __typename
-        }
-        publisherID
-        author
-        narrator
-        artist
-        time
-        summary
-        description
-        nsfw
-        comments {
-          nextToken
-          __typename
-        }
-        tags {
-          nextToken
-          __typename
-        }
-        ratingAvg
-        ratingAmt
-        ratings {
-          nextToken
-          __typename
-        }
-        reactions {
-          nextToken
-          __typename
-        }
-        genreID
-        genre {
-          id
-          genre
-          icon
-          color
-          imageUri
-          createdAt
-          updatedAt
-          __typename
-        }
-        hidden
-        status
-        numListens
-        __typename
-      }
-      eroticTag {
         id
         updatedAt
         createdAt
@@ -7370,10 +5696,6 @@ export const onCreateEroticaTag = /* GraphQL */ `
           nextToken
           __typename
         }
-        stories {
-          nextToken
-          __typename
-        }
         count
         __typename
       }
@@ -7419,10 +5741,6 @@ export const onUpdateEroticaTag = /* GraphQL */ `
           nextToken
           __typename
         }
-        stories {
-          nextToken
-          __typename
-        }
         count
         __typename
       }
@@ -7465,10 +5783,6 @@ export const onDeleteEroticaTag = /* GraphQL */ `
         type
         tagName
         genre {
-          nextToken
-          __typename
-        }
-        stories {
           nextToken
           __typename
         }

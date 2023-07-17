@@ -73,7 +73,7 @@ const HomeScreen = ({navigation} : any) => {
             let response = Linking.parse(deepLink)
 
             navigation.navigate('StoryScreen', {storyID: response?.queryParams?.id})
-
+            //await Linking.openURL(deepLink)
             setDeepLink(null)
             
         }
