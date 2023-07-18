@@ -4,7 +4,7 @@ import { AppContext } from '../../AppContext';
 import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getUser, pinnedStoriesByUser, ratingsByUser, connectionsByFollower, finishedStoriesByUser } from '../../src/graphql/queries';
 import { StatusBar } from 'expo-status-bar';
-//import Purchases from "react-native-purchases";
+import Purchases from "react-native-purchases";
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -56,11 +56,19 @@ const Redirect = ({route, navigation} : any) => {
     
           const ENTITLEMENT_ID = userInfo.attributes.sub
     
-          //const purchaserInfo = await Purchases.getPurchaserInfo();
-    
-        //   if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
-             setPremium(true);
-        //   } 
+          try {
+            const customerInfo = await Purchases.getCustomerInfo();
+
+            console.log(customerInfo)
+
+             if (typeof customerInfo.entitlements.active !== "undefined") {
+            setPremium(true);
+          } else {
+            setPremium(true)
+          }
+          } catch (e) {
+           console.log(e)
+          }
         }
 
         performMagic();
@@ -88,17 +96,22 @@ const Redirect = ({route, navigation} : any) => {
                 else {
 
                     // if (userInfo.signInUserSession.idToken.payload["cognito:groups"].includes('Premium') === true) {
-                    setPremium(true)
+                    //setPremium(true)
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
                     // }
 
-                    //const purchaserInfo = await Purchases.getPurchaserInfo();
+                    try {
+                        const customerInfo = await Purchases.getCustomerInfo();
+                         if (typeof customerInfo.entitlements.active !== "undefined") {
+                        setPremium(true);
+                      } else {
+                        setPremium(true)
+                      }
+                      } catch (e) {
+                       console.log(e)
+                      }
 
-                    // if (typeof purchaserInfo.entitlements.active[0] !== "undefined") {
-                    //     setPremium(true);
-                    //   } else {
-                    //     setPremium(false)
-                    //   }
+                  
 
                     // const date = new Date();
                     // const year = date.getFullYear();
@@ -157,7 +170,7 @@ const Redirect = ({route, navigation} : any) => {
                             for (let i = 0; i < userRatingData.data.ratingsByUser.items.length; i++) {
                                 rates.push(userRatingData.data.ratingsByUser.items[i].storyID)
                             }
-                            if (userRatingData.data.getUser.Rated.nextToken) {
+                            if (userRatingData.data.ratingsByUser.nextToken) {
                                 //setNextToken(userRatingData.data.ratingsByUser.nextToken)
                                 getTheRatings(userRatingData.data.ratingsByUser.nextToken);
                                 //return;

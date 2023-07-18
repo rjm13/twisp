@@ -10,7 +10,7 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import Linking from 'expo-linking'
 
-//import Purchases from 'react-native-purchases';
+import Purchases from 'react-native-purchases';
 import TrackPlayer, {Capability, AppKilledPlaybackBehavior} from 'react-native-track-player';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
@@ -44,20 +44,20 @@ export default function App() {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   const connectRevenueCat = async () => {
-  //     Purchases.setDebugLogsEnabled(true)
-  //     if (Platform.OS === 'android') {
-  //       console.log('entrou 3')
-  //       Purchases.setup('goog_wSkOaqDFxXdkMqDferfIVDqSIuv')
-  //     }
-  //     if (Platform.OS === 'ios') {
-  //       console.log('entrou 3')
-  //       Purchases.setup('appl_kWcWMJjdDmIvLdsnnGavdbkSevg')
-  //     }
-  //   }
-  //   connectRevenueCat()
-  // }, [])
+  useEffect(() => {
+    const connectRevenueCat = async () => {
+      Purchases.setDebugLogsEnabled(true)
+      if (Platform.OS === 'android') {
+        console.log('entrou 3')
+        Purchases.configure({apiKey: 'goog_ZnvczOwEEgDMwVVNvfxMKwPmFgX'})
+      }
+      if (Platform.OS === 'ios') {
+        console.log('entrou 3')
+        Purchases.configure({apiKey: 'appl_kWcWMJjdDmIvLdsnnGavdbkSevg'})
+      }
+    }
+    connectRevenueCat()
+  }, [])
 
 //set up track player
   useEffect(() => {
@@ -84,13 +84,17 @@ export default function App() {
           Capability.SeekTo,
           Capability.JumpBackward,
           Capability.JumpForward,
-          Capability.Stop,
+          //Capability.Stop,
         ],
-        // notificationCapabilities: [
-        //   Capability.Play,
-        //   Capability.Pause,
-        // ],
-        //progressUpdateEventInterval: 2,
+        notificationCapabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SeekTo,
+          Capability.JumpBackward,
+          Capability.JumpForward,
+          //Capability.Stop,
+        ],
+      progressUpdateEventInterval: 10,
         //icon: require('./../imgs/ic_logo_notification.png')
       });
       //await TrackPlayer.setRepeatMode(RepeatMode.Queue);
