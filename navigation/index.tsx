@@ -73,6 +73,10 @@ export default function Navigation(
               id: (id: String) => `${id}`,
             },
         },
+        Redirect: {
+          path: 'redirect/',
+          //path: 'storyscreen/:id?',
+      },
       },
     },
     };

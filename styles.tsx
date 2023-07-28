@@ -79,7 +79,7 @@ return StyleSheet.create ({
     },
     buttontext: {
       fontSize: 16,
-      fontWeight: '800',
+      fontWeight: '600',
       color: '#000',
       textAlign: 'center'
     },
@@ -117,6 +117,21 @@ accountcontainer: {
   paddingHorizontal: 20,
   paddingVertical: 16,
 },
+socialbuttontext: {
+      fontSize: 16,
+      fontWeight: '500',
+      color: '#fff',
+      textAlign: 'center',
+      paddingHorizontal: 20
+},
+socialbuttonlayout: {
+  backgroundColor: '#363636', 
+  borderRadius: 17, 
+  overflow: 'hidden', 
+  alignSelf: 'center', 
+  flexDirection: 'row', 
+  alignItems: 'center',
+}
 });
 }
 

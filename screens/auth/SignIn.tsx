@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useCallback, useEffect} from 'react';
 import { 
     View, 
     Text, 
@@ -8,7 +8,8 @@ import {
     Linking,
     ActivityIndicator,
     Keyboard,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,9 +18,10 @@ import { StatusBar } from 'expo-status-bar';
 import { AppContext } from '../../AppContext';
 import useStyles from '../../styles';
 
-import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation, Hub } from 'aws-amplify';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { getUser } from '../../src/graphql/queries';
-
+import { createUser } from '../../src/graphql/mutations';
 
 const SignIn = ({navigation} : any) => {
 
@@ -38,6 +40,46 @@ const SignIn = ({navigation} : any) => {
     const [signingIn, setSigningIn] = useState(false);
 
     const [trigger, setTrigger] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = Hub.listen("auth", ({ payload: { event, data }}) => {
+          switch (event) {
+            case "signIn":
+                navigation.navigate('Redirect', {trigger: Math.random()});
+              break;
+            case "signOut":
+              Auth.signOut()
+              break;
+            // case "customOAuthState":
+            //   setCustomState(data);
+          }
+        });
+
+        return unsubscribe;
+    }, [])
+
+    async function signInWithGoogle() {
+        setSigningIn(true);
+        try {
+            
+            //await Auth.federatedSignIn({provider: "google"})
+            //.then (CreateFedUser)
+
+           
+
+            await Auth.federatedSignIn({
+                provider: CognitoHostedUIIdentityProvider.Google
+                //provider: "Google"
+              })
+        } 
+        catch (error) {
+            console.log('error signing in', error)
+            setIsErr(true);
+            setSigningIn(false);
+        }
+        //CreateFedUser();
+        setSigningIn(false);
+    }
 
 
     const CreateUser = async () => {
@@ -197,7 +239,7 @@ const SignIn = ({navigation} : any) => {
             ) : (
                 <TouchableOpacity onPress={signIn}>
                     <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
-                        <Text style={[styles.buttontext]}>
+                        <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
                             Login
                         </Text>
                     </View>
@@ -205,10 +247,25 @@ const SignIn = ({navigation} : any) => {
             )}
 
             <TouchableOpacity onPress={() => navigation.navigate('SignUp') }>
-                <Text style={[styles.paragraph, { alignSelf: 'center', margin: 30}]}>
+                <Text style={[styles.buttontext, { alignSelf: 'center', margin: 30, color: '#fff'}]}>
                     Create an account
                 </Text>
             </TouchableOpacity>
+
+            <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
+
+            <TouchableOpacity onPress={signInWithGoogle}>
+                <View style={[styles.socialbuttonlayout]}>
+                    <Image 
+                        source={require('../../assets/google-logo.png')}
+                        style={{width: 30, height: 30, margin: 10}}
+                    />
+                    <Text style={[styles.socialbuttontext]}>
+                        Continue with Google
+                    </Text>
+                </View>
+            </TouchableOpacity>
+
         <StatusBar style='light' backgroundColor='transparent'/>
         </View>
         </TouchableWithoutFeedback>

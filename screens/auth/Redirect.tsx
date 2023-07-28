@@ -5,6 +5,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getUser, pinnedStoriesByUser, ratingsByUser, connectionsByFollower, finishedStoriesByUser } from '../../src/graphql/queries';
 import { StatusBar } from 'expo-status-bar';
 import Purchases from "react-native-purchases";
+import { createUser } from '../../src/graphql/mutations';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -88,6 +89,7 @@ const Redirect = ({route, navigation} : any) => {
 
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
+
 
                 if (userInfo === 'The user is not authenticated') {
                     navigation.navigate('SignIn')
@@ -222,11 +224,26 @@ const Redirect = ({route, navigation} : any) => {
                         });
                     
                     } else {
+                        const createdUser = await API.graphql(
+                            graphqlOperation(
+                            createUser,
+                            { input: {
+                                id: userInfo.attributes.sub,
+                                type: 'User'
+                            }}
+                            )
+                        )
+
+                        if (createdUser) {
+                            fetchUser();
+                            return;
+                        } else {
                         setUserID(null);
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'SignIn' }],
                         });
+                    }
                     }
                 }
             } catch {
