@@ -39,7 +39,7 @@ export default function Navigation(
     const { deepLink, setDeepLink } = useContext(AppContext);
 
     const linking = {
-      prefixes: [Linking.createURL('/')],
+      prefixes: [Linking.createURL('/'), "https://twisp.space/"],
       config: {
         screens: {
           Root: {

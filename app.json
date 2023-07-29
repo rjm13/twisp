@@ -48,7 +48,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "*.twisp.space"
+              "host": "twisp.space"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]

@@ -40,15 +40,12 @@ const Welcome = ({navigation} : any) => {
                     type: 'Message',
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    userID: userInfo.attributes.sub,
+                    receiverID: userInfo.attributes.sub,
                     otherUserID: null,
                     content: 'Welcome to Twisp!\n\nYour home for audio short stories.\n\Twisp curates stories, but also allows publishers to share their own.\n\nWe hope you enjoy using Twisp! Happy listening!',
                     title: 'Welcome to Twisp!',
                     subtitle: null,
-                    isReadbyUser: false,
-                    isReadByOtherUser: true,
-                    docID: null,
-                    request: null,
+                    isReadbyReceiver: false,
                     status: 'noreply'
                     }
                 }

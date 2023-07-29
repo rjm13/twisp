@@ -235,8 +235,7 @@ const Redirect = ({route, navigation} : any) => {
                         )
 
                         if (createdUser) {
-                            fetchUser();
-                            return;
+                            navigation.navigate('Welcome')
                         } else {
                         setUserID(null);
                         navigation.reset({
