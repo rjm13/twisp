@@ -148,6 +148,10 @@ const StoryScreen  = ({navigation} : any) => {
 //get the story attributes using the storyID
     useEffect(() => {
         const fetchStory = async () => {
+
+            if (!storyID) {
+                navigation.goBack(); setIsRootScreen(false)
+            }
             
             let tagarr = []
 

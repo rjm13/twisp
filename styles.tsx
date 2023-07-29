@@ -122,15 +122,19 @@ socialbuttontext: {
       fontWeight: '500',
       color: '#fff',
       textAlign: 'center',
-      paddingHorizontal: 20
+      paddingRight: 20,
+      paddingLeft: 18
 },
 socialbuttonlayout: {
   backgroundColor: '#363636', 
-  borderRadius: 17, 
+  borderRadius: 24, 
   overflow: 'hidden', 
   alignSelf: 'center', 
   flexDirection: 'row', 
   alignItems: 'center',
+  width: Dimensions.get('window').width*0.7,
+  paddingHorizontal: 10,
+  paddingVertical: 8,
 }
 });
 }

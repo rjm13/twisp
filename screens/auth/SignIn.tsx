@@ -21,7 +21,6 @@ import useStyles from '../../styles';
 import { Auth, API, graphqlOperation, Hub } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { getUser } from '../../src/graphql/queries';
-import { createUser } from '../../src/graphql/mutations';
 
 const SignIn = ({navigation} : any) => {
 
@@ -46,6 +45,7 @@ const SignIn = ({navigation} : any) => {
           switch (event) {
             case "signIn":
                 navigation.navigate('Redirect', {trigger: Math.random()});
+                setSigningIn(false)
               break;
             case "signOut":
               Auth.signOut()
@@ -77,8 +77,8 @@ const SignIn = ({navigation} : any) => {
             setIsErr(true);
             setSigningIn(false);
         }
+        setSigningIn(false)
         //CreateFedUser();
-        setSigningIn(false);
     }
 
 
@@ -237,7 +237,7 @@ const SignIn = ({navigation} : any) => {
         {signingIn === true ? (
             <ActivityIndicator size="small" color='cyan'/>
             ) : (
-                <TouchableOpacity onPress={signIn}>
+                <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
                     <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
                         <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
                             Login
@@ -254,11 +254,11 @@ const SignIn = ({navigation} : any) => {
 
             <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
 
-            <TouchableOpacity onPress={signInWithGoogle}>
+            <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
                 <View style={[styles.socialbuttonlayout]}>
                     <Image 
                         source={require('../../assets/google-logo.png')}
-                        style={{width: 30, height: 30, margin: 10}}
+                        style={{width: 30, height: 30, margin: 0}}
                     />
                     <Text style={[styles.socialbuttontext]}>
                         Continue with Google

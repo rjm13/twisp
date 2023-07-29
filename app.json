@@ -2,11 +2,11 @@
   "expo": {
     "name": "Twisp",
     "slug": "twisp",
-    "version": "1.1.12",
+    "version": "1.1.13",
     "orientation": "portrait",
     "icon": "./assets/TwispAppIcon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "twisp",
+    "scheme": "https",
     "splash": {
       "image": "./assets/Twisp_Splash2.png",
       "resizeMode": "contain",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.martianspidermedia.blipprod",
-      "buildNumber": "1.1.12",
+      "buildNumber": "1.1.13",
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"
@@ -40,7 +40,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.martianspidermedia.blipprod",
-      "versionCode": 47,
+      "versionCode": 48,
       "intentFilters": [
         {
           "action": "VIEW",
