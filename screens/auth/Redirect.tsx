@@ -5,7 +5,7 @@ import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { getUser, pinnedStoriesByUser, ratingsByUser, connectionsByFollower, finishedStoriesByUser } from '../../src/graphql/queries';
 import { StatusBar } from 'expo-status-bar';
 import Purchases from "react-native-purchases";
-import { createUser } from '../../src/graphql/mutations';
+import { createUser, updateUser } from '../../src/graphql/mutations';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width
@@ -19,6 +19,10 @@ const Redirect = ({route, navigation} : any) => {
     const [tryAgain, setTryAgain] = useState(false);
 
     const trigger = route.params
+
+    const { 
+        expoPushToken
+    } = useContext(AppContext);
 
     const { userID } = useContext(AppContext);
     const { setUserID } = useContext(AppContext);
@@ -60,7 +64,7 @@ const Redirect = ({route, navigation} : any) => {
           try {
             const customerInfo = await Purchases.getCustomerInfo();
 
-            console.log(customerInfo)
+            //console.log(customerInfo)
 
              if (typeof customerInfo.entitlements.active !== "undefined") {
             setPremium(true);
@@ -145,6 +149,15 @@ const Redirect = ({route, navigation} : any) => {
 
                         setUserID(userData.data.getUser.id);
 
+                        const repo = await API.graphql(graphqlOperation(
+                                updateUser, {input: {
+                                    id: userInfo.attributes.sub,
+                                    setting4: expoPushToken,
+                                }}
+                            ))
+
+                        console.log(repo)
+
                         const getThePins = async (nextPinToken : any) => {
 
                             const userPinData = await API.graphql(graphqlOperation(
@@ -218,6 +231,8 @@ const Redirect = ({route, navigation} : any) => {
                         getTheRatings(null);
                         getTheFinished(null);
                         getTheFollowing(null);
+
+                        
                         navigation.reset({
                             //index: 0,
                             routes: [{ name: 'Root' }],
@@ -229,7 +244,8 @@ const Redirect = ({route, navigation} : any) => {
                             createUser,
                             { input: {
                                 id: userInfo.attributes.sub,
-                                type: 'User'
+                                type: 'User',
+                                Setting4: expoPushToken
                             }}
                             )
                         )

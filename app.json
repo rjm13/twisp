@@ -2,7 +2,7 @@
   "expo": {
     "name": "Twisp",
     "slug": "twisp",
-    "version": "1.1.13",
+    "version": "1.1.18",
     "orientation": "portrait",
     "icon": "./assets/TwispAppIcon.png",
     "userInterfaceStyle": "automatic",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.martianspidermedia.blipprod",
-      "buildNumber": "1.1.13",
+      "buildNumber": "1.1.18",
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"
@@ -40,7 +40,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.martianspidermedia.blipprod",
-      "versionCode": 48,
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 53,
       "intentFilters": [
         {
           "action": "VIEW",
@@ -48,7 +49,8 @@
           "data": [
             {
               "scheme": "https",
-              "host": "twisp.space"
+              "host": "*.twisp.space",
+              "pathPrefix": "/"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]
@@ -91,7 +93,11 @@
     },
     "plugins": [
       "expo-tracking-transparency",
-      "./plugins/withAndroidVerifiedLinksWorkaround"
+      "./plugins/withAndroidVerifiedLinksWorkaround",
+      [
+        "expo-notifications"
+        
+      ]
     ]
   }
 }

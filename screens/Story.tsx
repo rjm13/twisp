@@ -53,7 +53,7 @@ const StoryScreen  = ({navigation} : any) => {
 //pin to playlist functions
     const [nextToken, setNextToken] = useState()
 
-    const { userPins } = useContext(AppContext);
+    const { userPins, expoPushToken } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
     const { userRates } = useContext(AppContext);
     const { setUserRates } = useContext(AppContext);
@@ -113,6 +113,29 @@ const StoryScreen  = ({navigation} : any) => {
         }
         getThePins(); 
     }
+
+    const SendPush = async () => {
+
+        const userInfo = Auth.currentAuthenticatedUser();
+
+        const message = {
+            to: expoPushToken,
+            sound: "default",
+            title: "You have a new comment pending your approval.",
+            body: "For Today",
+            data: {someData: "goes here"},
+        }
+      
+      await fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+              Accept: "application/json",
+              "Accept-encoding": "gzip, deflate",
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(message)
+      });
+      }
     
 //ref to scroll to comment section
     const scrollRef = useRef();
@@ -528,6 +551,7 @@ const StoryScreen  = ({navigation} : any) => {
             }
             setComment('');
             setCommentUpdated(!commentUpdated)
+            SendPush();
         }
     }
 

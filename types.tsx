@@ -27,7 +27,7 @@ export type RootStackParamList = {
   };
   
   export type TabOneParamList = {
-    Home: undefined;
+    HomeScreen: undefined;
     ProfileScreen: undefined;
     EditProfileScreen: undefined;
     NotificationSetting: undefined;
@@ -68,6 +68,7 @@ export type RootStackParamList = {
     InProgress: undefined;
     PendingPrompts: undefined;
     AdminUpload: undefined;
+    PendingComments: undefined;
   
   };
   

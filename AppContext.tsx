@@ -4,6 +4,9 @@ const context = {
     storyID: null,
     setStoryID: (id: string) => {},
 
+    expoPushToken: null,
+    setExpoPushToken: (val: string | null) => {},
+
     userPins: [],
     setUserPins: (val) => {},
 

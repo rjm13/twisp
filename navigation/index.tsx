@@ -38,31 +38,23 @@ export default function Navigation(
 
     const { deepLink, setDeepLink } = useContext(AppContext);
 
+    const appScheme = Linking.createURL('/');
+    const urlScheme =  "https://twisp.space"
+
+    const prefixes = [appScheme,urlScheme]
+
     const linking = {
-      prefixes: [Linking.createURL('/'), "https://twisp.space/"],
+      prefixes,
       config: {
         screens: {
           Root: {
             screens: {
               Home: {
                 screens: {
-                  HomeScreen: 'Home',
-                  ProfileScreen: 'ProfileScreen',
-                  EditProfileScreen: 'EditProfileScreen'
+                  HomeScreen: 'home/',
                 },
               },
-              Stories: {
-                screens: {
-                  StoriesScreen: 'StoriesScreen',
-                  GenreHome: 'GenreHome',
-                  SearchScreen: 'SearchScreen',
-                },
-              },
-              Playlist: {
-                screens: {
-                  PlaylistScreen: 'three',
-                },
-              },
+
               
             },
           },

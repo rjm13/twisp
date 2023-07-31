@@ -16,9 +16,10 @@ import AccountScreen from '../screens/Account';
 import Inbox from '../screens/Inbox';
 import ViewMessage from '../screens/ViewMessage';
 
-// import PendingStories from '../screens/PendingStories';
+import ModSection from '../screens/ModSection';
+import PendingStories from '../screens/PendingStories';
 // import FlaggedStories from '../screens/FlaggedStories';
-// import NewComments from '../screens/NewComments';
+import PendingComments from '../screens/PendingComments';
 // import PendingPrompts from '../screens/PendingPrompts';
 // import AdminUpload from '../screens/AdminUploadAudio';
 
@@ -211,6 +212,21 @@ function HomeNavigator() {
        <HomeStack.Screen 
         name="MyStories" 
         component={MyStories} 
+        options={{ headerShown: false }} 
+      />
+       <HomeStack.Screen 
+        name="ModSection" 
+        component={ModSection} 
+        options={{ headerShown: false }} 
+      />
+       <HomeStack.Screen 
+        name="PendingStories" 
+        component={PendingStories} 
+        options={{ headerShown: false }} 
+      />
+       <HomeStack.Screen 
+        name="PendingComments" 
+        component={PendingComments} 
         options={{ headerShown: false }} 
       />
 

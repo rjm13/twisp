@@ -1290,9 +1290,9 @@ export const createStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -1505,9 +1505,9 @@ export const updateStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -1720,9 +1720,9 @@ export const deleteStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -3633,9 +3633,9 @@ export const createComment = /* GraphQL */ `
   ) {
     createComment(input: $input, condition: $condition) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id
@@ -3801,9 +3801,9 @@ export const updateComment = /* GraphQL */ `
   ) {
     updateComment(input: $input, condition: $condition) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id
@@ -3969,9 +3969,9 @@ export const deleteComment = /* GraphQL */ `
   ) {
     deleteComment(input: $input, condition: $condition) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id

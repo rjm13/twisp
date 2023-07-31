@@ -1272,9 +1272,9 @@ export const onCreateStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -1484,9 +1484,9 @@ export const onUpdateStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -1696,9 +1696,9 @@ export const onDeleteStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -3576,9 +3576,9 @@ export const onCreateComment = /* GraphQL */ `
   subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
     onCreateComment(filter: $filter) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id
@@ -3741,9 +3741,9 @@ export const onUpdateComment = /* GraphQL */ `
   subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
     onUpdateComment(filter: $filter) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id
@@ -3906,9 +3906,9 @@ export const onDeleteComment = /* GraphQL */ `
   subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
     onDeleteComment(filter: $filter) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id

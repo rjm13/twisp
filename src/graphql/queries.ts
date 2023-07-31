@@ -694,9 +694,9 @@ export const getStory = /* GraphQL */ `
       comments {
         items {
           id
+          type
           createdAt
           updatedAt
-          type
           storyID
           content
           userID
@@ -1778,9 +1778,9 @@ export const getComment = /* GraphQL */ `
   query GetComment($id: ID!) {
     getComment(id: $id) {
       id
+      type
       createdAt
       updatedAt
-      type
       storyID
       story {
         id
@@ -1948,9 +1948,9 @@ export const listComments = /* GraphQL */ `
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        type
         createdAt
         updatedAt
-        type
         storyID
         story {
           id
@@ -4248,6 +4248,87 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
     }
   }
 `;
+export const commentsByCreated = /* GraphQL */ `
+  query CommentsByCreated(
+    $type: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    commentsByCreated(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          __typename
+        }
+        content
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        userID
+        approved
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const commentsByStory = /* GraphQL */ `
   query CommentsByStory(
     $storyID: ID!
@@ -4267,9 +4348,9 @@ export const commentsByStory = /* GraphQL */ `
     ) {
       items {
         id
+        type
         createdAt
         updatedAt
-        type
         storyID
         story {
           id

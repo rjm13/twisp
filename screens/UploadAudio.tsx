@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import { 
     StyleSheet, 
     Text, 
@@ -27,12 +27,19 @@ import ImageCompress from '../components/functions/CompressImage'
 import uuid from 'react-native-uuid';
 
 import useStyles from '../styles';
+import { AppContext } from '../AppContext'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { createStory, createStoryTag, createTag, createGenreTag, createMessage  } from '../src/graphql/mutations';
 import { listTags, getUser, listGenres, listGenreTags } from '../src/graphql/queries';
 
+
+
 const UploadAudio = ({navigation} : any) => { 
+
+    const { 
+        expoPushToken
+    } = useContext(AppContext);
     
     const styles = useStyles();
 
@@ -179,6 +186,27 @@ const UploadAudio = ({navigation} : any) => {
         })();
       }, []);
 
+      const SendPush = async () => {
+
+        const message = {
+            to: expoPushToken,
+            sound: "default",
+            title: "You have a new story pending your approval.",
+            body: "For Today",
+            data: {someData: "goes here"},
+        }
+      
+      await fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+              Accept: "application/json",
+              "Accept-encoding": "gzip, deflate",
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(message)
+      });
+      }
+
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
@@ -226,7 +254,7 @@ const UploadAudio = ({navigation} : any) => {
                     nsfw: data.genre === 'after dark' ? true : data.nsfw,
                     ratingAvg: 0,
                     ratingAmt: 0,
-                    type: 'Story',
+                    type: 'PendingStory',
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 }
@@ -287,7 +315,9 @@ const UploadAudio = ({navigation} : any) => {
                     status: 'noreply',
                 }
             }
-        ))
+        ));
+
+        await SendPush();
 
         setIsPublishing(false);
         navigation.goBack();

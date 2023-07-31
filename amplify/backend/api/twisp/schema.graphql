@@ -28,7 +28,7 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   setting1: Boolean
   setting2: Boolean
   setting3: Boolean
-  setting4: String
+  setting4: String #this is the expo push token
   setting5: String
 }
 
@@ -176,9 +176,10 @@ type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, 
 type Comment @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
   {
     id: ID!
+    type: String 
+      @index(name: "commentsByCreated", queryField: "commentsByCreated", sortKeyFields: ["createdAt"])
     createdAt: String
     updatedAt: String
-    type: String
     storyID: ID @index(name: "byStory", queryField: "commentsByStory", sortKeyFields: ["createdAt"])
     story: Story @hasOne (fields: ["storyID"])
     content: String!

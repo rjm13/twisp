@@ -217,9 +217,9 @@ export type ModelCommentConnection = {
 export type Comment = {
   __typename: "Comment",
   id: string,
+  type?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
-  type?: string | null,
   storyID?: string | null,
   story?: Story | null,
   content: string,
@@ -851,9 +851,9 @@ export type DeleteFinishedStoryInput = {
 
 export type CreateCommentInput = {
   id?: string | null,
+  type?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
-  type?: string | null,
   storyID?: string | null,
   content: string,
   userID?: string | null,
@@ -861,9 +861,9 @@ export type CreateCommentInput = {
 };
 
 export type ModelCommentConditionInput = {
+  type?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  type?: ModelStringInput | null,
   storyID?: ModelIDInput | null,
   content?: ModelStringInput | null,
   userID?: ModelIDInput | null,
@@ -875,9 +875,9 @@ export type ModelCommentConditionInput = {
 
 export type UpdateCommentInput = {
   id: string,
+  type?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
-  type?: string | null,
   storyID?: string | null,
   content?: string | null,
   userID?: string | null,
@@ -1269,9 +1269,9 @@ export type ModelFinishedStoryFilterInput = {
 
 export type ModelCommentFilterInput = {
   id?: ModelIDInput | null,
+  type?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  type?: ModelStringInput | null,
   storyID?: ModelIDInput | null,
   content?: ModelStringInput | null,
   userID?: ModelIDInput | null,
@@ -1583,9 +1583,9 @@ export type ModelSubscriptionFinishedStoryFilterInput = {
 
 export type ModelSubscriptionCommentFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  type?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
   storyID?: ModelSubscriptionIDInput | null,
   content?: ModelSubscriptionStringInput | null,
   userID?: ModelSubscriptionIDInput | null,
@@ -2960,9 +2960,9 @@ export type CreateStoryMutation = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -3176,9 +3176,9 @@ export type UpdateStoryMutation = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -3392,9 +3392,9 @@ export type DeleteStoryMutation = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -5322,9 +5322,9 @@ export type CreateCommentMutation = {
   createComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -5491,9 +5491,9 @@ export type UpdateCommentMutation = {
   updateComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -5660,9 +5660,9 @@ export type DeleteCommentMutation = {
   deleteComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -8320,9 +8320,9 @@ export type GetStoryQuery = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -9422,9 +9422,9 @@ export type GetCommentQuery = {
   getComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -9594,9 +9594,9 @@ export type ListCommentsQuery = {
     items:  Array< {
       __typename: "Comment",
       id: string,
+      type?: string | null,
       createdAt?: string | null,
       updatedAt?: string | null,
-      type?: string | null,
       storyID?: string | null,
       story?:  {
         __typename: "Story",
@@ -11814,6 +11814,81 @@ export type FinishedStoriesByStoryIDAndCreatedAtQuery = {
   } | null,
 };
 
+export type CommentsByCreatedQueryVariables = {
+  type: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CommentsByCreatedQuery = {
+  commentsByCreated?:  {
+    __typename: "ModelCommentConnection",
+    items:  Array< {
+      __typename: "Comment",
+      id: string,
+      type?: string | null,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+      storyID?: string | null,
+      story?:  {
+        __typename: "Story",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        title: string,
+        imageUri?: string | null,
+        audioUri: string,
+        publisherID?: string | null,
+        creatorID?: string | null,
+        author?: string | null,
+        narrator?: string | null,
+        artist?: string | null,
+        time?: number | null,
+        summary?: string | null,
+        description?: string | null,
+        nsfw?: boolean | null,
+        ratingAvg?: number | null,
+        ratingAmt?: number | null,
+        genreID?: string | null,
+        hidden?: boolean | null,
+        status?: boolean | null,
+        numListens?: number | null,
+        approved?: boolean | null,
+      } | null,
+      content: string,
+      user?:  {
+        __typename: "User",
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        id: string,
+        name?: string | null,
+        email?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        publisherName?: string | null,
+        website?: string | null,
+        isPublisher?: boolean | null,
+        numAuthored?: number | null,
+        topthree?: Array< string | null > | null,
+        plan?: string | null,
+        setting1?: boolean | null,
+        setting2?: boolean | null,
+        setting3?: boolean | null,
+        setting4?: string | null,
+        setting5?: string | null,
+      } | null,
+      userID?: string | null,
+      approved?: boolean | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type CommentsByStoryQueryVariables = {
   storyID: string,
   createdAt?: ModelStringKeyConditionInput | null,
@@ -11829,9 +11904,9 @@ export type CommentsByStoryQuery = {
     items:  Array< {
       __typename: "Comment",
       id: string,
+      type?: string | null,
       createdAt?: string | null,
       updatedAt?: string | null,
-      type?: string | null,
       storyID?: string | null,
       story?:  {
         __typename: "Story",
@@ -13809,9 +13884,9 @@ export type OnCreateStorySubscription = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -14024,9 +14099,9 @@ export type OnUpdateStorySubscription = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -14239,9 +14314,9 @@ export type OnDeleteStorySubscription = {
       items:  Array< {
         __typename: "Comment",
         id: string,
+        type?: string | null,
         createdAt?: string | null,
         updatedAt?: string | null,
-        type?: string | null,
         storyID?: string | null,
         content: string,
         userID?: string | null,
@@ -16150,9 +16225,9 @@ export type OnCreateCommentSubscription = {
   onCreateComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -16318,9 +16393,9 @@ export type OnUpdateCommentSubscription = {
   onUpdateComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
@@ -16486,9 +16561,9 @@ export type OnDeleteCommentSubscription = {
   onDeleteComment?:  {
     __typename: "Comment",
     id: string,
+    type?: string | null,
     createdAt?: string | null,
     updatedAt?: string | null,
-    type?: string | null,
     storyID?: string | null,
     story?:  {
       __typename: "Story",
