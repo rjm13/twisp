@@ -17,7 +17,7 @@ import TrackPlayer, {Capability, AppKilledPlaybackBehavior} from 'react-native-t
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 import Amplify from '@aws-amplify/core';
-import config from './src/aws-exports';
+import config from './src/aws-exports.js';
 Amplify.configure(config);
 
 import { AppContext } from './AppContext';

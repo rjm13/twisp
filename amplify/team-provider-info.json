@@ -1,25 +1,31 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-twisp-dev-175158-authRole",
-      "UnauthRoleArn": "arn:aws:iam::667262835291:role/amplify-twisp-dev-175158-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::667262835291:role/amplify-twisp-dev-175158-authRole",
+      "AuthRoleName": "amplify-twisp-dev-104824-authRole",
+      "UnauthRoleArn": "arn:aws:iam::667262835291:role/amplify-twisp-dev-104824-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::667262835291:role/amplify-twisp-dev-104824-authRole",
       "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-twisp-dev-175158-deployment",
-      "UnauthRoleName": "amplify-twisp-dev-175158-unauthRole",
-      "StackName": "amplify-twisp-dev-175158",
-      "StackId": "arn:aws:cloudformation:us-east-2:667262835291:stack/amplify-twisp-dev-175158/e661e080-0ef3-11ee-9f91-0ad5693ec11d",
-      "AmplifyAppId": "d16fc4o0jyeqze"
+      "DeploymentBucketName": "amplify-twisp-dev-104824-deployment",
+      "UnauthRoleName": "amplify-twisp-dev-104824-unauthRole",
+      "StackName": "amplify-twisp-dev-104824",
+      "StackId": "arn:aws:cloudformation:us-east-2:667262835291:stack/amplify-twisp-dev-104824/de510f00-3082-11ee-a8a2-0a24c0b7a1db",
+      "AmplifyAppId": "d1jhbjprlj4p7d"
     },
     "categories": {
       "auth": {
-        "twisp18a83f53": {}
+        "twispe3b15dff": {}
       },
       "api": {
         "twisp": {}
       },
       "storage": {
-        "twispbucket": {}
+        "s3b191908b": {}
+      },
+      "function": {
+        "dailyPushModUpdate": {
+          "deploymentBucketName": "amplify-twisp-dev-104824-deployment",
+          "s3Key": "amplify-builds/dailyPushModUpdate-5254762b7566766a7976-build.zip"
+        }
       }
     }
   }

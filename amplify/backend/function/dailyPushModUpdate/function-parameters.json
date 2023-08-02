@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "auth": {
+      "twispe3b15dff": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "api": {
+      "twisp": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

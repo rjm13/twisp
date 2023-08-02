@@ -230,3 +230,4 @@ type Message @model @auth(rules: [{ allow: private, operations: [create, delete,
     receiver: User @hasOne (fields: ["receiverID"])
     receiverID: ID @index(name: "byUser", queryField: "messagesByUser", sortKeyFields: ["createdAt"])
 }
+

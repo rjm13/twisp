@@ -39,9 +39,9 @@ export default function Navigation(
     const { deepLink, setDeepLink } = useContext(AppContext);
 
     const appScheme = Linking.createURL('/');
-    const urlScheme =  "https://twisp.space"
+    //const urlScheme =  "https://twisp.space"
 
-    const prefixes = [appScheme,urlScheme]
+    const prefixes = [appScheme]
 
     const linking = {
       prefixes,

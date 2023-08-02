@@ -1,7 +1,7 @@
 {
-  "resourceName": "twispbucket",
-  "policyUUID": "6891f21e",
-  "bucketName": "twispbucket",
+  "resourceName": "s3b191908b",
+  "policyUUID": "b191908b",
+  "bucketName": "twispf20cb8e32dc74d20b737973076b02653",
   "storageAccess": "auth",
   "guestAccess": [],
   "authAccess": [

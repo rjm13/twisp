@@ -94,9 +94,12 @@ const Redirect = ({route, navigation} : any) => {
             try {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true }).catch(err=>err)
 
-
                 if (userInfo === 'The user is not authenticated') {
-                    navigation.navigate('SignIn')
+                    setUserID(null);
+                        navigation.reset({
+                            //index: 0,
+                            routes: [{ name: 'SignIn' }],
+                        });
                 }
 
                 else {
@@ -238,28 +241,42 @@ const Redirect = ({route, navigation} : any) => {
                             routes: [{ name: 'Root' }],
                         });
                     
-                    } else {
+                    }
+
+                    if (userData.data.getUser === null || userData.data.getUser === undefined) {
+                        
+                        const newUser = {
+                            id: userInfo.attributes.sub,
+                            type: 'User',
+                            name: userInfo.attributes.name,
+                            plan: 'basic',
+                            setting4: expoPushToken
+                        }
+
                         const createdUser = await API.graphql(
                             graphqlOperation(
                             createUser,
-                            { input: {
-                                id: userInfo.attributes.sub,
-                                type: 'User',
-                                Setting4: expoPushToken
-                            }}
+                            { input: newUser }
                             )
                         )
 
                         if (createdUser) {
+                            setUserID(createdUser.data.createUser.id);
                             navigation.navigate('Welcome')
                         } else {
-                        setUserID(null);
-                        navigation.reset({
-                            //index: 0,
-                            routes: [{ name: 'SignIn' }],
-                        });
+                            setIsLoading(false);
+                        }
                     }
-                    }
+                        
+
+                         
+                        // setUserID(null);
+                        // navigation.reset({
+                        //     //index: 0,
+                        //     routes: [{ name: 'SignIn' }],
+                        // });
+                    
+                    
                 }
             } catch {
                 setIsLoading(false);

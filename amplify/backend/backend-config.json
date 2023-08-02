@@ -7,7 +7,7 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "twisp18a83f53"
+          "resourceName": "twispe3b15dff"
         }
       ],
       "output": {
@@ -16,7 +16,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authtwisp18a83f53"
+              "userPoolId": "authtwispe3b15dff"
             }
           }
         }
@@ -26,7 +26,7 @@
     }
   },
   "auth": {
-    "twisp18a83f53": {
+    "twispe3b15dff": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -55,8 +55,50 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "dailyPushModUpdate": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "twispe3b15dff"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "twisp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_dailyPushModUpdate_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dailyPushModUpdate"
+        }
+      ]
+    },
+    "AMPLIFY_function_dailyPushModUpdate_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dailyPushModUpdate"
+        }
+      ]
+    }
+  },
   "storage": {
-    "twispbucket": {
+    "s3b191908b": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

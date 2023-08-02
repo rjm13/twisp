@@ -56,7 +56,6 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                             id: userInfo.attributes.sub,
                             type: 'User',
                             name: userInfo.attributes.name,
-                            birthdate: userInfo.attributes.birthdate,
                             plan: 'basic'
                         }
 
@@ -99,10 +98,10 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
+        <View style={[styles.container, {alignItems: 'center', justifyContent: 'center',}]}>
             <LinearGradient
-                colors={['#00ffffa5','#000', '#000']}
-                style={styles.container}
+                colors={['#000','#000', '#000']}
+                //style={styles.container}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
@@ -127,7 +126,7 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                 </View>
 
                 <TouchableOpacity onPress={confirmSignUp}>
-                    <View style={styles.buttonlayout}>
+                    <View style={[styles.buttonlayout, {marginTop: 20, width: Dimensions.get('window').width*0.7, alignSelf: 'center'}]}>
                         {loggingIn === true ? (
                             <ActivityIndicator size='small' color='cyan'/>
                         ) : (
