@@ -139,6 +139,7 @@ export type User = {
   setting3?: boolean | null,
   setting4?: string | null,
   setting5?: string | null,
+  creatorProfiles?: ModelCreatorProfileConnection | null,
 };
 
 export type ModelFollowConnectionConnection = {
@@ -422,6 +423,35 @@ export type ModelStoryConnection = {
   nextToken?: string | null,
 };
 
+export type ModelCreatorProfileConnection = {
+  __typename: "ModelCreatorProfileConnection",
+  items:  Array<CreatorProfile | null >,
+  nextToken?: string | null,
+};
+
+export type CreatorProfile = {
+  __typename: "CreatorProfile",
+  id: string,
+  type?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  userID?: string | null,
+  user?: User | null,
+  imageUri?: string | null,
+  bio?: string | null,
+  penName?: string | null,
+  email?: string | null,
+  website?: string | null,
+  instagram?: string | null,
+  tikTok?: string | null,
+  facebook?: string | null,
+  deviantArt?: string | null,
+  reddit?: string | null,
+  youTube?: string | null,
+  numAuthored?: number | null,
+  stories?: ModelStoryConnection | null,
+};
+
 export type UpdateUserInput = {
   type?: string | null,
   createdAt?: string | null,
@@ -505,29 +535,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type CreatorProfile = {
-  __typename: "CreatorProfile",
-  id: string,
-  type?: string | null,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  userID?: string | null,
-  user?: User | null,
-  imageUri?: string | null,
-  bio?: string | null,
-  penName?: string | null,
-  email?: string | null,
-  website?: string | null,
-  instagram?: string | null,
-  tikTok?: string | null,
-  facebook?: string | null,
-  deviantArt?: string | null,
-  reddit?: string | null,
-  youTube?: string | null,
-  numAuthored?: number | null,
-  stories?: ModelStoryConnection | null,
 };
 
 export type UpdateCreatorProfileInput = {
@@ -1168,12 +1175,6 @@ export type ModelCreatorProfileFilterInput = {
   and?: Array< ModelCreatorProfileFilterInput | null > | null,
   or?: Array< ModelCreatorProfileFilterInput | null > | null,
   not?: ModelCreatorProfileFilterInput | null,
-};
-
-export type ModelCreatorProfileConnection = {
-  __typename: "ModelCreatorProfileConnection",
-  items:  Array<CreatorProfile | null >,
-  nextToken?: string | null,
 };
 
 export type ModelFollowConnectionFilterInput = {
@@ -1863,6 +1864,30 @@ export type CreateUserMutation = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2022,6 +2047,30 @@ export type UpdateUserMutation = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2181,6 +2230,30 @@ export type DeleteUserMutation = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2251,6 +2324,10 @@ export type CreateCreatorProfileMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -2364,6 +2441,10 @@ export type UpdateCreatorProfileMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -2477,6 +2558,10 @@ export type DeleteCreatorProfileMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -2590,6 +2675,10 @@ export type CreateFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2646,6 +2735,10 @@ export type CreateFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -2717,6 +2810,10 @@ export type UpdateFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2773,6 +2870,10 @@ export type UpdateFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -2844,6 +2945,10 @@ export type DeleteFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -2900,6 +3005,10 @@ export type DeleteFollowConnectionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -2973,6 +3082,10 @@ export type CreateStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -3029,6 +3142,10 @@ export type CreateStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -3191,6 +3308,10 @@ export type UpdateStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -3247,6 +3368,10 @@ export type UpdateStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -3409,6 +3534,10 @@ export type DeleteStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -3465,6 +3594,10 @@ export type DeleteStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -3959,6 +4092,10 @@ export type CreatePinnedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4129,6 +4266,10 @@ export type UpdatePinnedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4299,6 +4440,10 @@ export type DeletePinnedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4469,6 +4614,10 @@ export type CreateInProgressStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4640,6 +4789,10 @@ export type UpdateInProgressStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4811,6 +4964,10 @@ export type DeleteInProgressStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -4984,6 +5141,10 @@ export type CreateFinishedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5154,6 +5315,10 @@ export type UpdateFinishedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5324,6 +5489,10 @@ export type DeleteFinishedStoryMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -5593,6 +5762,10 @@ export type CreateCommentMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -5765,6 +5938,10 @@ export type UpdateCommentMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -5937,6 +6114,10 @@ export type DeleteCommentMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -6010,6 +6191,10 @@ export type CreateReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6066,6 +6251,10 @@ export type CreateReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -6139,6 +6328,10 @@ export type UpdateReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6195,6 +6388,10 @@ export type UpdateReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -6268,6 +6465,10 @@ export type DeleteReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -6324,6 +6525,10 @@ export type DeleteReactionMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -6496,6 +6701,10 @@ export type CreateRatingMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -6667,6 +6876,10 @@ export type UpdateRatingMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -6838,6 +7051,10 @@ export type DeleteRatingMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -6915,6 +7132,10 @@ export type CreateMessageMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -6992,6 +7213,10 @@ export type UpdateMessageMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -7069,6 +7294,10 @@ export type DeleteMessageMutation = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -7916,6 +8145,30 @@ export type GetUserQuery = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -7982,6 +8235,10 @@ export type ListUsersQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -8053,6 +8310,10 @@ export type GetCreatorProfileQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -8225,6 +8486,10 @@ export type GetFollowConnectionQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -8281,6 +8546,10 @@ export type GetFollowConnectionQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -8421,6 +8690,10 @@ export type GetStoryQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -8477,6 +8750,10 @@ export type GetStoryQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -8941,6 +9218,10 @@ export type GetPinnedStoryQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -9181,6 +9462,10 @@ export type GetInProgressStoryQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -9425,6 +9710,10 @@ export type GetFinishedStoryQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -9764,6 +10053,10 @@ export type GetCommentQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -9909,6 +10202,10 @@ export type GetReactionQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -9965,6 +10262,10 @@ export type GetReactionQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -10206,6 +10507,10 @@ export type GetRatingQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -10354,6 +10659,10 @@ export type GetMessageQuery = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -10782,6 +11091,69 @@ export type CreatorsByTypeQueryVariables = {
 
 export type CreatorsByTypeQuery = {
   creatorsByType?:  {
+    __typename: "ModelCreatorProfileConnection",
+    items:  Array< {
+      __typename: "CreatorProfile",
+      id: string,
+      type?: string | null,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+      userID?: string | null,
+      user?:  {
+        __typename: "User",
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        id: string,
+        name?: string | null,
+        email?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        publisherName?: string | null,
+        website?: string | null,
+        isPublisher?: boolean | null,
+        numAuthored?: number | null,
+        topthree?: Array< string | null > | null,
+        plan?: string | null,
+        isMod?: boolean | null,
+        setting1?: boolean | null,
+        setting2?: boolean | null,
+        setting3?: boolean | null,
+        setting4?: string | null,
+        setting5?: string | null,
+      } | null,
+      imageUri?: string | null,
+      bio?: string | null,
+      penName?: string | null,
+      email?: string | null,
+      website?: string | null,
+      instagram?: string | null,
+      tikTok?: string | null,
+      facebook?: string | null,
+      deviantArt?: string | null,
+      reddit?: string | null,
+      youTube?: string | null,
+      numAuthored?: number | null,
+      stories?:  {
+        __typename: "ModelStoryConnection",
+        nextToken?: string | null,
+      } | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type CreatorProfilesByUserQueryVariables = {
+  userID: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelCreatorProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CreatorProfilesByUserQuery = {
+  creatorProfilesByUser?:  {
     __typename: "ModelCreatorProfileConnection",
     items:  Array< {
       __typename: "CreatorProfile",
@@ -12984,6 +13356,30 @@ export type OnCreateUserSubscription = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -13142,6 +13538,30 @@ export type OnUpdateUserSubscription = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -13300,6 +13720,30 @@ export type OnDeleteUserSubscription = {
     setting3?: boolean | null,
     setting4?: string | null,
     setting5?: string | null,
+    creatorProfiles?:  {
+      __typename: "ModelCreatorProfileConnection",
+      items:  Array< {
+        __typename: "CreatorProfile",
+        id: string,
+        type?: string | null,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        userID?: string | null,
+        imageUri?: string | null,
+        bio?: string | null,
+        penName?: string | null,
+        email?: string | null,
+        website?: string | null,
+        instagram?: string | null,
+        tikTok?: string | null,
+        facebook?: string | null,
+        deviantArt?: string | null,
+        reddit?: string | null,
+        youTube?: string | null,
+        numAuthored?: number | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -13369,6 +13813,10 @@ export type OnCreateCreatorProfileSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -13481,6 +13929,10 @@ export type OnUpdateCreatorProfileSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -13593,6 +14045,10 @@ export type OnDeleteCreatorProfileSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     imageUri?: string | null,
     bio?: string | null,
@@ -13705,6 +14161,10 @@ export type OnCreateFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -13761,6 +14221,10 @@ export type OnCreateFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -13831,6 +14295,10 @@ export type OnUpdateFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -13887,6 +14355,10 @@ export type OnUpdateFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -13957,6 +14429,10 @@ export type OnDeleteFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     authorID?: string | null,
     author?:  {
@@ -14013,6 +14489,10 @@ export type OnDeleteFollowConnectionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
   } | null,
 };
@@ -14085,6 +14565,10 @@ export type OnCreateStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -14141,6 +14625,10 @@ export type OnCreateStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -14302,6 +14790,10 @@ export type OnUpdateStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -14358,6 +14850,10 @@ export type OnUpdateStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -14519,6 +15015,10 @@ export type OnDeleteStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     publisherID?: string | null,
     creator?:  {
@@ -14575,6 +15075,10 @@ export type OnDeleteStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     creatorID?: string | null,
     author?: string | null,
@@ -15059,6 +15563,10 @@ export type OnCreatePinnedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -15228,6 +15736,10 @@ export type OnUpdatePinnedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -15397,6 +15909,10 @@ export type OnDeletePinnedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -15566,6 +16082,10 @@ export type OnCreateInProgressStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -15736,6 +16256,10 @@ export type OnUpdateInProgressStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -15906,6 +16430,10 @@ export type OnDeleteInProgressStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -16078,6 +16606,10 @@ export type OnCreateFinishedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -16247,6 +16779,10 @@ export type OnUpdateFinishedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -16416,6 +16952,10 @@ export type OnDeleteFinishedStorySubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -16684,6 +17224,10 @@ export type OnCreateCommentSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -16855,6 +17399,10 @@ export type OnUpdateCommentSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -17026,6 +17574,10 @@ export type OnDeleteCommentSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID?: string | null,
     approved?: boolean | null,
@@ -17098,6 +17650,10 @@ export type OnCreateReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17154,6 +17710,10 @@ export type OnCreateReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -17226,6 +17786,10 @@ export type OnUpdateReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17282,6 +17846,10 @@ export type OnUpdateReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -17354,6 +17922,10 @@ export type OnDeleteReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     storyID?: string | null,
     story?:  {
@@ -17410,6 +17982,10 @@ export type OnDeleteReactionSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     reaction?: string | null,
     icon?: string | null,
@@ -17581,6 +18157,10 @@ export type OnCreateRatingSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -17751,6 +18331,10 @@ export type OnUpdateRatingSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -17921,6 +18505,10 @@ export type OnDeleteRatingSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     rating?: number | null,
   } | null,
@@ -17997,6 +18585,10 @@ export type OnCreateMessageSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -18073,6 +18665,10 @@ export type OnUpdateMessageSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,
@@ -18149,6 +18745,10 @@ export type OnDeleteMessageSubscription = {
       setting3?: boolean | null,
       setting4?: string | null,
       setting5?: string | null,
+      creatorProfiles?:  {
+        __typename: "ModelCreatorProfileConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     receiverID?: string | null,
   } | null,

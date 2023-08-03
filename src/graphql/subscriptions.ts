@@ -153,6 +153,30 @@ export const onCreateUser = /* GraphQL */ `
       setting3
       setting4
       setting5
+      creatorProfiles {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -308,6 +332,30 @@ export const onUpdateUser = /* GraphQL */ `
       setting3
       setting4
       setting5
+      creatorProfiles {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -463,6 +511,30 @@ export const onDeleteUser = /* GraphQL */ `
       setting3
       setting4
       setting5
+      creatorProfiles {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -530,6 +602,10 @@ export const onCreateCreatorProfile = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       imageUri
@@ -641,6 +717,10 @@ export const onUpdateCreatorProfile = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       imageUri
@@ -752,6 +832,10 @@ export const onDeleteCreatorProfile = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       imageUri
@@ -863,6 +947,10 @@ export const onCreateFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -919,6 +1007,10 @@ export const onCreateFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       __typename
@@ -988,6 +1080,10 @@ export const onUpdateFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -1044,6 +1140,10 @@ export const onUpdateFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       __typename
@@ -1113,6 +1213,10 @@ export const onDeleteFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -1169,6 +1273,10 @@ export const onDeleteFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       __typename
@@ -1238,6 +1346,10 @@ export const onCreateStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1294,6 +1406,10 @@ export const onCreateStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       creatorID
@@ -1452,6 +1568,10 @@ export const onUpdateStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1508,6 +1628,10 @@ export const onUpdateStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       creatorID
@@ -1666,6 +1790,10 @@ export const onDeleteStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -1722,6 +1850,10 @@ export const onDeleteStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       creatorID
@@ -2184,6 +2316,10 @@ export const onCreatePinnedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2352,6 +2488,10 @@ export const onUpdatePinnedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2520,6 +2660,10 @@ export const onDeletePinnedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2688,6 +2832,10 @@ export const onCreateInProgressStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2857,6 +3005,10 @@ export const onUpdateInProgressStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3026,6 +3178,10 @@ export const onDeleteInProgressStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3197,6 +3353,10 @@ export const onCreateFinishedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3365,6 +3525,10 @@ export const onUpdateFinishedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3533,6 +3697,10 @@ export const onDeleteFinishedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -3798,6 +3966,10 @@ export const onCreateComment = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -3966,6 +4138,10 @@ export const onUpdateComment = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -4134,6 +4310,10 @@ export const onDeleteComment = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -4203,6 +4383,10 @@ export const onCreateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -4259,6 +4443,10 @@ export const onCreateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       reaction
@@ -4328,6 +4516,10 @@ export const onUpdateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -4384,6 +4576,10 @@ export const onUpdateReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       reaction
@@ -4453,6 +4649,10 @@ export const onDeleteReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -4509,6 +4709,10 @@ export const onDeleteReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       reaction
@@ -4677,6 +4881,10 @@ export const onCreateRating = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -4844,6 +5052,10 @@ export const onUpdateRating = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -5011,6 +5223,10 @@ export const onDeleteRating = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -5084,6 +5300,10 @@ export const onCreateMessage = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       receiverID
@@ -5157,6 +5377,10 @@ export const onUpdateMessage = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       receiverID
@@ -5230,6 +5454,10 @@ export const onDeleteMessage = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       receiverID

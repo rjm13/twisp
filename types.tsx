@@ -70,6 +70,8 @@ export type RootStackParamList = {
     PendingPrompts: undefined;
     AdminUpload: undefined;
     PendingComments: undefined;
+    AuthorProfileSelect: undefined;
+    EditAuthorProfile: undefined;
   
   };
   

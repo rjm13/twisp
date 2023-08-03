@@ -153,6 +153,30 @@ export const getUser = /* GraphQL */ `
       setting3
       setting4
       setting5
+      creatorProfiles {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -217,6 +241,10 @@ export const listUsers = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -285,6 +313,10 @@ export const getCreatorProfile = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       imageUri
@@ -453,6 +485,10 @@ export const getFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       authorID
@@ -509,6 +545,10 @@ export const getFollowConnection = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       __typename
@@ -649,6 +689,10 @@ export const getStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       publisherID
@@ -705,6 +749,10 @@ export const getStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       creatorID
@@ -1157,6 +1205,10 @@ export const getPinnedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1393,6 +1445,10 @@ export const getInProgressStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1637,6 +1693,10 @@ export const getFinishedStory = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -1972,6 +2032,10 @@ export const getComment = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -2113,6 +2177,10 @@ export const getReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       storyID
@@ -2169,6 +2237,10 @@ export const getReaction = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       reaction
@@ -2406,6 +2478,10 @@ export const getRating = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       rating
@@ -2550,6 +2626,10 @@ export const getMessage = /* GraphQL */ `
         setting3
         setting4
         setting5
+        creatorProfiles {
+          nextToken
+          __typename
+        }
         __typename
       }
       receiverID
@@ -2968,6 +3048,75 @@ export const creatorsByType = /* GraphQL */ `
     creatorsByType(
       type: $type
       updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const creatorProfilesByUser = /* GraphQL */ `
+  query CreatorProfilesByUser(
+    $userID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCreatorProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    creatorProfilesByUser(
+      userID: $userID
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

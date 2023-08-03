@@ -8,6 +8,8 @@ import HomeScreen from '../screens/Home';
 import ProfileScreen from '../screens/Profile';
 import EditProfileScreen from '../screens/EditProfile';
 import NotificationSetting from '../screens/Settings';
+import AuthorProfileSelect from '../screens/AuthorProfileSelect';
+import EditAuthorProfile from '../screens/EditAuthorProfile';
 
 import History from '../screens/History';
 import Following from '../screens/Following';
@@ -227,6 +229,16 @@ function HomeNavigator() {
        <HomeStack.Screen 
         name="PendingComments" 
         component={PendingComments} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="AuthorProfileSelect" 
+        component={AuthorProfileSelect} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="EditAuthorProfile" 
+        component={EditAuthorProfile} 
         options={{ headerShown: false }} 
       />
 

@@ -31,6 +31,7 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   setting3: Boolean
   setting4: String #this is the expo push token
   setting5: String
+  creatorProfiles: [CreatorProfile] @hasMany(indexName: "byCreatorProfile", fields: "id")
 }
 
 type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -39,7 +40,7 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     type: String @index(name: "creatorsByType", queryField: "creatorsByType", sortKeyFields: ["updatedAt"]  )
     createdAt: String
     updatedAt: String
-    userID: ID 
+    userID: ID @index(name: "byCreatorProfile", queryField: "creatorProfilesByUser", sortKeyFields: ["createdAt"])
     user: User @hasOne (fields: ["userID"])
     imageUri: String
     bio: String
