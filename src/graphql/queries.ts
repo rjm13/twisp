@@ -147,6 +147,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      isMod
       setting1
       setting2
       setting3
@@ -210,6 +211,7 @@ export const listUsers = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -277,6 +279,7 @@ export const getCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -288,6 +291,12 @@ export const getCreatorProfile = /* GraphQL */ `
       bio
       penName
       website
+      instagram
+      tikTok
+      facebook
+      deviantArt
+      reddit
+      youTube
       numAuthored
       stories {
         items {
@@ -351,6 +360,7 @@ export const listCreatorProfiles = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -362,6 +372,12 @@ export const listCreatorProfiles = /* GraphQL */ `
         bio
         penName
         website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
         numAuthored
         stories {
           nextToken
@@ -429,6 +445,7 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -484,6 +501,7 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -527,6 +545,7 @@ export const listFollowConnections = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -550,6 +569,7 @@ export const listFollowConnections = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -621,6 +641,7 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -676,6 +697,7 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -810,6 +832,7 @@ export const listStories = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -833,6 +856,7 @@ export const listStories = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1125,6 +1149,7 @@ export const getPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1156,6 +1181,7 @@ export const getPinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1179,6 +1205,7 @@ export const getPinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1261,6 +1288,7 @@ export const listPinnedStories = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1357,6 +1385,7 @@ export const getInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1388,6 +1417,7 @@ export const getInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1411,6 +1441,7 @@ export const getInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1498,6 +1529,7 @@ export const listInProgressStories = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1597,6 +1629,7 @@ export const getFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1628,6 +1661,7 @@ export const getFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1651,6 +1685,7 @@ export const getFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1733,6 +1768,7 @@ export const listFinishedStories = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1805,6 +1841,7 @@ export const getComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1828,6 +1865,7 @@ export const getComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -1926,6 +1964,7 @@ export const getComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1994,6 +2033,7 @@ export const listComments = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2065,6 +2105,7 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2120,6 +2161,7 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2161,6 +2203,7 @@ export const listReactions = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2184,6 +2227,7 @@ export const listReactions = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2231,6 +2275,7 @@ export const getRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2254,6 +2299,7 @@ export const getRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2352,6 +2398,7 @@ export const getRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2419,6 +2466,7 @@ export const listRatings = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2494,6 +2542,7 @@ export const getMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2539,6 +2588,7 @@ export const listMessages = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2583,6 +2633,7 @@ export const getStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2606,6 +2657,7 @@ export const getStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2940,6 +2992,7 @@ export const creatorsByType = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2951,6 +3004,12 @@ export const creatorsByType = /* GraphQL */ `
         bio
         penName
         website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
         numAuthored
         stories {
           nextToken
@@ -3001,6 +3060,7 @@ export const connectionsByFollower = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3024,6 +3084,7 @@ export const connectionsByFollower = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3076,6 +3137,7 @@ export const connectionsByAuthor = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3099,6 +3161,7 @@ export const connectionsByAuthor = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3153,6 +3216,7 @@ export const storiesByDate = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3176,6 +3240,7 @@ export const storiesByDate = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3271,6 +3336,7 @@ export const storiesByUpdated = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3294,6 +3360,7 @@ export const storiesByUpdated = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3389,6 +3456,7 @@ export const storiesByPublisher = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3412,6 +3480,7 @@ export const storiesByPublisher = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3507,6 +3576,7 @@ export const storiesByCreator = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3530,6 +3600,7 @@ export const storiesByCreator = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3625,6 +3696,7 @@ export const storiesByGenre = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3648,6 +3720,7 @@ export const storiesByGenre = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3887,6 +3960,7 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3966,6 +4040,7 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4046,6 +4121,7 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4128,6 +4204,7 @@ export const finishedStoriesByUser = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4207,6 +4284,7 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4313,6 +4391,7 @@ export const commentsByCreated = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4394,6 +4473,7 @@ export const commentsByStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4448,6 +4528,7 @@ export const reactionsByStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4471,6 +4552,7 @@ export const reactionsByStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4552,6 +4634,7 @@ export const ratingsByUpdated = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4632,6 +4715,7 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4712,6 +4796,7 @@ export const ratingsByUser = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4770,6 +4855,7 @@ export const messagesByUser = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3

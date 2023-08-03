@@ -25,8 +25,9 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   messageRec: [Message] @hasMany(indexName: "byUser", fields: "id")
   inProgressStories: [InProgressStory] @hasMany(indexName: "byUser", fields: "id")
   published: [Story] @hasMany(indexName: "byPublisher", fields: "id")
-  setting1: Boolean
-  setting2: Boolean
+  isMod: Boolean
+  setting1: Boolean #nsfw filter
+  setting2: Boolean #erotica filter
   setting3: Boolean
   setting4: String #this is the expo push token
   setting5: String
@@ -44,6 +45,12 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     bio: String
     penName: String
     website: String
+    instagram: String
+    tikTok: String
+    facebook: String
+    deviantArt: String
+    reddit: String
+    youTube: String
     numAuthored: Int
     stories: [Story] @hasMany(indexName: "byCreatorProfile", fields: "id")
 }

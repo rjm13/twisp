@@ -150,6 +150,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      isMod
       setting1
       setting2
       setting3
@@ -307,6 +308,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      isMod
       setting1
       setting2
       setting3
@@ -464,6 +466,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      isMod
       setting1
       setting2
       setting3
@@ -531,6 +534,7 @@ export const createCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -542,6 +546,12 @@ export const createCreatorProfile = /* GraphQL */ `
       bio
       penName
       website
+      instagram
+      tikTok
+      facebook
+      deviantArt
+      reddit
+      youTube
       numAuthored
       stories {
         items {
@@ -635,6 +645,7 @@ export const updateCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -646,6 +657,12 @@ export const updateCreatorProfile = /* GraphQL */ `
       bio
       penName
       website
+      instagram
+      tikTok
+      facebook
+      deviantArt
+      reddit
+      youTube
       numAuthored
       stories {
         items {
@@ -739,6 +756,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -750,6 +768,12 @@ export const deleteCreatorProfile = /* GraphQL */ `
       bio
       penName
       website
+      instagram
+      tikTok
+      facebook
+      deviantArt
+      reddit
+      youTube
       numAuthored
       stories {
         items {
@@ -843,6 +867,7 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -898,6 +923,7 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -967,6 +993,7 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1022,6 +1049,7 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1091,6 +1119,7 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1146,6 +1175,7 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1217,6 +1247,7 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1272,6 +1303,7 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1432,6 +1464,7 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1487,6 +1520,7 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1647,6 +1681,7 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -1702,6 +1737,7 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2185,6 +2221,7 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2216,6 +2253,7 @@ export const createPinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2239,6 +2277,7 @@ export const createPinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2351,6 +2390,7 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2382,6 +2422,7 @@ export const updatePinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2405,6 +2446,7 @@ export const updatePinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2517,6 +2559,7 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2548,6 +2591,7 @@ export const deletePinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2571,6 +2615,7 @@ export const deletePinnedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2683,6 +2728,7 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2714,6 +2760,7 @@ export const createInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2737,6 +2784,7 @@ export const createInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2850,6 +2898,7 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -2881,6 +2930,7 @@ export const updateInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -2904,6 +2954,7 @@ export const updateInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3017,6 +3068,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3048,6 +3100,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3071,6 +3124,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3186,6 +3240,7 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3217,6 +3272,7 @@ export const createFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3240,6 +3296,7 @@ export const createFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3352,6 +3409,7 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3383,6 +3441,7 @@ export const updateFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3406,6 +3465,7 @@ export const updateFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3518,6 +3578,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3549,6 +3610,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3572,6 +3634,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3660,6 +3723,7 @@ export const createComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3683,6 +3747,7 @@ export const createComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3781,6 +3846,7 @@ export const createComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3828,6 +3894,7 @@ export const updateComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3851,6 +3918,7 @@ export const updateComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -3949,6 +4017,7 @@ export const updateComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -3996,6 +4065,7 @@ export const deleteComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4019,6 +4089,7 @@ export const deleteComment = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4117,6 +4188,7 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4188,6 +4260,7 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4243,6 +4316,7 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4314,6 +4388,7 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4369,6 +4444,7 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4440,6 +4516,7 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4495,6 +4572,7 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4542,6 +4620,7 @@ export const createRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4565,6 +4644,7 @@ export const createRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4663,6 +4743,7 @@ export const createRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4709,6 +4790,7 @@ export const updateRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4732,6 +4814,7 @@ export const updateRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4830,6 +4913,7 @@ export const updateRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -4876,6 +4960,7 @@ export const deleteRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4899,6 +4984,7 @@ export const deleteRating = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -4997,6 +5083,7 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -5072,6 +5159,7 @@ export const createMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -5147,6 +5235,7 @@ export const updateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -5222,6 +5311,7 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        isMod
         setting1
         setting2
         setting3
@@ -5266,6 +5356,7 @@ export const createStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -5289,6 +5380,7 @@ export const createStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -5394,6 +5486,7 @@ export const updateStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -5417,6 +5510,7 @@ export const updateStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -5522,6 +5616,7 @@ export const deleteStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3
@@ -5545,6 +5640,7 @@ export const deleteStoryTag = /* GraphQL */ `
           numAuthored
           topthree
           plan
+          isMod
           setting1
           setting2
           setting3

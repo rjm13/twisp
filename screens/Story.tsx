@@ -552,7 +552,7 @@ const StoryScreen  = ({navigation} : any) => {
             }
             setComment('');
             setCommentUpdated(!commentUpdated)
-            SendPush();
+            //SendPush();
         }
     }
 

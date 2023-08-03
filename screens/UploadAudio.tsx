@@ -317,7 +317,7 @@ const UploadAudio = ({navigation} : any) => {
             }
         ));
 
-        await SendPush();
+        //await SendPush();
 
         setIsPublishing(false);
         navigation.goBack();
