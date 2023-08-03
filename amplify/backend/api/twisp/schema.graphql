@@ -44,6 +44,7 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     imageUri: String
     bio: String
     penName: String
+    email: String
     website: String
     instagram: String
     tikTok: String

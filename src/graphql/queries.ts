@@ -290,6 +290,7 @@ export const getCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      email
       website
       instagram
       tikTok
@@ -371,6 +372,7 @@ export const listCreatorProfiles = /* GraphQL */ `
         imageUri
         bio
         penName
+        email
         website
         instagram
         tikTok
@@ -3003,6 +3005,7 @@ export const creatorsByType = /* GraphQL */ `
         imageUri
         bio
         penName
+        email
         website
         instagram
         tikTok

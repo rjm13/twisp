@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback, 
     TouchableOpacity, 
     Image, 
-    Animated 
+    Animated ,
+    ScrollView
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native'
@@ -15,7 +16,7 @@ import {useNavigation} from '@react-navigation/native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
+import SocialBlock from '../SocialBlock';
 
 import {useRoute} from '@react-navigation/native'
 
@@ -23,14 +24,14 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser } from '../../src/graphql/queries';
+import { getUser, getCreatorProfile, storiesByCreator } from '../../src/graphql/queries';
 import { createFollowConnection, deleteFollowConnection } from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
 
 
 
-const AudioListByAuthor = ({status} : any) => {
+const CreatorProfile = ({status} : any) => {
 
     const { nsfwOn } = useContext(AppContext);
     const { ADon } = useContext(AppContext);
@@ -55,6 +56,11 @@ const AudioListByAuthor = ({status} : any) => {
 
     const [sampleState, setSampleState] = useState(false);
 
+    const [User, setUser] = useState(null);
+
+    const route = useRoute();
+    const {userID} = route.params
+
 
     useEffect( () => {
 
@@ -62,21 +68,13 @@ const AudioListByAuthor = ({status} : any) => {
 
                 let stories = []
 
-                //let samples = []
-
-                //let audiosam = []
-
-                //let narrstories = [];
-
-                //let artstories = []
-
                 try {
 
                     let userInfo = await Auth.currentAuthenticatedUser();
 
                     const response = await API.graphql(
                         graphqlOperation(
-                            getUser, {id: userID }
+                            getCreatorProfile, {id: userID }
                         )
                     )
 
@@ -87,35 +85,20 @@ const AudioListByAuthor = ({status} : any) => {
                     )
 
                     setCurrentUser(currentuser.data.getUser);
-                    setUser(response.data.getUser);
-                    let responseBuk = await Storage.get(response.data.getUser.imageUri)
+                    setUser(response.data.getCreatorProfile);
+                    let responseBuk = await Storage.get(response.data.getCreatorProfile.imageUri)
                     setImageU(responseBuk);
 
-                    for (let i = 0; i < response.data.getUser.published.items.length; i++) {
-                        if (response.data.getUser.published.items[i].hidden === false && 
-                            //response.data.getUser.published.items[i].approved === 'approved' &&
-                            //response.data.getUser.authored.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                            response.data.getUser.published.items[i].genreID !== (nsfwOn === true ? true : null)
-                            ) {
-                            stories.push(response.data.getUser.published.items[i])
-                        }
-                    }
-                    console.log(stories)
-                    setStorys(stories);
+                    const fetchStories = await API.graphql(
+                        graphqlOperation(
+                            storiesByCreator, {creatorID: userID }
+                        )
+                    )
 
-                    // for (let i = 0; i < response.data.getUser.sharedImageAssets.items.length; i++) {
-                    //     if (response.data.getUser.sharedImageAssets.items[i].isSample === true) {
-                    //         samples.push(response.data.getUser.sharedImageAssets.items[i])
-                    //     }
-                    // } 
-                    // setArtSamples(samples);
-
-                    // for (let i = 0; i < response.data.getUser.sharedAssets.items.length; i++) {
-                    //     if (response.data.getUser.sharedAssets.items[i].isSample === true) {
-                    //         audiosam.push(response.data.getUser.sharedAssets.items[i])
-                    //     }
-                    // } 
-                    // setAudioSamples(audiosam);
+                    
+                    console.log('stories are', fetchStories)
+                    
+                    setStorys(fetchStories.data.storiesByCreator.items);
 
                     if (userFollowing.includes(userID)) {
                         setFollowing(true);
@@ -157,95 +140,6 @@ const AudioListByAuthor = ({status} : any) => {
         
     },[])
 
-    // const ArtItem = ({id, title, imageUri} : any) => {
-
-    //     const [imageLink, setImageLink] = useState('')
-
-    //     useEffect(() => {
-    //         const fetchUrl = async () => {
-    //             let response = await Storage.get(imageUri)
-    //             setImageLink(response)
-    //         }
-    //         fetchUrl();
-    //     }, [])
-
-    //     return (
-    //         <TouchableWithoutFeedback>
-    //             <View style={{marginVertical: 10, alignItems: 'center'}}>
-    //                 <Image 
-    //                     source={{uri: imageLink}} 
-    //                     style={{
-    //                         borderRadius: 10, 
-    //                         width: (Dimensions.get('window').width)-40,
-    //                         height: ((Dimensions.get('window').width)-40)*0.75
-    //                     }}
-    //                 />
-    //                 <Text style={{marginLeft: 40, marginTop: 10, color: '#fff', fontWeight: 'bold', alignSelf: 'flex-start'}}>
-    //                     {title}
-    //                 </Text>
-    //             </View>
-    //         </TouchableWithoutFeedback>
-            
-    //     );
-    // }
-
-    // const renderArtItem = ({item} : any) => {
-    //     return (
-    //         <ArtItem 
-    //             id={item.id}
-    //             title={item.title}
-    //             imageUri={item.imageUri}
-
-    //         />
-    //     );
-    // }
-
-    // const AudioSampleItem = ({title, id, time} : any) => {
-
-    //     //convert the time to show in the modal
-    //     function millisToMinutesAndSeconds () {
-    //         let minutes = Math.floor(time / 60000);
-    //         let seconds = Math.floor((time % 60000) / 1000);
-    //         return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
-    //     }  
-
-    //     return (
-    //         <View style={{borderRadius: 15, marginVertical: 10, marginHorizontal:20, paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#363636', flexDirection: 'row', justifyContent: 'space-between'}}>
-    //             <View>
-    //                 <Text style={{color: '#fff', fontWeight: 'bold'}}>
-    //                     {title}
-    //                 </Text>
-    //                 <Text style={{marginTop: 4, color: 'gray'}}>
-    //                     {millisToMinutesAndSeconds()}
-    //                 </Text>
-    //             </View>
-    //             <TouchableOpacity>
-    //                 <View style={{justifyContent: 'center'}}>
-    //                     <FontAwesome 
-    //                         name='play'
-    //                         color='#fff'
-    //                         size={20}  
-    //                         style={{padding: 10}}
-    //                         onPress={() => navigation.navigate('SimpleAudioPlayer', {item: null, cloudItem: id})}
-    //                     />
-    //                 </View>
-    //             </TouchableOpacity>
-                
-    //         </View>
-    //     );
-    // }
-
-    // const renderAudioSampleItem = ({item} : any) => {
-    //     return (
-    //         <AudioSampleItem 
-    //             title={item.title}
-    //             id={item.id}
-    //             time={item.time}
-    //             audioUri={item.audioUri}
-    //         />
-    //     );
-    // }
-
     const renderItem = ({ item } : any) => {
 
         let icon = ''
@@ -280,7 +174,7 @@ const AudioListByAuthor = ({status} : any) => {
 
     
 
-      const animation = useRef(new Animated.Value(0)).current;
+    const animation = useRef(new Animated.Value(0)).current;
 
     const animatedOpacity = animation.interpolate({
         inputRange: [0, 50],
@@ -311,12 +205,6 @@ const AudioListByAuthor = ({status} : any) => {
         outputRange: ['#000000', '#363636'],
         extrapolate: 'clamp',
         });
-
-        const [User, setUser] = useState(null);
-
-        const route = useRoute();
-        const {userID} = route.params
-
 
       const [currentUser, setCurrentUser] = useState(null)
 
@@ -407,7 +295,6 @@ const AudioListByAuthor = ({status} : any) => {
             }}
         />
             
-
         <Animated.View style={[ {backgroundColor: animatedColor, height: animatedHeaderHeight, width: Dimensions.get('window').width, position: 'absolute', flex: 1}]}>              
             <View style={{ flexDirection: 'row', marginTop: 40, justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
@@ -419,7 +306,7 @@ const AudioListByAuthor = ({status} : any) => {
                         onPress={() => navigation.goBack() }
                     />
                     <Animated.Text numberOfLines={1} style={[styles.name, { opacity: animatedAppearOpacity, width: '78%'}]}>
-                        {User?.pseudonym}
+                        {User?.penName}
                     </Animated.Text>
                 </View>
 
@@ -444,19 +331,44 @@ const AudioListByAuthor = ({status} : any) => {
             <Animated.View style={{opacity: animatedOpacitySlow}}>
                     <View style={{ alignItems: 'center'}}>
                         <Image 
-                            source={{ uri: imageU}}
+                            source={{ uri: User?.imageUri}}
                             style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 20,}}
                         />
                     </View>
 
                 <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
                     <Text style={{fontSize: 22, color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
-                        {User?.pseudonym}
+                        {User?.penName}
                     </Text>
                 </View>
 
-                <View style={{justifyContent: 'center', flexDirection: 'row', alignItems: 'center',}}>
-                    <View style={{ paddingVertical: 10, marginVertical: -10, alignContent: 'center', flexDirection: 'row', marginBottom: 10, alignSelf: 'center'}}>                                             
+                <View style={{alignSelf: 'center'}}>
+                    <SocialBlock 
+                        tikTok={User?.tikTok}
+                        website={User?.website}
+                        instagram={User?.instagram}
+                        reddit={User?.reddit}
+                        deviantArt={User?.deviantArt}
+                        facebook={User?.facebook}
+                        youTube={User?.youTube}
+                        email={User?.email}
+                    />
+                </View>
+
+                
+            </Animated.View>
+
+            <Animated.View style={{opacity: animatedOpacity}}>
+
+                
+                <View style={{ alignItems: 'center', marginHorizontal: 20, marginTop: 10, marginBottom: 10}}>
+                    <Text style={{ color: '#ffffffa5', fontSize: 14, textAlign: 'center'}}>
+                        {User?.bio}
+                    </Text>         
+                </View>
+
+                <View style={{justifyContent: 'center', flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ paddingVertical: 10, marginVertical: 10, alignContent: 'center', flexDirection: 'row', marginBottom: 10, alignSelf: 'center'}}>                                             
                         <FontAwesome5 
                             name='book-open'
                             size={publisher ? 14 : 12}
@@ -464,17 +376,9 @@ const AudioListByAuthor = ({status} : any) => {
                             style={{ marginHorizontal: 5, alignSelf: 'center'}}
                         />
                         <Text style={styles.userId}>
-                            {User?.published.items ? User?.published.items.length : 0}
+                            {User?.stories.items ? User?.stories.items.length : 0}
                         </Text> 
                     </View> 
-                </View>
-            </Animated.View>
-
-            <Animated.View style={{opacity: animatedOpacity}}>
-                <View style={{ alignItems: 'center', marginHorizontal: 20, marginVertical: 10}}>
-                    <Text style={{ color: '#ffffffa5', fontSize: 14, textAlign: 'center'}}>
-                        {User?.bio}
-                    </Text>         
                 </View>
             </Animated.View>
         </Animated.View>
@@ -541,4 +445,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AudioListByAuthor;
+export default CreatorProfile;

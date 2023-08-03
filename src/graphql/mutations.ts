@@ -545,6 +545,7 @@ export const createCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      email
       website
       instagram
       tikTok
@@ -656,6 +657,7 @@ export const updateCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      email
       website
       instagram
       tikTok
@@ -767,6 +769,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      email
       website
       instagram
       tikTok

@@ -16,6 +16,7 @@ export type RootStackParamList = {
     CreateMessage: undefined;
     Welcome: undefined;
     UploadAudio: undefined;
+    CreatorScreen: undefined;
   
   };
   
