@@ -181,6 +181,7 @@ const StoryScreen  = ({navigation} : any) => {
             try {
 
                 const storyData = await API.graphql(graphqlOperation(getStory, {nextToken, id: storyID}))
+                console.log(storyData)
 
                 for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
                     tagarr.push({id: storyData.data.getStory.tags.items[i].tag.id, tagName: storyData.data.getStory.tags.items[i].tag.tagName})

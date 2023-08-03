@@ -46,6 +46,7 @@ export default function App() {
     })();
   }, []);
 
+  //revenue cat
   useEffect(() => {
     const connectRevenueCat = async () => {
       Purchases.setDebugLogsEnabled(true)
@@ -173,6 +174,7 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
+//push notifications
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 

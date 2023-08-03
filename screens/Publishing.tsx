@@ -67,7 +67,7 @@ const PublishingMain = ({navigation} : any) => {
                                 color='#fff'
                                 style={{marginRight: 20, alignSelf: 'center'}}
                             />
-                            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
+                            <Text style={{ color: '#fff', fontSize: 14}}>
                                 Register as a Publisher
                             </Text>
                         </View>
@@ -79,7 +79,7 @@ const PublishingMain = ({navigation} : any) => {
                                 color='#fff'
                                 style={{marginRight: 20, alignSelf: 'center'}}
                             />
-                            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
+                            <Text style={{ color: '#fff', fontSize: 14}}>
                                 Record your story according to our publishing guidelines.
                             </Text>
                         </View>
@@ -91,7 +91,7 @@ const PublishingMain = ({navigation} : any) => {
                                 color='#fff'
                                 style={{marginRight: 20, alignSelf: 'center'}}
                             />
-                            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
+                            <Text style={{ color: '#fff', fontSize: 14}}>
                                 Upload your audio short story to Twisp
                             </Text>
                         </View>

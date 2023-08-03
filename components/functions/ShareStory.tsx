@@ -6,12 +6,14 @@ import {
 
 const handleShareWithLinking = async ({id, title}: any) => {
 
-    let deepUri = Linking.createURL('twisp.space/storyscreen/', { queryParams: {id: id } } )  
+    //let deepUri = Linking.createURL('twisp.space/storyscreen/', { queryParams: {id: id } } ) 
+    
+    let deeperUri = 'https://twisp.space/storyscreen/?id=' + id.toString();
 
     try {
       const result = await Share.share({
-        message: title + ' ' + deepUri,
-        url: deepUri,
+        message: title + ' ' + deeperUri,
+        url: deeperUri,
         title: 'Check out this short story!'
       });
       if (result.action === Share.sharedAction) {

@@ -96,7 +96,7 @@ const Publisher = ({navigation} : any) => {
                             
                         </View>
 
-                        {isMod?.signInUserSession.idToken.payload["cognito:groups"].includes('mods') === true ? (
+                        {isMod?.signInUserSession?.idToken.payload["cognito:groups"].includes('mods') === true ? (
                             <FontAwesome5 
                                 name='toilet-paper'
                                 color='#fff'

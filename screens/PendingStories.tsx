@@ -84,7 +84,7 @@ const PendingStories = ({navigation} : any) => {
 
     const [pending, setPending] = useState(false)
 
-    const ApproveStory = async ({id, authorID, title, NSFW, nsfw, promptID, promptCount} : any) => {
+    const ApproveStory = async ({id, authorID, title, NSFW, nsfw} : any) => {
 
         setPending(true)
 
@@ -94,6 +94,7 @@ const PendingStories = ({navigation} : any) => {
             let response = await API.graphql(graphqlOperation(
                 updateStory, {input: {
                     id: id,
+                    type: 'Story',
                     approved: true,
                     updatedAt: new Date(),
                     nsfw: NSFW === nsfw ? nsfw : NSFW
@@ -194,7 +195,7 @@ const PendingStories = ({navigation} : any) => {
                         content: 'Your story is not approved.\n\nReason:\n\n' + reasonsArr + '\n\n' + reason + '\nPlease correct and resubmit your story.',
                         title: 'Your story, ' + rejectedTitle + ' has been rejected.',
                         subtitle: 'approval',
-                        isReadbyReceiver: true,
+                        isReadbyReceiver: false,
                         status: 'noreply'
 
                     }}
@@ -406,7 +407,7 @@ const PendingStories = ({navigation} : any) => {
         return  (
             <Item 
                 title={item.title}
-                authorID={item.userID}
+                authorID={item.publisherID}
                 imageUri={item.imageUri}
                 genreName={genreName}
                 icon={icon}
