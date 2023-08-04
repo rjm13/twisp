@@ -36,6 +36,8 @@ const EditAuthorProfile = ({navigation} : any) => {
 
     const styles = useStyles();
 
+    const [updateSocialType, setUpdateSocialType] = useState('')
+
 //on render, request permission for camera roll
     useEffect(() => {
         (async () => {
@@ -61,7 +63,7 @@ const EditAuthorProfile = ({navigation} : any) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            //aspect: [4, 3],
             quality: 1,
         });
     
@@ -114,11 +116,6 @@ const EditAuthorProfile = ({navigation} : any) => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
-    //Website Modal
-    const [visible2, setVisible2] = useState(false);
-    const showWebsiteModal = () => setVisible2(true);
-    const hideWebsiteModal = () => setVisible2(false);
-
 //BioModal
     const [visible5, setVisible5] = useState(false);
     const showBioModal = () => setVisible5(true);
@@ -129,11 +126,46 @@ const EditAuthorProfile = ({navigation} : any) => {
     const showPseudModal = () => setVisible7(true);
     const hidePseudModal = () => setVisible7(false);
 
+//pseudonym Modal
+    const [visible8, setVisible8] = useState(false);
+    const showSocialModal = () => setVisible8(true);
+    const hideSocialModal = () => setVisible8(false);
+
 //Attribute states
     const [ Bio, setBio ] = useState('');
     const [image, setImage] = useState('');
     const [Pseudonym, setPseudonym] = useState('');
-    const [website, setWebsite] = useState('');
+    const [instagramText, setInstagramText] = useState('')
+    const [facebookText, setFacebookText] = useState('')
+    const [tiktokText, setTiktokText] = useState('')
+    const [redditText, setRedditText] = useState('')
+    const [youtubeText, setYoutubeText] = useState('')
+    const [deviantText, setDeviantText] = useState('')
+    const [emailText, setEmailText] = useState('')
+    const [websiteText, setWebsiteText] = useState('')
+
+
+    //instagram Modal
+    const [visible10, setVisible10] = useState(false);
+     //faceook Modal
+     const [visible11, setVisible11] = useState(false);
+      //tiktok Modal
+    const [visible12, setVisible12] = useState(false);
+     //reddit Modal
+     const [visible13, setVisible13] = useState(false);
+      //youtube Modal
+    const [visible14, setVisible14] = useState(false);
+     //deviantart Modal
+     const [visible15, setVisible15] = useState(false);
+      //email Modal
+    const [visible16, setVisible16] = useState(false);
+     //website Modal
+     const [visible17, setVisible17] = useState(false);
+
+
+
+
+
 
 //if true, s3 is performing an action. also used to determine if anything is updating
     const [isUploading, setIsUploading ] = useState(false);
@@ -182,26 +214,6 @@ const EditAuthorProfile = ({navigation} : any) => {
         }
     }
 
-    //update the author's pseudonym
-    const handleUpdateWebsite = async () => {
-
-        setIsUploading(true);
-
-        if ( website.length !== 0 ) {
-
-            const updatedUser = { id: user?.id, website: website.toLowerCase() }
-
-            let result = await API.graphql(graphqlOperation(
-                updateCreatorProfile, { input: updatedUser }
-            
-                ))
-            console.log(result);
-
-        setIsUploading(false);
-        hideWebsiteModal();
-        }
-    }
-
 //update the users bio text
     const handleUpdateBio = async () => {
 
@@ -223,11 +235,148 @@ const EditAuthorProfile = ({navigation} : any) => {
     }
     }
 
+    const SubmitUpdateInstagram = async () => {
+        try {
+           const updateSocial = await API.graphql(graphqlOperation(
+            updateCreatorProfile, {input: {
+                id: user.id, 
+                instagram: instagramText.toLowerCase(),
+            }}
+            ))
+            if (updateSocial) {
+                setVisible10(false)
+            }
+           console.log(updateSocial)  
+        } catch (e) {
+            console.log(e)
+        }
+    } 
+
+    const SubmitUpdateFacebook = async () => {
+        try {
+           const updateSocial = await API.graphql(graphqlOperation(
+            updateCreatorProfile, {input: {
+                id: user.id, 
+                facebook: facebookText.toLowerCase(),
+            }}
+            ))
+            if (updateSocial) {
+                setVisible11(false)
+            }
+           console.log(updateSocial)  
+        } catch (e) {
+            console.log(e)
+        }
+    } 
+
+    const SubmitUpdateTikTok = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 tikTok: tiktokText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible12(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    
+    } 
+    
+    const SubmitUpdateReddit = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 reddit: redditText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible13(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    } 
+
+    const SubmitUpdateYouTube = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 youTube: youtubeText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible14(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    } 
+
+    const SubmitUpdateDeviantArt = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 deviantArt: deviantText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible15(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    } 
+
+    const SubmitUpdateEmail = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 email: emailText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible16(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    } 
+
+    const SubmitUpdateWebsite = async () => {
+        try {
+            const updateSocial = await API.graphql(graphqlOperation(
+             updateCreatorProfile, {input: {
+                 id: user.id, 
+                 website: websiteText.toLowerCase(),
+             }}
+             ))
+             if (updateSocial) {
+                 setVisible17(false)
+             }
+            console.log(updateSocial)  
+         } catch (e) {
+             console.log(e)
+         }
+    } 
+
 //render the page
     return ( 
     <View style={styles.container } >
 
-{/* //Update pseudonym  */}
+{/* //Update penName  */}
         <Modal animationType="slide" transparent={true} visible={visible7} onRequestClose={() => {setVisible7(!visible7);}}>            
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible7(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
@@ -266,30 +415,351 @@ const EditAuthorProfile = ({navigation} : any) => {
             </TouchableWithoutFeedback>
         </Modal>
 
-{/* //Update pseudonym  */}
-        <Modal animationType="slide" transparent={true} visible={visible2} onRequestClose={() => {setVisible2(!visible2);}}>            
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible2(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+{/* //Update insta handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible10} onRequestClose={() => {setVisible10(!visible10);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible10(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
-                    <Text style={{
-                        fontSize: 16,
-                        paddingVertical: 16,
-                        color: '#fff'
-                    }}>
-                        Enter a new publisher website
-                    </Text>
-                    <View style={styles.inputfield}>
-                        <TextInput
-                            placeholder={user?.website}
-                            placeholderTextColor='gray'
-                            style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
-                            maxLength={20}
-                            multiline={false}
-                            onChangeText={val => setPseudonym(val)}
-                        />
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/instagram.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, textTransform: 'capitalize', color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update Instagram link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.instagram}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setInstagramText(val)}
+                            />
+                        </View>
                     </View>
+
                     <View style={{alignItems: 'center', marginVertical: 30}}>
                         <TouchableOpacity
-                            onPress={handleUpdateWebsite}>
+                            onPress={() => SubmitUpdateInstagram()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update facebook handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible11} onRequestClose={() => {setVisible11(!visible11);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible11(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/facebook.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, textTransform: 'capitalize', color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update Facebook link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.facebook}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setFacebookText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateFacebook()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update tiktok handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible12} onRequestClose={() => {setVisible12(!visible12);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible12(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/tiktok.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update TikTok Link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.tikTok}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setTiktokText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateTikTok()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+ {/* //Update reddit handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible13} onRequestClose={() => {setVisible13(!visible13);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible13(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/reddit.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update Reddit Link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.reddit}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setRedditText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateReddit()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update youtube handle  */}
+         <Modal animationType="slide" transparent={true} visible={visible14} onRequestClose={() => {setVisible14(!visible14);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible14(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/youtube.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update YouTube Link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.youTube}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setYoutubeText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateYouTube()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update deviant art handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible15} onRequestClose={() => {setVisible15(!visible15);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible15(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/deviantart.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update DeviantArt Link
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.deviantArt}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setDeviantText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateDeviantArt()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update email handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible16} onRequestClose={() => {setVisible16(!visible16);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible16(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/email.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update Email
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.email}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setEmailText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateEmail()}>
+                            <View style={styles.buttonlayout} >
+                                {isUploading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Submit
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
+
+{/* //Update website handle  */}
+        <Modal animationType="slide" transparent={true} visible={visible17} onRequestClose={() => {setVisible17(!visible17);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setVisible17(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                
+                        <Image 
+                            style={{height: 60, width: 60}}
+                            source={require('../assets/social/website.png')}
+                        /> 
+           
+                        <Text style={{marginVertical: 20, color: '#fff', textAlign: 'center', fontSize: 18, fontWeight: '600'}}>
+                            Update Website
+                        </Text>
+
+                        <View style={[styles.inputfield, {backgroundColor: '#121212a5', height: 100}]}>
+                            <TextInput
+                                placeholder={user?.website}
+                                placeholderTextColor='gray'
+                                multiline={true}
+                                style={[styles.paragraph, {flexWrap: 'wrap', fontSize: 16, marginLeft: 10, textTransform: 'lowercase', width: Dimensions.get('window').width - 120}]}
+                                onChangeText={val => setWebsiteText(val)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity
+                            onPress={() => SubmitUpdateWebsite()}>
                             <View style={styles.buttonlayout} >
                                 {isUploading ? (
                                         <ActivityIndicator size="small" color="#00ffff"/>
@@ -383,6 +853,8 @@ const EditAuthorProfile = ({navigation} : any) => {
             </TouchableWithoutFeedback>
         </Modal>
 
+
+
 {/* primary visible content */}
             <ScrollView>
                 <View style={{  alignItems: 'center', flexDirection: 'row', marginTop: 50, marginBottom: 20, marginHorizontal: 20,}}>
@@ -403,7 +875,7 @@ const EditAuthorProfile = ({navigation} : any) => {
 
                 <TouchableWithoutFeedback onPress={showModal}>
                     <View style={{ flexDirection: 'row', justifyContent: "space-between", alignSelf: 'center', alignItems: "center", width: '100%', paddingHorizontal: 20,}}>
-                        <Text style={ [styles.paragraph, {fontSize: 16}] }>
+                        <Text style={ [styles.subtitle, {fontSize: 16}] }>
                             Photo
                         </Text>
                         <Image 
@@ -416,7 +888,7 @@ const EditAuthorProfile = ({navigation} : any) => {
                     <TouchableWithoutFeedback onPress={showPseudModal}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
                             <View>
-                                <Text style={{ color: '#fff', fontSize: 16}}>
+                                <Text style={styles.subtitle}>
                                     Name
                                 </Text>
                                 <Text style={[styles.infotext, {textTransform: 'capitalize'}]}>
@@ -428,12 +900,12 @@ const EditAuthorProfile = ({navigation} : any) => {
                     </TouchableWithoutFeedback>      
                 
                 <View>
-                    <Text style={{ marginTop: 20, marginLeft: 20, color: '#fff', fontSize: 16}}>
+                        <Text style={[styles.subtitle, {marginTop: 20, marginLeft: 20}]}>
                         About Me
                     </Text>
                     
                     <TouchableWithoutFeedback onPress={showBioModal}>
-                        <View style={{   backgroundColor: '#363636a5', padding: 10, width: '90%', alignSelf: 'center', borderRadius: 15, marginVertical: 10,}}> 
+                        <View style={{   backgroundColor: '#121212a5', padding: 10, width: '90%', alignSelf: 'center', borderRadius: 15, marginVertical: 10,}}> 
                             <Text style={{fontSize: 14, color: '#ffffffa5', padding: 10}}>
                                 {user?.bio || 'Say something about yourself'}
                             </Text>
@@ -442,177 +914,163 @@ const EditAuthorProfile = ({navigation} : any) => {
                 </View>
 
                 <View>
-                    <Text style={[styles.title, {margin: 20}]}>
+                    {/* <Text style={[styles.title, {margin: 20}]}>
                         Social Handles
-                    </Text>
+                    </Text> */}
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             Instagram
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/instagram.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.instagram}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('instagram'); setVisible10(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/instagram.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.instagram}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
+                    
+                    
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             Facebook
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/facebook.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.facebook}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('facebook'); setVisible11(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/facebook.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.facebook}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             TikTok
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/tiktok.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.tikTok}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('tikTok'); setVisible12(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/tiktok.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.tikTok}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             Reddit
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/reddit.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.reddit}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('reddit'); setVisible13(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/reddit.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.reddit}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             YouTube
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/youtube.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.youTube}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('youTube'); setVisible14(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/youtube.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.youTube}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
-                            DeviatArt
+                        <Text style={styles.subtitle}>
+                            DeviantArt
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/deviantart.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.deviantArt}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('deviantart'); setVisible15(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/deviantart.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.deviantArt}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             Email
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/email.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.email}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('email'); setVisible16(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/email.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.email}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                     <View style={{margin: 20}}>
-                        <Text style={styles.paragraph}>
+                        <Text style={styles.subtitle}>
                             Website
                         </Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                            <Image 
-                                style={{height: 40, width: 40, marginRight: 6}}
-                                source={require('../assets/social/website.png')}
-                            />
-                            <View style={[styles.inputfield, {marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
-                                <TextInput
-                                    placeholderTextColor='#ffffffa5'
-                                    style={styles.textInputTitle}
-                                    numberOfLines={1}
-                                    defaultValue={user?.website}
-                                    //onChangeText={val => setData({...data, title: val})}
+                        <TouchableOpacity onPress={() => {setUpdateSocialType('website'); setVisible17(true)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                <Image 
+                                    style={{height: 40, width: 40, marginRight: 6}}
+                                    source={require('../assets/social/website.png')}
                                 />
+                                <View style={[{backgroundColor: 'transparent', height: 40, marginLeft: 10, width: '80%', flexDirection: 'row', alignItems: 'center'}]}>
+                                    <Text style={[styles.paragraph, {flexWrap: 'wrap'}]}>
+                                        {user?.website}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </View> 
 
                 </View>
 
