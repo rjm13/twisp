@@ -32,7 +32,7 @@ import uuid from 'react-native-uuid';
 import useStyles from '../styles';
 
 
-const EditAuthorProfile = ({navigation} : any) => {
+const CreateCreator = ({navigation} : any) => {
 
     const styles = useStyles();
 
@@ -63,7 +63,7 @@ const EditAuthorProfile = ({navigation} : any) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            //aspect: [4, 3],
             quality: 1,
         });
     
@@ -858,7 +858,7 @@ const EditAuthorProfile = ({navigation} : any) => {
 {/* primary visible content */}
             <ScrollView>
                 <View style={{  alignItems: 'center', flexDirection: 'row', marginTop: 50, marginBottom: 20, marginHorizontal: 20,}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('AuthorProfileSelect')}>
+                    <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                         <View style={{padding: 30, margin: -30}}>
                             <FontAwesome5 
                                 name='chevron-left'
@@ -1080,4 +1080,4 @@ const EditAuthorProfile = ({navigation} : any) => {
         </View> 
 );}
 
-export default EditAuthorProfile;
+export default CreateCreator;

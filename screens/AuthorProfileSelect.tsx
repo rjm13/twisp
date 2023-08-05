@@ -8,7 +8,10 @@ import {
     TouchableWithoutFeedback,
     TouchableOpacity,
     Linking,
-    Modal
+    Modal,
+    Keyboard,
+    TextInput,
+    ActivityIndicator
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -18,15 +21,25 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format, isMonday, parseISO } from "date-fns";
 
+import useStyles from '../styles';
+
 import { API, graphqlOperation, Auth } from "aws-amplify";
 import { creatorProfilesByUser } from '../src/graphql/queries';
-import { updateUser } from '../src/graphql/mutations';
+import { updateUser, createCreatorProfile } from '../src/graphql/mutations';
 
 const AuthorProfileSelect = ({navigation} : any) => {
+
+    const styles = useStyles();
 
     const [creatorProfiles, setCreatorProfiles] = useState([])
 
     const [didUpdate, setDidUpdate] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [createModal, setCreateModal] = useState(false)
+
+    const [name, setName] = useState('')
 
 
 //get the current user and list their followings and followers
@@ -53,9 +66,72 @@ const AuthorProfileSelect = ({navigation} : any) => {
         fetchUser();
       }, [didUpdate])
 
+      const CreateNewCreator = async () => {
+
+        if (name.length > 3) {
+           try {
+                const userInfo = await Auth.currentAuthenticatedUser();
+
+                const userData = await API.graphql(graphqlOperation(
+                    createCreatorProfile, {input: {
+                        userID: userInfo.attributes.sub,
+                        penName: name, 
+                    }}
+                ))
+
+                if (userData) {
+                    navigation.navigate('EditAuthorProfile', {User: userData.data.createCreatorProfile.id })
+                    setCreateModal(false)
+                }
+
+            } catch (e) {
+                console.log(e);
+                alert('Could not create profile. Please try again.')
+            } 
+            }
+      }
+
     return (
                 
         <View style={styles.container}>
+
+            {/* //Update penName  */}
+        <Modal animationType="slide" transparent={true} visible={createModal} onRequestClose={() => {setCreateModal(!createModal);}}>            
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss; setCreateModal(false)}} style={{ height: Dimensions.get('window').height, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center',backgroundColor: '#000', height: Dimensions.get('window').height, justifyContent: 'center'}}>
+                    <Text style={{
+                        fontSize: 16,
+                        paddingVertical: 16,
+                        color: '#fff'
+                    }}>
+                        Enter a name for this profile
+                    </Text>
+                    <View style={styles.inputfield}>
+                        <TextInput
+                            placeholder='ex. Jane Doe'
+                            placeholderTextColor='gray'
+                            style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
+                            maxLength={30}
+                            multiline={false}
+                            onChangeText={val => setName(val)}
+                        />
+                    </View>
+                    <View style={{alignItems: 'center', marginVertical: 30}}>
+                        <TouchableOpacity onPress={CreateNewCreator}>
+                            <View style={styles.buttonlayout} >
+                                {isLoading ? (
+                                        <ActivityIndicator size="small" color="#00ffff"/>
+                                ) : 
+                                <Text style={styles.buttontext}>
+                                    Create
+                                </Text>  
+                                } 
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Modal>
 
             <LinearGradient
                 colors={['black', '#363636a5', 'black']}
@@ -77,7 +153,7 @@ const AuthorProfileSelect = ({navigation} : any) => {
                                 </View>
                             </TouchableWithoutFeedback>
                             
-                            <Text style={styles.header}>
+                            <Text style={[styles.title, {marginLeft: 20}]}>
                                 Author Profiles
                             </Text>
                             
@@ -87,7 +163,16 @@ const AuthorProfileSelect = ({navigation} : any) => {
                 </View>
 
                 <ScrollView>  
-                    <View style={styles.container}>
+                    <View>
+
+                    <TouchableOpacity onPress={() => setCreateModal(true)}>
+                        <View style={{marginVertical: 20, alignSelf: 'center', borderRadius: 10, width: '70%', paddingVertical: 10, borderWidth: 1, borderColor: '#fff', alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={{fontWeight: 'normal', fontSize: 16, color: '#fff'}}>
+                                + Create New
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                        
 
                         <View>
                             {creatorProfiles.map(({ id, penName } : any) => (

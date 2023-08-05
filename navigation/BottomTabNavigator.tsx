@@ -10,6 +10,7 @@ import EditProfileScreen from '../screens/EditProfile';
 import NotificationSetting from '../screens/Settings';
 import AuthorProfileSelect from '../screens/AuthorProfileSelect';
 import EditAuthorProfile from '../screens/EditAuthorProfile';
+import CreateCreator from '../screens/CreateCreator';
 
 import History from '../screens/History';
 import Following from '../screens/Following';
@@ -239,6 +240,11 @@ function HomeNavigator() {
       <HomeStack.Screen 
         name="EditAuthorProfile" 
         component={EditAuthorProfile} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="CreateCreator" 
+        component={CreateCreator} 
         options={{ headerShown: false }} 
       />
 

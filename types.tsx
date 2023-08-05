@@ -72,6 +72,7 @@ export type RootStackParamList = {
     PendingComments: undefined;
     AuthorProfileSelect: undefined;
     EditAuthorProfile: undefined;
+    CreateCreator: undefined;
   
   };
   
