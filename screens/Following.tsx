@@ -101,7 +101,7 @@ const FollowingScreen = ({navigation} : any) => {
         return (
             <View style={{backgroundColor: '#383838a5', marginHorizontal: 20, marginVertical: 10, padding: 20, borderRadius: 15,}}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('UserScreen', {userID: id, status: 'publisher'})}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id, status: 'publisher'})}>
                         <View style={{ flexDirection: 'row'}}>
                             <Image 
                                 source={ imageUri ? { uri: imageU} : require('../assets/blankprofile.png')}

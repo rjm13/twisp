@@ -148,7 +148,7 @@ const BrowseAuthor = ({navigation} : any) => {
         return (
             <View style={styles.tile}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('UserScreen', {userID: id, status: 'publisher'})}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id, status: 'publisher'})}>
                         <View style={{ flexDirection: 'row'}}>
                             <Image 
                                 source={ imageUri ? { uri: imageU} : require('../assets/blankprofile.png')}
