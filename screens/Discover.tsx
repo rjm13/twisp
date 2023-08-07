@@ -135,9 +135,6 @@ const AudioStoryHome = ({navigation} : any) => {
           type: 'Tag',
           sortDirection: 'DESC',
           filter: {
-            nsfw: {
-              eq: false
-            },
             count: {
               gt: 1
             }

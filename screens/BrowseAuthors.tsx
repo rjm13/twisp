@@ -20,7 +20,9 @@ import {LinearGradient} from 'expo-linear-gradient';
 import { AppContext } from '../AppContext';
 
 import { API, graphqlOperation, Storage } from "aws-amplify";
-import { listUsers } from '../src/graphql/queries';
+import { creatorsByType } from '../src/graphql/queries';
+
+import {useRoute} from '@react-navigation/native'
 
 
 const BrowseAuthor = ({navigation} : any) => {
@@ -42,6 +44,14 @@ const BrowseAuthor = ({navigation} : any) => {
 
     const [nextToken, setNextToken] = useState(null)
 
+    //route params from the StoriesScreen to specifiy the genre
+    const route = useRoute();
+    const {searchParam} = route.params
+
+    useEffect(() => {
+        setSearchQ(searchParam)
+    }, [searchParam])
+
     //refresh function, does not work yet
     const onRefresh = () => {
         setIsFetching(true);
@@ -53,40 +63,51 @@ const BrowseAuthor = ({navigation} : any) => {
         }, 2000);
       }
 
-//on render, get the user and then list the following connections for that user
+          //array of authors that show from search results
+    const [AuthorArray, setAuthorArray] = useState([]);
+    const [authorToken, setAuthorToken] = useState(null);
+
+    //fetch authors
     useEffect(() => {
 
-        const fetchUser = async () => {
-
-            try {
-
-                const followData = await API.graphql(graphqlOperation(
-                    listUsers, {
-                        nextToken,
-                        filter: {
-                            isPublisher: {
-                                eq: true
-                            },
-                            publisherName: {
-                                contains: searchQ.toLowerCase()
-                            }
+        let arr = []
+  
+        let search = searchQ ? searchQ.toLowerCase() : null
+  
+        if (searchParam !== '') {
+            const fetchAuthors = async () => {
+                const authorResults = await API.graphql(graphqlOperation(
+                    creatorsByType, {
+                      authorToken,
+                      type: "Author",
+                      filter: {
+                        penName: {
+                          contains: search
                         }
-                }))
-
-                setUsers(users.concat(followData.data.listUsers.items));
-
-                if (followData.data.listUsers.nextToken) {
-                   setNextToken(followData.data.listUsers.nextToken) 
-                   fetchUser();
-                   return;
+                      }
+                    }
+                 
+                ))
+  
+                setAuthorToken(authorResults.data.creatorsByType.nextToken)
+  
+                console.log(authorResults.data.creatorsByType)
+  
+                for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
+                  arr.push(authorResults.data.creatorsByType.items[i])
                 }
-
-            } catch (e) {
-            console.log(e);
-          }
+  
+                if (authorResults.data.creatorsByType.nextToken) {
+                  fetchAuthors();
+                  return;
+                }
+                if (authorResults.data.creatorsByType.nextToken === null) {
+                  setAuthorArray(arr)
+                }
+            }
+            fetchAuthors();
         }
-        fetchUser();
-      }, [didUpdate])
+    },[didUpdate, searchQ])
 
       //search bar
       function SearchBar () {
@@ -103,8 +124,8 @@ const BrowseAuthor = ({navigation} : any) => {
               onChangeText={onChangeSearch}
               value={searchQuery}
               iconColor='#000000a5'
-              onIconPress={() => {setSearchQ(searchQuery); setNextToken(null); setUsers([]); setDidUpdate(!didUpdate);}}
-              onSubmitEditing={() => {setSearchQ(searchQuery); setNextToken(null); setUsers([]); setDidUpdate(!didUpdate);}}
+              onIconPress={() => {setSearchQ(searchQuery); setNextToken(null); setAuthorArray([]); setDidUpdate(!didUpdate);}}
+              onSubmitEditing={() => {setSearchQ(searchQuery); setNextToken(null); setAuthorArray([]); setDidUpdate(!didUpdate);}}
               style={{
                 height: 40,
                 marginLeft: 40,
@@ -112,14 +133,14 @@ const BrowseAuthor = ({navigation} : any) => {
                 backgroundColor: '#e0e0e0',
                 width: Dimensions.get('window').width - 100,
               }}
-              inputStyle={{fontSize: 16, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
+              inputStyle={{fontSize: 14, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
           </View>
         );
       };
 
     //title item for the flatlist that displays the authors the user following
-    const Item = ({ numAuthored, pseudonym, imageUri, id, bio } : any) => {
+    const Item = ({ numAuthored, penName, imageUri, id, bio } : any) => {
 
         const [imageU, setImageU] = useState()
         
@@ -148,7 +169,7 @@ const BrowseAuthor = ({navigation} : any) => {
         return (
             <View style={styles.tile}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id, status: 'publisher'})}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id})}>
                         <View style={{ flexDirection: 'row'}}>
                             <Image 
                                 source={ imageUri ? { uri: imageU} : require('../assets/blankprofile.png')}
@@ -163,7 +184,7 @@ const BrowseAuthor = ({navigation} : any) => {
                             <View style={{ marginHorizontal: 10, width: '78%'}}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <Text style={styles.name}>
-                                        {pseudonym}
+                                        {penName}
                                     </Text> 
                                     {isFollowing === true ? (
                                         <FontAwesome5 
@@ -207,7 +228,7 @@ const BrowseAuthor = ({navigation} : any) => {
             <Item 
                 name={item.name}
                 id={item.id}
-                pseudonym={item.publisherName}
+                penName={item.penName}
                 imageUri={item.imageUri}
                 bio={item.bio}
                 numAuthored={item.numAuthored}
@@ -238,8 +259,8 @@ const BrowseAuthor = ({navigation} : any) => {
                 <View style={{ alignItems: 'center', marginTop: 20, height: '84%'}}>
                     <FlatList
                         style={{ width: '100%' }}
-                        data={users}
-                        extraData={users}
+                        data={AuthorArray}
+                        extraData={AuthorArray}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
                         initialNumToRender={20}

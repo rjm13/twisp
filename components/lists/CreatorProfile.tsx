@@ -331,7 +331,7 @@ const CreatorProfile = ({status} : any) => {
             <Animated.View style={{opacity: animatedOpacitySlow}}>
                     <View style={{ alignItems: 'center'}}>
                         <Image 
-                            source={{ uri: User?.imageUri}}
+                            source={{ uri: imageU}}
                             style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 20,}}
                         />
                     </View>

@@ -6,7 +6,8 @@ import {
     Dimensions,
     TouchableWithoutFeedback, 
     TouchableOpacity, 
-    ScrollView
+    ScrollView,
+    Image
 } from 'react-native';
 
 import { Searchbar } from 'react-native-paper';
@@ -17,8 +18,8 @@ import {LinearGradient} from 'expo-linear-gradient';
 import StoryTile from '../components/StoryTile';
 import { AppContext } from '../AppContext';
 
-import {listStories, listTags } from '../src/graphql/queries';
-import {graphqlOperation, API} from 'aws-amplify';
+import {listStories, listTags, creatorsByType } from '../src/graphql/queries';
+import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 const SearchScreen = ({navigation} : any) => {
 
@@ -52,7 +53,7 @@ const SearchScreen = ({navigation} : any) => {
         return (
           <View>
             <Searchbar
-              placeholder={'Search Stories, Tags'}
+              placeholder={'Search stories, authors, tags'}
               placeholderTextColor='#000000a5'
               //autoComplete={true}
               onChangeText={onChangeSearch}
@@ -75,7 +76,7 @@ const SearchScreen = ({navigation} : any) => {
                 backgroundColor: '#e0e0e0',
                 width: Dimensions.get('window').width - 100,
               }}
-              inputStyle={{fontSize: 16, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
+              inputStyle={{fontSize: 14, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
           </View>
         );
@@ -88,6 +89,11 @@ const SearchScreen = ({navigation} : any) => {
     const [TagsArray, setTagsArray] = useState([]);
     const [tagToken, setTagToken] = useState(null);
 
+    //array of authors that show from search results
+    const [AuthorArray, setAuthorArray] = useState([]);
+    const [authorToken, setAuthorToken] = useState(null);
+
+//fetch tags
     useEffect(() => {
 
         if (newSearch !== '') {
@@ -99,9 +105,6 @@ const SearchScreen = ({navigation} : any) => {
                             tagName: {
                                 contains: newSearch.toLowerCase()
                             },
-                            nsfw: {
-                              ne: ADon === true ? true : null
-                            } 
                         }
                     }
                 ))
@@ -111,6 +114,48 @@ const SearchScreen = ({navigation} : any) => {
             fetchTags();
         }
     },[didUpdate])
+
+    //fetch authors
+    useEffect(() => {
+
+      let arr = []
+
+      let search = newSearch ? newSearch.toLowerCase() : null
+
+      if (newSearch !== '') {
+          const fetchAuthors = async () => {
+              const authorResults = await API.graphql(graphqlOperation(
+                  creatorsByType, {
+                    authorToken,
+                    type: "Author",
+                    filter: {
+                      penName: {
+                        contains: search
+                      }
+                    }
+                  }
+               
+              ))
+
+              setAuthorToken(authorResults.data.creatorsByType.nextToken)
+
+              console.log(authorResults.data.creatorsByType)
+
+              for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
+                arr.push(authorResults.data.creatorsByType.items[i])
+              }
+
+              if (authorResults.data.creatorsByType.nextToken) {
+                fetchAuthors();
+                return;
+              }
+              if (authorResults.data.creatorsByType.nextToken === null) {
+                setAuthorArray(arr)
+              }
+          }
+          fetchAuthors();
+      }
+  },[didUpdate])
 
     const [nextToken, setNextToken] = useState(null)
 
@@ -213,12 +258,9 @@ const SearchScreen = ({navigation} : any) => {
 
     return (
         <View >
-          <LinearGradient
-          colors={['#363636','#2f217966', '#000']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={{marginTop: 40, marginBottom: 10, marginHorizontal: 20}}>
+          <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+
+          <View style={{marginTop: 60, marginBottom: 10, marginHorizontal: 20}}>
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                   <View style={{padding: 30, margin: -30}}>
@@ -294,6 +336,75 @@ const SearchScreen = ({navigation} : any) => {
                                             <View style={{alignItems: 'center', marginTop: 10}}>
                                               <Text style={{color: '#fff'}}>
                                                  {tagToken === null ? '' : 'Load More'}
+                                              </Text>
+                                            </View>
+                                          </TouchableOpacity>
+                                        
+                                    </View>
+                                </View>
+                            ) : null}
+
+                            {AuthorArray.length > 0 ? (
+                                <View>
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', margin: 20,}}>
+                                        Authors
+                                    </Text>
+                                    <View>
+                                        <ScrollView style={{width: Dimensions.get('window').width - 40, marginHorizontal: 20, marginBottom: 20, paddingBottom: 1}} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                            {AuthorArray.map(({ id, penName, bio, imageUri, numAuthored, type } : any, index) => {
+                                              //temporary signed image uri
+                                              const [imageU, setImageU] = useState('')
+                                                
+                                              //push the s3 image key to get the signed uri
+                                                  useEffect(() => {
+                                                      const fetchImage = async () => {
+                                                          let response = await Storage.get(imageUri);
+                                                          if (response) {
+                                                            setImageU(response);
+                                                          }
+                                                          
+                                                      }
+                                                      fetchImage()
+                                                  }, []) 
+
+                                              return (
+                                                <View key={id} style={{marginTop: 10, marginRight: 10, marginBottom: 20}}>
+                                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id})}>
+                                                        <View style={{flexDirection: 'row'}}>
+                                                          <Image 
+                                                            source={imageU ? {uri: imageU} : require('../assets/blankprofile.png')}
+                                                            style={{height: 100, width: 100, borderRadius: 10}}
+                                                          />
+                                                          <View style={{marginLeft: 10}}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                              <Text numberOfLines={1} style={{color: '#fff', fontSize: 16, fontWeight: '700', flexWrap: 'wrap'}}>
+                                                                {penName}
+                                                              </Text>
+                                                              <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 6}}>
+                                                                <FontAwesome5 name='book-open' size={12} color='#ffffffa5' style={{marginLeft: 6}}/>
+                                                                <Text numberOfLines={1} style={{marginLeft: 6, color: '#ffffffa5', fontSize: 12, fontWeight: '300', flexWrap: 'wrap'}}>
+                                                                  {numAuthored}
+                                                                </Text>
+                                                              </View>
+                                                              
+                                                            </View>
+                                                            
+                                                            <Text numberOfLines={5} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.6, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
+                                                              {bio}
+                                                            </Text>
+                                                          </View>
+                                                            
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            )}
+                                            )}
+                                        </ScrollView>
+
+                                          <TouchableOpacity onPress={() => navigation.navigate('BrowseAuthor', {searchParam: newSearch})}>
+                                            <View style={{alignItems: 'center', marginTop: 10}}>
+                                              <Text style={{color: '#fff', fontWeight: '700'}}>
+                                                 See more results
                                               </Text>
                                             </View>
                                           </TouchableOpacity>

@@ -103,6 +103,9 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   status: Boolean
   numListens: Int
   approved: Boolean
+  seriesID: ID @index(name: "bySeries", queryField: "storiesBySeries", sortKeyFields: ["createdAt"])
+  series: Series @hasOne (fields: ["seriesID"])
+  seriesPart: Int
   }
 
 type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -114,6 +117,18 @@ type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, u
   imageUri: String
   tags: [Tag] @manyToMany (relationName: "GenreTag")
   eroticTags: [EroticTag] @manyToMany (relationName: "EroticaTag")
+}
+
+type Series @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+    id: ID!
+    type: String
+    createdAt: String
+    updatedAt: String
+    name: String
+    genreID: ID @index(name: "byGenre", queryField: "seriesByGenre", sortKeyFields: ["createdAt"])
+    genre: Genre @hasOne (fields: ["genreID"])
+    stories: [Story] @hasMany (indexName: "bySeries", fields: ["id"])
 }
 
 type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

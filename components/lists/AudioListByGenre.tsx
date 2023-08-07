@@ -45,7 +45,7 @@ const AudioStoryList = ({genreID} : any) => {
     //the selected letter for the filter to the stories in the genre. Begins with...
     const [selectedLetter, setSelectedLetter] = useState('a')
 
-    //const [nextToken, setNextToken] = useState(null)
+    const [nextToken, setNextToken] = useState()
 
     
 
@@ -55,7 +55,7 @@ const AudioStoryList = ({genreID} : any) => {
         let genresarr = []
         setGenreStories([])
 
-        const fetchStories = async (nextToken: any) => {
+        const fetchStories = async () => {
 
             setIsLoading(true);
 
@@ -80,27 +80,34 @@ const AudioStoryList = ({genreID} : any) => {
                             },
                         }
                 }))
+
+                console.log(genreData.data.storiesByGenre.items)
                 
                 for(let i = 0; i < genreData.data.storiesByGenre.items.length; i++ ){
                     genresarr.push(genreData.data.storiesByGenre.items[i])
                 }
-                
-                if(genreData.data.listStories.nextToken !== null) {
-                    fetchStories(genreData.data.storiesByGenre.nextToken)
+
+                setNextToken(genreData.data.storiesByGenre.nextToken);
+
+                if(genreData.data.storiesByGenre.nextToken !== null) {
+                    fetchStories();
                     return
                 }
 
                 if (genreData.data.storiesByGenre.nextToken === null) {
                     setIsLoading(false);
+                    setGenreStories(genresarr);
                     return
                 }
+
+                
 
             } catch (e) {
             console.log(e);
           }
         }
         fetchStories(null)
-        setGenreStories(genresarr);
+        
            
       }, [selectedLetter, didUpdate])
 
@@ -124,7 +131,7 @@ const AudioStoryList = ({genreID} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (
@@ -148,7 +155,7 @@ const AudioStoryList = ({genreID} : any) => {
       const [isLoading, setIsLoading] = useState(false);
 
     return (
-            <View style={styles.container}>
+            <View style={{}}>
                 <View>
                     <ScrollView style={{paddingHorizontal: 20}} horizontal={true} ref={flatListRef} showsHorizontalScrollIndicator={false}>        
                         {alphabet.map(({ id, letter } : any) => (
