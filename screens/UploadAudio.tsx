@@ -30,8 +30,8 @@ import useStyles from '../styles';
 import { AppContext } from '../AppContext'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, createStoryTag, createTag, createGenreTag, createMessage  } from '../src/graphql/mutations';
-import { listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser } from '../src/graphql/queries';
+import { createStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag  } from '../src/graphql/mutations';
+import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser } from '../src/graphql/queries';
 
 
 
@@ -175,6 +175,72 @@ const UploadAudio = ({navigation} : any) => {
         return (Search (null));
     }
 
+    const ListAllEroticTags =  (tagCheck : any) => {
+
+        const Search = async (nextToken : any) => {
+                    
+            const response = await API.graphql(graphqlOperation(
+                listEroticTags,{
+                nextToken,
+                filter: {
+                    tagName: {eq: tagCheck}}
+                }
+            ))
+
+            if (response.data.listEroticTags.items.length === 1) {
+                return (response.data.listTags.items[0].id)
+            }
+
+            if (response.data.listEroticTags.nextToken) {
+                let nextToken = response.data.listEroticTags.nextToken
+                Search(nextToken)
+            } 
+        }
+
+        return (Search (null));
+    }
+
+    const ListAllGenreEroticTags = async (extag: any) => {
+
+        const Search = async (nextToken : any) => {
+
+            const response = await API.graphql(graphqlOperation(
+                listEroticaTags, {
+                    nextToken,
+                    filter: {
+                        eroticTagId: {
+                            eq: extag
+                        },
+                        genreId: {
+                            eq: data.genreID
+                        }
+                    }
+                }
+            ))
+
+            if (response.data.listGenlistEroticaTagsreTags.items.length === 1) {
+                return ('exists');
+            } 
+            
+            if (response.data.listEroticaTags.nextToken) {
+                let nextToken = response.data.listEroticaTags.nextToken
+                Search(nextToken)
+            }
+            
+        }
+
+        let s = await Search(null);
+
+        if (s === 'exists') {
+            return
+        }
+        else {
+            await API.graphql(graphqlOperation(
+                createEroticaTag, {input: {eroticTagId: extag, genreId: data.genreID}}
+            )) 
+        }
+    }
+
     //request permission to access camera roll
     useEffect(() => {
         (async () => {
@@ -262,46 +328,80 @@ const UploadAudio = ({navigation} : any) => {
                 }
         }))
 
+            if (data.genre === 'after dark') {
+                //if the user has added after dark tags to the story
+                if (TagsArray.length > 0) {
+                    //then for each tag, check to see if it already exists
+                    for (let i = 0; i < TagsArray.length; i++) {
+                        let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+
+                        let extag = await ListAllEroticTags(tagCheck);
+
+                        //if the tag exists, create a StoryTag with the tagID and storyID
+                        if (extag !== undefined) {
+                            await API.graphql(graphqlOperation(
+                                createEroticStoryTag, {input: {eroticTagId: extag, storyId: result.data.createStory.id, }}
+                            ))
+
+                            ListAllGenreEroticTags(extag);
+                            
+                        //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                        } else if (extag === undefined) {
+                            let newTag = await API.graphql(graphqlOperation(
+                                createEroticTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                            ))
+
+                            if (newTag) {
+                                await API.graphql(graphqlOperation(
+                                    createEroticStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                                ))
+                                await API.graphql(graphqlOperation(
+                                    createEroticaTag, {input: {eroticTagId: newTag.data.createTag.id, genreId: data.genreID}}
+                                ))
+                            }
+                        }
+                    }
+                } 
+            } 
+
+            else {
             //if the user has added tags for this story
-            if (TagsArray.length > 0) {
-                //then for each tag, check to see if it already exists
-                for (let i = 0; i < TagsArray.length; i++) {
-                    let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+                if (TagsArray.length > 0) {
+                    //then for each tag, check to see if it already exists
+                    for (let i = 0; i < TagsArray.length; i++) {
+                        let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
 
-                    let extag = await ListAllTags(tagCheck);
+                        let extag = await ListAllTags(tagCheck);
 
-                    //if the tag exists, create a StoryTag with the tagID and storyID
-                    if (extag !== undefined) {
-                        await API.graphql(graphqlOperation(
-                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
-                        ))
-
-                        ListAllGenreTags(extag);
-                        
-                    //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
-                    } else if (extag === undefined) {
-                        let newTag = await API.graphql(graphqlOperation(
-                            createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
-                        ))
-
-                        if (newTag) {
+                        //if the tag exists, create a StoryTag with the tagID and storyID
+                        if (extag !== undefined) {
                             await API.graphql(graphqlOperation(
-                                createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                                createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
                             ))
-                            await API.graphql(graphqlOperation(
-                                createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
+
+                            ListAllGenreTags(extag);
+                            
+                        //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                        } else if (extag === undefined) {
+                            let newTag = await API.graphql(graphqlOperation(
+                                createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
                             ))
+
+                            if (newTag) {
+                                await API.graphql(graphqlOperation(
+                                    createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                                ))
+                                await API.graphql(graphqlOperation(
+                                    createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
+                                ))
+                            }
                         }
                     }
                 }
             }
 
-        // await API.graphql(
-        //     graphqlOperation(updateUser, { input: {
-        //         id: userInfo.attributes.sub,
-        //         numAuthored: numAuthored + 1
-        //     }
-        // }));
+
+
 
         await API.graphql(graphqlOperation(
             createMessage, {

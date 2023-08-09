@@ -96,6 +96,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   nsfw: Boolean
   comments: [Comment] @hasMany (indexName: "byStory", fields: ["id"])
   tags: [Tag] @manyToMany (relationName: "StoryTag")
+  eroticTags: [EroticTag] @manyToMany (relationName: "EroticStoryTag")
   ratingAvg: Float
   ratingAmt: Int
   ratings: [Rating] @hasMany(indexName: "byStory", fields: ["id"])
@@ -159,6 +160,7 @@ type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, upd
       @index(name: "EroticTagsByUpdated", queryField: "EroticTagsByUpdated", sortKeyFields: ["updatedAt"])
     tagName: String!
     genre: [Genre] @manyToMany (relationName: "EroticaTag")
+    stories: [Story] @manyToMany(relationName: "EroticStoryTag")
     count: Int
   }
 

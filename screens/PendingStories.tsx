@@ -21,7 +21,7 @@ import {useNavigation} from '@react-navigation/native'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { storiesByDate, getStory, getCreatorProfile, getUser } from '../src/graphql/queries';
-import { updateStory, createMessage, updateTag, updateCreatorProfile, updateUser } from '../src/graphql/mutations';
+import { updateStory, createMessage, updateTag, updateCreatorProfile, updateUser, updateEroticTag } from '../src/graphql/mutations';
 import TimeConversion from '../components/functions/TimeConversion';
 import { AppContext } from '../AppContext';
 
@@ -84,98 +84,189 @@ const PendingStories = ({navigation} : any) => {
 
     const [pending, setPending] = useState(false)
 
-    const ApproveStory = async ({id, authorID, creatorID, title, NSFW, nsfw} : any) => {
+    const ApproveStory = async ({id, authorID, creatorID, title, NSFW, nsfw, genreName} : any) => {
 
         setPending(true)
 
-        try {
-
-            
-            let response = await API.graphql(graphqlOperation(
-                updateStory, {input: {
-                    id: id,
-                    type: 'Story',
-                    approved: true,
-                    updatedAt: new Date(),
-                    nsfw: NSFW === nsfw ? nsfw : NSFW
-                }}
-            ))
-
-            if (response) {
-
-                let creator = await API.graphql(graphqlOperation(
-                    getCreatorProfile, {
-                        id: creatorID   
-                    }
-                )) 
-
-                let num = creator.numAuthored + 1
-
-                await API.graphql(graphqlOperation(
-                    updateCreatorProfile, {input: {
-                        id: creatorID,
+        if (genreName === 'after dark') {
+            try {
+                let response = await API.graphql(graphqlOperation(
+                    updateStory, {input: {
+                        id: id,
+                        type: 'EroticStory',
+                        approved: true,
                         updatedAt: new Date(),
-                        numAuthored: num
+                        nsfw: true
                     }}
                 ))
 
-                let user = await API.graphql(graphqlOperation(
-                    getUser, {
-                        id: authorID   
-                    }
-                )) 
+                if (response) {
 
-                let number = user.numAuthored + 1
+                    let creator = await API.graphql(graphqlOperation(
+                        getCreatorProfile, {
+                            id: creatorID   
+                        }
+                    )) 
 
-                await API.graphql(graphqlOperation(
-                    updateUser, {input: {
-                        id: authorID,
-                        updatedAt: new Date(),
-                        numAuthored: number
-                    }}
-                ))
-            }
+                    let num = creator.numAuthored + 1
 
-            let storyresponse = await API.graphql(graphqlOperation(
-                getStory, {id : id}
-            ))
+                    await API.graphql(graphqlOperation(
+                        updateCreatorProfile, {input: {
+                            id: creatorID,
+                            updatedAt: new Date(),
+                            numAuthored: num
+                        }}
+                    ))
 
-            for (let i = 0; i < storyresponse.data.getStory.tags.items.length; i++) {
-                await API.graphql(graphqlOperation(
-                    updateTag, {input: {
-                        id: storyresponse.data.getStory.tags.items[i].tag.id,
-                        count: storyresponse.data.getStory.tags.items[i].tag.count + 1,
-                        updatedAt: new Date()
-                    }}
-                ))
-            }
+                    let user = await API.graphql(graphqlOperation(
+                        getUser, {
+                            id: authorID   
+                        }
+                    )) 
 
-            if (response) {
-                let sendmessage = await API.graphql(graphqlOperation(
-                    createMessage, {input: {
-                        type: 'Message',
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
-                        receiverID: authorID,
-                        content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
-                        title: 'Your story, ' + title + ' has been approved!',
-                        subtitle: 'approval',
-                        isReadbyReceiver: false,
-                        status: 'noreply'
+                    let number = user.numAuthored + 1
 
-                    }}
-                ))
-                if (sendmessage) {
-                    setPending(false)
-                    alert ('Story approved!')
-                    setDidUpdate(!didUpdate)
-                    
+                    await API.graphql(graphqlOperation(
+                        updateUser, {input: {
+                            id: authorID,
+                            updatedAt: new Date(),
+                            numAuthored: number
+                        }}
+                    ))
                 }
+
+                let storyresponse = await API.graphql(graphqlOperation(
+                    getStory, {id : id}
+                ))
+
+                for (let i = 0; i < storyresponse.data.getStory.eroticTags.items.length; i++) {
+                    await API.graphql(graphqlOperation(
+                        updateEroticTag, {input: {
+                            id: storyresponse.data.getStory.eroticTags.items[i].eroticTag.id,
+                            count: storyresponse.data.getStory.eroticTags.items[i].eroticTag.count + 1,
+                            updatedAt: new Date()
+                        }}
+                    ))
+                }
+
+                if (response) {
+                    let sendmessage = await API.graphql(graphqlOperation(
+                        createMessage, {input: {
+                            type: 'Message',
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            receiverID: authorID,
+                            content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
+                            title: 'Your story, ' + title + ' has been approved!',
+                            subtitle: 'approval',
+                            isReadbyReceiver: false,
+                            status: 'noreply'
+
+                        }}
+                    ))
+                    if (sendmessage) {
+                        setPending(false)
+                        alert ('Story approved!')
+                        setDidUpdate(!didUpdate)
+                        
+                    }
+                }
+            } catch {
+                alert ('Error')
+                setPending(false)
             }
-        } catch {
-            alert ('Error')
-            setPending(false)
+        } else {
+            try {
+
+                
+                let response = await API.graphql(graphqlOperation(
+                    updateStory, {input: {
+                        id: id,
+                        type: 'Story',
+                        approved: true,
+                        updatedAt: new Date(),
+                        nsfw: NSFW === nsfw ? nsfw : NSFW
+                    }}
+                ))
+
+                if (response) {
+
+                    let creator = await API.graphql(graphqlOperation(
+                        getCreatorProfile, {
+                            id: creatorID   
+                        }
+                    )) 
+
+                    let num = creator.numAuthored + 1
+
+                    await API.graphql(graphqlOperation(
+                        updateCreatorProfile, {input: {
+                            id: creatorID,
+                            updatedAt: new Date(),
+                            numAuthored: num
+                        }}
+                    ))
+
+                    let user = await API.graphql(graphqlOperation(
+                        getUser, {
+                            id: authorID   
+                        }
+                    )) 
+
+                    let number = user.numAuthored + 1
+
+                    await API.graphql(graphqlOperation(
+                        updateUser, {input: {
+                            id: authorID,
+                            updatedAt: new Date(),
+                            numAuthored: number
+                        }}
+                    ))
+                }
+
+                let storyresponse = await API.graphql(graphqlOperation(
+                    getStory, {id : id}
+                ))
+
+                for (let i = 0; i < storyresponse.data.getStory.tags.items.length; i++) {
+                    await API.graphql(graphqlOperation(
+                        updateTag, {input: {
+                            id: storyresponse.data.getStory.tags.items[i].tag.id,
+                            count: storyresponse.data.getStory.tags.items[i].tag.count + 1,
+                            updatedAt: new Date()
+                        }}
+                    ))
+                }
+
+                if (response) {
+                    let sendmessage = await API.graphql(graphqlOperation(
+                        createMessage, {input: {
+                            type: 'Message',
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            receiverID: authorID,
+                            content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
+                            title: 'Your story, ' + title + ' has been approved!',
+                            subtitle: 'approval',
+                            isReadbyReceiver: false,
+                            status: 'noreply'
+
+                        }}
+                    ))
+                    if (sendmessage) {
+                        setPending(false)
+                        alert ('Story approved!')
+                        setDidUpdate(!didUpdate)
+                        
+                    }
+                }
+            } catch {
+                alert ('Error')
+                setPending(false)
+            }
         }
+
+        
         
     }
 
@@ -251,7 +342,7 @@ const PendingStories = ({navigation} : any) => {
 
     
 
-    const Item = ({title, genreName, summary, imageUri, nsfw, audioUri, author, authorID, narrator, time, id,ratingAvg,ratingAmt,icon, promptID, promptCount} : any) => {
+    const Item = ({title, genreName, summary, imageUri, nsfw, audioUri, author, authorID, narrator, time, id,ratingAvg,ratingAmt,icon} : any) => {
 
         //temporary signed image uri
         const [imageU, setImageU] = useState('')
@@ -383,7 +474,7 @@ const PendingStories = ({navigation} : any) => {
                             {pending===true ? (
                                 <ActivityIndicator size='small' color='cyan'/>
                             ) : (
-                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw})}>
+                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw, genreName})}>
                                     <Text style={{color: '#000', backgroundColor: 'cyan', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6}}>
                                         Approve
                                     </Text>
