@@ -53,6 +53,12 @@ import PublisherSetup from '../screens/PublisherSetup';
 import Publisher from '../screens/Publisher';
 import PremiumHome from '../screens/PremiumHome';
 
+import AfterDarkHome from '../screens/AfterDarkHome';
+import AfterDarkSearch from '../screens/AfterDarkSearch';
+import AfterDarkTagSearch from '../screens/AfterDarkTagSearch';
+import BrowseAfterDark from '../screens/BrowseAfterDark';
+import ViewAfterDarkTags from '../screens/ViewAfterDarkTags';
+
 import { AppContext } from '../AppContext';
 
 
@@ -296,6 +302,31 @@ function StoriesNavigator() {
         name="ViewGenreTags" 
         component={ViewGenreTags} 
         options={{ headerShown: false }} 
+      />
+      <StoriesStack.Screen
+        name="AfterDarkHome"
+        component={AfterDarkHome}
+        options={{ headerShown: false }}
+      />
+      <StoriesStack.Screen
+        name="AfterDarkTagSearch"
+        component={AfterDarkTagSearch}
+        options={{ headerShown: false }}
+      />
+      <StoriesStack.Screen
+        name="BrowseAfterDark"
+        component={BrowseAfterDark}
+        options={{ headerShown: false }}
+      />
+      <StoriesStack.Screen
+        name="ViewAfterDarkTags"
+        component={ViewAfterDarkTags}
+        options={{ headerShown: false }}
+      />
+      <StoriesStack.Screen
+        name="AfterDarkSearch"
+        component={AfterDarkSearch}
+        options={{ headerShown: false }}
       />
     </StoriesStack.Navigator>
   );

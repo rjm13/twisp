@@ -227,6 +227,7 @@ export type Story = {
   seriesID?: string | null,
   series?: Series | null,
   seriesPart?: number | null,
+  premium?: boolean | null,
 };
 
 export type ModelCommentConnection = {
@@ -641,6 +642,7 @@ export type CreateStoryInput = {
   approved?: boolean | null,
   seriesID?: string | null,
   seriesPart?: number | null,
+  premium?: boolean | null,
 };
 
 export type ModelStoryConditionInput = {
@@ -668,6 +670,7 @@ export type ModelStoryConditionInput = {
   approved?: ModelBooleanInput | null,
   seriesID?: ModelIDInput | null,
   seriesPart?: ModelIntInput | null,
+  premium?: ModelBooleanInput | null,
   and?: Array< ModelStoryConditionInput | null > | null,
   or?: Array< ModelStoryConditionInput | null > | null,
   not?: ModelStoryConditionInput | null,
@@ -711,6 +714,7 @@ export type UpdateStoryInput = {
   approved?: boolean | null,
   seriesID?: string | null,
   seriesPart?: number | null,
+  premium?: boolean | null,
 };
 
 export type DeleteStoryInput = {
@@ -1276,6 +1280,7 @@ export type ModelStoryFilterInput = {
   approved?: ModelBooleanInput | null,
   seriesID?: ModelIDInput | null,
   seriesPart?: ModelIntInput | null,
+  premium?: ModelBooleanInput | null,
   and?: Array< ModelStoryFilterInput | null > | null,
   or?: Array< ModelStoryFilterInput | null > | null,
   not?: ModelStoryFilterInput | null,
@@ -1632,6 +1637,7 @@ export type ModelSubscriptionStoryFilterInput = {
   approved?: ModelSubscriptionBooleanInput | null,
   seriesID?: ModelSubscriptionIDInput | null,
   seriesPart?: ModelSubscriptionIntInput | null,
+  premium?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionStoryFilterInput | null > | null,
   or?: Array< ModelSubscriptionStoryFilterInput | null > | null,
 };
@@ -1954,6 +1960,7 @@ export type CreateUserMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2141,6 +2148,7 @@ export type UpdateUserMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2328,6 +2336,7 @@ export type DeleteUserMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2477,6 +2486,7 @@ export type CreateCreatorProfileMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2610,6 +2620,7 @@ export type UpdateCreatorProfileMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2743,6 +2754,7 @@ export type DeleteCreatorProfileMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -3572,6 +3584,7 @@ export type CreateStoryMutation = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -3823,6 +3836,7 @@ export type UpdateStoryMutation = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -4074,6 +4088,7 @@ export type DeleteStoryMutation = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -4264,6 +4279,7 @@ export type CreateSeriesMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -4331,6 +4347,7 @@ export type UpdateSeriesMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -4398,6 +4415,7 @@ export type DeleteSeriesMutation = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -4793,6 +4811,7 @@ export type CreatePinnedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -4978,6 +4997,7 @@ export type UpdatePinnedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -5163,6 +5183,7 @@ export type DeletePinnedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -5348,6 +5369,7 @@ export type CreateInProgressStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -5534,6 +5556,7 @@ export type UpdateInProgressStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -5720,6 +5743,7 @@ export type DeleteInProgressStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -5908,6 +5932,7 @@ export type CreateFinishedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -6093,6 +6118,7 @@ export type UpdateFinishedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -6278,6 +6304,7 @@ export type DeleteFinishedStoryMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -6403,6 +6430,7 @@ export type CreateCommentMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -6590,6 +6618,7 @@ export type UpdateCommentMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -6777,6 +6806,7 @@ export type DeleteCommentMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -7375,6 +7405,7 @@ export type CreateRatingMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -7561,6 +7592,7 @@ export type UpdateRatingMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -7747,6 +7779,7 @@ export type DeleteRatingMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -8174,6 +8207,7 @@ export type CreateStoryTagMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -8316,6 +8350,7 @@ export type UpdateStoryTagMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -8458,6 +8493,7 @@ export type DeleteStoryTagMutation = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -8925,6 +8961,7 @@ export type GetUserQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -9145,6 +9182,7 @@ export type GetCreatorProfileQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -9751,6 +9789,7 @@ export type GetStoryQuery = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -9871,6 +9910,7 @@ export type ListStoriesQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -10008,6 +10048,7 @@ export type GetSeriesQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -10352,6 +10393,7 @@ export type GetPinnedStoryQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -10423,6 +10465,7 @@ export type ListPinnedStoriesQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -10609,6 +10652,7 @@ export type GetInProgressStoryQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -10681,6 +10725,7 @@ export type ListInProgressStoriesQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -10870,6 +10915,7 @@ export type GetFinishedStoryQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -10941,6 +10987,7 @@ export type ListFinishedStoriesQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
     } | null >,
     nextToken?: string | null,
@@ -11067,6 +11114,7 @@ export type GetCommentQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -11176,6 +11224,7 @@ export type ListCommentsQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       content: string,
       user?:  {
@@ -11534,6 +11583,7 @@ export type GetRatingQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -11642,6 +11692,7 @@ export type ListRatingsQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       userID: string,
       user?:  {
@@ -11921,6 +11972,7 @@ export type GetStoryTagQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -11985,6 +12037,7 @@ export type ListStoryTagsQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -12708,6 +12761,7 @@ export type StoriesByDateQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12833,6 +12887,7 @@ export type StoriesByUpdatedQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12958,6 +13013,7 @@ export type StoriesByPublisherQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13083,6 +13139,7 @@ export type StoriesByCreatorQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13208,6 +13265,7 @@ export type StoriesByGenreQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13333,6 +13391,7 @@ export type StoriesBySeriesQuery = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13569,6 +13628,7 @@ export type PinnedStoriesByUserQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -13645,6 +13705,7 @@ export type InProgressStoriesByUpdatedQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -13722,6 +13783,7 @@ export type InProgressStoriesByUserQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -13801,6 +13863,7 @@ export type FinishedStoriesByUserQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
     } | null >,
     nextToken?: string | null,
@@ -13877,6 +13940,7 @@ export type FinishedStoriesByStoryIDAndCreatedAtQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
     } | null >,
     nextToken?: string | null,
@@ -13929,6 +13993,7 @@ export type CommentsByCreatedQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       content: string,
       user?:  {
@@ -14007,6 +14072,7 @@ export type CommentsByStoryQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       content: string,
       user?:  {
@@ -14158,6 +14224,7 @@ export type RatingsByUpdatedQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       userID: string,
       user?:  {
@@ -14235,6 +14302,7 @@ export type RatingsByStoryIDAndIdQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       userID: string,
       user?:  {
@@ -14312,6 +14380,7 @@ export type RatingsByUserQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null,
       userID: string,
       user?:  {
@@ -14439,6 +14508,7 @@ export type StoryTagsByStoryIdQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -14499,6 +14569,7 @@ export type StoryTagsByTagIdQuery = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       },
       tag:  {
         __typename: "Tag",
@@ -14834,6 +14905,7 @@ export type OnCreateUserSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15020,6 +15092,7 @@ export type OnUpdateUserSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15206,6 +15279,7 @@ export type OnDeleteUserSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15354,6 +15428,7 @@ export type OnCreateCreatorProfileSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15486,6 +15561,7 @@ export type OnUpdateCreatorProfileSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -15618,6 +15694,7 @@ export type OnDeleteCreatorProfileSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -16443,6 +16520,7 @@ export type OnCreateStorySubscription = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -16693,6 +16771,7 @@ export type OnUpdateStorySubscription = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -16943,6 +17022,7 @@ export type OnDeleteStorySubscription = {
       } | null,
     } | null,
     seriesPart?: number | null,
+    premium?: boolean | null,
   } | null,
 };
 
@@ -17129,6 +17209,7 @@ export type OnCreateSeriesSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -17195,6 +17276,7 @@ export type OnUpdateSeriesSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -17261,6 +17343,7 @@ export type OnDeleteSeriesSubscription = {
         approved?: boolean | null,
         seriesID?: string | null,
         seriesPart?: number | null,
+        premium?: boolean | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -17649,6 +17732,7 @@ export type OnCreatePinnedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -17833,6 +17917,7 @@ export type OnUpdatePinnedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -18017,6 +18102,7 @@ export type OnDeletePinnedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -18201,6 +18287,7 @@ export type OnCreateInProgressStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -18386,6 +18473,7 @@ export type OnUpdateInProgressStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -18571,6 +18659,7 @@ export type OnDeleteInProgressStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -18758,6 +18847,7 @@ export type OnCreateFinishedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -18942,6 +19032,7 @@ export type OnUpdateFinishedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -19126,6 +19217,7 @@ export type OnDeleteFinishedStorySubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
   } | null,
 };
@@ -19250,6 +19342,7 @@ export type OnCreateCommentSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -19436,6 +19529,7 @@ export type OnUpdateCommentSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -19622,6 +19716,7 @@ export type OnDeleteCommentSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     content: string,
     user?:  {
@@ -20216,6 +20311,7 @@ export type OnCreateRatingSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -20401,6 +20497,7 @@ export type OnUpdateRatingSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -20586,6 +20683,7 @@ export type OnDeleteRatingSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     } | null,
     userID: string,
     user?:  {
@@ -21009,6 +21107,7 @@ export type OnCreateStoryTagSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -21150,6 +21249,7 @@ export type OnUpdateStoryTagSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",
@@ -21291,6 +21391,7 @@ export type OnDeleteStoryTagSubscription = {
         genreID?: string | null,
       } | null,
       seriesPart?: number | null,
+      premium?: boolean | null,
     },
     tag:  {
       __typename: "Tag",

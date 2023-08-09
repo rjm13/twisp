@@ -146,6 +146,7 @@ export const getUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -362,6 +363,7 @@ export const getCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -880,6 +882,10 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
+          tag {
+            id
+            tagName
+          }
           createdAt
           updatedAt
           __typename
@@ -966,6 +972,7 @@ export const getStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -1084,6 +1091,7 @@ export const listStories = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -1213,6 +1221,7 @@ export const getSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -1546,6 +1555,7 @@ export const getPinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -1615,6 +1625,7 @@ export const listPinnedStories = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         createdAt
@@ -1799,6 +1810,7 @@ export const getInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -1873,6 +1885,7 @@ export const listInProgressStories = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         createdAt
@@ -2060,6 +2073,7 @@ export const getFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -2129,6 +2143,7 @@ export const listFinishedStories = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         __typename
@@ -2253,6 +2268,7 @@ export const getComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -2360,6 +2376,7 @@ export const listComments = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         content
@@ -2712,6 +2729,7 @@ export const getRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -2818,6 +2836,7 @@ export const listRatings = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         userID
@@ -3091,6 +3110,7 @@ export const getStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {
@@ -3153,6 +3173,7 @@ export const listStoryTags = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         tag {
@@ -3905,6 +3926,7 @@ export const storiesByDate = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4036,6 +4058,7 @@ export const storiesByUpdated = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4167,6 +4190,7 @@ export const storiesByPublisher = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4298,6 +4322,7 @@ export const storiesByCreator = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4429,6 +4454,7 @@ export const storiesByGenre = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4560,6 +4586,7 @@ export const storiesBySeries = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       nextToken
@@ -4831,6 +4858,7 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         createdAt
@@ -4913,6 +4941,7 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         createdAt
@@ -4996,6 +5025,7 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         createdAt
@@ -5081,6 +5111,7 @@ export const finishedStoriesByUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         __typename
@@ -5163,6 +5194,7 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         __typename
@@ -5221,6 +5253,7 @@ export const commentsByCreated = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         content
@@ -5305,6 +5338,7 @@ export const commentsByStory = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         content
@@ -5468,6 +5502,7 @@ export const ratingsByUpdated = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         userID
@@ -5551,6 +5586,7 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         userID
@@ -5634,6 +5670,7 @@ export const ratingsByUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         userID
@@ -5772,6 +5809,7 @@ export const storyTagsByStoryId = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         tag {
@@ -5837,6 +5875,7 @@ export const storyTagsByTagId = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         tag {

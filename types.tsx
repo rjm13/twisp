@@ -87,6 +87,11 @@ export type RootStackParamList = {
     BrowseGenre: undefined;
     PromptsHome: undefined;
     ViewGenreTags: undefined;
+    AfterDarkHome: undefined;
+    AfterDarkSearch: undefined;
+    AfterDarkTagSearch: undefined;
+    BrowseAfterDark: undefined;
+    ViewAfterDarkTags: undefined;
   };
   
   export type TabThreeParamList = {

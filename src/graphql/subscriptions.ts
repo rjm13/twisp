@@ -146,6 +146,7 @@ export const onCreateUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -329,6 +330,7 @@ export const onUpdateUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -512,6 +514,7 @@ export const onDeleteUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -659,6 +662,7 @@ export const onCreateCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -790,6 +794,7 @@ export const onUpdateCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -921,6 +926,7 @@ export const onDeleteCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -1742,6 +1748,7 @@ export const onCreateStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -1989,6 +1996,7 @@ export const onUpdateStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -2236,6 +2244,7 @@ export const onDeleteStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -2408,6 +2417,7 @@ export const onCreateSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2471,6 +2481,7 @@ export const onUpdateSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2534,6 +2545,7 @@ export const onDeleteSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2910,6 +2922,7 @@ export const onCreatePinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3093,6 +3106,7 @@ export const onUpdatePinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3276,6 +3290,7 @@ export const onDeletePinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3459,6 +3474,7 @@ export const onCreateInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3643,6 +3659,7 @@ export const onUpdateInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3827,6 +3844,7 @@ export const onDeleteInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -4013,6 +4031,7 @@ export const onCreateFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4196,6 +4215,7 @@ export const onUpdateFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4379,6 +4399,7 @@ export const onDeleteFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4500,6 +4521,7 @@ export const onCreateComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -4683,6 +4705,7 @@ export const onUpdateComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -4866,6 +4889,7 @@ export const onDeleteComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -5448,6 +5472,7 @@ export const onCreateRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -5630,6 +5655,7 @@ export const onUpdateRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -5812,6 +5838,7 @@ export const onDeleteRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -6223,6 +6250,7 @@ export const onCreateStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {
@@ -6361,6 +6389,7 @@ export const onUpdateStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {
@@ -6499,6 +6528,7 @@ export const onDeleteStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {

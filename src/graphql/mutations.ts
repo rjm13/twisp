@@ -149,6 +149,7 @@ export const createUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -335,6 +336,7 @@ export const updateUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -521,6 +523,7 @@ export const deleteUser = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -669,6 +672,7 @@ export const createCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -801,6 +805,7 @@ export const updateCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -933,6 +938,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -1760,6 +1766,7 @@ export const createStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -2010,6 +2017,7 @@ export const updateStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -2260,6 +2268,7 @@ export const deleteStory = /* GraphQL */ `
         __typename
       }
       seriesPart
+      premium
       __typename
     }
   }
@@ -2444,6 +2453,7 @@ export const createSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2510,6 +2520,7 @@ export const updateSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2576,6 +2587,7 @@ export const deleteSeries = /* GraphQL */ `
           approved
           seriesID
           seriesPart
+          premium
           __typename
         }
         nextToken
@@ -2965,6 +2977,7 @@ export const createPinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3149,6 +3162,7 @@ export const updatePinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3333,6 +3347,7 @@ export const deletePinnedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3517,6 +3532,7 @@ export const createInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3702,6 +3718,7 @@ export const updateInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -3887,6 +3904,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       createdAt
@@ -4074,6 +4092,7 @@ export const createFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4258,6 +4277,7 @@ export const updateFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4442,6 +4462,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       __typename
@@ -4566,6 +4587,7 @@ export const createComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -4752,6 +4774,7 @@ export const updateComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -4938,6 +4961,7 @@ export const deleteComment = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       content
@@ -5532,6 +5556,7 @@ export const createRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -5717,6 +5742,7 @@ export const updateRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -5902,6 +5928,7 @@ export const deleteRating = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       userID
@@ -6325,6 +6352,7 @@ export const createStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {
@@ -6466,6 +6494,7 @@ export const updateStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {
@@ -6607,6 +6636,7 @@ export const deleteStoryTag = /* GraphQL */ `
           __typename
         }
         seriesPart
+        premium
         __typename
       }
       tag {

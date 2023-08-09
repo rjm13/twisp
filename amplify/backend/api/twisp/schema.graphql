@@ -109,6 +109,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   seriesID: ID @index(name: "bySeries", queryField: "storiesBySeries", sortKeyFields: ["createdAt"])
   series: Series @hasOne (fields: ["seriesID"])
   seriesPart: Int
+  premium: Boolean
   }
 
 type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
