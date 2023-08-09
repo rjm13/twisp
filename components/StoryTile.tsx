@@ -210,7 +210,8 @@ useEffect(() => {
                 <View style={styles.tile}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{marginLeft: isVisible === true ? -10 : 0}}>
-                        <Image 
+                        {imageU !== '' ? (
+                            <Image 
                                 source={{uri: imageU}}
                                 style={{
                                     width: imageU && isVisible === false ? 70 : 0,
@@ -222,6 +223,8 @@ useEffect(() => {
                                     backgroundColor: '#ffffffa5'
                                 }}
                             />
+                        ) : null}
+                        
                         </View>
                         
                         <View style={{ width: '78%'}}>

@@ -100,42 +100,47 @@ const HorzStoryTile = ({
         </View>
 
         <TouchableWithoutFeedback onPress={() => navigation.navigate('StoryScreen', {storyID: id})}>
-            <ImageBackground
-                source={{uri: imageU}}
-                style={{marginBottom: 12, backgroundColor: '#ffffffa5', width: 200, height: 180, justifyContent: 'flex-end', borderRadius: 15}}
-                imageStyle={{borderRadius: 15,}}
-            >
-                <View style={{ flexDirection: genreName !== null ? 'column' : 'row', justifyContent: genreName !== null ? 'flex-start' : 'space-between', backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
-                    <View style={{marginBottom: 0}}>
-                        <Text style={{width: 140, color: '#fff', fontSize: 12, fontWeight: 'bold'}}>
-                            {title}
-                        </Text>
-                    </View>
-                    <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
-                        {genreName !== null ? (
-                            <View>
-                                <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
-                                {genreName}
-                                </Text>
-                            </View> 
-                        ) : null    
-                        }
-                       
-                        <View style={{ alignItems: 'center', flexDirection: 'row'}}>
-                            <FontAwesome 
-                                name={isRated === true ? 'star' : 'star-o'}
-                                size={12}
-                                color={isRated === true || isFinished === true ? 'gold' : 'white'}
-                                style={{marginRight: 6 }}
-                            />
-                            <Text style={{color: '#fff', fontSize: 12}}>
-                                {(ratingAvg/10).toFixed(1)}
+            {imageU !== '' ? (
+                <ImageBackground
+                    source={{uri: imageU}}
+                    style={{marginBottom: 12, backgroundColor: '#ffffffa5', width: 200, height: 180, justifyContent: 'flex-end', borderRadius: 15}}
+                    imageStyle={{borderRadius: 15,}}
+                >
+                    <View style={{ flexDirection: genreName !== null ? 'column' : 'row', justifyContent: genreName !== null ? 'flex-start' : 'space-between', backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
+                        <View style={{marginBottom: 0}}>
+                            <Text style={{width: 140, color: '#fff', fontSize: 12, fontWeight: 'bold'}}>
+                                {title}
                             </Text>
                         </View>
+                        <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            {genreName !== null ? (
+                                <View>
+                                    <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
+                                    {genreName}
+                                    </Text>
+                                </View> 
+                            ) : null    
+                            }
                         
+                            <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+                                <FontAwesome 
+                                    name={isRated === true ? 'star' : 'star-o'}
+                                    size={12}
+                                    color={isRated === true || isFinished === true ? 'gold' : 'white'}
+                                    style={{marginRight: 6 }}
+                                />
+                                <Text style={{color: '#fff', fontSize: 12}}>
+                                    {(ratingAvg/10).toFixed(1)}
+                                </Text>
+                            </View>
+                            
+                        </View>
                     </View>
+                </ImageBackground>
+            ) : (
+                <View>
                 </View>
-            </ImageBackground>
+            )}
         </TouchableWithoutFeedback>
         
     </View>

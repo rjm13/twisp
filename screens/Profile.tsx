@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
     View, 
     Text, 
@@ -16,9 +16,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { getUser } from '../src/graphql/queries';
 
-
+import { AppContext } from '../AppContext';
 
 const ProfileScreen = ({navigation} : any) => {
+
+    const { userFollowing } = useContext(AppContext);
 
     //the current authenticated user
     const [user, setUser] = useState();
@@ -141,7 +143,7 @@ const ProfileScreen = ({navigation} : any) => {
                         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                                 <View style={{ alignItems: 'center', margin: 20}}>
                                     <Text style={{ color: 'cyan', opacity: .5}}>
-                                        {user?.following.items.length}
+                                        {userFollowing.length}
                                     </Text>
                                     <Text style={{ color: '#ffffffa5', fontWeight: 'bold'}}>
                                         Following

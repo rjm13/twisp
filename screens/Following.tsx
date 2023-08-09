@@ -62,7 +62,7 @@ const FollowingScreen = ({navigation} : any) => {
                 ))
 
                 for (let i = 0; i < userData.data.connectionsByFollower.items.length; i++) {
-                    Following.push(userData.data.connectionsByFollower.items[i].author)  
+                    Following.push(userData.data.connectionsByFollower.items[i].creator)  
                 }
                 
                 if (userData.data.connectionsByFollower.nextToken) {
@@ -83,7 +83,7 @@ const FollowingScreen = ({navigation} : any) => {
     const [SelectedId, setSelectedId] = useState(1);
 
     //title item for the flatlist that displays the authors the user following
-    const Item = ({ numAuthored, pseudonym, imageUri, id, bio } : any) => {
+    const Item = ({ numAuthored, penName, imageUri, id, bio } : any) => {
 
         const [imageU, setImageU] = useState('')
 
@@ -115,7 +115,7 @@ const FollowingScreen = ({navigation} : any) => {
                         
                             <View style={{ marginHorizontal: 10}}>
                                 <Text style={styles.paragraph}>
-                                    {pseudonym}
+                                    {penName}
                                 </Text> 
                                 
                                 
@@ -151,12 +151,9 @@ const FollowingScreen = ({navigation} : any) => {
             author={item}
             name={item.name}
             id={item.id}
-            pseudonym={item.publisherName}
+            penName={item.penName}
             imageUri={item.imageUri}
-            authored={item.authored}
             bio={item.bio}
-            following={item.following}
-            isPublisher={item.isPublisher}
             numAuthored={item.numAuthored}
         />
       );

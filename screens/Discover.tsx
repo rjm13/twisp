@@ -76,10 +76,13 @@ const AudioStoryHome = ({navigation} : any) => {
       <TouchableWithoutFeedback onPress = {() => locked === false ? (navigation.navigate('GenreHome', {genreRoute: id})) : null}>
         <View style={{
           flexDirection: 'row', height: 60, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: '100%'}}>
-            <Image
-              source={{ uri: imageUri}}
-              style={{width: '40%', height: '100%', borderRadius: 15, position: 'absolute', backgroundColor: 'gray', left: Platform.OS === 'ios' ? 210 : 192}}
-            />
+            {imageUri ? (
+              <Image
+                source={{ uri: imageUri}}
+                style={{width: '40%', height: '100%', borderRadius: 15, position: 'absolute', backgroundColor: 'gray', left: Platform.OS === 'ios' ? 210 : 192}}
+              />
+            ) : null}
+
               <LinearGradient 
                 //colors={[PrimaryColor, PrimaryColor, PrimaryColor, PrimaryColor + '80']}
                 colors={[color, color, color, 'transparent']}
@@ -245,10 +248,13 @@ const AudioStoryHome = ({navigation} : any) => {
               <View style={{margin: 20}}>
                 <View style={{flexDirection: 'row', backgroundColor: '#5656564D', borderRadius: 15}}>
                   <View style={{flexDirection: 'row'}}>
-                    <Image
-                      source={{ uri: imageU}}
-                      style={{width: 80, height: 80, borderTopLeftRadius: 15, borderBottomLeftRadius: 15, backgroundColor: 'gray', marginRight: 20}}
-                    />
+                    {imageU !== '' ? (
+                      <Image
+                        source={{ uri: imageU}}
+                        style={{width: 80, height: 80, borderTopLeftRadius: 15, borderBottomLeftRadius: 15, backgroundColor: 'gray', marginRight: 20}}
+                      />
+                    ) : null}
+                    
                     <View style={{width: '66%'}}>
                       <View>
                         <Text numberOfLines={1} style={{marginTop: 4, color: '#fff', fontWeight: 'bold', fontSize: 16, width: '100%'}}>
@@ -324,12 +330,12 @@ const AudioStoryHome = ({navigation} : any) => {
                 />
               </View>
               <View style={{marginBottom: 120}}>
-                <Text style={styles.header}>
+                {/* <Text style={styles.header}>
                     Authors
                 </Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20}}>
 
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAuthor')}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAuthor', {searchParam: ''})}>
                         <View style={[styles.box, { backgroundColor: '#15c7ca', flexDirection: 'row', paddingLeft: 20}]}>
                             <FontAwesome5 
                             name='book-open'
@@ -341,7 +347,7 @@ const AudioStoryHome = ({navigation} : any) => {
                             </Text>
                         </View>
                     </TouchableWithoutFeedback>
-                </View>
+                </View> */}
               </View>
             </View>
             <View>

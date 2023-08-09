@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     View, 
     Text, 
@@ -22,7 +22,11 @@ import { API, graphqlOperation, Auth } from "aws-amplify";
 import { getUser } from '../src/graphql/queries';
 import { updateUser } from '../src/graphql/mutations';
 
+import { AppContext } from '../AppContext';
+
 const Publisher = ({navigation} : any) => {
+
+    const { userFollowing } = useContext(AppContext);
 
     const [user, setUser] = useState({})
 
@@ -119,7 +123,7 @@ const Publisher = ({navigation} : any) => {
                                             Followers
                                         </Text>
                                         <Text style={styles.textcounter}>
-                                            {user?.followers.items.length}
+                                            {userFollowing.length}
                                         </Text>
                                     </View>
                                 </TouchableWithoutFeedback>

@@ -23,7 +23,7 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser } from '../../src/graphql/queries';
+import { getUser, connectionsByFollower } from '../../src/graphql/queries';
 import { createFollowConnection, deleteFollowConnection } from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
@@ -120,6 +120,8 @@ const AudioListByAuthor = ({status} : any) => {
                     if (userFollowing.includes(userID)) {
                         setFollowing(true);
                         //setFollowingConnID(currentuser.data.getUser.following.items[i].id)
+                    } else {
+                        setFollowing(false);
                     }
 
                     // for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
@@ -328,7 +330,7 @@ const AudioListByAuthor = ({status} : any) => {
     const FollowUser = async () => {
 
         let response = await API.graphql(graphqlOperation(
-            createFollowConnection, {input: {followerID: currentUser.id, authorID: User.id}}
+            createFollowConnection, {input: {followerID: currentUser.id, creatorID: User.id}}
         ))
         setFollowingConnID(response.data.createFollowingConn.id)
         setUserFollowing(userFollowing.push(userID))
@@ -336,27 +338,30 @@ const AudioListByAuthor = ({status} : any) => {
 
     const unFollowUser = async () => {
 
-        let userInfo = await Auth.currentAuthenticatedUser();
+        const getTheFollowing = async (nextFollowToken : any) => {
 
-        const currentuser = await API.graphql(
-            graphqlOperation(
-                getUser, {id: userInfo.attributes.sub }
-            )
-        )
+            const userFollowingData = await API.graphql(graphqlOperation(
+                connectionsByFollower,{ nextFollowToken, followerID: currentUser.id}))
 
-        for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
-            if (currentuser.data.getUser.following.items[i].authorID === userID ) {
-                await API.graphql(graphqlOperation(
-                    deleteFollowConnection, {input: {"id": currentuser.data.getUser.following.items[i].id}}
-                ))
-                const index = userFollowing.indexOf(userID);
-    
-                const x = userFollowing.splice(index, 1);
-    
-                setUserFollowing(x)
+            for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
+                if (userFollowingData.data.connectionsByFollower.items[i].creatorID === userID) {
+                    await API.graphql(graphqlOperation(
+                        deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollower.items[i].id}}
+                    ))
+                    const index = userFollowing.indexOf(userID);
+        
+                    const x = userFollowing.splice(index, 1);
+        
+                    setUserFollowing(x)
+
+                    return;
+                }
+            }
+
+            if (userFollowingData.data.connectionsByFollower.nextToken) {
+                getTheFollowing(userFollowingData.data.connectionsByFollower.nextToken);
             }
         }
-
         
     }
 

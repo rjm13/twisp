@@ -158,11 +158,13 @@ const ForYouCarousel = () => {
                 </View>
 
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('StoryScreen', {storyID: id})}>
-                    <ImageBackground
-                        source={{uri: imageU}}
-                        style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
-                        imageStyle={{borderRadius: 15}}
-                    >
+                    {imageU !== '' ? (
+                        <ImageBackground
+                            source={{uri: imageU}}
+                            style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
+                            imageStyle={{borderRadius: 15}}
+                        >
+                    
                     <View 
                         style={{ 
                             backgroundColor: '#000000BF',
@@ -264,7 +266,13 @@ const ForYouCarousel = () => {
                             ) : false } 
                         </View>
                     </View>
-                </ImageBackground>
+                        </ImageBackground>
+                    ) : (
+                        <View>
+                            
+                        </View>
+                    )}
+                        
                 </TouchableWithoutFeedback>
             </View>
         );

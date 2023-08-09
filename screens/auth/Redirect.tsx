@@ -220,7 +220,7 @@ const Redirect = ({route, navigation} : any) => {
                                 connectionsByFollower,{ nextFollowToken, followerID: userInfo.attributes.sub}))
 
                             for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
-                                following.push(userFollowingData.data.connectionsByFollower.items[i].storyID)
+                                following.push(userFollowingData.data.connectionsByFollower.items[i].creatorID)
                             }
                             if (userFollowingData.data.connectionsByFollower.nextToken) {
                                 //setNextToken(userFollowingData.data.connectionsByFollower.nextToken)
@@ -228,6 +228,8 @@ const Redirect = ({route, navigation} : any) => {
                                 //return;
                             }
                             setUserFollowing(following);
+                            console.log('the initial following is')
+                            console.log(following)
                         }
 
                         getThePins(null);

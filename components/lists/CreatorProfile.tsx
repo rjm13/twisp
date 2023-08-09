@@ -24,7 +24,7 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser, getCreatorProfile, storiesByCreator } from '../../src/graphql/queries';
+import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower } from '../../src/graphql/queries';
 import { createFollowConnection, deleteFollowConnection } from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
@@ -94,15 +94,17 @@ const CreatorProfile = ({status} : any) => {
                             storiesByCreator, {creatorID: userID }
                         )
                     )
-
-                    
-                    console.log('stories are', fetchStories)
                     
                     setStorys(fetchStories.data.storiesByCreator.items);
 
                     if (userFollowing.includes(userID)) {
+                        
+                        console.log('following', userFollowing)
                         setFollowing(true);
                         //setFollowingConnID(currentuser.data.getUser.following.items[i].id)
+                    } else {
+                        console.log('unfollowing', userFollowing)
+                        setFollowing(false)
                     }
 
                     // for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
@@ -215,37 +217,62 @@ const CreatorProfile = ({status} : any) => {
 
     const FollowUser = async () => {
 
+        let foll = userFollowing
+
         let response = await API.graphql(graphqlOperation(
-            createFollowConnection, {input: {followerID: currentUser.id, authorID: User.id}}
+            createFollowConnection, {input: {followerID: currentUser.id, creatorID: userID, authorID: User.userID}}
         ))
-        setFollowingConnID(response.data.createFollowingConn.id)
-        setUserFollowing(userFollowing.push(userID))
+
+        foll.push(userID)
+
+        if (response) {
+            //setFollowingConnID(response.data.createFollowConnection.id)
+            setUserFollowing(foll)
+        }
     }
 
     const unFollowUser = async () => {
 
-        let userInfo = await Auth.currentAuthenticatedUser();
+        let arr = userFollowing;
 
-        const currentuser = await API.graphql(
-            graphqlOperation(
-                getUser, {id: userInfo.attributes.sub }
-            )
-        )
+        const getTheFollowing = async (nextFollowToken : any) => {
 
-        for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
-            if (currentuser.data.getUser.following.items[i].authorID === userID ) {
-                await API.graphql(graphqlOperation(
-                    deleteFollowConnection, {input: {"id": currentuser.data.getUser.following.items[i].id}}
-                ))
-                const index = userFollowing.indexOf(userID);
-    
-                const x = userFollowing.splice(index, 1);
-    
-                setUserFollowing(x)
+            const userFollowingData = await API.graphql(graphqlOperation(
+                connectionsByFollower,{ nextFollowToken, followerID: currentUser.id}))
+
+            for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
+                if (userFollowingData.data.connectionsByFollower.items[i].creatorID === userID) {
+                    await API.graphql(graphqlOperation(
+                        deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollower.items[i].id}}
+                    ))
+
+                    const index = arr.indexOf(userID);
+
+                    console.log('index is', index)
+
+            
+                    //const x = arr.splice(index, 1)
+
+                    //console.log('this is', x)
+                    arr.splice(index, 1)
+                    
+                    //setUserFollowing(x)
+
+                    //console.log('unfollowing2', userFollowing)
+                        
+                    
+                }
+            }
+
+            if (userFollowingData.data.connectionsByFollower.nextToken) {
+                getTheFollowing(userFollowingData.data.connectionsByFollower.nextToken);
+                return;
             }
         }
 
-        
+        getTheFollowing(null);
+        setUserFollowing(arr)
+        console.log('unfollowing2', userFollowing)
     }
 
     function FollowButton () {
@@ -330,10 +357,13 @@ const CreatorProfile = ({status} : any) => {
 
             <Animated.View style={{opacity: animatedOpacitySlow}}>
                     <View style={{ alignItems: 'center'}}>
-                        <Image 
-                            source={{ uri: imageU}}
-                            style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 20,}}
-                        />
+                        {imageU !== '' ? (
+                            <Image 
+                                source={{ uri: imageU}}
+                                style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 20,}}
+                            />
+                        ) : null}
+                        
                     </View>
 
                 <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>

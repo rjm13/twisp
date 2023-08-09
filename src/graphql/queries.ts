@@ -26,6 +26,7 @@ export const getUser = /* GraphQL */ `
           updatedAt
           followerID
           authorID
+          creatorID
           __typename
         }
         nextToken
@@ -39,6 +40,7 @@ export const getUser = /* GraphQL */ `
           updatedAt
           followerID
           authorID
+          creatorID
           __typename
         }
         nextToken
@@ -142,6 +144,8 @@ export const getUser = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         nextToken
@@ -356,6 +360,22 @@ export const getCreatorProfile = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      followers {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          followerID
+          authorID
+          creatorID
           __typename
         }
         nextToken
@@ -414,6 +434,10 @@ export const listCreatorProfiles = /* GraphQL */ `
         youTube
         numAuthored
         stories {
+          nextToken
+          __typename
+        }
+        followers {
           nextToken
           __typename
         }
@@ -551,6 +575,58 @@ export const getFollowConnection = /* GraphQL */ `
         }
         __typename
       }
+      creatorID
+      creator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -617,6 +693,27 @@ export const listFollowConnections = /* GraphQL */ `
           setting3
           setting4
           setting5
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -783,10 +880,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
-          tag {
-            id
-            tagName
-          }
           createdAt
           updatedAt
           __typename
@@ -848,6 +941,31 @@ export const getStory = /* GraphQL */ `
       status
       numListens
       approved
+      seriesID
+      series {
+        id
+        type
+        createdAt
+        updatedAt
+        name
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
+        __typename
+      }
+      seriesPart
       __typename
     }
   }
@@ -955,6 +1073,17 @@ export const listStories = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       nextToken
@@ -1023,6 +1152,104 @@ export const listGenres = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getSeries = /* GraphQL */ `
+  query GetSeries($id: ID!) {
+    getSeries(id: $id) {
+      id
+      type
+      createdAt
+      updatedAt
+      name
+      genreID
+      genre {
+        id
+        genre
+        icon
+        color
+        imageUri
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      stories {
+        items {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const listSeries = /* GraphQL */ `
+  query ListSeries(
+    $filter: ModelSeriesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSeries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        name
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -1308,6 +1535,17 @@ export const getPinnedStory = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       createdAt
@@ -1375,6 +1613,8 @@ export const listPinnedStories = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         createdAt
@@ -1548,6 +1788,17 @@ export const getInProgressStory = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       createdAt
@@ -1620,6 +1871,8 @@ export const listInProgressStories = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         createdAt
@@ -1796,6 +2049,17 @@ export const getFinishedStory = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       __typename
@@ -1863,6 +2127,8 @@ export const listFinishedStories = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         __typename
@@ -1976,6 +2242,17 @@ export const getComment = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       content
@@ -2081,6 +2358,8 @@ export const listComments = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         content
@@ -2422,6 +2701,17 @@ export const getRating = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       userID
@@ -2526,6 +2816,8 @@ export const listRatings = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         userID
@@ -2788,6 +3080,17 @@ export const getStoryTag = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       tag {
@@ -2848,6 +3151,8 @@ export const listStoryTags = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         tag {
@@ -3098,6 +3403,10 @@ export const creatorsByType = /* GraphQL */ `
           nextToken
           __typename
         }
+        followers {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -3164,6 +3473,10 @@ export const creatorProfilesByUser = /* GraphQL */ `
         youTube
         numAuthored
         stories {
+          nextToken
+          __typename
+        }
+        followers {
           nextToken
           __typename
         }
@@ -3244,6 +3557,27 @@ export const connectionsByFollower = /* GraphQL */ `
           setting5
           __typename
         }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
         __typename
       }
       nextToken
@@ -3319,6 +3653,125 @@ export const connectionsByAuthor = /* GraphQL */ `
           setting3
           setting4
           setting5
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const connectionsByCreator = /* GraphQL */ `
+  query ConnectionsByCreator(
+    $creatorID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    connectionsByCreator(
+      creatorID: $creatorID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        followerID
+        follower {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        authorID
+        author {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -3441,6 +3894,17 @@ export const storiesByDate = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       nextToken
@@ -3561,6 +4025,17 @@ export const storiesByUpdated = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       nextToken
@@ -3681,6 +4156,17 @@ export const storiesByPublisher = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       nextToken
@@ -3801,6 +4287,17 @@ export const storiesByCreator = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
         __typename
       }
       nextToken
@@ -3921,6 +4418,193 @@ export const storiesByGenre = /* GraphQL */ `
         status
         numListens
         approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const storiesBySeries = /* GraphQL */ `
+  query StoriesBySeries(
+    $seriesID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesBySeries(
+      seriesID: $seriesID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        title
+        imageUri
+        audioUri
+        publisher {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        publisherID
+        creator {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
+        author
+        narrator
+        artist
+        time
+        summary
+        description
+        nsfw
+        comments {
+          nextToken
+          __typename
+        }
+        tags {
+          nextToken
+          __typename
+        }
+        ratingAvg
+        ratingAmt
+        ratings {
+          nextToken
+          __typename
+        }
+        reactions {
+          nextToken
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        hidden
+        status
+        numListens
+        approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          __typename
+        }
+        seriesPart
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const seriesByGenre = /* GraphQL */ `
+  query SeriesByGenre(
+    $genreID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSeriesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    seriesByGenre(
+      genreID: $genreID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        name
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -4145,6 +4829,8 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         createdAt
@@ -4225,6 +4911,8 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         createdAt
@@ -4306,6 +4994,8 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         createdAt
@@ -4389,6 +5079,8 @@ export const finishedStoriesByUser = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         __typename
@@ -4469,6 +5161,8 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         __typename
@@ -4525,6 +5219,8 @@ export const commentsByCreated = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         content
@@ -4607,6 +5303,8 @@ export const commentsByStory = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         content
@@ -4768,6 +5466,8 @@ export const ratingsByUpdated = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         userID
@@ -4849,6 +5549,8 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         userID
@@ -4930,6 +5632,8 @@ export const ratingsByUser = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         userID
@@ -5066,6 +5770,8 @@ export const storyTagsByStoryId = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         tag {
@@ -5129,6 +5835,8 @@ export const storyTagsByTagId = /* GraphQL */ `
           status
           numListens
           approved
+          seriesID
+          seriesPart
           __typename
         }
         tag {

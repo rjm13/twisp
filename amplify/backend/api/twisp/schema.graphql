@@ -55,6 +55,7 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     youTube: String
     numAuthored: Int
     stories: [Story] @hasMany(indexName: "byCreatorProfile", fields: "id")
+    followers: [FollowConnection] @hasMany(indexName: "byCreator", fields: "id")
 }
 
 type FollowConnection @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -67,6 +68,8 @@ type FollowConnection @model @auth(rules: [{ allow: private, operations: [create
     follower: User @hasOne (fields: ["followerID"])
     authorID: ID @index(name: "byAuthor", queryField: "connectionsByAuthor", sortKeyFields: ["createdAt"])
     author: User @hasOne (fields: ["authorID"])
+    creatorID: ID @index(name: "byCreator", queryField: "connectionsByCreator", sortKeyFields: ["createdAt"])
+    creator: CreatorProfile @hasOne (fields: ["creatorID"])
 }
 
 type Story @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
