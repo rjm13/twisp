@@ -170,7 +170,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                                 onPress={() => navigation.goBack()}
                             /> 
                             <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
-                                {GenreInfo.genre}
+                                {GenreInfo.genre} Test
                             </Text>
                         </View>
                         <View>
