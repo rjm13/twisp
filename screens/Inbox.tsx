@@ -35,7 +35,7 @@ const Inbox = ({navigation} : any) => {
             setCurrentUserID(userInfo.attributes.sub)
 
             const response = await API.graphql(graphqlOperation(
-                messagesByUser, {userID: userInfo.attributes.sub}
+                messagesByUser, {receiverID: userInfo.attributes.sub}
             ))
 
             let arr = response.data.messagesByUser.items
@@ -65,19 +65,18 @@ const Inbox = ({navigation} : any) => {
                     
                     <View style={{marginRight: 20, marginVertical: 10, paddingHorizontal: 20, width: isReadbyReceiver === false ? Dimensions.get('window').width - 40 : Dimensions.get('window').width}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text style={{color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
-                                {psuedonym}
-                            </Text>
-                            <Text style={{color: '#fff', fontSize: 12}}>
-                                {format(parseISO(createdAt), "MMM do")}
-                            </Text>
-                        </View>
-                        <Text style={{color: '#fff', fontSize: 12, marginTop: 4 }}>
+                           
+                            <Text style={{color: '#fff', fontSize: 13, marginTop: 4, fontWeight: '600' }}>
                             {title}
                         </Text>
-                        <Text numberOfLines={2} style={{color: 'gray', fontSize: 12 }}>
+                        </View>
+                        <Text numberOfLines={2} style={{color: '#fff', fontSize: 11, marginTop: 4}}>
                             {content}
                         </Text>
+                        <Text style={{color: 'gray', fontSize: 11, marginTop: 6}}>
+                                {format(parseISO(createdAt), "PPpp")}
+                            </Text>
+                        
                     </View>
                 </View>
             </TouchableWithoutFeedback>

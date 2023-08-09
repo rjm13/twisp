@@ -31,7 +31,7 @@ import { AppContext } from '../AppContext'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { createStory, createStoryTag, createTag, createGenreTag, createMessage  } from '../src/graphql/mutations';
-import { listTags, getUser, listGenres, listGenreTags } from '../src/graphql/queries';
+import { listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser } from '../src/graphql/queries';
 
 
 
@@ -65,6 +65,7 @@ const UploadAudio = ({navigation} : any) => {
         status: false,
         approved: false,
         numListens: 0,
+        creatorID: '',
     });
 
     //set state for the number authored so that upon upload can increase it by +1
@@ -242,6 +243,7 @@ const UploadAudio = ({navigation} : any) => {
                     description: data.description,
                     genreID: data.genreID,
                     author: data.author,
+                    creatorID: data.creatorID,
                     narrator: data.narrator,
                     artist: data.artist,
                     time: data.time,
@@ -408,6 +410,33 @@ const UploadAudio = ({navigation} : any) => {
     const ConvertToString = (val : any) => {
         setData({...data, genreID: Genres[val].id, genre: Genres[val].genre, nsfw: Genres[val].id === '1108a619-1c0e-4064-8fce-41f1f6262070' ? true : false});
     }
+
+    //Modal dropdown for selecting a genre. Height of the dropdown is dependent on the number of genres
+    const [Authors, setAuthors] = useState([]);
+
+    useEffect(() => {
+
+        let authorarray = []
+
+        const fetchCreators = async () => {
+
+            const userInfo = await Auth.currentAuthenticatedUser()
+            
+            const result = await API.graphql(graphqlOperation(
+                creatorProfilesByUser, {
+                    userID: userInfo.attributes.sub
+                }
+            ))
+
+            if (result) {
+                authorarray = result.data.creatorProfilesByUser.items
+                setAuthors(authorarray.sort((a : any, b : any) => a.penName.localeCompare(b.penName)))
+            }
+        }
+
+        fetchCreators();
+
+    },[])
   
 //Preview Modal, requires terms, audio, image, author, genre, description, summary, title
       const [visible, setVisible] = useState(false);
@@ -415,11 +444,18 @@ const UploadAudio = ({navigation} : any) => {
       //Preview Modal, requires terms, audio, image, author, genre, description, summary, title
       const [visible2, setVisible2] = useState(false);
 
-      const showModal2 = () => 
+      //author select modal
+      const [modalVisible, setModalVisible] = useState(false);
 
-    setVisible2(true);
+      const showModalVisible = () => setModalVisible(true);
 
-    const hideModal2 = () => setVisible2(false);
+        const hideModalVisible = () => setModalVisible(false);
+
+
+
+      const showModal2 = () => setVisible2(true);
+
+        const hideModal2 = () => setVisible2(false);
   
       const showModal = () => 
       
@@ -623,6 +659,7 @@ const UploadAudio = ({navigation} : any) => {
                 </ScrollView>
             </Modal>
 
+{/* genre modal */}
             <Modal visible={visible2} onDismiss={hideModal2} animationType="slide" transparent={true} onRequestClose={() => {setVisible2(!visible2);}}>
                 <TouchableOpacity onPress={hideModal2} style={{backgroundColor: '#000000'}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
@@ -637,6 +674,31 @@ const UploadAudio = ({navigation} : any) => {
                                         <View>
                                             <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                                                 {item.genre}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>  
+                                )})} 
+                        </View>
+                    </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* author modal */}
+            <Modal visible={modalVisible} onDismiss={showModalVisible} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible(false);}}>
+                <TouchableOpacity onPress={hideModalVisible} style={{backgroundColor: '#000000'}}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                            {Authors.map(item => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setData({...data, author: item.penName, creatorID: item.id});
+                                        hideModalVisible();
+                                    }}
+                                    >
+                                        <View>
+                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                                {item.penName}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>  
@@ -687,7 +749,34 @@ const UploadAudio = ({navigation} : any) => {
                     Author *
                 </Text>
 
-                <View style={styles.inputfield}>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <View style={{ 
+                            width: Dimensions.get('window').width - 40, 
+                            marginBottom: 0, 
+                            backgroundColor: '#363636',
+                            marginHorizontal: 20,
+                            paddingVertical: 10,
+                            paddingHorizontal: 20,
+                            borderRadius: 10,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            }}>
+                                <Text style={{backgroundColor: 'transparent', color: '#fff', fontSize: 14, textTransform: 'capitalize',}}>
+                                    {data.author.length < 1 ? 'Select author' : data.author}
+                                </Text>
+                        
+                          <FontAwesome5 
+                            name='check-circle'
+                            color={data.creatorID !== '' ? 'cyan' : '#292929'}
+                            size={20}
+                            />  
+                        
+
+                    </View>
+                </TouchableOpacity>
+                
+
+                {/* <View style={styles.inputfield}>
                     <TextInput 
                         placeholder='....'
                         placeholderTextColor='#ffffffa5'
@@ -696,7 +785,7 @@ const UploadAudio = ({navigation} : any) => {
                         onChangeText={val => setData({...data, author: val})}
                         autoCapitalize='words'
                     />
-                </View>
+                </View> */}
 
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Narrator *

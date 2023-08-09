@@ -20,8 +20,8 @@ import { Modal, Portal, Provider } from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { storiesByDate, getStory } from '../src/graphql/queries';
-import { updateStory, createMessage, updateTag } from '../src/graphql/mutations';
+import { storiesByDate, getStory, getCreatorProfile, getUser } from '../src/graphql/queries';
+import { updateStory, createMessage, updateTag, updateCreatorProfile, updateUser } from '../src/graphql/mutations';
 import TimeConversion from '../components/functions/TimeConversion';
 import { AppContext } from '../AppContext';
 
@@ -84,7 +84,7 @@ const PendingStories = ({navigation} : any) => {
 
     const [pending, setPending] = useState(false)
 
-    const ApproveStory = async ({id, authorID, title, NSFW, nsfw} : any) => {
+    const ApproveStory = async ({id, authorID, creatorID, title, NSFW, nsfw} : any) => {
 
         setPending(true)
 
@@ -100,6 +100,41 @@ const PendingStories = ({navigation} : any) => {
                     nsfw: NSFW === nsfw ? nsfw : NSFW
                 }}
             ))
+
+            if (response) {
+
+                let creator = await API.graphql(graphqlOperation(
+                    getCreatorProfile, {
+                        id: creatorID   
+                    }
+                )) 
+
+                let num = creator.numAuthored + 1
+
+                await API.graphql(graphqlOperation(
+                    updateCreatorProfile, {input: {
+                        id: creatorID,
+                        updatedAt: new Date(),
+                        numAuthored: num
+                    }}
+                ))
+
+                let user = await API.graphql(graphqlOperation(
+                    getUser, {
+                        id: authorID   
+                    }
+                )) 
+
+                let number = user.numAuthored + 1
+
+                await API.graphql(graphqlOperation(
+                    updateUser, {input: {
+                        id: authorID,
+                        updatedAt: new Date(),
+                        numAuthored: number
+                    }}
+                ))
+            }
 
             let storyresponse = await API.graphql(graphqlOperation(
                 getStory, {id : id}
@@ -348,7 +383,7 @@ const PendingStories = ({navigation} : any) => {
                             {pending===true ? (
                                 <ActivityIndicator size='small' color='cyan'/>
                             ) : (
-                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw, promptID})}>
+                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw})}>
                                     <Text style={{color: '#000', backgroundColor: 'cyan', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6}}>
                                         Approve
                                     </Text>
@@ -407,7 +442,8 @@ const PendingStories = ({navigation} : any) => {
         return  (
             <Item 
                 title={item.title}
-                authorID={item.publisherID}
+                publisherID={item.publisherID}
+                creatorID={item.creatorID}
                 imageUri={item.imageUri}
                 genreName={genreName}
                 icon={icon}
