@@ -188,7 +188,7 @@ const UploadAudio = ({navigation} : any) => {
             ))
 
             if (response.data.listEroticTags.items.length === 1) {
-                return (response.data.listTags.items[0].id)
+                return (response.data.listEroticTags.items[0].id)
             }
 
             if (response.data.listEroticTags.nextToken) {
@@ -218,7 +218,8 @@ const UploadAudio = ({navigation} : any) => {
                 }
             ))
 
-            if (response.data.listGenlistEroticaTagsreTags.items.length === 1) {
+
+            if (response.data.listEroticaTags.items.length === 1) {
                 return ('exists');
             } 
             
@@ -353,7 +354,7 @@ const UploadAudio = ({navigation} : any) => {
 
                             if (newTag) {
                                 await API.graphql(graphqlOperation(
-                                    createEroticStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                                    createEroticStoryTag, {input: {eroticTagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
                                 ))
                                 await API.graphql(graphqlOperation(
                                     createEroticaTag, {input: {eroticTagId: newTag.data.createTag.id, genreId: data.genreID}}
@@ -998,7 +999,7 @@ const UploadAudio = ({navigation} : any) => {
                         <View key={index} style={{ marginTop: 10, marginRight: 10}}>
                             <TouchableOpacity onLongPress={() => RemoveFromTagArray(index)}>
                                 <View style={{}}>
-                                    <Text style={styles.tagtext}>
+                                    <Text style={data.genre === 'after dark' ? styles.erotictagtext : styles.tagtext}>
                                         #{name}
                                     </Text>
                                 </View>

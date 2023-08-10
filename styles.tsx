@@ -112,6 +112,19 @@ return StyleSheet.create ({
     overflow: 'hidden',
     marginBottom: 1
 },
+erotictagtext: {
+  color: 'magenta',
+  fontSize: 14,
+  backgroundColor: '#3C1A41a5',
+  borderColor: '#ff00ffa5',
+  borderWidth: 0.5,
+  paddingHorizontal: 16,
+  paddingVertical: 6,
+  borderRadius: 13,
+  textTransform: 'lowercase',
+  overflow: 'hidden',
+  marginBottom: 1
+},
 accountcontainer: {
   width: '100%',
   paddingHorizontal: 20,

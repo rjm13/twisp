@@ -2,7 +2,7 @@
   "expo": {
     "name": "Twisp",
     "slug": "twisp",
-    "version": "1.1.23",
+    "version": "1.1.24",
     "orientation": "portrait",
     "icon": "./assets/TwispAppIcon.png",
     "userInterfaceStyle": "automatic",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.martianspidermedia.blipprod",
-      "buildNumber": "1.1.23",
+      "buildNumber": "1.1.24",
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"
@@ -41,7 +41,7 @@
       },
       "package": "com.martianspidermedia.blipprod",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 58,
+      "versionCode": 59,
       "intentFilters": [
         {
           "action": "VIEW",

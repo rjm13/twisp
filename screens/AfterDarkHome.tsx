@@ -15,10 +15,10 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getGenre, listStoryTags } from '../src/graphql/queries';
+import { getGenre, eroticaTagsByGenreId } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
-import GenreCarousel from '../components/lists/GenreCarousel';
+import ForYouAfterDark from '../components/lists/ForYouAfterDark';
 import GenreTrending from '../components/lists/GenreTrending';
 import NewGenreStories from '../components/lists/NewGenreStories';
 
@@ -59,23 +59,23 @@ const [trendingTags, setTrendingTags] = useState([]);
                     )
                     setGenreInfo(response.data.getGenre);
 
-                        for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                            if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4 && response.data.getGenre.tags.items[i].tag.nsfw === false) {
-                                if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                                    Tags.push(response.data.getGenre.tags.items[i].tag)
+                    const res = await API.graphql(
+                            graphqlOperation(
+                                eroticaTagsByGenreId, {
+                                    id: genreRoute
+                                } 
+                            )
+                        )
+
+                        for (let i = 0; i < res.data.eroticaTagsByGenreId.items.length; i++) {
+                            if (Tags[0]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags[1]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags[2]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags.length < 4) {
+                                if (res.data.eroticaTagsByGenreId.items[i].eroticTag.count > 0) {
+                                    Tags.push(res.data.eroticaTagsByGenreId.items[i].eroticTag)
                                 }
                             }
                         }
 
-                    // if (genreRoute === '1108a619-1c0e-4064-8fce-41f1f6262070') {
-                    //     for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                    //         if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4) {
-                    //             if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                    //                 Tags.push(response.data.getGenre.tags.items[i].tag)
-                    //             }
-                    //         }
-                    //     }
-                    // }
+                        
                     
                     setTrendingTags(Tags);
                 } catch (e) {
@@ -170,7 +170,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                                 onPress={() => navigation.goBack()}
                             /> 
                             <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
-                                {GenreInfo.genre} Test
+                                {GenreInfo.genre}
                             </Text>
                         </View>
                         <View>
@@ -184,7 +184,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                     </View>
 
                     <View style={{ marginTop: 0}}>
-                        <GenreCarousel genreid={genreRoute}/>
+                        <ForYouAfterDark genreid={genreRoute}/>
                     </View>
 
                     <View style={{marginTop: 20}}>
