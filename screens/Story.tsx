@@ -33,8 +33,8 @@ import ShareStory from '../components/functions/ShareStory';
 import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getStory, getUser, getRating, commentsByStory } from '../src/graphql/queries';
-import { createComment, createRating, updateRating, updateStory } from '../src/graphql/mutations';
+import { getStory, getUser, getRating, commentsByStory, eroticStoryTagsByStoryId} from '../src/graphql/queries';
+import { createComment, createRating, updateRating, updateStory  } from '../src/graphql/mutations';
 import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
@@ -181,12 +181,25 @@ const StoryScreen  = ({navigation} : any) => {
             try {
 
                 const storyData = await API.graphql(graphqlOperation(getStory, {nextToken, id: storyID}))
-                console.log(storyData)
+                //console.log(storyData)
 
-                for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
-                    tagarr.push({id: storyData.data.getStory.tags.items[i].tag.id, tagName: storyData.data.getStory.tags.items[i].tag.tagName})
+                if (storyData.data.getStory.genre.genre === 'after dark') {
+                    const afterDarkTags = await API.graphql(graphqlOperation(
+                        eroticStoryTagsByStoryId, {storyId: storyID}
+                    ))
+
+                    for(let i = 0; i < afterDarkTags.data.eroticStoryTagsByStoryId.items.length; i++) {
+                        tagarr.push({id: afterDarkTags.data.eroticStoryTagsByStoryId.items[i].eroticTag.id, tagName: afterDarkTags.data.eroticStoryTagsByStoryId.items[i].eroticTag.tagName})
+                    } 
+
+                    setTags(tagarr)
+
+                } else {
+                    for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
+                        tagarr.push({id: storyData.data.getStory.tags.items[i].tag.id, tagName: storyData.data.getStory.tags.items[i].tag.tagName})
+                    } 
+                    setTags(tagarr)
                 }
-                setTags(tagarr)
 
                 if (storyData) {
                     setStory(storyData.data.getStory);
@@ -256,9 +269,10 @@ const StoryScreen  = ({navigation} : any) => {
       const Tag = ({id, tag}: any) => {
         return (
           <View style={{marginTop: 14}}>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tag})}>
-                <View style={[styles.tagbox]}>
-                    <Text style={styles.tagtext}>
+            <TouchableWithoutFeedback 
+                onPress={() => Story?.genre.genre === 'after dark' ? (navigation.navigate('AfterDarkTagSearchScreen', {mainTag: id, tagName: tag})) : (navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tag}))}>
+                <View style={Story?.genre.genre === 'after dark' ? styles.tagbox : styles.tagbox}>
+                    <Text style={Story?.genre.genre === 'after dark' ? styles.erotictagtext : styles.tagtext}>
                         #{tag}
                     </Text>
                 </View>
@@ -1106,6 +1120,19 @@ const styles = StyleSheet.create ({
         borderRadius: 14,
         overflow: 'hidden'
     },
+    erotictagtext: {
+        color: 'magenta',
+        fontSize: 14,
+        backgroundColor: '#3C1A41a5',
+        borderColor: '#ff00ffa5',
+        borderWidth: 0.5,
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 13,
+        textTransform: 'lowercase',
+        overflow: 'hidden',
+        marginBottom: 1
+      },
    
 });
 

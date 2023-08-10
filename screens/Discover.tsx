@@ -193,7 +193,14 @@ const AudioStoryHome = ({navigation} : any) => {
     const fetchProgressStory = async () => {
       let userInfo = await Auth.currentAuthenticatedUser();
       let response = await API.graphql(graphqlOperation(
-        inProgressStoriesByUser, {userID: userInfo.attributes.sub}
+        inProgressStoriesByUser, {
+          userID: userInfo.attributes.sub,
+          filter: {
+            type: {
+              eq: 'Story'
+            }
+          }
+        }
       ))
       if (response.data.inProgressStoriesByUser.items.length > 0) {
         setProgressStory(response.data.inProgressStoriesByUser.items[0].story)

@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getGenre, listTags } from '../src/graphql/queries';
+import { getGenre, eroticaTagsByGenreId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const ViewAfterDarkTags = ({navigation} : any) => {
@@ -32,15 +32,17 @@ const ViewAfterDarkTags = ({navigation} : any) => {
 
         const fetchTags = async () => {
             let response = await API.graphql(graphqlOperation(
-                getGenre, {
-                        id: genreRoute
-                    
+                eroticaTagsByGenreId, {
+                        genreId: genreRoute
                 }
             ))
-            for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                    tagsarr.push(response.data.getGenre.tags.items[i].tag)
-                }
+
+            console.log(response.data.eroticaTagsByGenreId.items)
+
+            for (let i = 0; i < response.data.eroticaTagsByGenreId.items.length; i++) {
+                //if (response.data.eroticaTagsByGenreId.items[i].eroticTag.count > 0) {
+                    tagsarr.push(response.data.eroticaTagsByGenreId.items[i].eroticTag)
+                //}
                 
             }
             setTags(tagsarr)
@@ -54,9 +56,21 @@ const ViewAfterDarkTags = ({navigation} : any) => {
 
     const Item = ({id, tagName, index} : any) => {
         return (
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tagName})}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AfterDarkTagSearch', {mainTag: id, tagName: tagName})}>
                <View style={{margin: 8}}>
-                    <Text style={{overflow: 'hidden', paddingVertical: 6, paddingHorizontal: 20, color: '#00ffff', borderColor: '#00ffff', backgroundColor: '#1A4851a5', borderRadius: 14, borderWidth: 0.5}}>
+                    <Text style={{
+                        color: 'magenta',
+                        fontSize: 14,
+                        backgroundColor: '#3C1A41a5',
+                        borderColor: '#ff00ffa5',
+                        borderWidth: 0.5,
+                        paddingHorizontal: 16,
+                        paddingVertical: 6,
+                        borderRadius: 13,
+                        textTransform: 'lowercase',
+                        overflow: 'hidden',
+                        marginBottom: 1
+                        }}>
                         #{tagName}
                     </Text>
                 </View> 
@@ -105,7 +119,7 @@ const ViewAfterDarkTags = ({navigation} : any) => {
                             keyExtractor={item => item.id}
                             renderItem={renderItem}
                             showsVerticalScrollIndicator={false}
-                            contentContainerStyle={{flexWrap: 'wrap', width: Dimensions.get('window').width}}
+                            contentContainerStyle={{ width: Dimensions.get('window').width}}
                             horizontal={true}
                             ListFooterComponent={() => {
                                 return (

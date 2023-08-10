@@ -18,7 +18,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import StoryTile from '../components/StoryTile';
 import { AppContext } from '../AppContext';
 
-import {listStories, listTags, creatorsByType } from '../src/graphql/queries';
+import {listStories, listEroticTags, creatorsByType } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 const AfterDarkSearch = ({navigation} : any) => {
@@ -53,7 +53,7 @@ const AfterDarkSearch = ({navigation} : any) => {
         return (
           <View>
             <Searchbar
-              placeholder={'Search stories, authors, tags'}
+              placeholder={'Search erotica stories, tags'}
               placeholderTextColor='#000000a5'
               //autoComplete={true}
               onChangeText={onChangeSearch}
@@ -99,7 +99,7 @@ const AfterDarkSearch = ({navigation} : any) => {
         if (newSearch !== '') {
             const fetchTags = async () => {
                 const tagResults = await API.graphql(graphqlOperation(
-                    listTags, {
+                    listEroticTags, {
                         tagToken,
                         filter: {
                             tagName: {
@@ -109,7 +109,7 @@ const AfterDarkSearch = ({navigation} : any) => {
                     }
                 ))
                 //setTagToken(tagResults.data.listTags.nextToken)
-                setTagsArray(tagResults.data.listTags.items)
+                setTagsArray(tagResults.data.listEroticTags.items)
             }
             fetchTags();
         }
@@ -177,7 +177,7 @@ const AfterDarkSearch = ({navigation} : any) => {
                               contains: newSearch
                           },
                           type: {
-                            eq: 'Story'
+                            eq: 'EroticStory'
                           },
                           approved: {
                               eq: true
@@ -193,7 +193,7 @@ const AfterDarkSearch = ({navigation} : any) => {
                             contains: newSearch
                             },
                             type: {
-                              eq: 'Story'
+                              eq: 'EroticStory'
                             },
                             approved: {
                                 eq: true
@@ -313,17 +313,21 @@ const AfterDarkSearch = ({navigation} : any) => {
                                         <ScrollView style={{width: Dimensions.get('window').width - 40, marginHorizontal: 20, marginBottom: 20, paddingBottom: 1}} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                                             {TagsArray.map(({ tagName, id, genreID, nsfw } : any, index) => (
                                                 <View key={id} style={{marginTop: 10, marginRight: 10}}>
-                                                    <TouchableOpacity onPress={() => navigation.navigate('TagSearchStack', {mainTag: id, tagName: tagName})}>
+                                                    <TouchableOpacity onPress={() => navigation.navigate('AfterDarkTagSearch', {mainTag: id, tagName: tagName})}>
                                                         <View style={{}}>
-                                                            <Text style={{color: nsfw === true ? 'red' : 'cyan',
+                                                            <Text style={{
+                                                              color: 'magenta',
                                                               fontSize: 14,
-                                                              backgroundColor: nsfw === true ? '#371111a5' :'#1A4851a5',
-                                                              borderColor: nsfw === true ? '#ff0000a5' : '#00ffffa5',
+                                                              backgroundColor: '#3C1A41a5',
+                                                              borderColor: '#ff00ffa5',
                                                               borderWidth: 0.5,
                                                               paddingHorizontal: 16,
                                                               paddingVertical: 6,
+                                                              borderRadius: 13,
+                                                              textTransform: 'lowercase',
                                                               overflow: 'hidden',
-                                                              borderRadius: 14}}>
+                                                              marginBottom: 1
+                                                            }}>
                                                                 #{tagName}
                                                             </Text>
                                                         </View>

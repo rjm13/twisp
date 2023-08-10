@@ -29,7 +29,7 @@ const NewAfterDarkStories = ({genreid} : any) => {
                         graphqlOperation(
                             storiesByGenre, {
                                 genreID: genreid,
-                                type: 'Story',
+                                type: 'EroticStory',
                                 sortDirection: 'DESC',
                                 filter: {
                                     approved: {

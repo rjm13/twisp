@@ -121,9 +121,9 @@ const [trendingTags, setTrendingTags] = useState([]);
         // }, [])
 
         return (
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tagName})}>
-                <View style={{backgroundColor: '#1A4851a5', borderWidth: 0.5, borderColor: 'cyan', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6, marginVertical: 10, marginRight: 10}}>
-                    <Text style={{color: '#00ffff'}}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('AfterDarkTagSearch', {mainTag: id, tagName: tagName})}>
+                <View style={{marginVertical: 10, marginRight: 10}}>
+                    <Text style={styles.erotictagtext}>
                         #{tagName}
                     </Text>
                     {/* <View style={{marginTop: 6, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -174,13 +174,28 @@ const [trendingTags, setTrendingTags] = useState([]);
                             </Text>
                         </View>
                         <View>
-                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAfterDark', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
                                 <Text style={{marginRight: 40, color: '#fff'}}>
                                     Browse All
                                 </Text> 
                             </TouchableWithoutFeedback>
                             
                         </View>
+                    </View>
+
+                    <View style={{ marginBottom: 20, marginHorizontal: 20, alignItems: 'center'}}>
+                        <TouchableWithoutFeedback onPress={() => navigation.navigate('AfterDarkSearch')}>
+                        <View style={{alignItems: 'center', paddingHorizontal: 10, borderRadius: 8, flexDirection: 'row', backgroundColor: '#e0e0e0', height: 40, width: Dimensions.get('window').width - 40}}>
+                            <FontAwesome5 
+                            name='search'
+                            color='#000000a5'
+                            size={18}
+                            />
+                            <Text style={{marginLeft: 20, color: '#000000a5'}}>
+                            Search erotic stories, authors, tags
+                            </Text>
+                        </View>
+                        </TouchableWithoutFeedback>
                     </View>
 
                     <View style={{ marginTop: 0}}>
@@ -213,7 +228,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                                                 color='#fff'
                                                 size={17}
                                                 style={{padding: 10, }}
-                                                onPress={() => navigation.navigate('ViewGenreTags', {genreRoute: genreRoute, genreName: GenreInfo.genre})}
+                                                onPress={() => navigation.navigate('ViewAfterDarkTags', {genreRoute: genreRoute, genreName: GenreInfo.genre})}
                                             />
                                         </View>
                                     )
@@ -246,6 +261,32 @@ const styles = StyleSheet.create ({
     },
     gradient: {
         height: 300
+    },
+    tagtext: {
+        color: 'cyan',
+        fontSize: 14,
+        backgroundColor: '#1A4851a5',
+        borderColor: '#00ffffa5',
+        borderWidth: 0.5,
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 13,
+        textTransform: 'lowercase',
+        overflow: 'hidden',
+        marginBottom: 1
+    },
+    erotictagtext: {
+      color: 'magenta',
+      fontSize: 14,
+      backgroundColor: '#3C1A41a5',
+      borderColor: '#ff00ffa5',
+      borderWidth: 0.5,
+      paddingHorizontal: 16,
+      paddingVertical: 6,
+      borderRadius: 13,
+      textTransform: 'lowercase',
+      overflow: 'hidden',
+      marginBottom: 1
     },
 });
 

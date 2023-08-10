@@ -17,7 +17,7 @@ import { AppContext } from '../AppContext';
 import StoryTile from '../components/StoryTile';
 
 
-import { getTag, storyTagsByTagId } from '../src/graphql/queries';
+import { getTag, eroticStoryTagsByEroticTagId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const AfterDarkTagSearch = ({navigation} : any) => {
@@ -40,26 +40,21 @@ const AfterDarkTagSearch = ({navigation} : any) => {
 
         const fetchTags = async () => {
             let response = await API.graphql(graphqlOperation(
-                storyTagsByTagId, {
-                    tagId: mainTag,
+                eroticStoryTagsByEroticTagId, {
+                    eroticTagId: mainTag,
                 }
             ))
 
-            if (response.data.storyTagsByTagId.items.length > 0) {
-                for(let i = 0; i < response.data.storyTagsByTagId.items.length; i++) {
+            console.log(response.data.eroticStoryTagsByEroticTagId.items[0])
+
+
+            if (response.data.eroticStoryTagsByEroticTagId.items.length > 0) {
+                for(let i = 0; i < response.data.eroticStoryTagsByEroticTagId.items.length; i++) {
                     if (
-                    response.data.storyTagsByTagId.items[i].story.hidden === false) {
-                        if (nsfwOn === false) {
-                            if (ADon === false) {
-                                stories.push(response.data.storyTagsByTagId.items[i].story)
-                            } else {
-                                stories.push(response.data.storyTagsByTagId.items[i].story)
-                            }
-                            
-                        }
-                        if (nsfwOn === true && response.data.storyTagsByTagId.items[i].story.nsfw === false) {
-                            stories.push(response.data.storyTagsByTagId.items[i].story)
-                        }  
+                    response.data.eroticStoryTagsByEroticTagId.items[i].story.hidden === false) {
+                        
+                            stories.push(response.data.eroticStoryTagsByEroticTagId.items[i].story)
+                        
                     }   
                 }
             }
@@ -79,7 +74,7 @@ const AfterDarkTagSearch = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
 
         return (
@@ -122,7 +117,7 @@ const AfterDarkTagSearch = ({navigation} : any) => {
                 </TouchableWithoutFeedback>
                 
                 <View style={{marginLeft: 40}}>
-                    <Text style={{color: 'cyan', fontSize: 22 }}>
+                    <Text style={{color: 'magenta', fontSize: 22 }}>
                         #{tagName}
                     </Text>
                 </View>
