@@ -9,7 +9,6 @@ import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation'
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import Linking from 'expo-linking'
 import * as Device from 'expo-device';
 
 import Purchases from 'react-native-purchases';

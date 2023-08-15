@@ -141,28 +141,28 @@ const CreateUser = async () => {
                 <View style={{ margin: 20, paddingTop: 70}}>
                     {userExist ? (
                             <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
-                                <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                                <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
                                     User already exists. Please log in.
                                 </Text>
                             </View>
                         ) : null}
                     {isErr ? (
                         <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
-                            <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                            <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
                                 Error signing up. Please try again.
                             </Text>
                         </View>
                     ) : null}
                     {noMatch ? (
                         <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
-                            <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                            <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
                                 Passwords do no match. Try again.
                             </Text>
                         </View>
                     ) : null}
                     {shortPass ? (
                         <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
-                            <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                            <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
                                 Password must be at least 6 characters.
                             </Text>
                         </View>

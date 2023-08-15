@@ -1,16 +1,33 @@
-import React, {useState, useEffect, useContext, useLayoutEffect} from "react";
-import { View, Text, ActivityIndicator, Dimensions, TouchableWithoutFeedback, Platform } from "react-native";
+import React, {useState, useEffect, useContext} from "react";
+import { 
+    View, 
+    Text, 
+    ActivityIndicator, 
+    Dimensions, 
+    TouchableWithoutFeedback 
+} from "react-native";
+
 import { AppContext } from '../../AppContext';
+
 import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { getUser, pinnedStoriesByUser, ratingsByUser, connectionsByFollower, finishedStoriesByUser } from '../../src/graphql/queries';
+import { 
+    getUser, 
+    pinnedStoriesByUser, 
+    ratingsByUser, 
+    connectionsByFollower, 
+    finishedStoriesByUser 
+} from '../../src/graphql/queries';
+import { createUser, updateUser } from '../../src/graphql/mutations';
+
 import { StatusBar } from 'expo-status-bar';
 import Purchases from "react-native-purchases";
-import { createUser, updateUser } from '../../src/graphql/mutations';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
+
+
 
 const Redirect = ({route, navigation} : any) => {
 
@@ -24,29 +41,16 @@ const Redirect = ({route, navigation} : any) => {
         expoPushToken
     } = useContext(AppContext);
 
-    const { userID } = useContext(AppContext);
-    const { setUserID } = useContext(AppContext);
-
-    const { userPins } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
-
-    const { userRates } = useContext(AppContext);
-    const { setUserRates } = useContext(AppContext);
-
-    const { userFinished } = useContext(AppContext);
-    const { setUserFinished } = useContext(AppContext);
-
-    const { userFollowing } = useContext(AppContext);
-    const { setUserFollowing } = useContext(AppContext);
-
-    const { nsfwOn } = useContext(AppContext);
-    const { setNSFWOn } = useContext(AppContext);
-
-    const { ADon } = useContext(AppContext);
-    const { setADon } = useContext(AppContext);
-
-    const { premium } = useContext(AppContext);
-    const { setPremium } = useContext(AppContext);
+    const { 
+        setUserID, 
+        setUserPins, 
+        setUserRates, 
+        setUserFinished, 
+        setUserFollowing,
+        setNSFWOn,
+        setADon,
+        setPremium
+    } = useContext(AppContext);
 
     const [nextToken, setNextToken] = useState()
 
@@ -119,24 +123,6 @@ const Redirect = ({route, navigation} : any) => {
                       } catch (e) {
                        console.log(e)
                       }
-
-                  
-
-                    // const date = new Date();
-                    // const year = date.getFullYear();
-                    // const month = date.getMonth();
-                    // const day = date.getDate();
-                    // const c = new Date(year - 18, month, day).toISOString();
-                    // const bd3 = new Date(userInfo.attributes.birthdate).toISOString()
-                
-                    // if (bd3 > c) {
-                    //     setNSFWOn(false);
-                    //     setADon(false);
-                    // } 
-                    // if (bd3 < c) {
-                    //     setNSFWOn(true);
-                    //     setADon(true)
-                    // } 
 
                     const userData = await API.graphql(graphqlOperation(
                         getUser,{ id: userInfo.attributes.sub}))
@@ -269,16 +255,6 @@ const Redirect = ({route, navigation} : any) => {
                             setIsLoading(false);
                         }
                     }
-                        
-
-                         
-                        // setUserID(null);
-                        // navigation.reset({
-                        //     //index: 0,
-                        //     routes: [{ name: 'SignIn' }],
-                        // });
-                    
-                    
                 }
             } catch {
                 setIsLoading(false);

@@ -126,15 +126,16 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                 </View>
 
                 <TouchableOpacity onPress={confirmSignUp}>
-                    <View style={[styles.buttonlayout, {marginTop: 20, width: Dimensions.get('window').width*0.7, alignSelf: 'center'}]}>
+
                         {loggingIn === true ? (
                             <ActivityIndicator size='small' color='cyan'/>
                         ) : (
-                            <Text style={styles.buttontext}>
-                                Confirm Account
-                            </Text> 
+                            <View style={[styles.buttonlayout, {marginTop: 20, width: Dimensions.get('window').width*0.7, alignSelf: 'center'}]}>
+                                <Text style={styles.buttontext}>
+                                    Confirm Account
+                                </Text> 
+                            </View>
                             )}
-                    </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={resendConfirmationCode}>

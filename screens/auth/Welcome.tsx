@@ -29,6 +29,7 @@ const Welcome = ({navigation} : any) => {
 
     const SCREEN_HEIGHT = Dimensions.get('window').height
 
+    //send welcome message
     useEffect(() => {
         const sendMessage = async () => {
 
@@ -54,25 +55,25 @@ const Welcome = ({navigation} : any) => {
         sendMessage();
     }, [])
 
-                    //upload modal
-                    const [visible, setVisible] = useState(false);
-                    const showModal = () => {
-                        setVisible(true);
-                    }
-                    const hideModal = () => setVisible(false);
-            
-                    const containerStyle = {
-                        backgroundColor: '#363636', 
-                        borderRadius: 15,
-                        paddingVertical: 40
-                    };
+        //upload modal
+        const [visible, setVisible] = useState(false);
+        const showModal = () => {
+            setVisible(true);
+        }
+        const hideModal = () => setVisible(false);
+
+        const containerStyle = {
+            backgroundColor: '#363636', 
+            borderRadius: 15,
+            paddingVertical: 40
+        };
         
-                    //date time picker
-                const [date, setDate] = useState(new Date());
-                const [mode, setMode] = useState('date');
-                const [show, setShow] = useState(false);
-        
-                const todaysdate = new Date();
+        //date time picker
+        const [date, setDate] = useState(new Date());
+        const [mode, setMode] = useState('date');
+        const [show, setShow] = useState(false);
+
+        const todaysdate = new Date();
         
             const onChange = async (event, selectedDate) => {
                 const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true })

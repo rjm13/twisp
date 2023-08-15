@@ -24,8 +24,8 @@ const SplashCarousel = ({navigation} : any) => {
 
             const genreInfo = await API.graphql(graphqlOperation(
                 listGenres, {filter: {
-                    id: {
-                        ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
+                    genre: {
+                        ne: 'after dark'
                     }
                 }}
             ))
@@ -116,9 +116,7 @@ const SplashCarousel = ({navigation} : any) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-       
-    },
+
     header: {
         color: '#fff',
         fontSize: 22,

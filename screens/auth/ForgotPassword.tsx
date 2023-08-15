@@ -37,12 +37,12 @@ const ForgotPassword = ({navigation} : any) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.container, {justifyContent: 'center'}]}>
             <LinearGradient
-                colors={['#00ffffa5','#000', '#000']}
+                colors={['#000', '#000']}
                 style={[styles.container, {justifyContent: 'center'}]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
-                <View style={{ margin: 20}}>
+                <View style={{ margin: 20, marginBottom: 60}}>
                     <View>
                         <Text style={[styles.title, {marginTop: 10, marginBottom: 4}]}>
                             Email
@@ -60,8 +60,8 @@ const ForgotPassword = ({navigation} : any) => {
                 </View>
 
                 <TouchableOpacity onPress={handleForgotPassword}>
-                    <View style={styles.buttonlayout}>
-                        <Text style={styles.buttontext}>
+                    <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
+                        <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
                             Send Reset Code
                         </Text>
                     </View>

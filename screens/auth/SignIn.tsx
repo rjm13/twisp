@@ -1,4 +1,4 @@
-import React, {useState, useContext, useCallback, useEffect} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { 
     View, 
     Text, 
@@ -26,8 +26,6 @@ const SignIn = ({navigation} : any) => {
 
     const { setUserID } = useContext(AppContext);
 
-    //const { theme } = useContext(AppContext);
-
     const styles = useStyles();
 
     const [seePass, setSeePass] = useState(false);
@@ -40,6 +38,7 @@ const SignIn = ({navigation} : any) => {
 
     const [trigger, setTrigger] = useState(false);
 
+//listener for google sign in
     useEffect(() => {
         const unsubscribe = Hub.listen("auth", ({ payload: { event, data }}) => {
           switch (event) {
@@ -61,15 +60,8 @@ const SignIn = ({navigation} : any) => {
     async function signInWithGoogle() {
         setSigningIn(true);
         try {
-            
-            //await Auth.federatedSignIn({provider: "google"})
-            //.then (CreateFedUser)
-
-           
-
             await Auth.federatedSignIn({
                 provider: CognitoHostedUIIdentityProvider.Google
-                //provider: "Google"
               })
         } 
         catch (error) {
@@ -78,9 +70,7 @@ const SignIn = ({navigation} : any) => {
             setSigningIn(false);
         }
         setSigningIn(false)
-        //CreateFedUser();
     }
-
 
     const CreateUser = async () => {
 
@@ -159,115 +149,115 @@ const SignIn = ({navigation} : any) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={[styles.container, {justifyContent: 'center'}]}>
-            <View style={{ margin: 20}}>
-                {isErr ? (
-                <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
-                    <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
-                        Error signing in. Please try again.
-                    </Text>
-                    <Text style={{borderRadius: 15, backgroundColor: '#ffffff', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
-                        {err}
-                    </Text>
-                </View>
-                ) : null}
-                <View>
-                    <Text style={[styles.title, {marginHorizontal: 0, marginTop: 10, marginBottom: 4}]}>
-                        Email
-                    </Text>
-                    <View style={styles.inputfield}>
-                        <TextInput 
-                            placeholder='....'
-                            placeholderTextColor='#ffffffa5'
-                            style={styles.textInputTitle}
-                            maxLength={40}
-                            onChangeText={handleUsername}
-                            autoCapitalize='none'
-                        />
+            <View style={[styles.container, {justifyContent: 'center'}]}>
+                <View style={{ margin: 20}}>
+                    {isErr ? (
+                    <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
+                        <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                            Error signing in. Please try again.
+                        </Text>
+                        <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
+                            {err}
+                        </Text>
+                    </View>
+                    ) : null}
+                    <View>
+                        <Text style={[styles.title, {marginHorizontal: 0, marginTop: 10, marginBottom: 4}]}>
+                            Email
+                        </Text>
+                        <View style={styles.inputfield}>
+                            <TextInput 
+                                placeholder='....'
+                                placeholderTextColor='#ffffffa5'
+                                style={styles.textInputTitle}
+                                maxLength={40}
+                                onChangeText={handleUsername}
+                                autoCapitalize='none'
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={[styles.title, {marginHorizontal: 0, marginTop: 10, marginBottom: 4}]}>
+                            Password
+                        </Text>
+                        <View style={[styles.inputfield, {flexDirection: 'row', justifyContent: 'space-between'}]}>
+                            <TextInput 
+                                placeholder='....'
+                                placeholderTextColor='#ffffffa5'
+                                style={[styles.textInputTitle, {width: '80%'}]}
+                                maxLength={30}
+                                secureTextEntry={seePass === true ? false : true}
+                                onChangeText={handlePassword}
+                                autoCapitalize='none'
+                            />
+                            <Feather 
+                                name={seePass === true ? 'eye' : 'eye-off'}
+                                color='#fff'
+                                size={18}
+                                style={{marginRight: 10, alignSelf: 'center'}}
+                                onPress={() => setSeePass(!seePass)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{width: Dimensions.get('window').width - 60, alignSelf: 'center', marginVertical: 20, justifyContent: 'space-between', flexDirection: 'row', marginTop: 30}}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                            <View style={{  }}>
+                                <Text style={[styles.paragraph, {alignSelf: 'center'}]}>
+                                    Forgot password
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => Linking.openURL('mailto:admin@martianspidermedia.com') }>
+                            <View style={{ }}>
+                                <Text style={[styles.paragraph, {alignSelf: 'center'}]}>
+                                    Contact us
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{alignSelf: 'center', width: Dimensions.get('window').width - 60, borderTopWidth: 1, borderColor: '#000000a5',}}>
+                        
                     </View>
                 </View>
 
-                <View>
-                    <Text style={[styles.title, {marginHorizontal: 0, marginTop: 10, marginBottom: 4}]}>
-                        Password
+            {signingIn === true ? (
+                <ActivityIndicator size="small" color='cyan'/>
+                ) : (
+                    <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
+                        <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
+                            <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
+                                Login
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp') }>
+                    <Text style={[styles.buttontext, { alignSelf: 'center', margin: 30, color: '#fff'}]}>
+                        Create an account
                     </Text>
-                    <View style={[styles.inputfield, {flexDirection: 'row', justifyContent: 'space-between'}]}>
-                        <TextInput 
-                            placeholder='....'
-                            placeholderTextColor='#ffffffa5'
-                            style={[styles.textInputTitle, {width: '80%'}]}
-                            maxLength={30}
-                            secureTextEntry={seePass === true ? false : true}
-                            onChangeText={handlePassword}
-                            autoCapitalize='none'
+                </TouchableOpacity>
+
+                <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
+
+                <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
+                    <View style={[styles.socialbuttonlayout]}>
+                        <Image 
+                            source={require('../../assets/google-logo.png')}
+                            style={{width: 30, height: 30, margin: 0}}
                         />
-                        <Feather 
-                            name={seePass === true ? 'eye' : 'eye-off'}
-                            color='#fff'
-                            size={18}
-                            style={{marginRight: 10, alignSelf: 'center'}}
-                            onPress={() => setSeePass(!seePass)}
-                        />
-                    </View>
-                </View>
-
-                <View style={{width: Dimensions.get('window').width - 60, alignSelf: 'center', marginVertical: 20, justifyContent: 'space-between', flexDirection: 'row', marginTop: 30}}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                        <View style={{  }}>
-                            <Text style={[styles.paragraph, {alignSelf: 'center'}]}>
-                                Forgot password
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => Linking.openURL('mailto:admin@martianspidermedia.com') }>
-                        <View style={{ }}>
-                            <Text style={[styles.paragraph, {alignSelf: 'center'}]}>
-                                Contact us
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{alignSelf: 'center', width: Dimensions.get('window').width - 60, borderTopWidth: 1, borderColor: '#000000a5',}}>
-                    
-                </View>
-            </View>
-
-        {signingIn === true ? (
-            <ActivityIndicator size="small" color='cyan'/>
-            ) : (
-                <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
-                    <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
-                        <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
-                            Login
+                        <Text style={[styles.socialbuttontext]}>
+                            Continue with Google
                         </Text>
                     </View>
                 </TouchableOpacity>
-            )}
 
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp') }>
-                <Text style={[styles.buttontext, { alignSelf: 'center', margin: 30, color: '#fff'}]}>
-                    Create an account
-                </Text>
-            </TouchableOpacity>
-
-            <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
-
-            <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
-                <View style={[styles.socialbuttonlayout]}>
-                    <Image 
-                        source={require('../../assets/google-logo.png')}
-                        style={{width: 30, height: 30, margin: 0}}
-                    />
-                    <Text style={[styles.socialbuttontext]}>
-                        Continue with Google
-                    </Text>
-                </View>
-            </TouchableOpacity>
-
-        <StatusBar style='light' backgroundColor='transparent'/>
-        </View>
+            <StatusBar style='light' backgroundColor='transparent'/>
+            </View>
         </TouchableWithoutFeedback>
     );
 }
