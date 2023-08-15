@@ -52,9 +52,6 @@ const Trending = () => {
                                 type: 'FinishedStory',
                                 sortDirection: 'DESC',
                                 filter: {
-                                    genreID: {
-                                        ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
-                                    },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
                                     }
@@ -64,7 +61,6 @@ const Trending = () => {
                     )
 
                     for(let i = 0; i < response.data.finishedStoriesByDate.items.length; i++) {
-                        if (response.data.finishedStoriesByDate.items[i].story.approved === 'approved' && response.data.finishedStoriesByDate.items[i].story.hidden === false)
                         trendingids.push(response.data.finishedStoriesByDate.items[i].story.id)     
                     }
                     let pp = trendingids.filter( (ele, ind) => ind === trendingids.findIndex( elem => elem === ele))
@@ -105,7 +101,7 @@ const Trending = () => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (

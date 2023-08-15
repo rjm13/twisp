@@ -270,7 +270,7 @@ const StoryScreen  = ({navigation} : any) => {
         return (
           <View style={{marginTop: 14}}>
             <TouchableWithoutFeedback 
-                onPress={() => Story?.genre.genre === 'after dark' ? (navigation.navigate('AfterDarkTagSearchScreen', {mainTag: id, tagName: tag})) : (navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tag}))}>
+                onPress={() => Story?.genre.genre === 'after dark' ? (navigation.navigate('AfterDarkTagSearch', {mainTag: id, tagName: tag})) : (navigation.navigate('TagSearchScreen', {mainTag: id, tagName: tag}))}>
                 <View style={Story?.genre.genre === 'after dark' ? styles.tagbox : styles.tagbox}>
                     <Text style={Story?.genre.genre === 'after dark' ? styles.erotictagtext : styles.tagtext}>
                         #{tag}

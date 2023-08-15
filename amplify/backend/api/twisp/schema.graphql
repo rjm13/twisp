@@ -134,6 +134,8 @@ type Series @model @auth(rules: [{ allow: private, operations: [create, delete, 
     genreID: ID @index(name: "byGenre", queryField: "seriesByGenre", sortKeyFields: ["createdAt"])
     genre: Genre @hasOne (fields: ["genreID"])
     stories: [Story] @hasMany (indexName: "bySeries", fields: ["id"])
+    creatorID: ID @index(name: "byCreator", queryField: "seriesByCreator", sortKeyFields: ["createdAt"])
+    creator: CreatorProfile  @hasOne (fields: ["creatorID"])
 }
 
 type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -194,8 +196,8 @@ type InProgressStory @model @auth( rules: [{ allow: private, operations: [create
 type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
 {
   id: ID!
-  type: String 
-  createdAt: String
+  type: String @index(name: "finishedStoriesByDate", queryField: "finishedStoriesByDate", sortKeyFields: [ "createdAt" ])
+  createdAt: String 
   updatedAt: String
   userID: ID @index(name: "byUser", queryField: "finishedStoriesByUser", sortKeyFields: ["createdAt"])
   user: User @hasOne (fields: ["userID"])

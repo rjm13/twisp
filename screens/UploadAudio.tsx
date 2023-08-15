@@ -30,8 +30,8 @@ import useStyles from '../styles';
 import { AppContext } from '../AppContext'
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag  } from '../src/graphql/mutations';
-import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser } from '../src/graphql/queries';
+import { createStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
+import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser, seriesByCreator, storiesByCreator } from '../src/graphql/queries';
 
 
 
@@ -66,6 +66,8 @@ const UploadAudio = ({navigation} : any) => {
         approved: false,
         numListens: 0,
         creatorID: '',
+        seriesID: null,
+        seriesPart: 1,
     });
 
     //set state for the number authored so that upon upload can increase it by +1
@@ -108,6 +110,9 @@ const UploadAudio = ({navigation} : any) => {
 
 //determine where the audio is coming from, locally or otherwise
     const [isLocalAudio, setIsLocalAudio] = useState(false);
+
+//select the series state
+    const [series, setSeries] = useState('');
 
     const ListAllGenreTags = async (extag: any) => {
 
@@ -282,7 +287,26 @@ const UploadAudio = ({navigation} : any) => {
 
         setIsPublishing(true);
 
+        const [seriesid, setSeriesid] = useState('')
+
         try {
+
+            if (seriesStory.length > 0) {
+                const result = await API.graphql(
+                    graphqlOperation(createSeries, { input: 
+                        {
+                            type: 'Series',
+                            name: seriesStoryName,
+                            genreID: data.genreID,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            creatorID: pickedCreator
+                        }
+                }))
+
+                setSeriesid(result.data.createSeries.id)
+            }
+
             let userInfo = await Auth.currentAuthenticatedUser();
 
             const responseImage = await fetch(localImageUri);
@@ -326,6 +350,8 @@ const UploadAudio = ({navigation} : any) => {
                     type: 'PendingStory',
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    seriesID: seriesid.length > 0 ? seriesid : null,
+                    seriesPart: data.seriesPart,
                 }
         }))
 
@@ -512,8 +538,46 @@ const UploadAudio = ({navigation} : any) => {
         setData({...data, genreID: Genres[val].id, genre: Genres[val].genre, nsfw: Genres[val].id === '1108a619-1c0e-4064-8fce-41f1f6262070' ? true : false});
     }
 
-    //Modal dropdown for selecting a genre. Height of the dropdown is dependent on the number of genres
+    //Modal dropdown for selecting  an author. Height of the dropdown is dependent on the number of genres
     const [Authors, setAuthors] = useState([]);
+
+    //Modal dropdown for selecting a series. Height of the dropdown is dependent on the number of genres
+    const [seriesArr, setSeriesArr] = useState([]);
+    const [pickedCreator, setPickedCreator] = useState('');
+
+    const [seriesStories, setSeriesStories] = useState([]);
+    const [seriesStory, setSeriesStory] = useState('');
+    const [seriesStoryName, setSeriesStoryName] = useState('');
+
+    useEffect(() => {
+        const fetchSeries = async () => {
+            const result = await API.graphql(graphqlOperation(
+                seriesByCreator, {
+                    creatorID: pickedCreator
+                }
+            ))
+
+            if (result) {
+                setSeriesArr(result.data.seriesByCreator.items)
+            }
+        }
+
+        const fetchStories = async () => {
+            const result = await API.graphql(graphqlOperation(
+                storiesByCreator, {
+                    creatorID: pickedCreator
+                }
+            ))
+
+            if (result) {
+                setSeriesStories(result.data.storiesByCreator.items)
+            }
+        }
+
+        fetchSeries();
+        fetchStories();
+
+    }, [pickedCreator])
 
     useEffect(() => {
 
@@ -533,6 +597,7 @@ const UploadAudio = ({navigation} : any) => {
                 authorarray = result.data.creatorProfilesByUser.items
                 setAuthors(authorarray.sort((a : any, b : any) => a.penName.localeCompare(b.penName)))
             }
+
         }
 
         fetchCreators();
@@ -545,12 +610,26 @@ const UploadAudio = ({navigation} : any) => {
       //Preview Modal, requires terms, audio, image, author, genre, description, summary, title
       const [visible2, setVisible2] = useState(false);
 
-      //author select modal
-      const [modalVisible, setModalVisible] = useState(false);
+    //author select modal
+        const [modalVisible, setModalVisible] = useState(false);
 
-      const showModalVisible = () => setModalVisible(true);
+        const showModalVisible = () => setModalVisible(true);
 
         const hideModalVisible = () => setModalVisible(false);
+
+    //series select modal
+        const [seriesModal, setSeriesModal] = useState(false);
+
+        const showSeriesModal = () => setSeriesModal(true);
+
+        const hideSeriesModal = () => setSeriesModal(false);
+
+    //series select modal
+        const [newSeriesModal, setNewSeriesModal] = useState(false);
+
+        const showNewSeriesModal = () => setNewSeriesModal(true);
+
+        const hideNewSeriesModal = () => setNewSeriesModal(false);
 
 
 
@@ -794,12 +873,80 @@ const UploadAudio = ({navigation} : any) => {
                                 return (
                                     <TouchableOpacity onPress={() => {
                                         setData({...data, author: item.penName, creatorID: item.id});
+                                        setPickedCreator(item.id);
                                         hideModalVisible();
                                     }}
                                     >
                                         <View>
                                             <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                                                 {item.penName}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>  
+                                )})} 
+                        </View>
+                    </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* series modal */}
+            <Modal visible={seriesModal} onDismiss={showSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setSeriesModal(false);}}>
+                <TouchableOpacity onPress={hideSeriesModal} style={{backgroundColor: '#000000'}}>
+
+                    <TouchableOpacity onPress={() => {showNewSeriesModal();}}>
+                        <View>
+                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                Create New Series
+                            </Text>
+                        </View>
+                    </TouchableOpacity>  
+
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                            {seriesArr.map(item => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setData({...data, seriesPart: item.seriesPart + 1, seriesID: item.id});
+                                        setSeries(item.name)
+                                        hideSeriesModal();
+                                    }}
+                                    >
+                                        <View>
+                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                                {item.name}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>  
+                                )})} 
+                        </View>
+                    </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* new series modal */}
+            <Modal visible={newSeriesModal} onDismiss={showNewSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setNewSeriesModal(false);}}>
+                <TouchableOpacity onPress={hideNewSeriesModal} style={{backgroundColor: '#000000'}}>
+
+                    <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                        Select the first story of this series
+                    </Text>
+
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                            {seriesStories.map(item => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setSeriesStory(item.id);
+                                        setSeriesStoryName(item.title);
+                                        hideNewSeriesModal();
+                                        hideSeriesModal();
+                                    }}
+                                    >
+                                        <View>
+                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                                {item.title}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>  
@@ -1008,7 +1155,7 @@ const UploadAudio = ({navigation} : any) => {
                     ))}
                 </ScrollView>
 
-                <View style={{ alignSelf: 'flex-start', flexDirection: 'row', marginBottom: 20, marginTop: 0, }}>
+                <View style={{ alignItems: 'center', alignSelf: 'flex-start', flexDirection: 'row', marginBottom: 20, marginTop: 0, }}>
                     <TouchableWithoutFeedback>
                         <View style={{ width: Dimensions.get('window').width - 140, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636a5'}}>
                             <TextInput
@@ -1024,7 +1171,7 @@ const UploadAudio = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableOpacity onPress={AddToTagArray}>
-                        <View style={{ alignSelf: 'center', marginHorizontal: 20, padding: 0, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 6}}>
+                        <View style={{ alignSelf: 'center', marginHorizontal: 20, padding: 0, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 6, paddingVertical: 10}}>
                             <FontAwesome5
                                 name='chevron-up'
                                 size={20}
@@ -1035,6 +1182,28 @@ const UploadAudio = ({navigation} : any) => {
                             </Text>
                         </View>
                     </TouchableOpacity>
+                </View>
+
+                <View style={{ width: '100%', marginBottom: 20, marginTop: 10, }}>
+                    <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                        Series
+                    </Text>
+
+                    <TouchableWithoutFeedback onPress={showSeriesModal}>
+                        <View style={{ marginTop: 20, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
+                            <Text style={{ color: '#ffffffa5'}}>
+                                Select series
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    {series !== '' ? (
+                        <View style={{marginTop: 20, }}>
+                            <Text style={{color: 'cyan'}}>
+                                {series}
+                            </Text>
+                        </View>
+                    ) : null}
                 </View>
 
                 <View style={{ width: '100%', marginBottom: 20, marginTop: 10, }}>
@@ -1057,6 +1226,7 @@ const UploadAudio = ({navigation} : any) => {
                         />
                     ) : null}
                 </View>
+
 
                 <View style={{ width: '100%', marginBottom: 20, marginTop: 10, }}>
                     <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>

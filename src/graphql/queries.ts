@@ -885,6 +885,7 @@ export const getStory = /* GraphQL */ `
           tag {
             id
             tagName
+            count
           }
           createdAt
           updatedAt
@@ -901,6 +902,7 @@ export const getStory = /* GraphQL */ `
           eroticTag {
             id
             tagName
+            count
           }
           createdAt
           updatedAt
@@ -983,6 +985,27 @@ export const getStory = /* GraphQL */ `
         }
         stories {
           nextToken
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -1108,6 +1131,7 @@ export const listStories = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -1247,6 +1271,58 @@ export const getSeries = /* GraphQL */ `
         nextToken
         __typename
       }
+      creatorID
+      creator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -1277,6 +1353,27 @@ export const listSeries = /* GraphQL */ `
         }
         stories {
           nextToken
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -1592,6 +1689,7 @@ export const getPinnedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -1851,6 +1949,7 @@ export const getInProgressStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -2118,6 +2217,7 @@ export const getFinishedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -2317,6 +2417,7 @@ export const getComment = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -2782,6 +2883,7 @@ export const getRating = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3167,6 +3269,7 @@ export const getStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3368,6 +3471,7 @@ export const getEroticStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4192,6 +4296,7 @@ export const storiesByDate = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4328,6 +4433,7 @@ export const storiesByUpdated = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4464,6 +4570,7 @@ export const storiesByPublisher = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4600,6 +4707,7 @@ export const storiesByCreator = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4736,6 +4844,7 @@ export const storiesByGenre = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4872,6 +4981,7 @@ export const storiesBySeries = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4919,6 +5029,93 @@ export const seriesByGenre = /* GraphQL */ `
         }
         stories {
           nextToken
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const seriesByCreator = /* GraphQL */ `
+  query SeriesByCreator(
+    $creatorID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSeriesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    seriesByCreator(
+      creatorID: $creatorID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        name
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -5328,6 +5525,89 @@ export const inProgressStoriesByUser = /* GraphQL */ `
         createdAt
         updatedAt
         time
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const finishedStoriesByDate = /* GraphQL */ `
+  query FinishedStoriesByDate(
+    $type: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFinishedStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    finishedStoriesByDate(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
         __typename
       }
       nextToken

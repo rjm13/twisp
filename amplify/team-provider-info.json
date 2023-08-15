@@ -25,6 +25,10 @@
         "dailyPushModUpdate": {
           "deploymentBucketName": "amplify-twisp-dev-104824-deployment",
           "s3Key": "amplify-builds/dailyPushModUpdate-6a356579527669307368-build.zip"
+        },
+        "dailytrends": {
+          "deploymentBucketName": "amplify-twisp-dev-104824-deployment",
+          "s3Key": "amplify-builds/dailytrends-356d763443486533424e-build.zip"
         }
       }
     }

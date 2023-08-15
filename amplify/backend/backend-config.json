@@ -77,6 +77,21 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "dailytrends": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "twisp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -93,6 +108,22 @@
         {
           "category": "function",
           "resourceName": "dailyPushModUpdate"
+        }
+      ]
+    },
+    "AMPLIFY_function_dailytrends_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dailytrends"
+        }
+      ]
+    },
+    "AMPLIFY_function_dailytrends_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dailytrends"
         }
       ]
     }

@@ -1775,6 +1775,27 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
         __typename
       }
       seriesPart
@@ -2036,6 +2057,27 @@ export const updateStory = /* GraphQL */ `
         }
         stories {
           nextToken
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
           __typename
         }
         __typename
@@ -2301,6 +2343,27 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          __typename
+        }
         __typename
       }
       seriesPart
@@ -2495,6 +2558,58 @@ export const createSeries = /* GraphQL */ `
         nextToken
         __typename
       }
+      creatorID
+      creator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -2562,6 +2677,58 @@ export const updateSeries = /* GraphQL */ `
         nextToken
         __typename
       }
+      creatorID
+      creator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -2627,6 +2794,58 @@ export const deleteSeries = /* GraphQL */ `
           __typename
         }
         nextToken
+        __typename
+      }
+      creatorID
+      creator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
         __typename
       }
       __typename
@@ -3050,6 +3269,7 @@ export const createPinnedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3239,6 +3459,7 @@ export const updatePinnedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3428,6 +3649,7 @@ export const deletePinnedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3617,6 +3839,7 @@ export const createInProgressStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3807,6 +4030,7 @@ export const updateInProgressStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -3997,6 +4221,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4189,6 +4414,7 @@ export const createFinishedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4378,6 +4604,7 @@ export const updateFinishedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4567,6 +4794,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4696,6 +4924,7 @@ export const createComment = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -4887,6 +5116,7 @@ export const updateComment = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -5078,6 +5308,7 @@ export const deleteComment = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -5677,6 +5908,7 @@ export const createRating = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -5867,6 +6099,7 @@ export const updateRating = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -6057,6 +6290,7 @@ export const deleteRating = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -6485,6 +6719,7 @@ export const createStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -6631,6 +6866,7 @@ export const updateStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -6777,6 +7013,7 @@ export const deleteStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -6923,6 +7160,7 @@ export const createEroticStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -7069,6 +7307,7 @@ export const updateEroticStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
@@ -7215,6 +7454,7 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           updatedAt
           name
           genreID
+          creatorID
           __typename
         }
         seriesPart
