@@ -112,6 +112,8 @@ const Trending = () => {
           icon={icon}
           id={item.id}
           ratingAvg={item.ratingAvg}
+          numComments={item.numComments}
+          numListens={item.numListens}
         />
       );}
 

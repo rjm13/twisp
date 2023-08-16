@@ -25,7 +25,6 @@ const SearchScreen = ({navigation} : any) => {
 
   //nsfw global app context
     const { nsfwOn } = useContext(AppContext);
-    const { ADon } = useContext(AppContext);
 
   //search function states
     const [newSearch, setNewSearch] = useState();
@@ -233,7 +232,7 @@ const SearchScreen = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
 
         return (
@@ -252,6 +251,8 @@ const SearchScreen = ({navigation} : any) => {
             id={item.id}
             ratingAvg={item.ratingAvg}
             ratingAmt={item.ratingAmt}
+            numListens={item.numListens}
+            numComments={item.numComments}
       />
     );}
 
@@ -362,6 +363,7 @@ const SearchScreen = ({navigation} : any) => {
                                                           if (response) {
                                                             setImageU(response);
                                                           }
+                                                          console.log(response)
                                                           
                                                       }
                                                       fetchImage()
@@ -372,7 +374,7 @@ const SearchScreen = ({navigation} : any) => {
                                                     <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id})}>
                                                         <View style={{flexDirection: 'row'}}>
                                                           <Image 
-                                                            source={imageU ? {uri: imageU} : require('../assets/blankprofile.png')}
+                                                            source={imageUri ? {uri: imageU} : require('../assets/blankprofile.png')}
                                                             style={{height: 100, width: 100, borderRadius: 10}}
                                                           />
                                                           <View style={{marginLeft: 10}}>

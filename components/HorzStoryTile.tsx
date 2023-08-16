@@ -22,7 +22,9 @@ const HorzStoryTile = ({
     imageUri, 
     id,
     ratingAvg,
-    icon
+    icon,
+    numComments,
+    numListens
 } : any) => {
         
 //temporary signed image uri
@@ -40,53 +42,6 @@ const HorzStoryTile = ({
 //navigation hook
     const navigation = useNavigation();
 
-    //determine if this user has rated this story or not. If rated, the star will appear gold
-    const [isRated, setIsRated] = useState(true);
-
-    //if item is finished state
-    const [isFinished, setIsFinished] = useState(true);
-
-    // useEffect(() => {
-
-    //     const fetchRating = async () => {
-
-    //         let userInfo = await Auth.currentAuthenticatedUser();
-
-    //         let Rating = await API.graphql(graphqlOperation(
-    //             listRatings, {filter: {
-    //                 userID: {
-    //                     eq: userInfo.attributes.sub
-    //                 },
-    //                 storyID: {
-    //                     eq: id
-    //                 }
-    //             }}
-    //         ))
-
-    //         let storyCheck = await API.graphql(graphqlOperation(
-    //             listFinishedStories, {filter: {
-    //                 userID: {
-    //                     eq: userInfo.attributes.sub
-    //                     },
-    //                 storyID: {
-    //                     eq: id
-    //                 }
-    //                 }
-    //             }
-    //         ));
-
-    //         if (storyCheck.data.listFinishedStories.items.length === 1) {
-    //             setIsFinished(true);
-    //         }
-    //         if (Rating.data.listRatings.items.length === 1) {
-    //             setIsRated(true);
-    //         } else {
-    //             setIsRated(false);
-    //         }
-
-    //     }
-    //     fetchRating();
-    // }, [])
 
     return (
         <View style={styles.container}>
@@ -106,40 +61,51 @@ const HorzStoryTile = ({
                     style={{marginBottom: 12, backgroundColor: '#ffffffa5', width: 200, height: 180, justifyContent: 'flex-end', borderRadius: 15}}
                     imageStyle={{borderRadius: 15,}}
                 >
-                    <View style={{ flexDirection: genreName !== null ? 'column' : 'row', justifyContent: genreName !== null ? 'flex-start' : 'space-between', backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
+                    <View style={{ backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
                         <View style={{marginBottom: 0}}>
                             <Text style={{width: 140, color: '#fff', fontSize: 12, fontWeight: 'bold'}}>
                                 {title}
                             </Text>
                         </View>
-                        <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            {genreName !== null ? (
-                                <View>
-                                    <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
+                                <Text style={{fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                     {genreName}
-                                    </Text>
-                                </View> 
-                            ) : null    
-                            }
-                        
-                            <View style={{ alignItems: 'center', flexDirection: 'row'}}>
-                                <FontAwesome 
-                                    name={isRated === true ? 'star' : 'star-o'}
-                                    size={12}
-                                    color={isRated === true || isFinished === true ? 'gold' : 'white'}
-                                    style={{marginRight: 6 }}
-                                />
-                                <Text style={{color: '#fff', fontSize: 12}}>
-                                    {(ratingAvg/10).toFixed(1)}
                                 </Text>
-                            </View>
-                            
+                                <View style={{marginLeft: genreName ? 10 : 0, flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome 
+                                        name='comment'
+                                        color='#ffffffa5'
+                                        size={11}
+                                    />
+                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        {numComments ? numComments : 0}
+                                    </Text>
+                                </View>
+                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome5 
+                                        name='headphones'
+                                        color='#ffffffa5'
+                                        size={11}
+                                    />
+                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        {numListens ? numListens : 0}
+                                    </Text>
+                                </View>
+                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome 
+                                        name='star'
+                                        color='#ffffffa5'
+                                        size={11}
+                                    />
+                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        {(ratingAvg/10).toFixed(1)}
+                                    </Text>
+                                </View>
                         </View>
                     </View>
                 </ImageBackground>
             ) : (
-                <View>
-                </View>
+                <View />
             )}
         </TouchableWithoutFeedback>
         

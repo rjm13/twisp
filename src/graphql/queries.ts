@@ -81,6 +81,7 @@ export const getUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
+          genreID
           __typename
         }
         nextToken
@@ -137,6 +138,7 @@ export const getUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -354,6 +356,7 @@ export const getCreatorProfile = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -877,6 +880,7 @@ export const getStory = /* GraphQL */ `
         nextToken
         __typename
       }
+      numComments
       tags {
         items {
           id
@@ -1090,6 +1094,7 @@ export const listStories = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -1256,6 +1261,7 @@ export const getSeries = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -1648,6 +1654,7 @@ export const getPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -1754,6 +1761,7 @@ export const listPinnedStories = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -1908,6 +1916,7 @@ export const getInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -2019,6 +2028,7 @@ export const listInProgressStories = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -2176,6 +2186,7 @@ export const getFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -2222,6 +2233,25 @@ export const getFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        __typename
+      }
+      genreID
+      genre {
+        id
+        genre
+        icon
+        color
+        imageUri
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       __typename
@@ -2282,6 +2312,7 @@ export const listFinishedStories = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -2292,6 +2323,17 @@ export const listFinishedStories = /* GraphQL */ `
           seriesID
           seriesPart
           premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
           __typename
         }
         __typename
@@ -2376,6 +2418,7 @@ export const getComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -2520,6 +2563,7 @@ export const listComments = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -2842,6 +2886,7 @@ export const getRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -2985,6 +3030,7 @@ export const listRatings = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -3228,6 +3274,7 @@ export const getStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3327,6 +3374,7 @@ export const listStoryTags = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -3430,6 +3478,7 @@ export const getEroticStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3529,6 +3578,7 @@ export const listEroticStoryTags = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -4255,6 +4305,7 @@ export const storiesByDate = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4392,6 +4443,7 @@ export const storiesByUpdated = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4529,6 +4581,7 @@ export const storiesByPublisher = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4666,6 +4719,7 @@ export const storiesByCreator = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4803,6 +4857,7 @@ export const storiesByGenre = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4940,6 +4995,7 @@ export const storiesBySeries = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -5343,9 +5399,15 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            genre
+            id
+            color
+          }
           hidden
           status
           numListens
@@ -5426,6 +5488,7 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5510,6 +5573,7 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5596,6 +5660,7 @@ export const finishedStoriesByDate = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5606,6 +5671,17 @@ export const finishedStoriesByDate = /* GraphQL */ `
           seriesID
           seriesPart
           premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
           __typename
         }
         __typename
@@ -5679,6 +5755,7 @@ export const finishedStoriesByUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5689,6 +5766,17 @@ export const finishedStoriesByUser = /* GraphQL */ `
           seriesID
           seriesPart
           premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
           __typename
         }
         __typename
@@ -5762,6 +5850,7 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5772,6 +5861,112 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           seriesID
           seriesPart
           premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const finishedStoriesByGenre = /* GraphQL */ `
+  query FinishedStoriesByGenre(
+    $genreID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFinishedStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    finishedStoriesByGenre(
+      genreID: $genreID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          plan
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
           __typename
         }
         __typename
@@ -5821,6 +6016,7 @@ export const commentsByCreated = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -5906,6 +6102,7 @@ export const commentsByStory = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6070,6 +6267,7 @@ export const ratingsByUpdated = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6154,6 +6352,7 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6238,6 +6437,7 @@ export const ratingsByUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6377,6 +6577,7 @@ export const storyTagsByStoryId = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6443,9 +6644,16 @@ export const storyTagsByTagId = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            genre
+            id
+            color
+            icon
+          }
           hidden
           status
           numListens
@@ -6509,6 +6717,7 @@ export const eroticStoryTagsByStoryId = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -6575,6 +6784,7 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID

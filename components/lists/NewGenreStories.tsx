@@ -65,7 +65,7 @@ const NewGenreStories = ({genreid} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
         
         return (
@@ -82,6 +82,8 @@ const NewGenreStories = ({genreid} : any) => {
           time={item.time}
           id={item.id}
           ratingAvg={item.ratingAvg}
+          numComments={item.numComments}
+          numListens={item.numListens}
         />
       );}
 

@@ -24,7 +24,7 @@ const AudioStoryList = () => {
 
     useEffect(() => {
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
 
             setIsLoading(true);
 
@@ -38,12 +38,17 @@ const AudioStoryList = () => {
 
                 const pinnedData = await API.graphql(graphqlOperation(
                     pinnedStoriesByUser, {
+                        nextToken,
                         userID: userInfo.attributes.sub,
                     }
                 ))
 
                 for (let i = 0; i < pinnedData.data.pinnedStoriesByUser.items.length; i++) {
                     Pinned.push(pinnedData.data.pinnedStoriesByUser.items[i].story)
+                }
+
+                if (pinnedData.data.pinnedStoriesByUser.nextToken) {
+                    fetchStories(pinnedData.data.pinnedStoriesByUser.nextToken)
                 }
                      
                 setPinnedStories(Pinned);
@@ -54,7 +59,7 @@ const AudioStoryList = () => {
             console.log(e);
           }
         }
-        fetchStories(); 
+        fetchStories(null); 
       }, [didUpdate])
 
     //on render, get the user and then list the following connections for that user
@@ -124,7 +129,7 @@ const AudioStoryList = () => {
 
         if (item.genre) {
             icon = item.genre.icon
-            //genreName = item.genre.genre
+            genreName = item.genre.genre
             primary = item.genre.color
         }
         

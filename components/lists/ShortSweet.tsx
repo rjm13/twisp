@@ -52,7 +52,7 @@ const ShortSweet = () => {
                                     },
                                     time: {
                                         //under 30 minutes
-                                        lt: 2400000
+                                        lt: 2000000
                                     },
                                     imageUri: {
                                         attributeExists: true
@@ -99,6 +99,8 @@ const ShortSweet = () => {
           icon={icon}
           id={item.id}
           ratingAvg={item.ratingAvg}
+          numComments={item.numComments}
+          numlistens={item.numListens}
         />
       );}
 

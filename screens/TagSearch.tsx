@@ -79,7 +79,7 @@ const TagSearchScreen = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
 
         return (
@@ -98,6 +98,8 @@ const TagSearchScreen = ({navigation} : any) => {
             id={item.id}
             ratingAvg={item.ratingAvg}
             ratingAmt={item.ratingAmt}
+            numComments={item.numComments}
+            numListens={item.numListens}
       />
     );}
 
@@ -105,7 +107,7 @@ const TagSearchScreen = ({navigation} : any) => {
     return (
         <View >
           <LinearGradient
-          colors={['#363636','#2f217966', '#000']}
+          colors={['#363636','#000', '#000']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >

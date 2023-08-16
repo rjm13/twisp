@@ -74,6 +74,7 @@ const AuthorProfileSelect = ({navigation} : any) => {
 
                 const userData = await API.graphql(graphqlOperation(
                     createCreatorProfile, {input: {
+                        type: 'Author',
                         userID: userInfo.attributes.sub,
                         penName: name.toLowerCase(),
                         numAuthored: 0,

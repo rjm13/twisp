@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { 
-    StyleSheet, 
     ScrollView, 
     TouchableWithoutFeedback,
     View,
-    Dimensions
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -33,37 +31,6 @@ const HomeScreen = ({navigation} : any) => {
 
     //set from the user object, the top genres selected by the user
     const [TopThree, setTopThree] = useState([])
-
-    //set the listener to open a shared a story on app start up
-    useEffect(() => {
-        
-
-        // async function getInitialURL(params : any) {
-    
-        //     if(!params) return;
-        
-        //     const initialURL = await Linking.getInitialURL();
-            
-        //     if (initialURL)  {
-        //         let response = Linking.parse(initialURL)
-        //         setDeepLink(response)
-        //     }
-        //     if (params) {
-        //         let response = Linking.parse(params)
-                    
-        //         setDeepLink(response)
-        //     }
-        // }
-
-        const handleEvent = (e : any) => {console.log(e)}
-    
-        // listen for new url events coming from Expo
-            //Linking.addEventListener('url', event => {if (event) {getInitialURL(event.url);}}); 
-            //const subscribe = Linking.addEventListener('url', e => {if (e) {handleEvent(e)}}); 
-            //return (() => {Linking.removeEventListener('url', event => {getInitialURL(event.url);});})
-            //return () => subscribe.remove();
-
-      }, [])
 
       //if the app opens from a shared link, direct the user to that story screen
     useEffect(() => {
@@ -155,24 +122,5 @@ const HomeScreen = ({navigation} : any) => {
         </LinearGradient>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-       height: Dimensions.get('window').height
-    },
-    header: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginHorizontal: 20,
-        marginTop: 20,
-    },
-    pageheader: {
-      color: '#fff',
-      fontSize: 22,
-      fontWeight: 'bold',
-      marginHorizontal: 0,
-  },
-});
 
 export default HomeScreen;

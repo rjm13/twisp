@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getGenre, listTags } from '../src/graphql/queries';
+import { genreTagsByGenreId, listTags } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const GenreTags = ({navigation} : any) => {
@@ -32,14 +32,14 @@ const GenreTags = ({navigation} : any) => {
 
         const fetchTags = async () => {
             let response = await API.graphql(graphqlOperation(
-                getGenre, {
-                        id: genreRoute
+                genreTagsByGenreId, {
+                        genreId: genreRoute
                     
                 }
             ))
-            for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                    tagsarr.push(response.data.getGenre.tags.items[i].tag)
+            for (let i = 0; i < response.data.genreTagsByGenreId.items.length; i++) {
+                if (response.data.genreTagsByGenreId.items[i].tag.count > 0) {
+                    tagsarr.push(response.data.genreTagsByGenreId.items[i].tag)
                 }
                 
             }

@@ -15,12 +15,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { getUser } from '../src/graphql/queries';
+import { pinnedStoriesByUser } from '../src/graphql/queries';
 
 import {useNavigation} from '@react-navigation/native';
-
-//import PinStory from '../components/functions/PinStory';
-//import unPinStory from './functions/UnPinStory';
 import ShareStory from '../components/functions/ShareStory';
 import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
@@ -40,14 +37,16 @@ const StoryTile = ({
     id,
     ratingAvg,
     ratingAmt,
-    icon
+    icon,
+    numComments,
+    numListens,
 } : any) => {
 
     const [nextToken, setNextToken] = useState()
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
-    const PinStory = async ({id} : any) => {
+    const PinStory = async ({storyID} : any) => {
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
@@ -56,49 +55,55 @@ const StoryTile = ({
         let createPin = await API.graphql(graphqlOperation(
             createPinnedStory, {input: {
                 userID: userInfo.attributes.sub, 
-                storyID: id,
+                storyID: storyID,
                 type: "PinnedStory",
                 createdAt: new Date(),
             }}
         ))
         console.log(createPin)
     
-        pins.push(id);
+        pins.push(storyID);
         setUserPins(pins)
     
     }
 
-    const unPinStory = async ({id} : any) => {
+    const unPinStory = async ({storyID} : any) => {
+
+        let arr = userPins;
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
-        let getPin = await API.graphql(graphqlOperation(
-            getUser, {nextToken, id: userInfo.attributes.sub}
-        ))
     
-        const getThePins = async () => {
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === id) {
+        const getThePins = async (nextToken: any) => {
+
+
+            let getPin = await API.graphql(graphqlOperation(
+                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+            ))
+
+            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
+                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
                     let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
                     ))
                     console.log(deleteConnection)
                 }
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1);
     
-                if (getPin.data.getUser.Pinned.nextToken) {
-                    setNextToken(getPin.data.getUser.Pinned.nextToken);
-                    getThePins();
-                    return;
-                }
             }
     
-                const index = userPins.indexOf(storyID);
-    
-                const x = userPins.splice(index, 1);
-    
-                setUserPins(x)
+            if (getPin.data.pinnedStoriesByUser.nextToken) {
+                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
+                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
+                return;
+            }     
         }
-        getThePins(); 
+        
+        getThePins(null); 
+        setUserPins(arr)
     }
         
 //temporary signed image uri
@@ -231,30 +236,62 @@ useEffect(() => {
                                 <Text style={styles.name}>
                                     {title}
                                 </Text> 
-                            
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={[styles.category]}>
-                                    {genreName}
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', marginTop: 4, alignItems: 'center'}}>
-                                <FontAwesome5 
-                                    name='book-open'
-                                    size={12}
-                                    color='#ffffffa5'
-                                />
-                                <Text style={styles.userId}>
-                                    {author}
-                                </Text>  
-                                <FontAwesome5 
-                                    name='book-reader'
-                                    size={12}
-                                    color='#ffffffa5'
-                                />
-                                <Text style={styles.userId}>
-                                    {narrator}
-                                </Text> 
-                            </View>
+                                <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
+                                    <FontAwesome5 
+                                        name='book-open'
+                                        size={12}
+                                        color='#ffffffa5'
+                                    />
+                                    <Text style={styles.userId}>
+                                        {author}
+                                    </Text>  
+                                    <FontAwesome5 
+                                        name='book-reader'
+                                        size={12}
+                                        color='#ffffffa5'
+                                    />
+                                    <Text style={styles.userId}>
+                                        {narrator}
+                                    </Text> 
+                                </View>
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                                    <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        {genreName}
+                                    </Text>
+                                    <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                        <FontAwesome 
+                                            name='comment'
+                                            color='#ffffffa5'
+                                            size={12}
+                                        />
+                                        <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                            {numComments ? numComments : 0}
+                                        </Text>
+                                    </View>
+                                    <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                        <FontAwesome5 
+                                            name='headphones'
+                                            color='#ffffffa5'
+                                            size={12}
+                                        />
+                                        <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                            {numListens ? numListens : 0}
+                                        </Text>
+                                    </View>
+                                    {isVisible ? null : (
+                                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                            <FontAwesome 
+                                                name='star'
+                                                color='#ffffffa5'
+                                                size={12}
+                                            />
+                                            <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                {(ratingAvg/10).toFixed(1)}
+                                            </Text>
+                                        </View>
+                                    )}
+                                    
+                                </View>
                         </View>
                         {isVisible ? (
                             <View>

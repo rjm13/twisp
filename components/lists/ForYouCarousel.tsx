@@ -11,18 +11,17 @@ import {
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { storiesByUpdated, getUser } from '../../src/graphql/queries';
+import { storiesByUpdated, pinnedStoriesByUser } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
 import { AppContext } from '../../AppContext';
-//import PinStory from '../functions/PinStory';
-//import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
 
@@ -54,36 +53,42 @@ const ForYouCarousel = () => {
     }
 
     const unPinStory = async ({storyID} : any) => {
+
+        let arr = userPins;
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
-        let getPin = await API.graphql(graphqlOperation(
-            getUser, {nextToken, id: userInfo.attributes.sub}
-        ))
     
-        const getThePins = async () => {
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+        const getThePins = async (nextToken: any) => {
+
+
+            let getPin = await API.graphql(graphqlOperation(
+                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+            ))
+
+            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
+                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
                     let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
                     ))
                     console.log(deleteConnection)
                 }
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1);
     
-                if (getPin.data.getUser.Pinned.nextToken) {
-                    setNextToken(getPin.data.getUser.Pinned.nextToken);
-                    getThePins();
-                    return;
-                }
             }
     
-                const index = userPins.indexOf(storyID);
-    
-                const x = userPins.splice(index, 1);
-    
-                setUserPins(x)
+            if (getPin.data.pinnedStoriesByUser.nextToken) {
+                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
+                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
+                return;
+            }     
         }
-        getThePins(); 
+        
+        getThePins(null); 
+        setUserPins(arr)
     }
 
     //global context for nsfw filter
@@ -93,13 +98,13 @@ const ForYouCarousel = () => {
     const [Storys, setStorys] = useState([]);
 
     //carousel tile
-    const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, color} : any) => {
+    const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
 
-           //on render, determine if the story in alraedy pinned or not
-           useEffect(() => {
-                if (userPins.includes(id) === true) {
-                    setQd(true)
-                }
+        //on render, determine if the story in alraedy pinned or not
+        useEffect(() => {
+            if (userPins.includes(id) === true) {
+                setQd(true)
+            }
         }, [])
 
 
@@ -185,22 +190,16 @@ const ForYouCarousel = () => {
                                             <Text style={styles.title}>
                                                 {title}
                                             </Text> 
-                                            <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                                {genreName}
-                                            </Text>
                                         </View>
-                                        
                                     </View>
-                                    
-                                    
                                     <View>
-                                        <View style={{ flexDirection: 'row', marginTop: 4, alignItems: 'center'}}>
+                                        <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
                                             <FontAwesome5 
                                                 name='book-open'
                                                 size={12}
                                                 color='#ffffffa5'
                                             />
-                                            <Text style={styles.userId}>
+                                            <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
                                                 {author}
                                             </Text>  
                                             <FontAwesome5 
@@ -208,11 +207,46 @@ const ForYouCarousel = () => {
                                                 size={12}
                                                 color='#ffffffa5'
                                             />
-                                            <Text style={styles.userId}>
+                                            <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
                                                 {narrator}
                                             </Text> 
                                         </View>
                                     </View>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
+                                                <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    {genreName}
+                                                </Text>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome 
+                                                        name='comment'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {numComments ? numComments : 0}
+                                                    </Text>
+                                                </View>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome5 
+                                                        name='headphones'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {numListens ? numListens : 0}
+                                                    </Text>
+                                                </View>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome 
+                                                        name='star'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {(ratingAvg/10).toFixed(1)}
+                                                    </Text>
+                                                </View>
+                                        </View>
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
@@ -221,7 +255,7 @@ const ForYouCarousel = () => {
                             { isVisible ? (
                                 <View style={styles.popupblock}>
                                     <View style={{ marginTop: 20, marginBottom: 10 }}> 
-                                        <Text style={styles.paragraph}>
+                                        <Text style={[styles.paragraph, {fontSize: 14}]}>
                                             {summary}
                                         </Text>
                                     </View>
@@ -268,9 +302,7 @@ const ForYouCarousel = () => {
                     </View>
                         </ImageBackground>
                     ) : (
-                        <View>
-                            
-                        </View>
+                        <View />
                     )}
                         
                 </TouchableWithoutFeedback>
@@ -292,21 +324,18 @@ const ForYouCarousel = () => {
                             type: 'Story',
                             sortDirection: 'DESC',
                             filter: {
-                                // approved: {
-                                //     eq: 'approved'
-                                // },
+                                approved: {
+                                    eq: true,
+                                },
                                 hidden: {
                                     eq: false
                                 },
                                 imageUri: {
                                     attributeExists: true
                                 },
-                                // genreID: {
-                                //     ne: '1108a619-1c0e-4064-8fce-41f1f6262070'
-                                // },
-                                // nsfw: {
-                                //     ne: nsfwOn === true ? true : null
-                                // }
+                                nsfw: {
+                                    ne: nsfwOn === true ? true : null
+                                }
                                 // ratingAvg: {
                                 //     gt: 6
                                 // },
@@ -367,7 +396,9 @@ const ForYouCarousel = () => {
           time={item?.time}
           id={item?.id}
           userID={item?.userID}
-          
+          numListens={item?.numListens}
+          numComments={item?.numComments}
+          ratingAvg={item?.ratingAvg}
         />
       );}
 

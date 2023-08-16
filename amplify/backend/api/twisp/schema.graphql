@@ -95,6 +95,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   description: String
   nsfw: Boolean
   comments: [Comment] @hasMany (indexName: "byStory", fields: ["id"])
+  numComments: Int
   tags: [Tag] @manyToMany (relationName: "StoryTag")
   eroticTags: [EroticTag] @manyToMany (relationName: "EroticStoryTag")
   ratingAvg: Float
@@ -203,6 +204,8 @@ type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, 
   user: User @hasOne (fields: ["userID"])
   storyID: ID @index(name: "byStory", sortKeyFields: ["createdAt"])
   story: Story @hasOne (fields: ["storyID"])
+  genreID: ID @index(name: "byGenre", queryField: "finishedStoriesByGenre", sortKeyFields: ["createdAt"])
+  genre: Genre @hasOne (fields: ["genreID"])
 }
 
 type Comment @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

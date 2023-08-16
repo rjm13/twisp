@@ -25,7 +25,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {graphqlOperation, API, Storage, Auth} from 'aws-amplify';
-import { getStory, getUser } from '../src/graphql/queries';
+import { getStory, getUser, pinnedStoriesByUser } from '../src/graphql/queries';
 import { deletePinnedStory, createFinishedStory, updateStory, createInProgressStory, updateInProgressStory, deleteInProgressStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
@@ -287,38 +287,44 @@ useEffect(() => {
     }
 
 //unpin a story
-    const unPinStory = async ({storyID} : any) => {
-        
-        let userInfo = await Auth.currentAuthenticatedUser();
+const unPinStory = async ({storyID} : any) => {
+
+    let arr = userPins;
+
+    let userInfo = await Auth.currentAuthenticatedUser();
+
+
+    const getThePins = async (nextToken: any) => {
+
 
         let getPin = await API.graphql(graphqlOperation(
-            getUser, {nextToken, id: userInfo.attributes.sub}
+            pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
         ))
 
-        const getThePins = async () => {
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
-                    let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
-                    ))
-                    console.log(deleteConnection)
-                }
-
-                if (getPin.data.getUser.Pinned.nextToken) {
-                    setNextToken(getPin.data.getUser.Pinned.nextToken);
-                    getThePins();
-                    return;
-                }
+        for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
+            if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
+                let deleteConnection = await API.graphql(graphqlOperation(
+                    deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
+                ))
+                console.log(deleteConnection)
             }
 
-                const index = userPins.indexOf(storyID);
+            const index = arr.indexOf(storyID);
 
-                const x = userPins.splice(index, 1);
+            arr.splice(index, 1);
 
-                setUserPins(x)
         }
-        getThePins(); 
+
+        if (getPin.data.pinnedStoriesByUser.nextToken) {
+            //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
+            getThePins(getPin.data.pinnedStoriesByUser.nextToken);
+            return;
+        }     
     }
+    
+    getThePins(null); 
+    setUserPins(arr)
+}
 
 //rating state (if rated or not)
     const [isLiked, setIsLiked] = useState(false);

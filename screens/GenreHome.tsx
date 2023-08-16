@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getGenre, listStoryTags } from '../src/graphql/queries';
+import { getGenre, genreTagsByGenreId,  } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 import GenreCarousel from '../components/lists/GenreCarousel';
@@ -27,8 +27,6 @@ const GenreHome = ({navigation} : any) => {
 //route params from the StoriesScreen to specifiy the genre
     const route = useRoute();
     const {genreRoute} = route.params
-
-    console.log(genreRoute)
 
 //get the genre information
     const [GenreInfo, setGenreInfo] = useState({
@@ -58,10 +56,20 @@ const [trendingTags, setTrendingTags] = useState([]);
                     )
                     setGenreInfo(response.data.getGenre);
 
-                        for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                            if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4 && response.data.getGenre.tags.items[i].tag.nsfw === false) {
-                                if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                                    Tags.push(response.data.getGenre.tags.items[i].tag)
+                    const respons = await API.graphql(
+                        graphqlOperation(
+                            genreTagsByGenreId, {
+                                genreId: genreRoute
+                            } 
+                        )
+                    )
+
+                    console.log(respons.data.genreTagsByGenreId.items)
+
+                      for (let i = 0; i < respons.data.genreTagsByGenreId.items.length; i++) {
+                            if (Tags[0]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[1]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[2]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags.length < 4) {
+                                if (respons.data.genreTagsByGenreId.items[i].tag.count > 0) {
+                                    Tags.push(respons.data.genreTagsByGenreId.items[i].tag)
                                 }
                             }
                         }

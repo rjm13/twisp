@@ -248,19 +248,7 @@ const CreatorProfile = ({status} : any) => {
 
                     const index = arr.indexOf(userID);
 
-                    console.log('index is', index)
-
-            
-                    //const x = arr.splice(index, 1)
-
-                    //console.log('this is', x)
                     arr.splice(index, 1)
-                    
-                    //setUserFollowing(x)
-
-                    //console.log('unfollowing2', userFollowing)
-                        
-                    
                 }
             }
 
@@ -272,7 +260,6 @@ const CreatorProfile = ({status} : any) => {
 
         getTheFollowing(null);
         setUserFollowing(arr)
-        console.log('unfollowing2', userFollowing)
     }
 
     function FollowButton () {

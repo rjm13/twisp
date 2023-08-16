@@ -22,7 +22,7 @@ import { AppContext } from '../../AppContext';
 //import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
-import { storiesByGenre, getUser } from '../../src/graphql/queries';
+import { storiesByGenre, pinnedStoriesByUser } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
@@ -55,36 +55,42 @@ const GenreCarousel = ({genreid} : any) => {
     }
 
     const unPinStory = async ({storyID} : any) => {
+
+        let arr = userPins;
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
-        let getPin = await API.graphql(graphqlOperation(
-            getUser, {nextToken, id: userInfo.attributes.sub}
-        ))
     
-        const getThePins = async () => {
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+        const getThePins = async (nextToken: any) => {
+
+
+            let getPin = await API.graphql(graphqlOperation(
+                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+            ))
+
+            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
+                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
                     let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
                     ))
                     console.log(deleteConnection)
                 }
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1);
     
-                if (getPin.data.getUser.Pinned.nextToken) {
-                    setNextToken(getPin.data.getUser.Pinned.nextToken);
-                    getThePins();
-                    return;
-                }
             }
     
-                const index = userPins.indexOf(storyID);
-    
-                const x = userPins.splice(index, 1);
-    
-                setUserPins(x)
+            if (getPin.data.pinnedStoriesByUser.nextToken) {
+                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
+                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
+                return;
+            }     
         }
-        getThePins(); 
+        
+        getThePins(null); 
+        setUserPins(arr)
     }
 
     const { nsfwOn } = useContext(AppContext);

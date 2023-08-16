@@ -22,7 +22,6 @@ import { AppContext } from '../AppContext';
 
 import { listGenres, tagsByUpdated, inProgressStoriesByUser } from '../src/graphql/queries';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { UserInterfaceIdiom } from 'expo-constants';
 
 
 
@@ -36,7 +35,7 @@ const AudioStoryHome = ({navigation} : any) => {
   const { progUpdate } = useContext(AppContext);
 
   //genre array state
-  const[genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState([]);
     
 //fetch the genres
   useEffect(() => {
@@ -75,7 +74,7 @@ const AudioStoryHome = ({navigation} : any) => {
     return (
       <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreRoute: id}))) : null}>
         <View style={{
-          flexDirection: 'row', height: 60, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: '100%'}}>
+          flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: '100%'}}>
             {imageUri ? (
               <Image
                 source={{ uri: imageUri}}
@@ -84,7 +83,6 @@ const AudioStoryHome = ({navigation} : any) => {
             ) : null}
 
               <LinearGradient 
-                //colors={[PrimaryColor, PrimaryColor, PrimaryColor, PrimaryColor + '80']}
                 colors={[color, color, color, 'transparent']}
                 locations={[0.0, 0.33, 0.66, 1.0]}
                 start={{ x: 0, y: 0 }}
@@ -139,7 +137,7 @@ const AudioStoryHome = ({navigation} : any) => {
           sortDirection: 'DESC',
           filter: {
             count: {
-              gt: 1
+              gt: 0
             }
           }
       }))
@@ -375,8 +373,8 @@ const styles = StyleSheet.create ({
 },
 genre: {
     color: '#000',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '900',
     textTransform: 'capitalize',
     paddingHorizontal: 20,
 },
@@ -409,7 +407,7 @@ box: {
     overflow: 'hidden'
 },
   genrebox: {
-    height: 60,
+    height: 100,
     borderRadius: 15,
     flexDirection: 'row',
     alignItems: 'center',

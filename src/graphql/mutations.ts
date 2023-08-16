@@ -84,6 +84,7 @@ export const createUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
+          genreID
           __typename
         }
         nextToken
@@ -140,6 +141,7 @@ export const createUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -271,6 +273,7 @@ export const updateUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
+          genreID
           __typename
         }
         nextToken
@@ -327,6 +330,7 @@ export const updateUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -458,6 +462,7 @@ export const deleteUser = /* GraphQL */ `
           updatedAt
           userID
           storyID
+          genreID
           __typename
         }
         nextToken
@@ -514,6 +519,7 @@ export const deleteUser = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -663,6 +669,7 @@ export const createCreatorProfile = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -796,6 +803,7 @@ export const updateCreatorProfile = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -929,6 +937,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -1675,6 +1684,7 @@ export const createStory = /* GraphQL */ `
         nextToken
         __typename
       }
+      numComments
       tags {
         items {
           id
@@ -1959,6 +1969,7 @@ export const updateStory = /* GraphQL */ `
         nextToken
         __typename
       }
+      numComments
       tags {
         items {
           id
@@ -2243,6 +2254,7 @@ export const deleteStory = /* GraphQL */ `
         nextToken
         __typename
       }
+      numComments
       tags {
         items {
           id
@@ -2543,6 +2555,7 @@ export const createSeries = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -2662,6 +2675,7 @@ export const updateSeries = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -2781,6 +2795,7 @@ export const deleteSeries = /* GraphQL */ `
           summary
           description
           nsfw
+          numComments
           ratingAvg
           ratingAmt
           genreID
@@ -3228,6 +3243,7 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3418,6 +3434,7 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3608,6 +3625,7 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3798,6 +3816,7 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -3989,6 +4008,7 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4180,6 +4200,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4373,6 +4394,7 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4419,6 +4441,25 @@ export const createFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        __typename
+      }
+      genreID
+      genre {
+        id
+        genre
+        icon
+        color
+        imageUri
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       __typename
@@ -4563,6 +4604,7 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4609,6 +4651,25 @@ export const updateFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        __typename
+      }
+      genreID
+      genre {
+        id
+        genre
+        icon
+        color
+        imageUri
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       __typename
@@ -4753,6 +4814,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -4799,6 +4861,25 @@ export const deleteFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        __typename
+      }
+      genreID
+      genre {
+        id
+        genre
+        icon
+        color
+        imageUri
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       __typename
@@ -4883,6 +4964,7 @@ export const createComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -5075,6 +5157,7 @@ export const updateComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -5267,6 +5350,7 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -5867,6 +5951,7 @@ export const createRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -6058,6 +6143,7 @@ export const updateRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -6249,6 +6335,7 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -6678,6 +6765,7 @@ export const createStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -6825,6 +6913,7 @@ export const updateStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -6972,6 +7061,7 @@ export const deleteStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -7119,6 +7209,7 @@ export const createEroticStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -7266,6 +7357,7 @@ export const updateEroticStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename
@@ -7413,6 +7505,7 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           nextToken
           __typename
         }
+        numComments
         tags {
           nextToken
           __typename

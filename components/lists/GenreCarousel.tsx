@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native'
 import Carousel from 'react-native-reanimated-carousel';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { AppContext } from '../../AppContext';
@@ -22,7 +23,7 @@ import { AppContext } from '../../AppContext';
 //import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
-import { storiesByGenre, getUser } from '../../src/graphql/queries';
+import { storiesByGenre, pinnedStoriesByUser } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
@@ -55,36 +56,42 @@ const GenreCarousel = ({genreid} : any) => {
     }
 
     const unPinStory = async ({storyID} : any) => {
+
+        let arr = userPins;
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
-        let getPin = await API.graphql(graphqlOperation(
-            getUser, {nextToken, id: userInfo.attributes.sub}
-        ))
     
-        const getThePins = async () => {
-            for (let i = 0; i < getPin.data.getUser.Pinned.items.length; i++) {
-                if (getPin.data.getUser.Pinned.items[i].storyID === storyID) {
+        const getThePins = async (nextToken: any) => {
+
+
+            let getPin = await API.graphql(graphqlOperation(
+                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+            ))
+
+            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
+                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
                     let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.getUser.Pinned.items[i].id}}
+                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
                     ))
                     console.log(deleteConnection)
                 }
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1);
     
-                if (getPin.data.getUser.Pinned.nextToken) {
-                    setNextToken(getPin.data.getUser.Pinned.nextToken);
-                    getThePins();
-                    return;
-                }
             }
     
-                const index = userPins.indexOf(storyID);
-    
-                const x = userPins.splice(index, 1);
-    
-                setUserPins(x)
+            if (getPin.data.pinnedStoriesByUser.nextToken) {
+                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
+                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
+                return;
+            }     
         }
-        getThePins(); 
+        
+        getThePins(null); 
+        setUserPins(arr)
     }
 
     const { nsfwOn } = useContext(AppContext);
@@ -148,188 +155,217 @@ const GenreCarousel = ({genreid} : any) => {
     },[didUpdate])
 
 //item for the flatlist carousel
-    const Item = ({ title, genreName, icon, summary, imageUri, author, narrator, time, id} : any) => {
+const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
 
-        const [imageU, setImageU] = useState()
-        
-        useEffect(() => {
-            const fetchImage = async () => {
-                let response = await Storage.get(imageUri);
-                setImageU(response);
-            }
-            fetchImage()
-        }, [])
-
-        const navigation = useNavigation();
-
-        //set the gloabal context for the storyID
-        const { setStoryID } = useContext(AppContext);
-
-        const onPlay = () => {
-            setStoryID(id);
+    //on render, determine if the story in alraedy pinned or not
+    useEffect(() => {
+        if (userPins.includes(id) === true) {
+            setQd(true)
         }
+    }, [])
 
-        const [isVisible, setIsVisible] = useState(false);
-        
-        const onShow = () => {
-            if ( isVisible === false ) {
-                setIsVisible(true);
-            }
-            if ( isVisible === true ) {
-                setIsVisible(false);
-            }  
-        };
+
+    const [imageU, setImageU] = useState('');
+    
+    useEffect(() => {
+        const fetchImage = async () => {
+            let response = await Storage.get(imageUri);
+            setImageU(response);
+        }
+        fetchImage()
+    }, [])
+
+    //navigation hook
+    const navigation = useNavigation();
+
+    //set the gloabal context for the storyID
+    const { setStoryID } = useContext(AppContext);
+    const onPlay = () => {setStoryID(id);}
+
+    //determine to show the extra story info or not
+    const [isVisible, setIsVisible] = useState(false);
+    
+    const onShow = () => {
+        if ( isVisible === false ) {
+            setIsVisible(true);
+        }
+        if ( isVisible === true ) {
+            setIsVisible(false);
+        }  
+    };
 
     //queueing the item
-        const [isQ, setQd] = useState(false);
-        
-        const onQPress = () => {
-            if ( isQ === false ) {
-                setQd(true);
-                PinStory({storyID: id})
-            }
-            if ( isQ === true ) {
-                setQd(false);
-                unPinStory({storyID: id});
-            }  
-        };
+    const [isQ, setQd] = useState(false);
+    
+    const onQPress = () => {
+        if ( isQ === false ) {
+            setQd(true);
+            PinStory({storyID: id})
+        }
+        if ( isQ === true ) {
+            setQd(false);
+            unPinStory({storyID: id});
+        }  
+    };
 
-        //on render, determine if the story in alraedy pinned or not
-        useEffect(() => {
-            if (userPins.includes(id) === true) {
-                setQd(true)
-            }
-        }, [])
+    return (
+        <View style={styles.container}>
+     
+            <View style={{ position: 'absolute', alignSelf: 'center', top: 80, backgroundColor: 'transparent'}}>
+                <FontAwesome5 
+                    name={icon}
+                    color='#ffffff'
+                    size={50}
+                />
+            </View>
 
-        return (
-            <View style={styles.container}>
-                <View style={{ position: 'absolute', alignSelf: 'center', top: 80, backgroundColor: 'transparent'}}>
-                    <FontAwesome5 
-                        name={icon}
-                        color='#ffffff'
-                        size={50}
-                    />
-                </View>
-                <TouchableWithoutFeedback onPress={() => navigation.navigate('StoryScreen', {storyID: id})}>
-                <ImageBackground
-                    source={{uri: imageU}}
-                    style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
-                    imageStyle={{
-                        borderRadius: 15,
-                        
-                    }}
-                >
-                    <View style={{ 
-                        backgroundColor: '#000000B5',
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('StoryScreen', {storyID: id})}>
+                {imageU !== '' ? (
+                    <ImageBackground
+                        source={{uri: imageU}}
+                        style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
+                        imageStyle={{borderRadius: 15}}
+                    >
+                
+                <View 
+                    style={{ 
+                        backgroundColor: '#000000BF',
                         borderBottomLeftRadius: 15,
                         borderBottomRightRadius: 15,
                         borderTopRightRadius: isVisible === true ? 15 : 0,
                         borderTopLeftRadius: isVisible === true ? 15 : 0,
                         width: '100%',
+                        height: isVisible === true ? 280 : undefined,
                         padding: 10, 
-                    }}
-                    >
-                        <TouchableWithoutFeedback onPress={onShow}>
+                        justifyContent: 'space-between'
+                }}>
+                    <TouchableWithoutFeedback onPress={onShow}>
+                        <View>
                             <View>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <View>
+                                        <Text style={styles.title}>
+                                            {title}
+                                        </Text> 
+                                    </View>
+                                </View>
                                 <View>
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                        <View>
-                                            <Text style={styles.title}>
-                                                {title}
-                                            </Text> 
-                                            <Text style={[styles.category]}>
+                                    <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
+                                        <FontAwesome5 
+                                            name='book-open'
+                                            size={12}
+                                            color='#ffffffa5'
+                                        />
+                                        <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                            {author}
+                                        </Text>  
+                                        <FontAwesome5 
+                                            name='book-reader'
+                                            size={12}
+                                            color='#ffffffa5'
+                                        />
+                                        <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                            {narrator}
+                                        </Text> 
+                                    </View>
+                                </View>
+                                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
+                                            <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                                 {genreName}
                                             </Text>
-                                        </View>
-                                        
+                                            <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                <FontAwesome 
+                                                    name='comment'
+                                                    color='#ffffffa5'
+                                                    size={12}
+                                                />
+                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    {numComments ? numComments : 0}
+                                                </Text>
+                                            </View>
+                                            <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                <FontAwesome5 
+                                                    name='headphones'
+                                                    color='#ffffffa5'
+                                                    size={12}
+                                                />
+                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    {numListens ? numListens : 0}
+                                                </Text>
+                                            </View>
+                                            <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                <FontAwesome 
+                                                    name='star'
+                                                    color='#ffffffa5'
+                                                    size={12}
+                                                />
+                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    {(ratingAvg/10).toFixed(1)}
+                                                </Text>
+                                            </View>
                                     </View>
-                                    
-                                    
-                                    <View>
-                                        <View style={{ flexDirection: 'row', marginTop: 4, alignItems: 'center'}}>
-                                            <FontAwesome5 
-                                                name='book-open'
-                                                size={12}
-                                                color='#ffffffa5'
-                                            />
-                                                <Text style={styles.userId}>
-                                                    {author}
-                                                </Text>  
-                                            <FontAwesome5 
-                                                name='book-reader'
-                                                size={12}
-                                                color='#ffffffa5'
-                                            />
-                                                <Text style={styles.userId}>
-                                                    {narrator}
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    <View>
+                        { isVisible ? (
+                            <View style={styles.popupblock}>
+                                <View style={{ marginTop: 20, marginBottom: 10 }}> 
+                                    <Text style={[styles.paragraph, {fontSize: 14}]}>
+                                        {summary}
+                                    </Text>
+                                </View>
+                        <View> 
+                            <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
+                                    <TouchableOpacity onPress={onPlay}>
+                                        <View style={{ 
+                                            flexDirection: 'row', 
+                                            alignItems: 'center', 
+                                            borderRadius: 30,
+                                            paddingVertical: 2,
+                                            paddingHorizontal: 8,
+                                            backgroundColor: '#ffffff4D',
+                                            borderColor: '#ffffffCC',
+                                            }}>
+                                                <FontAwesome5 
+                                                    name='play'
+                                                    color='#ffffff'
+                                                    size={10}
+                                                    style={{marginRight: 8}}
+                                                />
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    fontWeight: 'normal',
+                                                    color: '#ffffffCC',
+                                                
+                                                }}>
+                                                    {TimeConversion(time)}
                                                 </Text> 
                                         </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
-
-
-                        <View>
-                            { isVisible ? (
-                                <View style={styles.popupblock}>
-                                    <View style={{ marginTop: 20, marginBottom: 10 }}> 
-                                        <Text style={styles.paragraph}>
-                                            {summary}
-                                        </Text>
-                                    </View>
-                        <View> 
-                                <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
-                                        <TouchableOpacity onPress={onPlay}>
-                                            <View style={{ 
-                                                flexDirection: 'row', 
-                                                alignItems: 'center', 
-                                                borderRadius: 30,
-                                                paddingVertical: 2,
-                                                paddingHorizontal: 8,
-                                                backgroundColor: '#ffffff4D',
-                                                borderColor: '#ffffffCC',
-                                                }}>
-                                                    <FontAwesome5 
-                                                        name='play'
-                                                        color='#ffffff'
-                                                        size={10}
-                                                        style={{marginRight: 8}}
-                                                    />
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 'normal',
-                                                        color: '#ffffffCC',
-                                                    
-                                                    }}>
-                                                        {TimeConversion(time)}
-                                                    </Text> 
-                                            </View>
-                                        </TouchableOpacity>
-                                        
-                                        <AntDesign
-                                            name={isQ ? 'pushpin' : 'pushpino'}
-                                            size={22}
-                                            color={isQ ? 'cyan' : 'white'}
-                                            onPress={onQPress}
-                                        />
+                                    </TouchableOpacity>
                                     
+                                    <AntDesign
+                                        name={isQ ? 'pushpin' : 'pushpino'}
+                                        size={22}
+                                        color={isQ ? 'cyan' : 'white'}
+                                        onPress={onQPress}
+                                    />
                                 </View>
-
-                            
-                                    </View>
                             </View>
-
-                            ) : false } 
                         </View>
-
+                        ) : false } 
                     </View>
-
-                </ImageBackground>
-                </TouchableWithoutFeedback>
-            </View>
-        );
-    }
+                </View>
+                    </ImageBackground>
+                ) : (
+                    <View />
+                )}
+                    
+            </TouchableWithoutFeedback>
+        </View>
+    );
+}
 
     const renderItem = ({ item }: any) => {
 
@@ -360,6 +396,9 @@ const GenreCarousel = ({genreid} : any) => {
           narrator={item.narrator}
           time={item.time}
           id={item.id}
+          numComments={item.numComments}
+          numlistens={item.numListens}
+          ratingAvg={item.ratingAvg}
           //liked={item.liked}
           //rating={item.rating}
         />
