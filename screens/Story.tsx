@@ -212,7 +212,12 @@ const StoryScreen  = ({navigation} : any) => {
                     setImageU(response);
                 }
 
-                const storyComments = await API.graphql(graphqlOperation(commentsByStory, {nextToken, storyID: storyID}))
+                const storyComments = await API.graphql(graphqlOperation(
+                    commentsByStory, {
+                        nextToken, 
+                        sortDirection: 'DESC',
+                        storyID: storyID
+                }))
 
 
                 setCommentList(storyComments.data.commentsByStory.items)
@@ -225,8 +230,8 @@ const StoryScreen  = ({navigation} : any) => {
 
     const [imageU, setImageU] = useState()
 
-         //on render, determine if the story in alraedy pinned or not
-         useEffect(() => {
+    //on render, determine if the story in alraedy pinned or not
+    useEffect(() => {
             if (userPins.includes(storyID) === true) {
                 setQd(true)
             }
@@ -369,6 +374,7 @@ const StoryScreen  = ({navigation} : any) => {
                     genreID: Story?.genreID,
                     type: 'Rating',
                     createdAt: new Date(),
+                    updatedAt: new Date(),
                 }}
             ))
             let newRating =  Math.floor(((ratingNum + (Story?.ratingAvg * Story?.ratingAmt))/(Story?.ratingAmt + 1))*10)
@@ -496,7 +502,9 @@ const StoryScreen  = ({navigation} : any) => {
             ))
 
             setUser(userData.data.getUser);
-            
+            const UserImage = await Storage.get(userData.data.getUser.imageUri)
+
+            setUserImage(UserImage)
             //check if its pinned
             if (userPins.includes(id) === true) {
                 setQd(true)
@@ -521,8 +529,7 @@ const StoryScreen  = ({navigation} : any) => {
                 setIsFinished(true);
             }
             
-            const UserImage = await Storage.get(userData.data.getUser.imageUri)
-            setUserImage(UserImage)
+            
         }
     fetchUser();
     
@@ -555,20 +562,34 @@ const StoryScreen  = ({navigation} : any) => {
 
         if (comment.length > 0) {
             try {
-                await API.graphql(
-                        graphqlOperation(createComment, { input: 
+                const response = await API.graphql(
+                    graphqlOperation(createComment, { input: 
+                        {
+                            type: 'Comment',
+                            createdAt: new Date(),
+                            storyID: storyID,
+                            content: comment,
+                            userID: poster.attributes.sub,
+                            approved: true,
+                        }
+                }))
+
+                if (response) {
+                    await API.graphql(
+                        graphqlOperation(updateStory, { input: 
                             {
-                                type: 'Comment',
-                                createdAt: new Date(),
-                                storyID: storyID,
-                                content: comment,
-                                userID: poster.attributes.sub,
-                                approved: true,
+                                id: storyID,
+                                updatedAt: new Date(),
+                                numComments: Story?.numComments + 1,
                             }
-                        }))
-                    } catch (e) {
-                            console.error(e);
+                    }))
+                }
+
+                
+            } catch (e) {
+                console.error(e);
             }
+                
             setComment('');
             setCommentUpdated(!commentUpdated)
             //SendPush();
@@ -578,7 +599,7 @@ const StoryScreen  = ({navigation} : any) => {
     return (
             <View style={styles.container}>
 {/* Rate the story modal */}
-                    <Modal visible={visible} onDismiss={hideRatingModal} animationType="slide" transparent={true}>
+                    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => {setVisible(!visible);}}>             
                         <TouchableOpacity onPress={hideRatingModal} style={{backgroundColor: '#000000'}}>
                             <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
                                 <View style={{}}>
@@ -985,7 +1006,7 @@ const StoryScreen  = ({navigation} : any) => {
                                                 Discussion
                                             </Text>
                                             <Text style={{color: '#fff', marginLeft: 10}}>
-                                                ({commentList.length})
+                                                ({Story?.numComments})
                                             </Text>
                                         </View>
                                         

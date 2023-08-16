@@ -352,6 +352,8 @@ const UploadAudio = ({navigation} : any) => {
                     updatedAt: new Date(),
                     seriesID: seriesid.length > 0 ? seriesid : null,
                     seriesPart: data.seriesPart,
+                    numComments: 0,
+                    numListens: 0,
                 }
         }))
 
