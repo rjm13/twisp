@@ -33,7 +33,7 @@ import ShareStory from '../components/functions/ShareStory';
 import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getStory, getUser, getRating, commentsByStory, eroticStoryTagsByStoryId, pinnedStoriesByUser} from '../src/graphql/queries';
+import { getStory, getUser, ratingsByUser, commentsByStory, eroticStoryTagsByStoryId, pinnedStoriesByUser} from '../src/graphql/queries';
 import { createComment, createRating, updateRating, updateStory, deletePinnedStory, createPinnedStory  } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
@@ -58,6 +58,8 @@ const StoryScreen  = ({navigation} : any) => {
     const { setUserRates } = useContext(AppContext);
     const { userFinished } = useContext(AppContext);
     const { setUserFinished } = useContext(AppContext);
+
+    const [didUpdate, setDidUpdate] = useState(false);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -226,7 +228,7 @@ const StoryScreen  = ({navigation} : any) => {
                 console.log(e);
             }}
         fetchStory();
-    }, [storyID, commentUpdated])
+    }, [storyID, commentUpdated, didUpdate])
 
     const [imageU, setImageU] = useState()
 
@@ -349,6 +351,8 @@ const StoryScreen  = ({navigation} : any) => {
 
         let userInfo = await Auth.currentAuthenticatedUser();
 
+        let arr = userRates
+
         if (isRated === true) {
             await API.graphql(graphqlOperation(
                 updateRating, {input: {
@@ -358,7 +362,7 @@ const StoryScreen  = ({navigation} : any) => {
             ))
 
             let newRating =  Math.floor(
-                ((ratingNum + (Story?.ratingAvg * Story?.ratingAmt) - ratingOldNum)/(Story?.ratingAmt))*10)
+                ((ratingNum + ((Story?.ratingAvg/10) * Story?.ratingAmt) - ratingOldNum)/(Story?.ratingAmt))*10)
 
             await API.graphql(graphqlOperation(
                 updateStory, {input: {
@@ -366,29 +370,39 @@ const StoryScreen  = ({navigation} : any) => {
             ))
 
         } else {
-            await API.graphql(graphqlOperation(
+            const response = await API.graphql(graphqlOperation(
                 createRating, {input: {
                     userID: userInfo.attributes.sub, 
                     storyID: storyID,
                     rating: ratingNum,
-                    genreID: Story?.genreID,
                     type: 'Rating',
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 }}
             ))
-            let newRating =  Math.floor(((ratingNum + (Story?.ratingAvg * Story?.ratingAmt))/(Story?.ratingAmt + 1))*10)
 
-            await API.graphql(graphqlOperation(
-                updateStory, {input: {
-                    id: storyID, ratingAvg: newRating, ratingAmt: Story?.ratingAmt + 1}}
-            ))
+            console.log(response)
 
-            setUserRates(userRates.push(storyID))
+            if (response) {
+
+                let numerator = (Story.ratingAvg/10) * Story.ratingAmt
+
+                let denominator = Story.ratingAmt + 1
+
+               let newRating =  Math.floor(((ratingNum + (numerator))/(denominator))*10)
+
+                await API.graphql(graphqlOperation(
+                    updateStory, {input: {
+                        id: storyID, ratingAvg: newRating, ratingAmt: Story.ratingAmt + 1}}
+                ))          
+                arr.push(storyID) 
+            }
         }
 
+        setUserRates(arr)
         hideRatingModal();
         setIsUpdating(false);
+        setDidUpdate(!didUpdate)
     }
 
 //if item is finished state
@@ -506,26 +520,13 @@ const StoryScreen  = ({navigation} : any) => {
 
             setUserImage(UserImage)
             //check if its pinned
-            if (userPins.includes(id) === true) {
+            if (userPins.includes(storyID) === true) {
                 setQd(true)
             }
 
-            //check if it's rated
-            if (userRates.includes(id) === true) {
-                setIsRated(true);
-
-                const ratingData = await API.graphql(
-                    graphqlOperation(
-                    getRating, { id: id}
-                ))
-
-                setRatingID(ratingData.data.getRating.id);
-                setRatingNum(ratingData.data.getRating.rating);
-                setRatingOldNum(ratingData.data.getRating.rating);
-            }
 
             //check if its been listened to or not
-            if (userFinished.includes(id) === true) {
+            if (userFinished.includes(storyID) === true) {
                 setIsFinished(true);
             }
             
@@ -534,6 +535,41 @@ const StoryScreen  = ({navigation} : any) => {
     fetchUser();
     
     }, [update])
+
+    useEffect(() => {
+           //check if it's rated
+           if (userRates.includes(storyID) === true) {
+            setIsRated(true);
+
+            
+            
+            const getTheRatings = async (nextRatingToken : any) => {
+
+                const userInfo = await Auth.currentAuthenticatedUser();
+
+                const userRatingData = await API.graphql(graphqlOperation(
+                    ratingsByUser,{ 
+                        nextRatingToken,
+                        userID: userInfo.attributes.sub}))
+
+                for (let i = 0; i < userRatingData.data.ratingsByUser.items.length; i++) {
+                    if (userRatingData.data.ratingsByUser.items[i].storyID === storyID ) {
+                        setRatingID(userRatingData.data.ratingsByUser.items[i].id);
+                        setRatingNum(userRatingData.data.ratingsByUser.items[i].rating);
+                        setRatingOldNum(userRatingData.data.ratingsByUser.items[i].rating);
+                    }
+                    
+                }
+                if (userRatingData.data.ratingsByUser.nextToken) {
+                    //setNextToken(userRatingData.data.ratingsByUser.nextToken)
+                    getTheRatings(userRatingData.data.ratingsByUser.nextToken);
+                    //return;
+                }
+            }
+
+            getTheRatings(null)
+        }
+    }, [didUpdate])
 
     useEffect(() => {
         if (isRated === false && isFinished === true ) {
@@ -604,7 +640,7 @@ const StoryScreen  = ({navigation} : any) => {
                             <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
                                 <View style={{}}>
                                     <Text style={{margin: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
-                                        Leave a Rating
+                                        Tell us what you think {':)'}
                                     </Text>
                                     <Text style={{margin: 20, textAlign: 'center', fontSize: 20, color: '#fff'}}>
                                         {ratingNum}/10
