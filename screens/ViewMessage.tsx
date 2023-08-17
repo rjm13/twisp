@@ -83,7 +83,7 @@ const ViewMessage = ({navigation} : any) => {
     return (
         <View >
             <LinearGradient
-                colors={['#363636a5', '#363636a5', 'black']}
+                colors={['#202020a5', '#171717a5', 'black']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{}}
@@ -102,6 +102,10 @@ const ViewMessage = ({navigation} : any) => {
                             </TouchableWithoutFeedback>
 
                             <View style={{height: 60}}/>
+
+                            <Text style={[styles.header, {marginLeft: 20, flexWrap: 'wrap', width: Dimensions.get('window').width*0.8}]}>
+                                {message?.title}
+                            </Text>
 
                             {/* {message?.status === 'noreply' ? null : (
                                 <Image 
@@ -131,23 +135,23 @@ const ViewMessage = ({navigation} : any) => {
 
                 </View>
 
-                <View style={{alignSelf: 'center', position: 'absolute', top: 120, borderRadius: 15, backgroundColor: '#303030a5', padding: 20, width: Dimensions.get('window').width - 40}}>
+                <View style={{alignSelf: 'center', position: 'absolute', top: 120, borderRadius: 15, backgroundColor: 'transparent', padding: 20, width: Dimensions.get('window').width - 40}}>
                                                 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <View style={{width: '84%'}}>
-                                    <Text style={{color: '#fff', fontWeight: '700', fontSize: 20}}>
+                                    {/* <Text style={{color: '#fff', fontWeight: '700', fontSize: 20}}>
                                         {message?.title}
-                                    </Text>
+                                    </Text> */}
                                 </View>
                             </View>
                             
                           
                                 <View>
-                                    <Text style={{fontSize: 13, color: '#fff', marginTop: 14}}>
+                                    <Text style={{fontSize: 16, color: '#fff', marginTop: 14}}>
                                         {message?.content}
                                     </Text>
                                     <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
-                                        <Text style={{color: '#00ffffa5', fontSize: 12, marginTop: 20, textTransform: 'capitalize'}}>
+                                        <Text style={{color: '#00ffffa5', fontSize: 14, marginTop: 20, textTransform: 'capitalize'}}>
                                             {messageDate}
                                         </Text>
                                     </View>
@@ -169,7 +173,7 @@ const styles = StyleSheet.create ({
     },
     header: {
         color: '#fff',
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 'bold',
         marginHorizontal: 10,
         marginVertical: 20,

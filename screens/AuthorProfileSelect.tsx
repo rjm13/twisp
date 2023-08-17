@@ -155,7 +155,7 @@ const AuthorProfileSelect = ({navigation} : any) => {
                                 </View>
                             </TouchableWithoutFeedback>
                             
-                            <Text style={[styles.title, {marginLeft: 20}]}>
+                            <Text style={[styles.h1, {marginLeft: 20}]}>
                                 Author Profiles
                             </Text>
                             

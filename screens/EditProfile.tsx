@@ -439,7 +439,7 @@ const EditProfile = ({navigation} : any) => {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 20}}>
                             <View>
                                 <Text style={{ color: '#fff', fontSize: 16}}>
-                                    Publisher website
+                                    Publisher Website
                                 </Text>
                                 <Text style={[styles.infotext, {textTransform: 'capitalize'}]}>
                                     {user?.website}

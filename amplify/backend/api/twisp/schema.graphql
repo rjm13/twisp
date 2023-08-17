@@ -17,7 +17,9 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   numAuthored: Int
   topthree: [String]
   following: [FollowConnection] @hasMany(indexName: "byFollower", fields: "id")
+  numFolowing: Int,
   followers: [FollowConnection] @hasMany(indexName: "byAuthor", fields: "id")
+  numFollowers: Int,
   Pinned: [PinnedStory] @hasMany(indexName: "byUser", fields: "id")
   Rated: [Rating] @hasMany (indexName: "byUser", fields: "id")
   Finished: [FinishedStory] @hasMany (indexName: "byUser", fields: "id")
@@ -25,6 +27,7 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
   messageRec: [Message] @hasMany(indexName: "byUser", fields: "id")
   inProgressStories: [InProgressStory] @hasMany(indexName: "byUser", fields: "id")
   published: [Story] @hasMany(indexName: "byPublisher", fields: "id")
+  numPublished: Int,
   isMod: Boolean
   setting1: Boolean #nsfw filter
   setting2: Boolean #erotica filter
@@ -56,6 +59,7 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     numAuthored: Int
     stories: [Story] @hasMany(indexName: "byCreatorProfile", fields: "id")
     followers: [FollowConnection] @hasMany(indexName: "byCreator", fields: "id")
+    numFollowers: Int
 }
 
 type FollowConnection @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

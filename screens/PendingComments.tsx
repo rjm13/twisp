@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
     View, 
     Text, 
-    StyleSheet, 
-    ScrollView, 
-    Dimensions, 
     TouchableWithoutFeedback,
     TouchableOpacity,
     FlatList,
@@ -21,7 +18,7 @@ import { updateComment, deleteComment } from '../src/graphql/mutations';
 import { formatRelative, parseISO } from "date-fns";
 import id from 'date-fns/esm/locale/id/index.js';
 
-const ModSection = ({navigation} : any) => {
+const PendingComments = ({navigation} : any) => {
 
     const [didUpdate, setDidUpdate] = useState(false)
 
@@ -55,7 +52,7 @@ const ModSection = ({navigation} : any) => {
             let response = await API.graphql(graphqlOperation(
                 commentsByCreated, {
                     sortDirection: 'DESC',
-                    type: 'PendingComment',
+                    type: 'Comment',
                     filter: {
                         approved: {
                             eq: false
@@ -156,6 +153,12 @@ const ModSection = ({navigation} : any) => {
                 </Text>
             </View>
 
+            <View>
+                <Text style={{color: '#ffffffa5', alignSelf: 'center'}}>
+                    Tap to approve. Hold to delete.
+                </Text>
+            </View>
+
             <FlatList 
                 data={comments}
                 keyExtractor={item => item.id}
@@ -189,4 +192,4 @@ const ModSection = ({navigation} : any) => {
     )
 }
 
-export default ModSection;
+export default PendingComments;

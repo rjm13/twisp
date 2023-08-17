@@ -49,7 +49,7 @@ const AudioStoryList = () => {
 
                 if (favedData.data.ratingsByUser.items.length > 0) {
                     for (let i = 0; i < favedData.data.ratingsByUser.items.length; i++) {
-                            Faved.push(favedData.data.getUser.Rated.items[i].story) 
+                            Faved.push(favedData.data.ratingsByUser.items[i].story) 
                     } 
                 }
                 

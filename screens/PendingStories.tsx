@@ -177,8 +177,6 @@ const PendingStories = ({navigation} : any) => {
             }
         } else {
             try {
-
-                
                 let response = await API.graphql(graphqlOperation(
                     updateStory, {input: {
                         id: id,
@@ -558,7 +556,7 @@ const PendingStories = ({navigation} : any) => {
         {id: 0, reason: 'Insufficent Audio Quality. \n'},
         {id: 1, reason: 'Story Exceeds Time Limit. \n'},
         {id: 2, reason: 'Story Contains Inappropriate/Banned Content.\n'},
-        {id: 3, reason: 'Story Violates Copyright Laws.\n'},
+        {id: 3, reason: 'Story Violates Copyright policy.\n'},
         {id: 4, reason: 'Technical Issue.\n'},
         {id: 5, reason: 'Story Does Not Meet Quality Standards.\n'},
         {id: 6, reason: 'Narration Does Not Meet Quality Standards.\n'},

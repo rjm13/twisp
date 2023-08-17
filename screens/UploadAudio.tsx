@@ -713,7 +713,7 @@ const UploadAudio = ({navigation} : any) => {
 
 {/* confirm modal */}
             <Modal visible={visible} onDismiss={hideModal} animationType="slide" transparent={true} onRequestClose={() => {setVisible(!visible)}}>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ padding: 20, backgroundColor: '#363636', borderRadius: 15,}}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ padding: 20, backgroundColor: '#171717', borderRadius: 15,}}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                         <Text style={[styles.title, {textTransform: 'capitalize'}]}>
                         {data.title}
@@ -732,15 +732,16 @@ const UploadAudio = ({navigation} : any) => {
                             size={12}
                             color='#ffffffa5'
                         />
-                        <Text style={styles.userId}>
+                        <Text style={[styles.paragraph, {marginLeft: 10}]}>
                             {data.author}
                         </Text>  
                         <FontAwesome5 
                             name='book-reader'
                             size={12}
                             color='#ffffffa5'
+                            style={{marginLeft: 20}}
                         />
-                        <Text style={styles.userId}>
+                        <Text style={[styles.paragraph, {marginLeft: 10}]}>
                             {data.narrator}
                         </Text> 
                     </View>
@@ -804,8 +805,8 @@ const UploadAudio = ({navigation} : any) => {
                                 size={12}
                                 color='#ffffffa5'
                             />
-                            <Text style={styles.userId}>
-                                {data.artistName}
+                            <Text style={[styles.paragraph, {marginLeft: 10}]}>
+                                {data.artist}
                             </Text> 
                         </View>
                         
@@ -821,31 +822,54 @@ const UploadAudio = ({navigation} : any) => {
                             </View>
                             
                             ) : (
-                        <TouchableOpacity onPress={PublishStory} style={{marginVertical: 40}}>
-                            <LinearGradient
-                                colors={['cyan', 'cyan']}
-                                style={{ 
-                                    paddingHorizontal: 20,
-                                    paddingVertical: 10,
-                                    borderRadius: 20,
-                                    width: 100,
-                                    }} >
-                                <Text style={{ color: 'black', fontSize: 16, textAlign: 'center'}}>
-                                    Publish
-                                </Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity onPress={PublishStory} style={{marginVertical: 40}}>
+                                <View
+                                    style={{ 
+                                        paddingHorizontal: 20,
+                                        paddingVertical: 10,
+                                        borderRadius: 20,
+                                        backgroundColor: 'cyan',
+                                        overflow: 'hidden',
+                                        width: Dimensions.get('window').width*0.7
+                                        }} >
+                                    <Text style={{ color: 'black', fontSize: 16, textAlign: 'center'}}>
+                                        Publish
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={hideModal} style={{marginTop: -20}}>
+                                <View
+                                    style={{ 
+                                        paddingHorizontal: 20,
+                                        paddingVertical: 10,
+                                        borderRadius: 20,
+                                        width: Dimensions.get('window').width*0.7,
+                                        backgroundColor: 'transparent',
+                                        borderWidth: 1,
+                                        borderColor: 'cyan',
+                                        overflow: 'hidden',
+                                        }} >
+                                    <Text style={{ color: 'cyan', fontSize: 16, textAlign: 'center'}}>
+                                        Edit
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                         )}   
                     </View>
+
+                    <View style={{height: 100}}/>
                         
                 </ScrollView>
             </Modal>
 
 {/* genre modal */}
             <Modal visible={visible2} onDismiss={hideModal2} animationType="slide" transparent={true} onRequestClose={() => {setVisible2(!visible2);}}>
-                <TouchableOpacity onPress={hideModal2} style={{backgroundColor: '#000000'}}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                {/* <TouchableOpacity onPress={hideModal2} > */}
+                    <ScrollView showsVerticalScrollIndicator={false} style={{paddingVertical: 80, backgroundColor: '#000', height: Dimensions.get('window').height }}>
+                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
                             {Genres.map(item => {
                                 return (
                                     <TouchableOpacity onPress={() => {
@@ -861,8 +885,9 @@ const UploadAudio = ({navigation} : any) => {
                                     </TouchableOpacity>  
                                 )})} 
                         </View>
+                        <View style={{height: 200}}/>
                     </ScrollView>
-                </TouchableOpacity>
+                {/* </TouchableOpacity> */}
                 
             </Modal>
 
@@ -897,7 +922,7 @@ const UploadAudio = ({navigation} : any) => {
                 <TouchableOpacity onPress={hideSeriesModal} style={{backgroundColor: '#000000'}}>
 
                     <TouchableOpacity onPress={() => {showNewSeriesModal();}}>
-                        <View>
+                        <View style={{alignSelf: 'center', marginTop: 40, borderWidth: 1, borderColor: '#fff', borderRadius: 15, overflow: 'hidden'}}>
                             <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                                 Create New Series
                             </Text>
@@ -931,12 +956,12 @@ const UploadAudio = ({navigation} : any) => {
             <Modal visible={newSeriesModal} onDismiss={showNewSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setNewSeriesModal(false);}}>
                 <TouchableOpacity onPress={hideNewSeriesModal} style={{backgroundColor: '#000000'}}>
 
-                    <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                    <Text style={{marginTop: 40, textTransform: 'capitalize', fontSize: 18, textAlign: 'center', paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                         Select the first story of this series
                     </Text>
 
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                    <ScrollView showsVerticalScrollIndicator={false} style={{height: Dimensions.get('window').height}}>
+                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
                             {seriesStories.map(item => {
                                 return (
                                     <TouchableOpacity onPress={() => {
@@ -1173,7 +1198,7 @@ const UploadAudio = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
                     <TouchableOpacity onPress={AddToTagArray}>
-                        <View style={{ alignSelf: 'center', marginHorizontal: 20, padding: 0, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 6, paddingVertical: 10}}>
+                        <View style={{ borderWidth: 0.5, borderColor: '#fff', borderRadius: 15, overflow: 'hidden', alignSelf: 'center', marginHorizontal: 20, padding: 0, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 6}}>
                             <FontAwesome5
                                 name='chevron-up'
                                 size={20}
@@ -1244,7 +1269,7 @@ const UploadAudio = ({navigation} : any) => {
                     </TouchableWithoutFeedback>
             
                     {audioName !== '' ? (
-                        <View style={{marginTop: 20, }}>
+                        <View style={{marginTop: 20, marginLeft: 20,  }}>
                             <Text style={{color: 'cyan'}}>
                                 {audioName}
                             </Text>

@@ -6441,6 +6441,12 @@ export const ratingsByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens

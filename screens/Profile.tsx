@@ -121,7 +121,7 @@ const ProfileScreen = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
                     <Text style={styles.header}>
-                        {user?.name}
+                        Hello, {user?.name ? user?.name : 'Listener'}!
                     </Text>
                 </View>
                 

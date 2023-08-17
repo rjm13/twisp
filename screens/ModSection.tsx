@@ -66,7 +66,7 @@ const ModSection = ({navigation} : any) => {
         const fetchComments = async () => {
             let response = await API.graphql(graphqlOperation(
                 commentsByCreated, {
-                    type: 'PendingComment',
+                    type: 'Comment',
                     sortDirection: 'DESC',
                     filter: {
                         approved: {

@@ -37,29 +37,24 @@ import { getStory, getUser, ratingsByUser, commentsByStory, eroticStoryTagsBySto
 import { createComment, createRating, updateRating, updateStory, deletePinnedStory, createPinnedStory  } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
-//import PinStory from '../components/functions/PinStory';
-//import unPinStory from '../components/functions/UnPinStory';
 
 
 const StoryScreen  = ({navigation} : any) => {
 
-    //const styles = useStyles();
+//const styles = useStyles();
 
 //recieve story ID as props
     const route = useRoute();
     const {storyID, update} = route.params;
 
-//pin to playlist functions
-    const [nextToken, setNextToken] = useState()
+    const { userPins, userRates, userFinished } = useContext(AppContext);
+    const { setUserPins, setUserRates, setIsRootScreen, setStoryID } = useContext(AppContext);
 
-    const { userPins, expoPushToken } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
-    const { userRates } = useContext(AppContext);
-    const { setUserRates } = useContext(AppContext);
-    const { userFinished } = useContext(AppContext);
-    const { setUserFinished } = useContext(AppContext);
-
+//updates the screen after a new rating is made
     const [didUpdate, setDidUpdate] = useState(false);
+
+    const [nextToken, setNextToken] = useState()
+   
 
     const PinStory = async ({storyID} : any) => {
     
@@ -120,29 +115,6 @@ const StoryScreen  = ({navigation} : any) => {
         getThePins(null); 
         setUserPins(arr)
     }
-
-    const SendPush = async () => {
-
-        const userInfo = Auth.currentAuthenticatedUser();
-
-        const message = {
-            to: expoPushToken,
-            sound: "default",
-            title: "You have a new comment pending your approval.",
-            body: "For Today",
-            data: {someData: "goes here"},
-        }
-      
-      await fetch("https://exp.host/--/api/v2/push/send", {
-          method: "POST",
-          headers: {
-              Accept: "application/json",
-              "Accept-encoding": "gzip, deflate",
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(message)
-      });
-      }
     
 //ref to scroll to comment section
     const scrollRef = useRef();
@@ -157,20 +129,44 @@ const StoryScreen  = ({navigation} : any) => {
         focus.current.focus()
     }
 
+//refreshes the screen to show a new comment
     const [commentUpdated, setCommentUpdated] = useState(false);
 
 //use storyID to retrieve Story from AWS
-    const [Story, setStory] = useState();
+    const [Story, setStory] = useState(
+        {
+            type: '',
+            title: '',
+            imageUri: '',
+            audioUri: '',
+            author: '',
+            narrator: '',
+            artist: '',
+            time: 0,
+            summary: '',
+            description: '',
+            nsfw: false,
+            numComments: 0,
+            ratingAvg: 0,
+            ratingAmt: 0,
+            genre: {
+                genre: '',
+                icon: '',
+                color: '#000',
+            },
+            hidden: false,
+            status: false,
+            numListens: 0,
+            approved: true,
+            seriesPart: 1,
+            premium: false,
+        }
+    );
 
-//set the position of the audio player if the screen is full page
-    const { setIsRootScreen } = useContext(AppContext);
 
     useEffect(() => {
         setIsRootScreen(true)
     },[])
-
-//send context to audio player
-    const { setStoryID } = useContext(AppContext);
 
 //set global state context to the storyID to play the story
     const onPlay = () => {setStoryID(storyID);}
@@ -188,7 +184,6 @@ const StoryScreen  = ({navigation} : any) => {
             try {
 
                 const storyData = await API.graphql(graphqlOperation(getStory, {nextToken, id: storyID}))
-                //console.log(storyData)
 
                 if (storyData.data.getStory.genre.genre === 'after dark') {
                     const afterDarkTags = await API.graphql(graphqlOperation(
@@ -257,7 +252,7 @@ const StoryScreen  = ({navigation} : any) => {
 
     const animatedColor = animation.interpolate({
         inputRange: [0, 500],
-        outputRange: ['transparent', '#363636'],
+        outputRange: ['transparent', '#171717'],
         extrapolate: 'clamp',
         });
 
@@ -500,7 +495,8 @@ const StoryScreen  = ({navigation} : any) => {
     
     const [user, setUser] = useState();
     const [userImage, setUserImage] = useState('')
-    
+   
+//fetch the user info
     useEffect(() => {
         const fetchUser = async () => {
 
@@ -536,12 +532,12 @@ const StoryScreen  = ({navigation} : any) => {
     
     }, [update])
 
+//fetch the ratings info
     useEffect(() => {
+
            //check if it's rated
            if (userRates.includes(storyID) === true) {
             setIsRated(true);
-
-            
             
             const getTheRatings = async (nextRatingToken : any) => {
 
@@ -571,6 +567,7 @@ const StoryScreen  = ({navigation} : any) => {
         }
     }, [didUpdate])
 
+//check if the story is finished but not rated
     useEffect(() => {
         if (isRated === false && isFinished === true ) {
             showRatingModal();
@@ -606,7 +603,7 @@ const StoryScreen  = ({navigation} : any) => {
                             storyID: storyID,
                             content: comment,
                             userID: poster.attributes.sub,
-                            approved: true,
+                            approved: false,
                         }
                 }))
 
@@ -780,10 +777,8 @@ const StoryScreen  = ({navigation} : any) => {
 
                 <ImageBackground 
                     source={{uri: imageU}}
-                    style={{  backgroundColor: '#363636', width: Dimensions.get('window').width, height: 330,  position: 'absolute'  }}
+                    style={{  backgroundColor: '#171717', width: Dimensions.get('window').width, height: 330,  position: 'absolute'  }}
                 >
-                    
-                    
                     {Story?.imageUri ? (null) : (
                         <View style={{ alignSelf: 'center', marginTop: 140}}>
                             <FontAwesome5 
@@ -800,7 +795,7 @@ const StoryScreen  = ({navigation} : any) => {
                     
                     <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                         <TouchableWithoutFeedback onPress={() => {navigation.goBack(); setIsRootScreen(false)}}>
-                            <View style={ [styles.button, {backgroundColor: '#363636a5', flexDirection: 'row'}]}>
+                            <View style={ [styles.button, {backgroundColor: '#171717a5', flexDirection: 'row'}]}>
                                 <AntDesign 
                                     name='close'
                                     size={22}
@@ -819,7 +814,7 @@ const StoryScreen  = ({navigation} : any) => {
                             <FontAwesome5 
                                 name='play'
                                 size={16}
-                                color='#363636'
+                                color='#171717'
                                 style={{marginLeft: 2}}
                             />
                         </Animated.View>
@@ -842,7 +837,7 @@ const StoryScreen  = ({navigation} : any) => {
                             {Story?.imageUri ? (
                                 <View style={{width: Dimensions.get('window').width - 20, marginTop: 186, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
-                                        <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#363636a5', flexDirection: 'row'}}>
+                                        <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717a5', flexDirection: 'row'}}>
                                             <FontAwesome5 
                                                 name='palette'
                                                 size={14}
@@ -856,7 +851,7 @@ const StoryScreen  = ({navigation} : any) => {
                                     </TouchableOpacity>
                                     <View>
                                         {Story?.nsfw === true ? (
-                                            <Text style={{color: 'red', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#363636', }}>
+                                            <Text style={{color: 'red', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717', }}>
                                                 Explicit
                                             </Text>
                                         ) : null}
@@ -865,7 +860,7 @@ const StoryScreen  = ({navigation} : any) => {
                             ) : null}
                         </View>
                         <LinearGradient 
-                            colors={['#202020', '#282828', '#000', '#000']}
+                            colors={['#202020', '#171717', '#000', '#000']}
                             style={{ overflow: 'hidden', borderRadius: 20, paddingVertical: 5, paddingHorizontal: 0}}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
@@ -1060,7 +1055,7 @@ const StoryScreen  = ({navigation} : any) => {
                                             behavior={Platform.OS === "ios" ? "padding" : "height"}
                                             style={{flex: 1}}
                                         >
-                                            <View style={{backgroundColor: '#363636', padding: 20, marginVertical: 10, borderRadius: 15, }}>
+                                            <View style={{backgroundColor: '#171717', padding: 20, marginVertical: 10, borderRadius: 15, }}>
                                                 <View style={{ flexDirection: 'row', }}>
                                                     <Image 
                                                         source={ user?.imageUri ? { uri: userImage} : require('../assets/blankprofile.png')}

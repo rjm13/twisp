@@ -15,11 +15,10 @@ import {useNavigation} from '@react-navigation/native'
 import Carousel from 'react-native-reanimated-carousel';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { AppContext } from '../../AppContext';
-//import PinStory from '../functions/PinStory';
-//import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
 
 import { storiesByGenre, pinnedStoriesByUser } from '../../src/graphql/queries';
@@ -93,8 +92,6 @@ const GenreCarousel = ({genreid} : any) => {
         setUserPins(arr)
     }
 
-    const { nsfwOn } = useContext(AppContext);
-
     //update list state
     const [didUpdate, setDidUpdate] = useState(false);
 
@@ -151,7 +148,7 @@ const GenreCarousel = ({genreid} : any) => {
     },[didUpdate])
 
 //item for the flatlist carousel
-    const Item = ({ title, genreName, icon, summary, imageUri, author, narrator, time, id} : any) => {
+    const Item = ({ title, genreName, icon, summary, imageUri, author, narrator, time, id, numComments, numListens, ratingAvg, ratingAmt} : any) => {
 
         const [imageU, setImageU] = useState()
         
@@ -214,24 +211,25 @@ const GenreCarousel = ({genreid} : any) => {
                     />
                 </View>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('StoryScreen', {storyID: id})}>
-                <ImageBackground
-                    source={{uri: imageU}}
-                    style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
-                    imageStyle={{
-                        borderRadius: 15,
-                        
-                    }}
-                >
-                    <View style={{ 
-                        backgroundColor: '#000000B5',
-                        borderBottomLeftRadius: 15,
-                        borderBottomRightRadius: 15,
-                        borderTopRightRadius: isVisible === true ? 15 : 0,
-                        borderTopLeftRadius: isVisible === true ? 15 : 0,
-                        width: '100%',
-                        padding: 10, 
-                    }}
-                    >
+                    {imageU !== '' ? (
+                        <ImageBackground
+                            source={{uri: imageU}}
+                            style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
+                            imageStyle={{borderRadius: 15}}
+                        >
+                    
+                    <View 
+                        style={{ 
+                            backgroundColor: '#000000BF',
+                            borderBottomLeftRadius: 15,
+                            borderBottomRightRadius: 15,
+                            borderTopRightRadius: isVisible === true ? 15 : 0,
+                            borderTopLeftRadius: isVisible === true ? 15 : 0,
+                            width: '100%',
+                            height: isVisible === true ? 280 : undefined,
+                            padding: 10, 
+                            justifyContent: 'space-between'
+                    }}>
                         <TouchableWithoutFeedback onPress={onShow}>
                             <View>
                                 <View>
@@ -240,48 +238,76 @@ const GenreCarousel = ({genreid} : any) => {
                                             <Text style={styles.title}>
                                                 {title}
                                             </Text> 
-                                            <Text style={[styles.category]}>
-                                                {genreName}
-                                            </Text>
                                         </View>
-                                        
                                     </View>
-                                    
-                                    
                                     <View>
-                                        <View style={{ flexDirection: 'row', marginTop: 4, alignItems: 'center'}}>
+                                        <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
                                             <FontAwesome5 
                                                 name='book-open'
                                                 size={12}
                                                 color='#ffffffa5'
                                             />
-                                                <Text style={styles.userId}>
-                                                    {author}
-                                                </Text>  
+                                            <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                                {author}
+                                            </Text>  
                                             <FontAwesome5 
                                                 name='book-reader'
                                                 size={12}
                                                 color='#ffffffa5'
                                             />
-                                                <Text style={styles.userId}>
-                                                    {narrator}
-                                                </Text> 
+                                            <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                                {narrator}
+                                            </Text> 
                                         </View>
                                     </View>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
+                                                <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    {genreName}
+                                                </Text>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome 
+                                                        name='comment'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {numComments ? numComments : 0}
+                                                    </Text>
+                                                </View>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome5 
+                                                        name='headphones'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {numListens ? numListens : 0}
+                                                    </Text>
+                                                </View>
+                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome 
+                                                        name='star'
+                                                        color='#ffffffa5'
+                                                        size={12}
+                                                    />
+                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                        {(ratingAvg/10).toFixed(1)}
+                                                    </Text>
+                                                </View>
+                                        </View>
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
-
 
                         <View>
                             { isVisible ? (
                                 <View style={styles.popupblock}>
                                     <View style={{ marginTop: 20, marginBottom: 10 }}> 
-                                        <Text style={styles.paragraph}>
+                                        <Text style={[styles.paragraph, {fontSize: 14}]}>
                                             {summary}
                                         </Text>
                                     </View>
-                        <View> 
+                            <View> 
                                 <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
                                         <TouchableOpacity onPress={onPlay}>
                                             <View style={{ 
@@ -316,19 +342,17 @@ const GenreCarousel = ({genreid} : any) => {
                                             color={isQ ? 'cyan' : 'white'}
                                             onPress={onQPress}
                                         />
-                                    
-                                </View>
-
-                            
                                     </View>
+                                </View>
                             </View>
-
                             ) : false } 
                         </View>
-
                     </View>
-
-                </ImageBackground>
+                        </ImageBackground>
+                    ) : (
+                        <View />
+                    )}
+                        
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -363,6 +387,10 @@ const GenreCarousel = ({genreid} : any) => {
           narrator={item.narrator}
           time={item.time}
           id={item.id}
+          ratingAvg={item.ratingAvg}
+          ratingAmt={item.ratingAmt}
+          numListens={item.numlistens}
+          numComments={item.numComments}
           //liked={item.liked}
           //rating={item.rating}
         />

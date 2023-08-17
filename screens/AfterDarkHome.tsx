@@ -62,10 +62,13 @@ const [trendingTags, setTrendingTags] = useState([]);
                     const res = await API.graphql(
                             graphqlOperation(
                                 eroticaTagsByGenreId, {
-                                    id: genreRoute
+                                    genreId: genreRoute
                                 } 
                             )
                         )
+
+                        console.log('test this')
+                        console.log(res.data.eroticaTagsByGenreId.items)
 
                         for (let i = 0; i < res.data.eroticaTagsByGenreId.items.length; i++) {
                             if (Tags[0]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags[1]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags[2]?.id !== res.data.eroticaTagsByGenreId.items[i].eroticTag.id && Tags.length < 4) {

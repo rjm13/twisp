@@ -329,7 +329,7 @@ const handleUpdateName = async () => {
 
 {/* //Sign Out modal */}
             <Modal animationType="slide" transparent={true} visible={visible2} onRequestClose={() => {setVisible2(!visible2);}}>                    
-                <TouchableOpacity onPress={() => {setVisible2(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.62)' }}>
+                <TouchableOpacity onPress={() => {setVisible2(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
                     <View style={{ alignItems: 'center'}}>
                         <Text style={{fontSize: 16, paddingVertical: 16, color: '#fff'}}>
                             Are you sure you want to log out?
