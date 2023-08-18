@@ -32,6 +32,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFolowing
       followers {
         items {
           id
@@ -46,6 +47,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       Pinned {
         items {
           id
@@ -154,6 +156,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numPublished
       isMod
       setting1
       setting2
@@ -179,6 +182,7 @@ export const getUser = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         nextToken
@@ -213,10 +217,12 @@ export const listUsers = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -242,6 +248,7 @@ export const listUsers = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -285,10 +292,12 @@ export const getCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -314,6 +323,7 @@ export const getCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -386,6 +396,7 @@ export const getCreatorProfile = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       __typename
     }
   }
@@ -417,7 +428,10 @@ export const listCreatorProfiles = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -446,6 +460,7 @@ export const listCreatorProfiles = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       nextToken
@@ -479,10 +494,12 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -508,6 +525,7 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -539,10 +557,12 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -568,6 +588,7 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -601,7 +622,10 @@ export const getFollowConnection = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -630,6 +654,7 @@ export const getFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -667,7 +692,10 @@ export const listFollowConnections = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -691,7 +719,10 @@ export const listFollowConnections = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -719,6 +750,7 @@ export const listFollowConnections = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -756,10 +788,12 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -785,6 +819,7 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -816,10 +851,12 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -845,6 +882,7 @@ export const getStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -903,11 +941,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           eroticTagId
-          eroticTag {
-            id
-            tagName
-            count
-          }
           createdAt
           updatedAt
           __typename
@@ -1010,6 +1043,7 @@ export const getStory = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -1049,7 +1083,10 @@ export const listStories = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1073,7 +1110,10 @@ export const listStories = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1298,7 +1338,10 @@ export const getSeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1327,6 +1370,7 @@ export const getSeries = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -1380,6 +1424,7 @@ export const listSeries = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -1545,10 +1590,12 @@ export const getPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1574,6 +1621,7 @@ export const getPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1609,7 +1657,10 @@ export const getPinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1633,7 +1684,10 @@ export const getPinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1734,7 +1788,10 @@ export const listPinnedStories = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1807,10 +1864,12 @@ export const getInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1836,6 +1895,7 @@ export const getInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1871,7 +1931,10 @@ export const getInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1895,7 +1958,10 @@ export const getInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2001,7 +2067,10 @@ export const listInProgressStories = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2077,10 +2146,12 @@ export const getFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2106,6 +2177,7 @@ export const getFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2141,7 +2213,10 @@ export const getFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2165,7 +2240,10 @@ export const getFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2285,7 +2363,10 @@ export const listFinishedStories = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2373,7 +2454,10 @@ export const getComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2397,7 +2481,10 @@ export const getComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2486,10 +2573,12 @@ export const getComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2515,6 +2604,7 @@ export const getComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2591,7 +2681,10 @@ export const listComments = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2635,10 +2728,12 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2664,6 +2759,7 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2695,10 +2791,12 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2724,6 +2822,7 @@ export const getReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2769,7 +2868,10 @@ export const listReactions = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2793,7 +2895,10 @@ export const listReactions = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2841,7 +2946,10 @@ export const getRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2865,7 +2973,10 @@ export const getRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2954,10 +3065,12 @@ export const getRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2983,6 +3096,7 @@ export const getRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3058,7 +3172,10 @@ export const listRatings = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3106,10 +3223,12 @@ export const getMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3135,6 +3254,7 @@ export const getMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3184,7 +3304,10 @@ export const listMessages = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3229,7 +3352,10 @@ export const getStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3253,7 +3379,10 @@ export const getStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3433,7 +3562,10 @@ export const getEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3457,7 +3589,10 @@ export const getEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3818,7 +3953,10 @@ export const creatorsByType = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3847,6 +3985,7 @@ export const creatorsByType = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       nextToken
@@ -3891,7 +4030,10 @@ export const creatorProfilesByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3920,6 +4062,7 @@ export const creatorProfilesByUser = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       nextToken
@@ -3964,7 +4107,10 @@ export const connectionsByFollower = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3988,7 +4134,10 @@ export const connectionsByFollower = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4016,6 +4165,7 @@ export const connectionsByFollower = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -4062,7 +4212,10 @@ export const connectionsByAuthor = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4086,7 +4239,10 @@ export const connectionsByAuthor = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4114,6 +4270,7 @@ export const connectionsByAuthor = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -4160,7 +4317,10 @@ export const connectionsByCreator = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4184,7 +4344,10 @@ export const connectionsByCreator = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4212,6 +4375,7 @@ export const connectionsByCreator = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -4260,7 +4424,10 @@ export const storiesByDate = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4284,7 +4451,10 @@ export const storiesByDate = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4398,7 +4568,10 @@ export const storiesByUpdated = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4422,7 +4595,10 @@ export const storiesByUpdated = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4536,7 +4712,10 @@ export const storiesByPublisher = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4560,7 +4739,10 @@ export const storiesByPublisher = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4674,7 +4856,10 @@ export const storiesByCreator = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4698,7 +4883,10 @@ export const storiesByCreator = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4812,7 +5000,10 @@ export const storiesByGenre = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4836,7 +5027,10 @@ export const storiesByGenre = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4950,7 +5144,10 @@ export const storiesBySeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4974,7 +5171,10 @@ export const storiesBySeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5106,6 +5306,7 @@ export const seriesByGenre = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -5172,6 +5373,7 @@ export const seriesByCreator = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -5372,7 +5574,10 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5404,9 +5609,10 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           ratingAmt
           genreID
           genre {
-            genre
             id
+            genre
             color
+            icon
           }
           hidden
           status
@@ -5461,7 +5667,10 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5546,7 +5755,10 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5639,7 +5851,10 @@ export const finishedStoriesByDate = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5734,7 +5949,10 @@ export const finishedStoriesByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5767,9 +5985,9 @@ export const finishedStoriesByUser = /* GraphQL */ `
           genreID
           genre {
             id
-            genre
-            icon
             color
+            icon
+            genre
           }
           hidden
           status
@@ -5835,7 +6053,10 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5930,7 +6151,10 @@ export const finishedStoriesByGenre = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6056,7 +6280,10 @@ export const commentsByCreated = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6142,7 +6369,10 @@ export const commentsByStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6197,7 +6427,10 @@ export const reactionsByStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6221,7 +6454,10 @@ export const reactionsByStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6307,7 +6543,10 @@ export const ratingsByUpdated = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6392,7 +6631,10 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6456,8 +6698,8 @@ export const ratingsByUser = /* GraphQL */ `
           genre {
             id
             genre
-            icon
             color
+            icon
           }
           hidden
           status
@@ -6483,7 +6725,10 @@ export const ratingsByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6542,7 +6787,10 @@ export const messagesByUser = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6666,12 +6914,6 @@ export const storyTagsByTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            genre
-            id
-            color
-            icon
-          }
           hidden
           status
           numListens

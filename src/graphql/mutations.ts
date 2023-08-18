@@ -35,6 +35,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFolowing
       followers {
         items {
           id
@@ -49,6 +50,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       Pinned {
         items {
           id
@@ -157,6 +159,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numPublished
       isMod
       setting1
       setting2
@@ -182,6 +185,7 @@ export const createUser = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         nextToken
@@ -224,6 +228,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFolowing
       followers {
         items {
           id
@@ -238,6 +243,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       Pinned {
         items {
           id
@@ -346,6 +352,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numPublished
       isMod
       setting1
       setting2
@@ -371,6 +378,7 @@ export const updateUser = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         nextToken
@@ -413,6 +421,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFolowing
       followers {
         items {
           id
@@ -427,6 +436,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       Pinned {
         items {
           id
@@ -535,6 +545,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      numPublished
       isMod
       setting1
       setting2
@@ -560,6 +571,7 @@ export const deleteUser = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         nextToken
@@ -598,10 +610,12 @@ export const createCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -627,6 +641,7 @@ export const createCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -699,6 +714,7 @@ export const createCreatorProfile = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       __typename
     }
   }
@@ -732,10 +748,12 @@ export const updateCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -761,6 +779,7 @@ export const updateCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -833,6 +852,7 @@ export const updateCreatorProfile = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       __typename
     }
   }
@@ -866,10 +886,12 @@ export const deleteCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -895,6 +917,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -967,6 +990,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
         nextToken
         __typename
       }
+      numFollowers
       __typename
     }
   }
@@ -1000,10 +1024,12 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1029,6 +1055,7 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1060,10 +1087,12 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1089,6 +1118,7 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1122,7 +1152,10 @@ export const createFollowConnection = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1151,6 +1184,7 @@ export const createFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -1186,10 +1220,12 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1215,6 +1251,7 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1246,10 +1283,12 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1275,6 +1314,7 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1308,7 +1348,10 @@ export const updateFollowConnection = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1337,6 +1380,7 @@ export const updateFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -1372,10 +1416,12 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1401,6 +1447,7 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1432,10 +1479,12 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1461,6 +1510,7 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1494,7 +1544,10 @@ export const deleteFollowConnection = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -1523,6 +1576,7 @@ export const deleteFollowConnection = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -1560,10 +1614,12 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1589,6 +1645,7 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1620,10 +1677,12 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1649,6 +1708,7 @@ export const createStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1804,6 +1864,7 @@ export const createStory = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -1845,10 +1906,12 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1874,6 +1937,7 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -1905,10 +1969,12 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -1934,6 +2000,7 @@ export const updateStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2089,6 +2156,7 @@ export const updateStory = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -2130,10 +2198,12 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2159,6 +2229,7 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2190,10 +2261,12 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -2219,6 +2292,7 @@ export const deleteStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -2374,6 +2448,7 @@ export const deleteStory = /* GraphQL */ `
           reddit
           youTube
           numAuthored
+          numFollowers
           __typename
         }
         __typename
@@ -2592,7 +2667,10 @@ export const createSeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2621,6 +2699,7 @@ export const createSeries = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -2712,7 +2791,10 @@ export const updateSeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2741,6 +2823,7 @@ export const updateSeries = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -2832,7 +2915,10 @@ export const deleteSeries = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -2861,6 +2947,7 @@ export const deleteSeries = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFollowers
         __typename
       }
       __typename
@@ -3134,10 +3221,12 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3163,6 +3252,7 @@ export const createPinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3198,7 +3288,10 @@ export const createPinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3222,7 +3315,10 @@ export const createPinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3325,10 +3421,12 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3354,6 +3452,7 @@ export const updatePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3389,7 +3488,10 @@ export const updatePinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3413,7 +3515,10 @@ export const updatePinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3516,10 +3621,12 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3545,6 +3652,7 @@ export const deletePinnedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3580,7 +3688,10 @@ export const deletePinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3604,7 +3715,10 @@ export const deletePinnedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3707,10 +3821,12 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3736,6 +3852,7 @@ export const createInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3771,7 +3888,10 @@ export const createInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3795,7 +3915,10 @@ export const createInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3899,10 +4022,12 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -3928,6 +4053,7 @@ export const updateInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -3963,7 +4089,10 @@ export const updateInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -3987,7 +4116,10 @@ export const updateInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4091,10 +4223,12 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -4120,6 +4254,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -4155,7 +4290,10 @@ export const deleteInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4179,7 +4317,10 @@ export const deleteInProgressStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4285,10 +4426,12 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -4314,6 +4457,7 @@ export const createFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -4349,7 +4493,10 @@ export const createFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4373,7 +4520,10 @@ export const createFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4495,10 +4645,12 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -4524,6 +4676,7 @@ export const updateFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -4559,7 +4712,10 @@ export const updateFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4583,7 +4739,10 @@ export const updateFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4705,10 +4864,12 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -4734,6 +4895,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -4769,7 +4931,10 @@ export const deleteFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4793,7 +4958,10 @@ export const deleteFinishedStory = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4919,7 +5087,10 @@ export const createComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -4943,7 +5114,10 @@ export const createComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5032,10 +5206,12 @@ export const createComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5061,6 +5237,7 @@ export const createComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5112,7 +5289,10 @@ export const updateComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5136,7 +5316,10 @@ export const updateComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5225,10 +5408,12 @@ export const updateComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5254,6 +5439,7 @@ export const updateComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5305,7 +5491,10 @@ export const deleteComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5329,7 +5518,10 @@ export const deleteComment = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5418,10 +5610,12 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5447,6 +5641,7 @@ export const deleteComment = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5494,10 +5689,12 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5523,6 +5720,7 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5554,10 +5752,12 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5583,6 +5783,7 @@ export const createReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5630,10 +5831,12 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5659,6 +5862,7 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5690,10 +5894,12 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5719,6 +5925,7 @@ export const updateReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5766,10 +5973,12 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5795,6 +6004,7 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5826,10 +6036,12 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -5855,6 +6067,7 @@ export const deleteReaction = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -5906,7 +6119,10 @@ export const createRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -5930,7 +6146,10 @@ export const createRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6019,10 +6238,12 @@ export const createRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6048,6 +6269,7 @@ export const createRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6098,7 +6320,10 @@ export const updateRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6122,7 +6347,10 @@ export const updateRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6211,10 +6439,12 @@ export const updateRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6240,6 +6470,7 @@ export const updateRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6290,7 +6521,10 @@ export const deleteRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6314,7 +6548,10 @@ export const deleteRating = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6403,10 +6640,12 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6432,6 +6671,7 @@ export const deleteRating = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6483,10 +6723,12 @@ export const createMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6512,6 +6754,7 @@ export const createMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6563,10 +6806,12 @@ export const updateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6592,6 +6837,7 @@ export const updateMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6643,10 +6889,12 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numFolowing
         followers {
           nextToken
           __typename
         }
+        numFollowers
         Pinned {
           nextToken
           __typename
@@ -6672,6 +6920,7 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
           __typename
         }
+        numPublished
         isMod
         setting1
         setting2
@@ -6720,7 +6969,10 @@ export const createStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6744,7 +6996,10 @@ export const createStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6868,7 +7123,10 @@ export const updateStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -6892,7 +7150,10 @@ export const updateStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7016,7 +7277,10 @@ export const deleteStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7040,7 +7304,10 @@ export const deleteStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7164,7 +7431,10 @@ export const createEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7188,7 +7458,10 @@ export const createEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7312,7 +7585,10 @@ export const updateEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7336,7 +7612,10 @@ export const updateEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7460,7 +7739,10 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
@@ -7484,7 +7766,10 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           isPublisher
           numAuthored
           topthree
+          numFolowing
+          numFollowers
           plan
+          numPublished
           isMod
           setting1
           setting2
