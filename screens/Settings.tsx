@@ -118,6 +118,7 @@ const Settings = ({navigation} : any) => {
             setTrackColor('#219a9ca5')
         }
     }, [premium])
+    
 
     return (
         <View style={styles.container}>
@@ -277,13 +278,30 @@ const Settings = ({navigation} : any) => {
                         tapToSeek={true}
                         value={playbackSpeed}
                         step={0.1}
-
                         minimumValue={0.1}
-                        maximumValue={2} //function set to the length of the audio file
+                        maximumValue={2} 
                         onValueChange={SetPosition} //function: when slider changes, slider value = SetPosition
                         onSlidingComplete={PlaybackSpeedChange}
                     />
                 </View>
+
+                {/* <View style={{ alignItems: 'center', marginTop: 100}}>
+                                   
+                                   <Slider
+                                       style={{width: '84%', height: 20}}
+                                       disabled={false}
+                                       minimumTrackTintColor="cyan"
+                                       maximumTrackTintColor="#ffffffa5"
+                                       thumbTintColor='#fff'
+                                       tapToSeek={true}
+                                       value={0}
+                                       step={1000}
+                                       minimumValue={0}
+                                       maximumValue={2220000} //function set to the length of the audio file
+                                       onValueChange={(value) => {console.log(value)}} //function: when slider changes, slider value = SetPosition
+                                       onSlidingComplete={(value) => {console.log(value)}}
+                                   />
+                               </View> */}
 
                 <View style={styles.optionsitem}>
                 </View>  

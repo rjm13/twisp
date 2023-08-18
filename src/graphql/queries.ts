@@ -5577,6 +5577,12 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -5759,6 +5765,12 @@ export const finishedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens

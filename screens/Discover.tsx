@@ -193,13 +193,12 @@ const AudioStoryHome = ({navigation} : any) => {
       let response = await API.graphql(graphqlOperation(
         inProgressStoriesByUser, {
           userID: userInfo.attributes.sub,
-          filter: {
-            type: {
-              eq: 'Story'
-            }
-          }
+          sortDirection: 'DESC'
         }
       ))
+
+        console.log('inprogress', response.data.inProgressStoriesByUser.items)
+
       if (response.data.inProgressStoriesByUser.items.length > 0) {
         setProgressStory(response.data.inProgressStoriesByUser.items[0].story)
         let imageUri = await Storage.get(response.data.inProgressStoriesByUser.items[0].story.imageUri)
@@ -208,7 +207,7 @@ const AudioStoryHome = ({navigation} : any) => {
         setTimeLeft(Math.ceil(((response.data.inProgressStoriesByUser.items[0].story.time)-(response.data.inProgressStoriesByUser.items[0].time))/60000))
         setProgressExists(true);
       }
-      if (response.data.getUser.inProgressStoriesByUser.items.length === 0) {
+      if (response.data.inProgressStoriesByUser.items.length === 0) {
         setProgressStory({})
         setImageU('')
         setPercent('0')

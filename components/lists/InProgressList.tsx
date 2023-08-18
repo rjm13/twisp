@@ -100,6 +100,8 @@ const InProgressList = () => {
                 id={item.story.id}
                 ratingAvg={item.story.ratingAvg}
                 ratingAmt={item.story.ratingAmt}
+                numComments={item.story.numComments}
+                numListens={item.story.numListens}
             /> 
             <View style={{width: Dimensions.get('window').width - 50, marginBottom: 20}}>
                 <View style={{width:  percent +'%', height: 1, backgroundColor: '#00ffff', marginLeft: 26, marginTop: -4, alignSelf: 'flex-start'}}/>

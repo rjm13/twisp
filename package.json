@@ -9,7 +9,6 @@
     "web": "expo start --web",
     "aws-export": "echo 'Update Expo AWS_EXPORTS secret with value: \n\n' && cat aws-exports.js |base64",
     "eas-build-pre-install": "echo $AWS_EXPORTS | base64 -di > ./src/aws-exports.js"
-
   },
   "dependencies": {
     "@aws-amplify/analytics": "^6.3.2",
@@ -21,9 +20,10 @@
     "@aws-amplify/xr": "^4.0.15",
     "@aws-sdk/client-cognito-identity": "^3.298.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.298.0",
+    "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-async-storage/async-storage": "^1.18.2",
     "@react-native-community/netinfo": "^9.3.10",
-    "@react-native-community/slider": "^4.4.2",
+    "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",

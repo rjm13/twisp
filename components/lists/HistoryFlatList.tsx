@@ -11,7 +11,7 @@ import {
 
 import StoryTile from '../../components/StoryTile';
 
-import { finishedStoriesByDate, getUser } from '../../src/graphql/queries';
+import { finishedStoriesByUser, getUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 
 
@@ -41,17 +41,20 @@ const HistoryList = () => {
             try {
 
                 const historyData = await API.graphql(graphqlOperation(
-                    getUser, {nextToken, id: userInfo.attributes.sub}))
+                    finishedStoriesByUser, {
+                        nextToken, 
+                        userID: userInfo.attributes.sub,
+                        sortDirection: 'DESC',
+                        
+                    }))
 
-                if (historyData.data.getUser.Finished.items.length > 0) {
-                    for (let i = 0; i < historyData.data.getUser.Finished.items.length; i++) {
-                        if (historyData.data.getUser.Finished.items[i].story.hidden === false && historyData.data.getUser.Finished.items[i].story.approved === 'approved') {
-                            History.push(historyData.data.getUser.Finished.items[i].story)
-                        }
+                if (historyData.data.finishedStoriesByUser.items.length > 0) {
+                    for (let i = 0; i < historyData.data.finishedStoriesByUser.items.length; i++) {
+                            History.push(historyData.data.finishedStoriesByUser.items[i].story)
                     } 
-                    console.log(historyData.data.getUser.Finished.nextToken)
-                    if (historyData.data.getUser.Finished.nextToken) {
-                        setNextToken(historyData.data.getUser.Finished.nextToken)
+                   
+                    if (historyData.data.finishedStoriesByUser.nextToken) {
+                        setNextToken(historyData.data.finishedStoriesByUser.nextToken)
                         fetchStories();
                         return;
                     }
@@ -150,6 +153,8 @@ const HistoryList = () => {
           id={item.id}
           ratingAvg={item.ratingAvg}
           ratingAmt={item.ratingAmt}
+          numComments={item.numComments}
+          numListens={item.numListens}
         />
       );}
 

@@ -220,12 +220,12 @@ const StoryScreen  = ({navigation} : any) => {
                 setCommentList(storyComments.data.commentsByStory.items)
 
             } catch (e) {
-                console.log(e);
+                console.log('comment error', e);
             }}
         fetchStory();
     }, [storyID, commentUpdated, didUpdate])
 
-    const [imageU, setImageU] = useState()
+    const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
 
     //on render, determine if the story in alraedy pinned or not
     useEffect(() => {
@@ -448,7 +448,7 @@ const StoryScreen  = ({navigation} : any) => {
     //comment item
     const Item = ({content, createdAt, userName, userImageUri}: any) => {
 
-        const [imageU, setImageU] = useState('');
+        const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg');
 
         useEffect(() => {
             const fetchImage = async () => {
@@ -494,7 +494,7 @@ const StoryScreen  = ({navigation} : any) => {
     
     
     const [user, setUser] = useState();
-    const [userImage, setUserImage] = useState('')
+    const [userImage, setUserImage] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
    
 //fetch the user info
     useEffect(() => {

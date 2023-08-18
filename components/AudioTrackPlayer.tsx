@@ -16,7 +16,8 @@ import * as Device from 'expo-device';
 
 //import {AdMobRewarded,setTestDeviceIDAsync} from 'expo-ads-admob';
 
-import Slider from '@react-native-community/slider';
+//import Slider from '@react-native-community/slider';
+import {Slider} from '@miblanchard/react-native-slider';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -58,6 +59,9 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 
 const AudioPlayer  = () => {
+
+    const [isSeeking, setIsSeeking] = useState(false);
+    const [seek, setSeek] = useState(0);
 
     //pin to playlist functions
     const [nextToken, setNextToken] = useState()
@@ -149,9 +153,11 @@ const AudioPlayer  = () => {
 
 
 //set the progress story ID
-useEffect(() => {
-    setInProgressID(null);
-}, [storyID])
+
+
+// useEffect(() => {
+//     setInProgressID(null);
+// }, [storyID])
 
 useEffect(() => {
     //if (premium === true) {
@@ -170,7 +176,7 @@ useEffect(() => {
 //use storyID to retrieve Story from AWS
     const [Story, setStory] = useState(null);
     const [AudioUri, setAudioUri] = useState('');
-    const [imageU, setImageU] = useState('')
+    const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
     const [user, setUser] = useState({})
 
     useEffect(() => {
@@ -232,22 +238,24 @@ useEffect(() => {
             ))
             setUser(UserData.data.getUser)
 
-            for (let i = 0; i < UserData.data.getUser.Rated.items.length; i++) {
-                if (UserData.data.getUser.Rated.items[i].storyID === storyID) {
-                    setIsRated(true);
-                }
-            }
+            // for (let i = 0; i < UserData.data.getUser.Rated.items.length; i++) {
+            //     if (UserData.data.getUser.Rated.items[i].storyID === storyID) {
+            //         setIsRated(true);
+            //     }
+            // }
 
             for (let i = 0; i < UserData.data.getUser.Finished.items.length; i++) {
                 if (UserData.data.getUser.Finished.items[i].storyID === storyID) {
                     setIsFinished(true);
                 }
             }
+
             for (let i = 0; i < UserData.data.getUser.inProgressStories.items.length; i++) {
                 if (UserData.data.getUser.inProgressStories.items[i].storyID === storyID) {
                     setInProgressID(UserData.data.getUser.inProgressStories.items[i].id);
                     setPosition(UserData.data.getUser.inProgressStories.items[i].time);
                     setInitialPosition(UserData.data.getUser.inProgressStories.items[i].time);
+                    console.log('initial is', UserData.data.getUser.inProgressStories.items[i].time)
                     return;
                 }
             }
@@ -283,6 +291,7 @@ useEffect(() => {
         setInitialPosition(0)
         setIsPlaying(false);
         setComplete(false);
+        setInProgressID(null)
         await TrackPlayer.reset()
     }
 
@@ -351,6 +360,8 @@ const AddToHistory = async () => {
     //check if the story is already in the history
     let userInfo = await Auth.currentAuthenticatedUser();
 
+    let arr = userFinished;
+
     //if item is not in history then...
     if (isFinished === false) {
         //create the history object
@@ -360,8 +371,8 @@ const AddToHistory = async () => {
                     storyID: storyID, 
                     type: 'FinishedStory', 
                     createdAt: new Date(),
+                    updatedAt: new Date(),
                     genreID: Story?.genreID,
-                    nsfw: Story?.nsfw
                 }}
             ))
 
@@ -369,7 +380,9 @@ const AddToHistory = async () => {
             updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
         ))
 
-        setUserFinished(userFinished.push(storyID))
+        arr.push(storyID)
+
+        setUserFinished(arr)
 
         //unpin the story, if pinned
         unPinStory(storyID);
@@ -416,7 +429,7 @@ const AddToHistory = async () => {
 const AddProgress = async () => {
     let userInfo = await Auth.currentAuthenticatedUser();
 
-    if (storyID !== null) {
+    if (storyID !== null && position !== 0) {
         let response = await API.graphql(graphqlOperation(
             createInProgressStory, {input: {
                 userID: userInfo.attributes.sub,
@@ -426,6 +439,7 @@ const AddProgress = async () => {
                 time: position
             }}
         ))
+        console.log('created new progress story')
         setInProgressID(response.data.createInProgressStory.id)
     }    
 }
@@ -433,12 +447,15 @@ const AddProgress = async () => {
 //update the story that is in progress
 const UpdateProgress = async () => {
     if (position !== 0) {
-        await API.graphql(graphqlOperation(
+        console.log(position)
+        const response = await API.graphql(graphqlOperation(
             updateInProgressStory, {input: {
                 id: inProgressID,
                 time: position,
             }}
         ))
+        console.log('updated progress response is', response)
+
     }
     
     
@@ -455,15 +472,7 @@ const ProgressCheck = () => {
 }
     
 
-//slider functions
-    function SetPosition(value) {
-        setPosition(value)
-    }
 
-    async function StoryPosition (value) { 
-       TrackPlayer.seekTo(Math.round(value)/1000);
-        setPosition(value);
-    }
 
     function millisToMinutesAndSeconds () {
         let minutes = Math.floor(position / 60000);
@@ -500,14 +509,14 @@ const ProgressCheck = () => {
         }
 
         if (isPlaying === false && complete === true) {
-            TrackPlayer.play();
-            TrackPlayer.seekTo(position/1000);
+            await TrackPlayer.seekTo(position/1000);
+            await TrackPlayer.play();
             //const positiontrack = await TrackPlayer.getDuration();
             //setSlideLength(positiontrack*1000);
             ProgressCheck();
         }
         if (isPlaying === true && complete === true) {
-            TrackPlayer.pause();  
+            await TrackPlayer.pause();  
             ProgressCheck();
         }    
     }
@@ -528,50 +537,58 @@ const ProgressCheck = () => {
         return null;
     }
 
+    //slider functions
+    const SetPosition = (value : any) => {
+        console.log('this', value[0])
+        //setIsSeeking(true);
+        //setSeek(value);
+        setPosition(value[0])
+    }
+
+    const StoryPosition = async (value : any) => { 
+        console.log('this2', value[0])
+        //setPosition(value);
+        TrackPlayer.seekTo(Math.round(value[0])/1000);
+        //await TrackPlayer.play();
+        
+    }
 
     return (
     
     <SafeAreaView>
-        <View style={{}}>
+        <View >
             <View style={{
-                flex: 1,
                 height: isExpanded === true ? SCREEN_WIDTH*0.75 : 0, 
                 width: isExpanded === true ? SCREEN_WIDTH : 0, 
                 position: 'absolute', 
                 bottom: Platform.OS === 'android' ? SCREEN_HEIGHT + 30 : SCREEN_HEIGHT - getStatusBarHeight() + 20,
                 }}>
                 <ImageBackground
-                resizeMode='cover'
+                    resizeMode='cover'
                     style={{
-                        //flex: 1,
                         width: isExpanded === false ? SCREEN_WIDTH : 0,
                         height: isExpanded === false ? (SCREEN_WIDTH*0.75) : 0,
                         backgroundColor: '#363636',
-                        
                     }}
-                    source={{uri: imageU}}
+                    source={imageU.length > 1 ? {uri: imageU} : {uri: 'https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg' }}
                 >
                 </ImageBackground>
             </View>
 
-            <View
-                style={[
-                    //animatedHeight, 
-                    {
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        borderTopRightRadius: 15,
-                        borderTopLeftRadius: 15,
-                        overflow: 'hidden',
-                        bottom: isRootScreen === true || isExpanded === false ? 0 : 55 ,
-                        //zIndex: 10,
-                        height: isExpanded === false ? (Platform.OS === 'ios' ? SCREEN_HEIGHT  : SCREEN_HEIGHT ) : 60,
-                    },
-                ]}>
+            <View style={[{   
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    borderTopRightRadius: 15,
+                    borderTopLeftRadius: 15,
+                    overflow: 'hidden',
+                    bottom: isRootScreen === true || isExpanded === false ? 0 : 55 ,
+                    //zIndex: 10,
+                    height: isExpanded === false ? (Platform.OS === 'ios' ? SCREEN_HEIGHT  : SCREEN_HEIGHT ) : 60,
+                }]}>
                     <LinearGradient 
                         colors={[isExpanded ? '#165C5C' : '#3B6980', isExpanded ? '#165C5C' : '#0E3F3F', isExpanded ? '#165C5C' : '#000', isExpanded ? '#165C5C' : '#000', isExpanded ? '#165C5C' : 'transparent' ]}
-                        style={{ flex: 1}}
+                        style={{ }}
                         locations={[0.0, 0.2, 0.4, 0.65, 0.9]}
                         start={{ x: 0, y: 1 }}
                         end={{ x: 0, y: 0 }}
@@ -581,7 +598,7 @@ const ProgressCheck = () => {
                         }}>
                             { isExpanded === true ? (
                                 <TouchableWithoutFeedback onPress={onChangeHandler}>
-                                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                                     
                                         <Text
                                             numberOfLines={1}
@@ -718,6 +735,8 @@ const ProgressCheck = () => {
                                     </View>  
                                 </TouchableWithoutFeedback>
 
+                                
+
                                 <View style={{ alignItems: 'center', marginHorizontal: 20}}>
                                     <View style={{marginTop: -10,}}>
                                         <View style={[{flexDirection: 'row', justifyContent: 'space-between', width: Dimensions.get('window').width - 80}]}>
@@ -759,15 +778,30 @@ const ProgressCheck = () => {
                             </View>
                             
                             <View style={{}}>
-                                <TouchableOpacity onPress={PlayPause}>
-                                    <View style={{alignSelf: 'center' }}>
-                                        <FontAwesome5 
-                                            name={isPlaying === true ? 'pause' : 'play'}
-                                            color='#ffffffCC'
-                                            size={50}
-                                        />
-                                    </View>
-                                </TouchableOpacity>
+                                <View style={{width: Dimensions.get('window').width, justifyContent: 'space-around', alignSelf: 'center' , flexDirection: 'row', alignItems: 'center'}}>
+                                    <TouchableOpacity onPress={async () => {setPosition(position - 30000); await TrackPlayer.seekTo(Math.round(position - 30000)/1000);}}>
+                                            <FontAwesome5 
+                                                name='chevron-left'
+                                                color='#ffffffCC'
+                                                size={50}
+                                            />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={PlayPause}>
+                                            <FontAwesome5 
+                                                name={isPlaying === true ? 'pause' : 'play'}
+                                                color='#ffffffCC'
+                                                size={50}
+                                            />
+                                           
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={async() => {setPosition(position + 30000); await TrackPlayer.seekTo(Math.round(position + 30000)/1000)}}>
+                                            <FontAwesome5 
+                                                name='chevron-right'
+                                                color='#ffffffCC'
+                                                size={50}
+                                            />
+                                    </TouchableOpacity>
+                                 </View>   
                                 
                                 
                                     <View style={{ marginTop: 20, width: '90%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between',}}>
@@ -779,28 +813,34 @@ const ProgressCheck = () => {
                                         </Text>
                                     </View>
 
-                                    <View style={{ alignItems: 'center', marginTop: Platform.OS === 'ios' ? 20 : 0}}>
+                                        <View style={{alignItems: 'center', marginTop: Platform.OS === 'ios' ? 20 : 0}}>
+                                   
                                         <Slider
-                                            style={{width: 320, height: 10}}
+                                            containerStyle={{width: '84%', height: 20}}
+                                            disabled={false}
                                             minimumTrackTintColor="cyan"
                                             maximumTrackTintColor="#ffffffa5"
                                             thumbTintColor='#fff'
                                             //tapToSeek={true}
-                                            value={initialposition}
+                                            value={position}
                                             step={1000}
-
+                                            //lowerLimit={0}
+                                            //upperLimit={slideLength}
                                             minimumValue={0}
                                             maximumValue={slideLength} //function set to the length of the audio file
-                                            onValueChange={SetPosition} //function: when slider changes, slider value = SetPosition
-                                            onSlidingComplete={StoryPosition}
+                                            onValueChange={(value) => SetPosition(value)} //function: when slider changes, slider value = SetPosition
+                                            onSlidingComplete={(value) => StoryPosition(value)}
                                         />
+                                    
                                     </View>
+                                    
                             </View>
                         </View>
                     ) : null } 
+                    
                 </View>
             </LinearGradient>
-        </View>
+            </View>
         </View>
     </SafeAreaView>
     );
