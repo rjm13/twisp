@@ -252,6 +252,8 @@ const AfterDarkSearch = ({navigation} : any) => {
             id={item.id}
             ratingAvg={item.ratingAvg}
             ratingAmt={item.ratingAmt}
+            numComments={item.numComments}
+            numListens={item.numListens}
       />
     );}
 

@@ -82,6 +82,8 @@ const NewAfterDarkStories = ({genreid} : any) => {
           time={item.time}
           id={item.id}
           ratingAvg={item.ratingAvg}
+          numComments={item.numComments}
+          numListens={item.numListens}
         />
       );}
 

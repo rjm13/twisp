@@ -78,6 +78,7 @@ const AuthorProfileSelect = ({navigation} : any) => {
                         userID: userInfo.attributes.sub,
                         penName: name.toLowerCase(),
                         numAuthored: 0,
+                        numFollowers: 0
                     }}
                 ))
 

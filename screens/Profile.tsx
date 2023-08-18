@@ -143,7 +143,7 @@ const ProfileScreen = ({navigation} : any) => {
                         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                                 <View style={{ alignItems: 'center', margin: 20}}>
                                     <Text style={{ color: 'cyan', opacity: .5}}>
-                                        {userFollowing.length}
+                                        {user?.numFollowing}
                                     </Text>
                                     <Text style={{ color: '#ffffffa5', fontWeight: 'bold'}}>
                                         Following
@@ -153,7 +153,7 @@ const ProfileScreen = ({navigation} : any) => {
                                 {user?.isPublisher === true ? (
                                     <View style={{ alignItems: 'center', margin: 20}}>
                                         <Text style={{ color: 'cyan', opacity: .5}}>
-                                            {user?.followers.items.length}
+                                            {user?.numFollowers}
                                         </Text>
                                         <Text style={{ color: '#ffffffa5', fontWeight: 'bold'}}>
                                             Followers

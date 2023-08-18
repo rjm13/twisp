@@ -133,6 +133,8 @@ const ForYouGenre = ({genreid} : any) => {
           icon={icon}
           id={item.id}
           ratingAvg={item.ratingAvg}
+          numComments={item.numComments}
+          numListens={item.numListens}
         />
       );}
 

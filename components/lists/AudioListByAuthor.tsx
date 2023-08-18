@@ -24,7 +24,7 @@ import { AppContext } from '../../AppContext';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { getUser, connectionsByFollower } from '../../src/graphql/queries';
-import { createFollowConnection, deleteFollowConnection } from '../../src/graphql/mutations';
+import { createFollowConnection, deleteFollowConnection, updateUser, updateCreatorProfile } from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
 
@@ -276,6 +276,8 @@ const AudioListByAuthor = ({status} : any) => {
             ratingAvg={item.ratingAvg}
             id={item.id}
             ratingAmt={item.ratingAmt}
+            numComments={item.numComments}
+            numListens={item.numListens}
 
         />
       );}
@@ -330,10 +332,31 @@ const AudioListByAuthor = ({status} : any) => {
     const FollowUser = async () => {
 
         let response = await API.graphql(graphqlOperation(
-            createFollowConnection, {input: {followerID: currentUser.id, creatorID: User.id}}
+            createFollowConnection, {input: {followerID: currentUser.id, creatorID: User.id, authorID: User.userID}}
         ))
         setFollowingConnID(response.data.createFollowingConn.id)
         setUserFollowing(userFollowing.push(userID))
+
+        await API.graphql(graphqlOperation(
+            updateUser, {input: {
+                id: currentUser.id, 
+                numFollowing: currentUser.numFollowing ? currentUser.numFollowing + 1 : 1
+            }}
+        ))
+
+        await API.graphql(graphqlOperation(
+            updateCreatorProfile, {input: {
+                id: User.id, 
+                numFollowers: User.numFollowers ? User.numFollowers + 1 : 1
+            }}
+        ))
+
+        await API.graphql(graphqlOperation(
+            updateUser, {input: {
+                id: User?.userID, 
+                numFollowers: User.numFollowers ? User.numFollowers + 1 : 1
+            }}
+        ))
     }
 
     const unFollowUser = async () => {

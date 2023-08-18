@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
     View, 
     Text, 
@@ -15,12 +15,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import useStyles from '../../styles';
 
+import { AppContext } from '../../AppContext';
+
 import { Auth, graphqlOperation, API } from 'aws-amplify';
 import { createUser } from '../../src/graphql/mutations';
 
 const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
 
     const styles = useStyles();
+
+    const { 
+        expoPushToken
+    } = useContext(AppContext);
 
     const [loggingIn, setLoggingIn] = useState(false);
 
@@ -56,7 +62,14 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                             id: userInfo.attributes.sub,
                             type: 'User',
                             name: userInfo.attributes.name,
-                            plan: 'basic'
+                            plan: 'basic',
+                            numFollowing: 0,
+                            numFollowers: 0,
+                            numPublished: 0,
+                            setting1: false,
+                            setting2: false,
+                            setting4: expoPushToken,
+                            numAuthored: 0
                         }
 
                         const createdUser = await API.graphql(

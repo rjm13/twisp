@@ -238,7 +238,13 @@ const Redirect = ({route, navigation} : any) => {
                             type: 'User',
                             name: userInfo.attributes.name,
                             plan: 'basic',
-                            setting4: expoPushToken
+                            setting4: expoPushToken,
+                            numFollowing: 0,
+                            numFollowers: 0,
+                            numPublished: 0,
+                            setting1: false,
+                            setting2: false,
+                            numAuthored: 0
                         }
 
                         const createdUser = await API.graphql(
