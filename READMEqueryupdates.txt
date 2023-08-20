@@ -74,3 +74,46 @@ ratingsByUser {
 		}
 	}
 }
+
+eroticStoryTagsByEroticTagId {
+	items {
+		story {
+			genre {
+				id
+				genre
+				icon
+				color
+			}
+		}
+	}
+}
+
+storyTagsBTagId {
+	items {
+		story {
+			genre {
+				id
+				genre
+				icon
+				color
+			}
+		}
+	}
+}
+
+getUser {
+	published {
+		items {
+			story {
+				genre {
+					id
+					genre
+					icon
+					color
+				}
+			}
+		}
+	}
+	
+}
+

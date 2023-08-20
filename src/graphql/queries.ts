@@ -144,6 +144,12 @@ export const getUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            icon
+            genre
+            color
+          }
           hidden
           status
           numListens
@@ -6914,6 +6920,12 @@ export const storyTagsByTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            color
+            icon
+            genre
+          }
           hidden
           status
           numListens
@@ -7048,6 +7060,12 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            color
+            icon
+            genre
+          }
           hidden
           status
           numListens

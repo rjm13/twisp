@@ -16,7 +16,7 @@ const UserScreen = () => {
 
     return (
         <View style={styles.container}>
-        
+            
             <AudioListByAuthor user={userID}/>
             <StatusBar style="light" />
         </View>
@@ -25,7 +25,7 @@ const UserScreen = () => {
 
 const styles = StyleSheet.create ({
     container: {
-        flex: 1
+        flex: 1,
     },
     header: {
         color: '#fff',

@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback, 
     TouchableOpacity, 
     ScrollView,
-    Image
+    Image,
+    InteractionManager
 } from 'react-native';
 
 import { Searchbar } from 'react-native-paper';
@@ -39,7 +40,9 @@ const SearchScreen = ({navigation} : any) => {
     const focus = useRef(null)
 
     useEffect(() => {
-      focus.current.focus()
+        InteractionManager.runAfterInteractions(() => {
+        focus.current.focus()
+      });
     }, [])
 
   //this is the search bar
@@ -95,6 +98,8 @@ const SearchScreen = ({navigation} : any) => {
 //fetch tags
     useEffect(() => {
 
+      let search = newSearch ? newSearch.toLowerCase() : null
+
         if (newSearch !== '') {
             const fetchTags = async () => {
                 const tagResults = await API.graphql(graphqlOperation(
@@ -102,7 +107,7 @@ const SearchScreen = ({navigation} : any) => {
                         tagToken,
                         filter: {
                             tagName: {
-                                contains: newSearch.toLowerCase()
+                                contains: search
                             },
                         }
                     }
@@ -138,8 +143,6 @@ const SearchScreen = ({navigation} : any) => {
 
               setAuthorToken(authorResults.data.creatorsByType.nextToken)
 
-              console.log(authorResults.data.creatorsByType)
-
               for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
                 arr.push(authorResults.data.creatorsByType.items[i])
               }
@@ -161,9 +164,11 @@ const SearchScreen = ({navigation} : any) => {
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
+      let search = newSearch ? newSearch.toLowerCase() : null
+
       const fetchStories = async () => {
 
-          if (newSearch.length > 2 ) {
+          if (search?.length > 2 ) {
 
           try {
 
@@ -363,7 +368,6 @@ const SearchScreen = ({navigation} : any) => {
                                                           if (response) {
                                                             setImageU(response);
                                                           }
-                                                          console.log(response)
                                                           
                                                       }
                                                       fetchImage()
@@ -371,7 +375,7 @@ const SearchScreen = ({navigation} : any) => {
 
                                               return (
                                                 <View key={id} style={{marginTop: 10, marginRight: 10, marginBottom: 20}}>
-                                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id})}>
+                                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id, rootChange: 'bottom'})}>
                                                         <View style={{flexDirection: 'row'}}>
                                                           <Image 
                                                             source={imageUri ? {uri: imageU} : require('../assets/blankprofile.png')}

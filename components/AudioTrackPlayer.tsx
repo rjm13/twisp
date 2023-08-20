@@ -587,7 +587,7 @@ const ProgressCheck = () => {
                     height: isExpanded === false ? (Platform.OS === 'ios' ? SCREEN_HEIGHT  : SCREEN_HEIGHT ) : 60,
                 }]}>
                     <LinearGradient 
-                        colors={[isExpanded ? '#165C5C' : '#3B6980', isExpanded ? '#165C5C' : '#0E3F3F', isExpanded ? '#165C5C' : '#000', isExpanded ? '#165C5C' : '#000', isExpanded ? '#165C5C' : 'transparent' ]}
+                        colors={[isExpanded ? '#082323' : '#082323', isExpanded ? '#082323' : '#082323', isExpanded ? '#082323' : '#000', isExpanded ? '#082323' : '#000', isExpanded ? '#082323' : 'transparent' ]}
                         style={{ }}
                         locations={[0.0, 0.2, 0.4, 0.65, 0.9]}
                         start={{ x: 0, y: 1 }}

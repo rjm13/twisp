@@ -24,8 +24,8 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower, updateUser, updateCreatorProfile } from '../../src/graphql/queries';
-import { createFollowConnection, deleteFollowConnection } from '../../src/graphql/mutations';
+import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower,  } from '../../src/graphql/queries';
+import { createFollowConnection, deleteFollowConnection, updateUser, updateCreatorProfile} from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
 
@@ -35,6 +35,8 @@ const CreatorProfile = ({status} : any) => {
 
     const { nsfwOn } = useContext(AppContext);
     const { ADon } = useContext(AppContext);
+
+    const { setIsRootScreen } = useContext(AppContext);
 
     const { userFollowing } = useContext(AppContext);
     const { setUserFollowing } = useContext(AppContext);
@@ -59,7 +61,7 @@ const CreatorProfile = ({status} : any) => {
     const [User, setUser] = useState(null);
 
     const route = useRoute();
-    const {userID} = route.params
+    const {userID, rootChange} = route.params
 
 
     useEffect( () => {
@@ -340,7 +342,7 @@ const CreatorProfile = ({status} : any) => {
                         size={25}
                         color='#fff'
                         style={{paddingTop: 0, paddingRight: 10}}
-                        onPress={() => navigation.goBack() }
+                        onPress={() => {navigation.goBack(); rootChange ? setIsRootScreen(false) : null} }
                     />
                     <Animated.Text numberOfLines={1} style={[styles.name, { opacity: animatedAppearOpacity, width: '78%'}]}>
                         {User?.penName}

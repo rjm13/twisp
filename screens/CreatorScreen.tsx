@@ -1,23 +1,34 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {  View, StyleSheet } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
 
 import CreatorProfile from '../components/lists/CreatorProfile';
 
-import {useRoute} from '@react-navigation/native'
+import {useRoute} from '@react-navigation/native';
+
+import { AppContext } from '../AppContext';
 
 
 const CreatorScreen = () => {
 
-    const route = useRoute();
-    const {userID} = route.params
+    const { setIsRootScreen } = useContext(AppContext);
 
+    
+
+    const route = useRoute();
+    const {userID, rootChange} = route.params
+
+    useEffect(() => {
+        if (rootChange === 'bottom') {
+            setIsRootScreen(true)
+        }
+    }, [rootChange])
 
     return (
         <View style={styles.container}>
         
-            <CreatorProfile userID={userID}/>
+            <CreatorProfile userID={userID} rootChange={rootChange}/>
             <StatusBar style="light" />
         </View>
     );
@@ -25,7 +36,7 @@ const CreatorScreen = () => {
 
 const styles = StyleSheet.create ({
     container: {
-        flex: 1
+        flex: 1,
     },
     header: {
         color: '#fff',

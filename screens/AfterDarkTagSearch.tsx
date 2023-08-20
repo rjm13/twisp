@@ -17,7 +17,7 @@ import { AppContext } from '../AppContext';
 import StoryTile from '../components/StoryTile';
 
 
-import { getTag, eroticStoryTagsByEroticTagId } from '../src/graphql/queries';
+import { eroticStoryTagsByEroticTagId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const AfterDarkTagSearch = ({navigation} : any) => {

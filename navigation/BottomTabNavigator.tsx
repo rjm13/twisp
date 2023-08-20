@@ -1,4 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Octicons from 'react-native-vector-icons/Octicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {useContext} from "react";
@@ -74,7 +75,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Discover"
       screenOptions={{ 
           tabBarActiveTintColor: '#fff',
           tabBarStyle: {
@@ -84,18 +85,18 @@ export default function BottomTabNavigator() {
         }
           }}>
       <BottomTab.Screen
-        name="Home"
+        name="Discover"
         component={HomeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home-sharp" color={color}/>,
+          tabBarIcon: ({ color }) => <Octicons name='telescope-fill' size={25} style={{ marginBottom: -8 }} color={color} />,
           headerShown: false
         }}
       />
       <BottomTab.Screen
-        name="Stories"
+        name="Browse"
         component={StoriesNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="library-sharp" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name='library-sharp' size={25} style={{ marginBottom: -8 }} color={color} />,
           headerShown: false,
         }}
       />
@@ -103,7 +104,7 @@ export default function BottomTabNavigator() {
         name="Playlist"
         component={PlaylistNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="disc" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name='disc' size={25} style={{ marginBottom: -8 }} color={color} />,
           headerShown: false,
         }}
       />
@@ -112,7 +113,7 @@ export default function BottomTabNavigator() {
           name="Premium"
           component={PremiumNavigator}
           options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="star" color={color} />,
+            tabBarIcon: ({ color }) => <Ionicons name='star' size={25} style={{ marginBottom: -8 }} color={color} />,
             headerShown: false,
           }}
         />
@@ -127,9 +128,9 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={25} style={{ marginBottom: -8 }} {...props} />;
-}
+// function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
+//   return <Ionicons size={25} style={{ marginBottom: -8 }} {...props} />;
+// }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab

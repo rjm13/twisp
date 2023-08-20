@@ -375,7 +375,7 @@ const AfterDarkSearch = ({navigation} : any) => {
 
                                               return (
                                                 <View key={id} style={{marginTop: 10, marginRight: 10, marginBottom: 20}}>
-                                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id})}>
+                                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id, rootChange: 'bottom'})}>
                                                         <View style={{flexDirection: 'row'}}>
                                                           <Image 
                                                             source={imageU ? {uri: imageU} : require('../assets/blankprofile.png')}
