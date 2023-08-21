@@ -7,7 +7,8 @@ import {
     Platform, 
     TouchableWithoutFeedback,
     StyleSheet,
-    Modal
+    Modal,
+    Image
 } from 'react-native';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
@@ -151,10 +152,14 @@ const Welcome = ({navigation} : any) => {
                     </View>
                 </Modal>
             <View style={{marginTop: 100, alignItems: 'center'}}>
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold'}}>
                         Welcome to Twisp!
                     </Text>
+                    <Image 
+                        source={require('../../assets/TwispLogoTrans.png')}
+                        style={{height: 100, width: 100, alignSelf: 'center'}}
+                    />
                     <Text style={{color: '#fff', fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
                         Your home for audio short stories
                     </Text>

@@ -97,7 +97,7 @@ export default function App() {
           //Capability.Stop,
         ],
       progressUpdateEventInterval: 10,
-        //icon: require('./../imgs/ic_logo_notification.png')
+      icon: require('./assets/twisp-bw-small.png')
       });
       //await TrackPlayer.setRepeatMode(RepeatMode.Queue);
     };

@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
        width: Dimensions.get('window').width, 
     },
     tile: {
-        backgroundColor: '#363636a5',
+        backgroundColor: '#202020a5',
         marginHorizontal: 10,
         marginVertical: 5,
         paddingVertical: 14,
