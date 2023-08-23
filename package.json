@@ -3,12 +3,12 @@
   "version": "1.1.29",
   "main": "/index.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "aws-export": "echo 'Update Expo AWS_EXPORTS secret with value: \n\n' && cat aws-exports.js |base64",
-    "eas-build-pre-install": "echo $AWS_EXPORTS | base64 -di > ./src/aws-exports.js"
+    "eas-build-pre-install": "echo $AWS_EXPORTS | base64 -d > ./src/aws-exports.js"
   },
   "dependencies": {
     "@aws-amplify/analytics": "^6.3.2",
@@ -42,8 +42,9 @@
     "expo-linking": "^4.0.1",
     "expo-notifications": "~0.18.1",
     "expo-permissions": "~14.1.1",
-    "expo-splash-screen": "^0.18.2",
+    "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
+    "expo-system-ui": "~2.2.1",
     "expo-tracking-transparency": "~3.0.3",
     "react": "18.2.0",
     "react-native": "0.71.8",

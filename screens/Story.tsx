@@ -231,6 +231,8 @@ const StoryScreen  = ({navigation} : any) => {
     useEffect(() => {
             if (userPins.includes(storyID) === true) {
                 setQd(true)
+            } else {
+                setQd(false)
             }
     }, [storyID])
         

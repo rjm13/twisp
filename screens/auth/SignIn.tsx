@@ -43,7 +43,10 @@ const SignIn = ({navigation} : any) => {
         const unsubscribe = Hub.listen("auth", ({ payload: { event, data }}) => {
           switch (event) {
             case "signIn":
-                navigation.navigate('Redirect', {trigger: Math.random()});
+                console.log('this guy logged in', data)
+                if (data.username.startsWith('google')) {
+                    navigation.navigate('Redirect', {trigger: Math.random()});
+                }
                 setSigningIn(false)
               break;
             case "signOut":

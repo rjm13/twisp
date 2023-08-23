@@ -22,6 +22,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.martianspidermedia.blipprod",
       "buildNumber": "1.1.29",
+      "associatedDomains": ["applinks:twisp.space"],
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"

@@ -7,7 +7,8 @@ import {
     TouchableWithoutFeedback, 
     TouchableOpacity, 
     ScrollView,
-    Image
+    Image,
+    InteractionManager
 } from 'react-native';
 
 import { Searchbar } from 'react-native-paper';
@@ -40,8 +41,10 @@ const AfterDarkSearch = ({navigation} : any) => {
     const focus = useRef(null)
 
     useEffect(() => {
+      InteractionManager.runAfterInteractions(() => {
       focus.current.focus()
-    }, [])
+    });
+  }, [])
 
   //this is the search bar
     function SearchBar () {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { 
     View, 
     StyleSheet, 
@@ -7,6 +7,7 @@ import {
     ScrollView,
     FlatList,
     Dimensions,
+    Animated
 } from 'react-native';
 
 import {useRoute} from '@react-navigation/native'
@@ -157,6 +158,38 @@ const [trendingTags, setTrendingTags] = useState([]);
         )
     }
 
+    const animation = useRef(new Animated.Value(0)).current;
+
+    const animatedOpacity = animation.interpolate({
+        inputRange: [0, 50],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+        });
+
+    const animatedOpacitySlow = animation.interpolate({
+        inputRange: [0, 220],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+        });
+
+    const animatedAppearOpacity = animation.interpolate({
+        inputRange: [0, 450],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+        });
+
+    const animatedHeaderHeight = animation.interpolate({
+        inputRange: [0, 350],
+        outputRange: [450, 80],
+        extrapolate: 'clamp',
+        });
+
+    const animatedColor = animation.interpolate({
+        inputRange: [250, 800],
+        outputRange: ['#000000', '#363636'],
+        extrapolate: 'clamp',
+        });
+
 
     return (
         <View style={styles.container}>
@@ -167,30 +200,9 @@ const [trendingTags, setTrendingTags] = useState([]);
                 end={{ x: 0.5, y: 0.5 }}
             >
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginTop: 20}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <FontAwesome5 
-                                name='chevron-left'
-                                size={22}
-                                color='#fff'
-                                style={{padding: 30}}
-                                onPress={() => navigation.goBack()}
-                            /> 
-                            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
-                                {GenreInfo.genre}
-                            </Text>
-                        </View>
-                        <View>
-                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
-                                <Text style={{marginRight: 40, color: '#fff'}}>
-                                    Browse All
-                                </Text> 
-                            </TouchableWithoutFeedback>
-                            
-                        </View>
-                    </View>
+                    
 
-                    <View style={{ marginTop: 0}}>
+                    <View style={{ marginTop: 100}}>
                         <GenreCarousel genreid={genreRoute}/>
                     </View>
 
@@ -241,7 +253,31 @@ const [trendingTags, setTrendingTags] = useState([]);
 
                     </View>
 
+                    
+
                 </ScrollView>
+                <View style={{position: 'absolute', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', paddingTop: 20, width: Dimensions.get('window').width, backgroundColor: '#000000CC'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', }}>
+                            <FontAwesome5 
+                                name='chevron-left'
+                                size={22}
+                                color='#fff'
+                                style={{padding: 30}}
+                                onPress={() => navigation.goBack()}
+                            /> 
+                            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
+                                {GenreInfo.genre}
+                            </Text>
+                        </View>
+                        <View>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
+                                <Text style={{marginRight: 40, color: '#fff'}}>
+                                    Browse All
+                                </Text> 
+                            </TouchableWithoutFeedback>
+                            
+                        </View>
+                    </View>
             </LinearGradient>
         </View>
     );

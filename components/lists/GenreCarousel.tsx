@@ -311,11 +311,13 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                     <View>
                         { isVisible ? (
                             <View style={styles.popupblock}>
-                                <View style={{ marginTop: 20, marginBottom: 10 }}> 
-                                    <Text style={[styles.paragraph, {fontSize: 14}]}>
-                                        {summary}
-                                    </Text>
-                                </View>
+                                <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+                                    <View style={{ marginTop: 20, marginBottom: 10 }}> 
+                                        <Text style={[styles.paragraph, {fontSize: 14}]}>
+                                            {summary}
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
                         <View> 
                             <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
                                     <TouchableOpacity onPress={onPlay}>
