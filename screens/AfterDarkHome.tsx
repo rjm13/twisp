@@ -179,7 +179,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                         <View>
                             <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAfterDark', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
                                 <Text style={{marginRight: 40, color: '#fff'}}>
-                                    Browse All
+                                    Browse
                                 </Text> 
                             </TouchableWithoutFeedback>
                             
@@ -195,7 +195,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                             size={18}
                             />
                             <Text style={{marginLeft: 20, color: '#000000a5'}}>
-                            Search erotic stories, authors, tags
+                            Search stories, authors, tags
                             </Text>
                         </View>
                         </TouchableWithoutFeedback>

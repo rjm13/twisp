@@ -9,7 +9,8 @@ import {
     ActivityIndicator,
     Keyboard,
     TouchableWithoutFeedback,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -247,17 +248,19 @@ const SignIn = ({navigation} : any) => {
 
                 <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
 
-                <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
-                    <View style={[styles.socialbuttonlayout]}>
-                        <Image 
-                            source={require('../../assets/google-logo.png')}
-                            style={{width: 30, height: 30, margin: 0}}
-                        />
-                        <Text style={[styles.socialbuttontext]}>
-                            Continue with Google
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                {Platform.OS === 'android' ? (
+                    <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
+                        <View style={[styles.socialbuttonlayout]}>
+                            <Image 
+                                source={require('../../assets/google-logo.png')}
+                                style={{width: 30, height: 30, margin: 0}}
+                            />
+                            <Text style={[styles.socialbuttontext]}>
+                                Continue with Google
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                ) : null}
 
             <StatusBar style='light' backgroundColor='transparent'/>
             </View>

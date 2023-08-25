@@ -56,7 +56,7 @@ const AfterDarkSearch = ({navigation} : any) => {
         return (
           <View>
             <Searchbar
-              placeholder={'Search erotica stories, tags'}
+              placeholder={'Search stories, tags'}
               placeholderTextColor='#000000a5'
               //autoComplete={true}
               onChangeText={onChangeSearch}
@@ -74,10 +74,10 @@ const AfterDarkSearch = ({navigation} : any) => {
               iconColor='#000000a5'
               style={{
                 height: 40,
-                marginLeft: 40,
+                marginLeft: 20,
                 borderRadius: 8,
                 backgroundColor: '#e0e0e0',
-                width: Dimensions.get('window').width - 100,
+                width: Dimensions.get('window').width - 80,
               }}
               inputStyle={{fontSize: 14, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />

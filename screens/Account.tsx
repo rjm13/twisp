@@ -459,7 +459,7 @@ const handleUpdateName = async () => {
                 </TouchableOpacity>
             </Modal>
             
-            <LinearGradient colors={['#363636a5', '#363636a5', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+            <LinearGradient colors={['#363636a5', '#171717a5', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                 <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, alignItems: 'center'}}>
                     <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                         <View style={{padding: 30, margin:-30}}>

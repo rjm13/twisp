@@ -272,7 +272,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                         <View>
                             <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
                                 <Text style={{marginRight: 40, color: '#fff'}}>
-                                    Browse All
+                                    Browse
                                 </Text> 
                             </TouchableWithoutFeedback>
                             

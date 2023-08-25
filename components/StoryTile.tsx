@@ -232,8 +232,8 @@ useEffect(() => {
                         
                         </View>
                         
-                        <View style={{ width: '78%'}}>
-                                <Text style={styles.name}>
+                        <View style={{ width: isVisible ? Dimensions.get('window').width*0.88 : Dimensions.get('window').width*0.68}}>
+                                <Text style={[styles.name, {flexWrap: 'wrap'}]}>
                                     {title}
                                 </Text> 
                                 <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
@@ -254,10 +254,11 @@ useEffect(() => {
                                         {narrator}
                                     </Text> 
                                 </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-                                    <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                        {genreName}
-                                    </Text>
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10, width: Dimensions.get('window').width-40, justifyContent: 'space-between'}}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                            {genreName}
+                                        </Text>
                                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                                         <FontAwesome 
                                             name='comment'
@@ -290,12 +291,39 @@ useEffect(() => {
                                             </Text>
                                         </View>
                                     )}
+                                    </View>
+                                    
+                                         {isVisible ? (
+                                            <View style={{marginRight: 10}}>
+                                            <TouchableOpacity onPress={onPlay}>
+                                                <View style={{ 
+                                                    flexDirection: 'row', 
+                                                    alignItems: 'center', 
+                                                    borderRadius: 30,
+                                                    paddingVertical: 2,
+                                                    paddingHorizontal: 10,
+                                                    backgroundColor: '#ffffff33',
+                                                    marginLeft: -10
+                                                    
+                                                }}>
+                                                    <FontAwesome5 
+                                                        name='play'
+                                                        color='#ffffff'
+                                                        size={10}
+                                                    />
+                                                    <Text style={styles.time}>
+                                                        {TimeConversion(time)}
+                                                    </Text> 
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        ) : null}
                                     
                                 </View>
                         </View>
                         {isVisible ? (
                             <View>
-                            <TouchableOpacity onPress={onPlay}>
+                            {/* <TouchableOpacity onPress={onPlay}>
                                 <View style={{ 
                                     flexDirection: 'row', 
                                     alignItems: 'center', 
@@ -315,11 +343,9 @@ useEffect(() => {
                                         {TimeConversion(time)}
                                     </Text> 
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
-                        ) : null
-
-                        }
+                        ) : null}
                         
                         
                     </View> 

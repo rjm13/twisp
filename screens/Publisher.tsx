@@ -75,7 +75,7 @@ const Publisher = ({navigation} : any) => {
         <View style={styles.container}>
 
             <LinearGradient
-                colors={['black', '#363636a5', 'black']}
+                colors={['#363636a5', '#171717a5', 'black']}
                 style={{height: Dimensions.get('window').height,justifyContent: 'space-between'}}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -113,7 +113,7 @@ const Publisher = ({navigation} : any) => {
                     </View>  
                 </View>
 
-                <ScrollView>  
+                <ScrollView showsVerticalScrollIndicator={false}>  
                     <View style={styles.container}>
                         {isPublisher === true ? (
                             <View>

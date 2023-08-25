@@ -213,7 +213,7 @@ const BrowseAuthor = ({navigation} : any) => {
                 </View>    
     
                 <View style={{marginTop: 10, marginHorizontal: 5}}>
-                    <Text style={{color: "#fff", fontSize: 12, }}>
+                    <Text numberOfLines={5} style={{color: "#fff", fontSize: 12, }}>
                         {bio}
                     </Text>
                 </View>

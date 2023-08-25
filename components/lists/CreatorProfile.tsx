@@ -327,7 +327,7 @@ const CreatorProfile = ({status} : any) => {
 
                 return (
                         <View>
-                            <View style={{ height: 500}}/>
+                            <View style={{ height: 520}}/>
                         </View>
                                     
                                 );
@@ -335,7 +335,7 @@ const CreatorProfile = ({status} : any) => {
         />
             
         <Animated.View style={[ {backgroundColor: animatedColor, height: animatedHeaderHeight, width: Dimensions.get('window').width, position: 'absolute', flex: 1}]}>              
-            <View style={{ flexDirection: 'row', marginTop: 40, justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', marginTop: 60, justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
                     <AntDesign 
                         name='close'
@@ -359,6 +359,7 @@ const CreatorProfile = ({status} : any) => {
                             paddingVertical: 5,
                             borderWidth: Following === true ? 0 : 0.5,
                             borderColor: 'cyan',
+                            overflow: 'hidden'
                         }}>
                             {Following === true ? 'Following' : 'Follow'}
                         </Text>

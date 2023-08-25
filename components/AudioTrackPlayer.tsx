@@ -650,7 +650,7 @@ const ProgressCheck = () => {
                                             />
                                         </View>
                                     )}
-                                        <View>
+                                        <View style={{marginTop: Platform.OS === 'ios' ? 40 : 0}}>
                                             <TouchableOpacity onPress={onClose}>
                                                 <View style={ [styles.button, {left: -20}]}>
                                                     <AntDesign 
@@ -671,7 +671,7 @@ const ProgressCheck = () => {
                                                 </View>
                                             </TouchableOpacity> 
                                         </View>
-                                        <View>
+                                        <View style={{marginTop: Platform.OS === 'ios' ? 40 : 0}}>
                                             <View style={ [styles.button, {right: -20}]}>
                                                 <FontAwesome 
                                                     name='commenting-o'

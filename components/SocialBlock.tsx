@@ -22,7 +22,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const SocialBlock = ({tikTok, website, instagram, reddit, deviantArt, facebook, youTube, email} : any) => {
 
     return (
-        <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 10}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 10, flexWrap: 'wrap'}}>
 
             {facebook ? (
                 <TouchableWithoutFeedback onPress={() => Linking.openURL(facebook)}>

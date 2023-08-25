@@ -279,7 +279,7 @@ const AudioStoryHome = ({navigation} : any) => {
                           {timeLeft} minutes left
                         </Text>
                       </View>
-                      <View style={{alignSelf: 'flex-start', width: percent + '%', backgroundColor: 'cyan', height: 1, marginTop: 7, marginLeft: -20}}/>
+                      <View style={{alignSelf: 'flex-start', width: percent + '%', backgroundColor: '#00ffffa5', height: 5, marginTop: 7, marginLeft: -20}}/>
                     </View>
                   </View>
                 </View>
