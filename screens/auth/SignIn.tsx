@@ -268,7 +268,6 @@ const SignIn = ({navigation} : any) => {
 
                 <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
 
-                {Platform.OS === 'android' ? (
                     <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
                         <View style={[styles.socialbuttonlayout]}>
                             <Image 
@@ -280,7 +279,6 @@ const SignIn = ({navigation} : any) => {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                ) : null}
 
                     <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
                         <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 0.5, borderColor: '#fff'}]}>
