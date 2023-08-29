@@ -557,12 +557,13 @@ const ProgressCheck = () => {
     
     <SafeAreaView>
         <View >
+            {/* the background of the track player */}
             <View style={{
                 height: isExpanded === true ? SCREEN_WIDTH*0.75 : 0, 
                 width: isExpanded === true ? SCREEN_WIDTH : 0, 
                 position: 'absolute', 
                 bottom: Platform.OS === 'android' ? SCREEN_HEIGHT + 30 : SCREEN_HEIGHT - getStatusBarHeight() + 20,
-                }}>
+            }}>
                 <ImageBackground
                     resizeMode='cover'
                     style={{
@@ -636,13 +637,14 @@ const ProgressCheck = () => {
                         justifyContent:'flex-end',
                     }}>
                     { isExpanded === false ? (
-                        <View style={{ justifyContent: 'space-around', marginBottom: 50, height: '100%', backgroundColor: 'transparent', paddingTop: 60}}>
+                        <View style={{ justifyContent: 'space-around', marginBottom: 0, height: Dimensions.get('window').height, backgroundColor: 'transparent', paddingTop: 0}}>
                             
                             <View>
-                                <View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, paddingBottom: 100, marginTop: Platform.OS === 'android' ? -20 : 0}}>
+                                {/* these are the action buttons */}
+                                <View style={{height: Dimensions.get('window').height*0.3, }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, paddingBottom: 0, marginTop: 10 }}>
                                     {Story.imageUri ? (null) : (
-                                        <View style={{ position: 'absolute', left: Dimensions.get('window').width/2 - 40, top: 80, backgroundColor: 'transparent'}}>
+                                        <View style={{ position: 'absolute', left: Dimensions.get('window').width/2 - 40, top: 0, backgroundColor: 'transparent'}}>
                                             <FontAwesome5 
                                                 name={Story?.genre?.icon}
                                                 color='#ffffffa5'
@@ -697,7 +699,9 @@ const ProgressCheck = () => {
                                     </View>
                                 </View>
 
-                                <TouchableWithoutFeedback 
+                                {/* this is the body */}
+                                <View style={{height: Dimensions.get('window').height*0.4}}>
+                                    <TouchableWithoutFeedback 
                                     onPress={
                                         () => {RootNavigation.navigate('StoryScreen', { storyID: storyID });
                                         onChangeHandler();}
@@ -733,108 +737,110 @@ const ProgressCheck = () => {
                                             </View>
                                     </View>
                                     </View>  
-                                </TouchableWithoutFeedback>
+                                    </TouchableWithoutFeedback>
 
-                                
-
-                                <View style={{ alignItems: 'center', marginHorizontal: 20}}>
-                                    <View style={{marginTop: -10,}}>
-                                        <View style={[{flexDirection: 'row', justifyContent: 'space-between', width: Dimensions.get('window').width - 80}]}>
-                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                                <FontAwesome5 
-                                                    name={Story?.genre?.icon}
-                                                    color='#ffffffa5'
-                                                    size={15}
-                                                    style={{marginRight: 10}}
-                                                />
-                                                <Text style={[ { color: Story?.genre?.color, fontSize: 16, textTransform: 'capitalize' }]}>
-                                                    {Story?.genre?.genre} 
-                                                </Text>
-                                            </View>
-                                            
-                                            <View style={{justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
-                                                <FontAwesome 
-                                                    name={isRated === true ? 'star' : 'star-o'}
-                                                    size={17}
-                                                    color={isRated === true || isFinished === true ? 'gold' : 'white'}
-                                                    onPress={onLikePress}
-                                                    style={{marginHorizontal: 6 }}
-                                                />
-                                                <Text style={{textAlign: 'center', color: '#e0e0e0', fontSize: 17}}>
-                                                    {(Story?.ratingAvg/10).toFixed(1)}
-                                                </Text>
+                                    <View style={{ alignItems: 'center', marginHorizontal: 20}}>
+                                        <View style={{marginTop: -10,}}>
+                                            <View style={[{flexDirection: 'row', justifyContent: 'space-between', width: Dimensions.get('window').width - 80}]}>
+                                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome5 
+                                                        name={Story?.genre?.icon}
+                                                        color='#ffffffa5'
+                                                        size={15}
+                                                        style={{marginRight: 10}}
+                                                    />
+                                                    <Text style={[ { color: Story?.genre?.color, fontSize: 16, textTransform: 'capitalize' }]}>
+                                                        {Story?.genre?.genre} 
+                                                    </Text>
+                                                </View>
+                                                
+                                                <View style={{justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
+                                                    <FontAwesome 
+                                                        name={isRated === true ? 'star' : 'star-o'}
+                                                        size={17}
+                                                        color={isRated === true || isFinished === true ? 'gold' : 'white'}
+                                                        onPress={onLikePress}
+                                                        style={{marginHorizontal: 6 }}
+                                                    />
+                                                    <Text style={{textAlign: 'center', color: '#e0e0e0', fontSize: 17}}>
+                                                        {(Story?.ratingAvg/10).toFixed(1)}
+                                                    </Text>
+                                                </View>
                                             </View>
                                         </View>
+                                        {Platform.OS === 'android' ? (
+                                            <View style={{ height: 110, marginTop: 20, marginHorizontal: -20 }}>
+                                            <Text style={[styles.highlight, {textAlign: 'center'}]}>
+                                                {Story?.summary}
+                                            </Text>
+                                        </View>
+                                        ) : null}
+                                        
                                     </View>
-                                    {Platform.OS === 'android' ? (
-                                        <View style={{ height: 110, marginTop: 20, marginHorizontal: -20 }}>
-                                        <Text style={[styles.highlight, {textAlign: 'center'}]}>
-                                            {Story?.summary}
-                                        </Text>
-                                    </View>
-                                    ) : null}
+                                </View>
+
+                                {/* this is the track player */}
+                                <View style={{height: Dimensions.get('window').height*0.3, justifyContent: 'center'}}>
+                                    <View style={{width: Dimensions.get('window').width, justifyContent: 'space-around', alignSelf: 'center' , flexDirection: 'row', alignItems: 'center'}}>
+                                        <TouchableOpacity onPress={async () => {setPosition(position - 30000); await TrackPlayer.seekTo(Math.round(position - 30000)/1000);}}>
+                                                <FontAwesome5 
+                                                    name='chevron-left'
+                                                    color='#ffffffCC'
+                                                    size={50}
+                                                />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={PlayPause}>
+                                                <FontAwesome5 
+                                                    name={isPlaying === true ? 'pause' : 'play'}
+                                                    color='#ffffffCC'
+                                                    size={50}
+                                                />
+                                            
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={async() => {setPosition(position + 30000); await TrackPlayer.seekTo(Math.round(position + 30000)/1000)}}>
+                                                <FontAwesome5 
+                                                    name='chevron-right'
+                                                    color='#ffffffCC'
+                                                    size={50}
+                                                />
+                                        </TouchableOpacity>
+                                    </View>   
                                     
+                                    
+                                        <View style={{ marginTop: 20, width: '90%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between',}}>
+                                            <Text style={{ fontSize: 18, marginBottom: 5, textAlign: 'center', color: 'white'}}>
+                                                {millisToMinutesAndSeconds()}
+                                            </Text>
+                                            <Text style={{ fontSize: 18, marginBottom: 5, textAlign: 'center', color: 'white'}}>
+                                                {convertToTime()}
+                                            </Text>
+                                        </View>
+
+                                            <View style={{alignItems: 'center', marginTop: Platform.OS === 'ios' ? 20 : 0}}>
+                                    
+                                            <Slider
+                                                containerStyle={{width: '84%', height: 20}}
+                                                disabled={false}
+                                                minimumTrackTintColor="cyan"
+                                                maximumTrackTintColor="#ffffffa5"
+                                                thumbTintColor='#fff'
+                                                //tapToSeek={true}
+                                                value={position}
+                                                step={1000}
+                                                //lowerLimit={0}
+                                                //upperLimit={slideLength}
+                                                minimumValue={0}
+                                                maximumValue={slideLength} //function set to the length of the audio file
+                                                onValueChange={(value) => SetPosition(value)} //function: when slider changes, slider value = SetPosition
+                                                onSlidingComplete={(value) => StoryPosition(value)}
+                                            />
+                                        
+                                        </View>
+                                        
                                 </View>
                             </View>
                             
-                            <View style={{}}>
-                                <View style={{width: Dimensions.get('window').width, justifyContent: 'space-around', alignSelf: 'center' , flexDirection: 'row', alignItems: 'center'}}>
-                                    <TouchableOpacity onPress={async () => {setPosition(position - 30000); await TrackPlayer.seekTo(Math.round(position - 30000)/1000);}}>
-                                            <FontAwesome5 
-                                                name='chevron-left'
-                                                color='#ffffffCC'
-                                                size={50}
-                                            />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={PlayPause}>
-                                            <FontAwesome5 
-                                                name={isPlaying === true ? 'pause' : 'play'}
-                                                color='#ffffffCC'
-                                                size={50}
-                                            />
-                                           
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={async() => {setPosition(position + 30000); await TrackPlayer.seekTo(Math.round(position + 30000)/1000)}}>
-                                            <FontAwesome5 
-                                                name='chevron-right'
-                                                color='#ffffffCC'
-                                                size={50}
-                                            />
-                                    </TouchableOpacity>
-                                 </View>   
-                                
-                                
-                                    <View style={{ marginTop: 20, width: '90%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'space-between',}}>
-                                        <Text style={{ fontSize: 18, marginBottom: 5, textAlign: 'center', color: 'white'}}>
-                                            {millisToMinutesAndSeconds()}
-                                        </Text>
-                                        <Text style={{ fontSize: 18, marginBottom: 5, textAlign: 'center', color: 'white'}}>
-                                            {convertToTime()}
-                                        </Text>
-                                    </View>
-
-                                        <View style={{alignItems: 'center', marginTop: Platform.OS === 'ios' ? 20 : 0}}>
-                                   
-                                        <Slider
-                                            containerStyle={{width: '84%', height: 20}}
-                                            disabled={false}
-                                            minimumTrackTintColor="cyan"
-                                            maximumTrackTintColor="#ffffffa5"
-                                            thumbTintColor='#fff'
-                                            //tapToSeek={true}
-                                            value={position}
-                                            step={1000}
-                                            //lowerLimit={0}
-                                            //upperLimit={slideLength}
-                                            minimumValue={0}
-                                            maximumValue={slideLength} //function set to the length of the audio file
-                                            onValueChange={(value) => SetPosition(value)} //function: when slider changes, slider value = SetPosition
-                                            onSlidingComplete={(value) => StoryPosition(value)}
-                                        />
-                                    
-                                    </View>
-                                    
-                            </View>
+                            
                         </View>
                     ) : null } 
                     
