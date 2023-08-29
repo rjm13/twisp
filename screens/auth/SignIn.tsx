@@ -48,6 +48,9 @@ const SignIn = ({navigation} : any) => {
                 if (data.username.startsWith('google')) {
                     navigation.navigate('Redirect', {trigger: Math.random()});
                 }
+                if (data.username.startsWith('signinwithapple')) {
+                    navigation.navigate('Redirect', {trigger: Math.random()});
+                }
                 setSigningIn(false)
               break;
             case "signOut":
@@ -75,6 +78,23 @@ const SignIn = ({navigation} : any) => {
         }
         setSigningIn(false)
     }
+
+    async function signInWithApple() {
+        setSigningIn(true);
+        try {
+            await Auth.federatedSignIn({
+                provider: CognitoHostedUIIdentityProvider.Apple
+              })
+        } 
+        catch (error) {
+            console.log('error signing in', error)
+            setIsErr(true);
+            setSigningIn(false);
+        }
+        setSigningIn(false)
+    }
+
+    
 
     const CreateUser = async () => {
 
@@ -261,6 +281,18 @@ const SignIn = ({navigation} : any) => {
                         </View>
                     </TouchableOpacity>
                 ) : null}
+
+                    <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
+                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 0.5, borderColor: '#fff'}]}>
+                            <Image 
+                                source={require('../../assets/apple-logo.png')}
+                                style={{width: 30, height: 30, margin: 0}}
+                            />
+                            <Text style={[styles.socialbuttontext, {backgroundColor: '#000'}]}>
+                                Continue with Apple
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
 
             <StatusBar style='light' backgroundColor='transparent'/>
             </View>

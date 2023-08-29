@@ -63,7 +63,7 @@ const ConfirmEmail = ({navigation, route} : {navigation: any, route : any}) => {
                             type: 'User',
                             name: userInfo.attributes.name,
                             plan: 'basic',
-                            numFollowing: 0,
+                            numFolowing: 0,
                             numFollowers: 0,
                             numPublished: 0,
                             setting1: false,

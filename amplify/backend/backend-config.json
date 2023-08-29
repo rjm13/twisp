@@ -42,7 +42,8 @@
           "EMAIL"
         ],
         "socialProviders": [
-          "GOOGLE"
+          "GOOGLE",
+          "APPLE"
         ],
         "usernameAttributes": [
           "EMAIL"
@@ -56,6 +57,11 @@
     }
   },
   "function": {
+    "appleAutoVerify": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "dailyPushModUpdate": {
       "build": true,
       "dependsOn": [
@@ -95,6 +101,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_appleAutoVerify_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appleAutoVerify"
+        }
+      ]
+    },
+    "AMPLIFY_function_appleAutoVerify_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "appleAutoVerify"
+        }
+      ]
+    },
     "AMPLIFY_function_dailyPushModUpdate_deploymentBucketName": {
       "usedBy": [
         {

@@ -235,11 +235,13 @@ const Redirect = ({route, navigation} : any) => {
                         
                         const newUser = {
                             id: userInfo.attributes.sub,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
                             type: 'User',
-                            name: userInfo.attributes.name,
+                            name: userInfo.attributes.name ? userInfo.attributes.name : 'annonymous',
                             plan: 'basic',
                             setting4: expoPushToken,
-                            numFollowing: 0,
+                            numFolowing: 0,
                             numFollowers: 0,
                             numPublished: 0,
                             setting1: false,
@@ -247,7 +249,7 @@ const Redirect = ({route, navigation} : any) => {
                             numAuthored: 0
                         }
 
-                        const createdUser = await API.graphql(
+                            const createdUser = await API.graphql(
                             graphqlOperation(
                             createUser,
                             { input: newUser }

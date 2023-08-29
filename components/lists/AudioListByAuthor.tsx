@@ -340,7 +340,7 @@ const AudioListByAuthor = ({status} : any) => {
         await API.graphql(graphqlOperation(
             updateUser, {input: {
                 id: currentUser.id, 
-                numFollowing: currentUser.numFollowing ? currentUser.numFollowing + 1 : 1
+                numFolowing: currentUser.numFolowing ? currentUser.numFolowing + 1 : 1
             }}
         ))
 

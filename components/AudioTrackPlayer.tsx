@@ -766,7 +766,7 @@ const ProgressCheck = () => {
                                             </View>
                                         </View>
                                     </View>
-                                    {Platform.OS === 'android' || 'ios' ? (
+                                    {Platform.OS === 'android' ? (
                                         <View style={{ height: 110, marginTop: 20, marginHorizontal: -20 }}>
                                         <Text style={[styles.highlight, {textAlign: 'center'}]}>
                                             {Story?.summary}
