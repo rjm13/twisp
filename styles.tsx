@@ -76,6 +76,8 @@ return StyleSheet.create ({
         paddingVertical: 10,
         paddingHorizontal: 30,
         overflow: 'hidden',
+        width: Dimensions.get('window').width*0.8,
+        alignItems: 'center'
     },
     buttontext: {
       fontSize: 16,
@@ -145,7 +147,7 @@ socialbuttonlayout: {
   alignSelf: 'center', 
   flexDirection: 'row', 
   alignItems: 'center',
-  width: Dimensions.get('window').width*0.7,
+  width: Dimensions.get('window').width*0.8,
   paddingHorizontal: 10,
   paddingVertical: 8,
 }

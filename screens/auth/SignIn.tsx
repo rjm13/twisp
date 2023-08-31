@@ -10,7 +10,8 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     Image,
-    Platform
+    Platform,
+    ScrollView
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -174,6 +175,9 @@ const SignIn = ({navigation} : any) => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, {justifyContent: 'center'}]}>
+            
+            <ScrollView showsVerticalScrollIndicator={false}>
+
                 <View style={{ margin: 20}}>
                     {isErr ? (
                     <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
@@ -281,7 +285,7 @@ const SignIn = ({navigation} : any) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
-                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 0.5, borderColor: '#fff'}]}>
+                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5'}]}>
                             <Image 
                                 source={require('../../assets/apple-logo.png')}
                                 style={{width: 30, height: 30, margin: 0}}
@@ -293,6 +297,7 @@ const SignIn = ({navigation} : any) => {
                     </TouchableOpacity>
 
             <StatusBar style='light' backgroundColor='transparent'/>
+            </ScrollView>
             </View>
         </TouchableWithoutFeedback>
     );

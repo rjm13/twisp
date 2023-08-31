@@ -8,6 +8,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LinearGradient} from 'expo-linear-gradient';
 import * as Linking from 'expo-linking'
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import useStyles from '../styles';
 import { AppContext } from '../AppContext';
@@ -78,7 +79,7 @@ const HomeScreen = ({navigation} : any) => {
     return (
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <ScrollView style={{ }} showsVerticalScrollIndicator={false}> 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 10, marginHorizontal: 20}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: getStatusBarHeight() + 20, marginBottom: 10, marginHorizontal: 20}}>
                     <View style={{ flexDirection: 'row'}}>
                     </View>
 
@@ -93,7 +94,7 @@ const HomeScreen = ({navigation} : any) => {
                     </TouchableWithoutFeedback>
                 </View>
 
-                <View>
+                <View >
                     <ForYouCarousel />
                 </View>
             

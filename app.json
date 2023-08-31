@@ -23,6 +23,9 @@
       "bundleIdentifier": "com.martianspidermedia.blipprod",
       "buildNumber": "1.1.33",
       "associatedDomains": ["applinks:twisp.space"],
+      "entitlements": {
+        "com.apple.developer.applesignin": ["Default"]
+      },
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"

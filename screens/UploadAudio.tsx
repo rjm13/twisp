@@ -708,7 +708,7 @@ const UploadAudio = ({navigation} : any) => {
 
   return (
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
 
 {/* confirm modal */}

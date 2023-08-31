@@ -16,6 +16,7 @@ from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {LinearGradient} from 'expo-linear-gradient';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 //import useStyles from '../styles';
 
 import { AppContext } from '../AppContext';
@@ -74,11 +75,11 @@ const AudioStoryHome = ({navigation} : any) => {
     return (
       <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreRoute: id}))) : null}>
         <View style={{
-          flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: '100%'}}>
+          flexDirection: 'row', height: Dimensions.get('window').height*0.17, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
             {imageUri ? (
               <Image
                 source={{ uri: imageUri}}
-                style={{width: '40%', height: '100%', borderRadius: 15, position: 'absolute', backgroundColor: 'gray', left: Platform.OS === 'ios' ? 210 : 192}}
+                style={{width: Dimensions.get('window').height*0.17, height: Dimensions.get('window').height*0.17, borderRadius: 15, position: 'absolute', backgroundColor: 'gray', left: Dimensions.get('window').height*0.17+Dimensions.get('window').height*0.15}}
               />
             ) : null}
 
@@ -223,8 +224,8 @@ const AudioStoryHome = ({navigation} : any) => {
     return (
       <View style={{flex: 1, backgroundColor: '#000000'}}>
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-          <ScrollView>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 60, marginBottom: 0, marginHorizontal: 20}}/ >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: getStatusBarHeight() + 20, marginBottom: 0, marginHorizontal: 20}}/ >
         
             <View style={{ marginBottom: 20, marginHorizontal: 20, alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('SearchScreen')}>
@@ -261,7 +262,7 @@ const AudioStoryHome = ({navigation} : any) => {
                     
                     <View style={{width: '66%'}}>
                       <View>
-                        <Text numberOfLines={1} style={{marginTop: 4, color: '#fff', fontWeight: 'bold', fontSize: 16, width: '100%'}}>
+                        <Text numberOfLines={1} style={{marginTop: 4, color: '#fff', fontWeight: 'bold', fontSize: 16, width: '90%'}}>
                           {progressStory?.title}
                         </Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
@@ -411,7 +412,6 @@ box: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    width: '100%'
   },
 });
 

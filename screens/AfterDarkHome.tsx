@@ -14,6 +14,7 @@ import {useRoute} from '@react-navigation/native'
 import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { getGenre, eroticaTagsByGenreId } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
@@ -162,30 +163,9 @@ const [trendingTags, setTrendingTags] = useState([]);
                 start={{ x: 1, y: 1 }}
                 end={{ x: 0.5, y: 0.5 }}
             >
+               
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginTop: 20}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <FontAwesome5 
-                                name='chevron-left'
-                                size={22}
-                                color='#fff'
-                                style={{padding: 30}}
-                                onPress={() => navigation.goBack()}
-                            /> 
-                            <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
-                                {GenreInfo.genre}
-                            </Text>
-                        </View>
-                        <View>
-                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAfterDark', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
-                                <Text style={{marginRight: 40, color: '#fff'}}>
-                                    Browse
-                                </Text> 
-                            </TouchableWithoutFeedback>
-                            
-                        </View>
-                    </View>
-
+                    <View style={{ marginTop: getStatusBarHeight() + 80}}>
                     <View style={{ marginBottom: 20, marginHorizontal: 20, alignItems: 'center'}}>
                         <TouchableWithoutFeedback onPress={() => navigation.navigate('AfterDarkSearch')}>
                         <View style={{alignItems: 'center', paddingHorizontal: 10, borderRadius: 8, flexDirection: 'row', backgroundColor: '#e0e0e0', height: 40, width: Dimensions.get('window').width - 40}}>
@@ -200,8 +180,6 @@ const [trendingTags, setTrendingTags] = useState([]);
                         </View>
                         </TouchableWithoutFeedback>
                     </View>
-
-                    <View style={{ marginTop: 0}}>
                         <ForYouAfterDark genreid={genreRoute}/>
                     </View>
 
@@ -250,9 +228,33 @@ const [trendingTags, setTrendingTags] = useState([]);
 
                     <View style={{height: 40}}>
 
+                        
+
                     </View>
 
                 </ScrollView>
+                <View style={{position: 'absolute', paddingTop: getStatusBarHeight() + 20, paddingBottom: 10, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row',  width: Dimensions.get('window').width, backgroundColor: '#000000CC'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', height: getStatusBarHeight() + 10}}>
+                            <FontAwesome5 
+                                name='chevron-left'
+                                size={22}
+                                color='#fff'
+                                style={{padding: 30, margin: -30, paddingLeft: 50}}
+                                onPress={() => navigation.goBack()}
+                            /> 
+                            <Text style={{fontWeight: 'bold', marginLeft: 20, fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
+                                {GenreInfo.genre}
+                            </Text>
+                        </View>
+                        <View>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
+                                <Text style={{marginRight: 20, color: '#fff'}}>
+                                    Browse
+                                </Text> 
+                            </TouchableWithoutFeedback>
+                            
+                        </View>
+                    </View>
             </LinearGradient>
         </View>
     );

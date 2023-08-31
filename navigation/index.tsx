@@ -77,14 +77,18 @@ export default function Navigation(
     
     }
 
-    Linking.getInitialURL()
-    .then((url) => {
-      if (url) {
-        console.log('launch url', url);
-        _handleOpenUrl({url});
-      }
-    })
-    .catch((err) => console.error('launch url error', err));
+    useEffect(() => {
+      Linking.getInitialURL()
+          .then((url) => {
+            if (url) {
+              console.log('launch url', url);
+              _handleOpenUrl({url});
+            }
+          })
+          .catch((err) => console.error('launch url error', err));
+    }, [])
+
+    
 
   useEffect(() => {
     const linking = Linking.addEventListener('url', _handleOpenUrl);

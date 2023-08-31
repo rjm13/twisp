@@ -853,7 +853,7 @@ const StoryScreen  = ({navigation} : any) => {
                                     </TouchableOpacity>
                                     <View>
                                         {Story?.nsfw === true ? (
-                                            <Text style={{color: 'red', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717', }}>
+                                            <Text style={{color: 'red', borderRadius: 15, overflow: 'hidden', paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717', }}>
                                                 Explicit
                                             </Text>
                                         ) : null}

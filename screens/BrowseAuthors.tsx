@@ -18,6 +18,7 @@ import { Searchbar } from 'react-native-paper';
 
 import {LinearGradient} from 'expo-linear-gradient';
 import { AppContext } from '../AppContext';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { API, graphqlOperation, Storage } from "aws-amplify";
 import { creatorsByType } from '../src/graphql/queries';
@@ -128,10 +129,10 @@ const BrowseAuthor = ({navigation} : any) => {
               onSubmitEditing={() => {setSearchQ(searchQuery); setNextToken(null); setAuthorArray([]); setDidUpdate(!didUpdate);}}
               style={{
                 height: 40,
-                marginLeft: 40,
+                marginLeft: 30,
                 borderRadius: 8,
                 backgroundColor: '#e0e0e0',
-                width: Dimensions.get('window').width - 100,
+                width: Dimensions.get('window').width*0.74,
               }}
               inputStyle={{fontSize: 14, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
@@ -183,7 +184,7 @@ const BrowseAuthor = ({navigation} : any) => {
                         
                             <View style={{ marginHorizontal: 10, width: '78%'}}>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <Text style={styles.name}>
+                                    <Text style={[styles.name, {flexWrap: 'wrap', width: '80%'}]}>
                                         {penName}
                                     </Text> 
                                     {isFollowing === true ? (
@@ -191,7 +192,7 @@ const BrowseAuthor = ({navigation} : any) => {
                                             name='check-double'
                                             size={12}
                                             color='cyan'
-                                            style={{ marginRight: 0}}
+                                            style={{ marginRight: 20}}
                                         />
                                     ) : null}
                                 </View>
@@ -241,7 +242,7 @@ const BrowseAuthor = ({navigation} : any) => {
     <View >
         <LinearGradient colors={['#363636', 'black', 'black']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <View>
-                <View style={{ width: Dimensions.get('window').width, flexDirection: 'row', alignItems: 'center', marginTop: 60, marginHorizontal: 20}}>
+                <View style={{ width: Dimensions.get('window').width, flexDirection: 'row', alignItems: 'center', marginTop: getStatusBarHeight() + 20, marginLeft: 20}}>
                     <TouchableWithoutFeedback onPress={ () => navigation.goBack()}>
                         <View style={{padding: 30, margin: -30}}>
                             <FontAwesome5 

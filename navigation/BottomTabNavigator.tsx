@@ -3,7 +3,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {useContext} from "react";
-import {Platform} from 'react-native';
+import {Platform, Dimensions} from 'react-native';
 
 import HomeScreen from '../screens/Home';
 import ProfileScreen from '../screens/Profile';
@@ -72,6 +72,8 @@ export default function BottomTabNavigator() {
 
   const { premium } = useContext(AppContext);
   const { setPremium } = useContext(AppContext);
+
+  const _height = Dimensions.get('window').height
 
   return (
     <BottomTab.Navigator

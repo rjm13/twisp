@@ -411,7 +411,7 @@ const ForYouCarousel = () => {
                 data={Storys}
                 renderItem={renderItem}
                 width={Dimensions.get('window').width}
-                height={Dimensions.get('window').width*0.8}
+                height={300}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => console.log('current index:', index)}
                 pagingEnabled={true}

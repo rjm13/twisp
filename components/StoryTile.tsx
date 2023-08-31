@@ -233,28 +233,39 @@ useEffect(() => {
                         </View>
                         
                         <View style={{ width: isVisible ? Dimensions.get('window').width*0.88 : Dimensions.get('window').width*0.68}}>
-                                <Text style={[styles.name, {flexWrap: 'wrap'}]}>
-                                    {title}
-                                </Text> 
-                                <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
-                                    <FontAwesome5 
-                                        name='book-open'
-                                        size={12}
-                                        color='#ffffffa5'
-                                    />
-                                    <Text style={styles.userId}>
-                                        {author}
-                                    </Text>  
-                                    <FontAwesome5 
-                                        name='book-reader'
-                                        size={12}
-                                        color='#ffffffa5'
-                                    />
-                                    <Text style={styles.userId}>
-                                        {narrator}
+                                <View style={{justifyContent: 'space-between'}}>
+                                    <Text style={[styles.name, {flexWrap: 'wrap', width: '96%'}]}>
+                                        {title}
                                     </Text> 
+
+                                    <View style={{ flexDirection: 'row', width: '99%', marginTop: 0, alignItems: 'center', flexWrap: 'wrap'}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            <FontAwesome5 
+                                                name='book-open'
+                                                size={12}
+                                                color='#ffffffa5'
+                                            />
+                                            <Text style={styles.userId}>
+                                                {author}
+                                            </Text>  
+                                        </View>
+
+                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                            <FontAwesome5 
+                                                name='book-reader'
+                                                size={12}
+                                                color='#ffffffa5'
+                                            />
+                                            <Text style={styles.userId}>
+                                                {narrator}
+                                            </Text>  
+                                        </View>
+                                        
+                                        
+                                    </View>
                                 </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10, width: Dimensions.get('window').width-40, justifyContent: 'space-between'}}>
+
+                                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, width: Dimensions.get('window').width-40, justifyContent: 'space-between'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                             {genreName}
@@ -438,10 +449,10 @@ const styles = StyleSheet.create({
     },
     tile: {
         backgroundColor: '#202020a5',
-        marginHorizontal: 10,
+        marginHorizontal: 8,
         marginVertical: 5,
-        paddingVertical: 14,
-        paddingHorizontal: 20, 
+        paddingVertical: 10,
+        paddingHorizontal: 14, 
         borderRadius: 15,
         
     },

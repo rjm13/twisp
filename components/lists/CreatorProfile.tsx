@@ -18,7 +18,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SocialBlock from '../SocialBlock';
 
-import {useRoute} from '@react-navigation/native'
+import {useRoute} from '@react-navigation/native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { AppContext } from '../../AppContext';
 
@@ -183,7 +184,7 @@ const CreatorProfile = ({status} : any) => {
     const animation = useRef(new Animated.Value(0)).current;
 
     const animatedOpacity = animation.interpolate({
-        inputRange: [0, 50],
+        inputRange: [0, 600],
         outputRange: [1, 0],
         extrapolate: 'clamp',
         });
@@ -304,38 +305,18 @@ const CreatorProfile = ({status} : any) => {
         <View style={[styles.container]}>
 
 {/* display published stories */}
-          
-        <Animated.FlatList 
-            data={Storys}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            //extraData={Following}
-            //stickyHeaderIndices={[0]}
-            //onScroll={event => {setScrollOffset(event.nativeEvent.contentOffset.y);}}
-            onScroll={Animated.event(
+
+        <ScrollView onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: animation } } }],
                 { useNativeDriver: false }
             )}
             scrollEventThrottle={1}
-            showsVerticalScrollIndicator={false}    
-            ListFooterComponent={ () => {
-                return (
-                <View style={{ height:  120}}/>
-                );}
-            }
-            ListHeaderComponent={ () => {
+            showsVerticalScrollIndicator={false}   >
+          
 
-                return (
-                        <View>
-                            <View style={{ height: 520}}/>
-                        </View>
-                                    
-                                );
-            }}
-        />
             
         <Animated.View style={[ {backgroundColor: animatedColor, height: animatedHeaderHeight, width: Dimensions.get('window').width, position: 'absolute', flex: 1}]}>              
-            <View style={{ flexDirection: 'row', marginTop: 60, justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
+            {/* <View style={{ position: 'absolute', top: getStatusBarHeight() + 20, flexDirection: 'row',  justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
                     <AntDesign 
                         name='close'
@@ -366,14 +347,14 @@ const CreatorProfile = ({status} : any) => {
                     </View>
                 </TouchableOpacity>
 
-            </View>
+            </View> */}
 
-            <Animated.View style={{opacity: animatedOpacitySlow}}>
+            <Animated.View style={{opacity: animatedOpacitySlow, marginTop: getStatusBarHeight() + 80}}>
                     <View style={{ alignItems: 'center'}}>
                         {imageU !== '' ? (
                             <Image 
                                 source={{ uri: imageU}}
-                                style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 20,}}
+                                style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 0,}}
                             />
                         ) : null}
                         
@@ -401,6 +382,8 @@ const CreatorProfile = ({status} : any) => {
                 
             </Animated.View>
 
+            
+
             <Animated.View style={{opacity: animatedOpacity}}>
 
                 
@@ -424,8 +407,70 @@ const CreatorProfile = ({status} : any) => {
                     </View> 
                 </View>
             </Animated.View>
+
+            
         </Animated.View>
-    </View>
+
+        <Animated.FlatList 
+            data={Storys}
+            renderItem={renderItem}
+            keyExtractor={item => item.id} 
+            scrollEnabled={false}
+            ListFooterComponent={ () => {
+                return (
+                <View style={{ height:  120}}/>
+                );}
+            }
+            ListHeaderComponent={ () => {
+
+                return (
+                        <View>
+                            <View style={{ height: 600}}/>
+                        </View>
+                                    
+                                );
+            }}
+        />
+
+        </ScrollView>
+
+
+        <Animated.View style={{ top: 0, alignSelf: 'center', backgroundColor: animatedColor, position: 'absolute', paddingTop: getStatusBarHeight() + 20, paddingBottom: 10, paddingHorizontal: 10, width: Dimensions.get('window').width, flexDirection: 'row',  justifyContent: 'space-between', marginHorizontal: 20, alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
+                <AntDesign 
+                    name='close'
+                    size={25}
+                    color='#fff'
+                    style={{paddingTop: 0, paddingRight: 10}}
+                    onPress={() => {navigation.goBack(); rootChange ? setIsRootScreen(false) : null} }
+                />
+                <Animated.Text numberOfLines={1} style={[styles.name, { opacity: animatedAppearOpacity, width: '78%'}]}>
+                    {User?.penName}
+                </Animated.Text>
+            </View>
+
+            <TouchableOpacity onPress={FollowButton}>
+                <View>
+                    <Text style={{
+                        color: Following === true ? '#000' : 'cyan',
+                        backgroundColor: Following === true ? 'cyan' : 'transparent',
+                        borderRadius: 13,
+                        paddingHorizontal: 20,
+                        paddingVertical: 5,
+                        borderWidth: Following === true ? 0 : 0.5,
+                        borderColor: 'cyan',
+                        overflow: 'hidden'
+                    }}>
+                        {Following === true ? 'Following' : 'Follow'}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+
+        </Animated.View>
+
+
+        
+        </View>
 );}
 
 const styles = StyleSheet.create({

@@ -15,6 +15,7 @@ import { Searchbar } from 'react-native-paper';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {LinearGradient} from 'expo-linear-gradient';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import StoryTile from '../components/StoryTile';
 import { AppContext } from '../AppContext';
@@ -76,7 +77,7 @@ const SearchScreen = ({navigation} : any) => {
                 marginLeft: 20,
                 borderRadius: 8,
                 backgroundColor: '#e0e0e0',
-                width: Dimensions.get('window').width - 80,
+                width: Dimensions.get('window').width - 70,
               }}
               inputStyle={{fontSize: 14, alignItems: 'center', backgroundColor: 'transparent', alignSelf: 'center', height: 40 }}
             />
@@ -266,7 +267,7 @@ const SearchScreen = ({navigation} : any) => {
         <View >
           <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
 
-          <View style={{marginTop: 60, marginBottom: 10, marginHorizontal: 20}}>
+          <View style={{marginTop: getStatusBarHeight() + 20, marginBottom: 10, marginHorizontal: 20}}>
             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                   <View style={{padding: 30, margin: -30}}>
@@ -382,7 +383,7 @@ const SearchScreen = ({navigation} : any) => {
                                                             style={{height: 100, width: 100, borderRadius: 10}}
                                                           />
                                                           <View style={{marginLeft: 10}}>
-                                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: '65%'}}>
                                                               <Text numberOfLines={1} style={{color: '#fff', fontSize: 16, fontWeight: '700', flexWrap: 'wrap'}}>
                                                                 {penName}
                                                               </Text>
@@ -395,7 +396,7 @@ const SearchScreen = ({navigation} : any) => {
                                                               
                                                             </View>
                                                             
-                                                            <Text numberOfLines={5} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.6, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
+                                                            <Text numberOfLines={5} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.54, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
                                                               {bio}
                                                             </Text>
                                                           </View>
