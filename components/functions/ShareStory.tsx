@@ -12,7 +12,7 @@ const handleShareWithLinking = async ({id, title}: any) => {
 
     try {
       const result = await Share.share({
-        message: title + ' ' + deeperUri,
+        message: title,
         url: deeperUri,
         title: 'Check out this short story!'
       });
