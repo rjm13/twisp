@@ -75,17 +75,17 @@ const AudioStoryHome = ({navigation} : any) => {
     return (
       <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreRoute: id}))) : null}>
         <View style={{
-          flexDirection: 'row', height: Dimensions.get('window').height*0.17, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
+          flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
             {imageUri ? (
               <Image
                 source={{ uri: imageUri}}
-                style={{width: Dimensions.get('window').height*0.17, height: Dimensions.get('window').height*0.17, borderRadius: 15, position: 'absolute', backgroundColor: 'gray', left: Dimensions.get('window').height*0.17+Dimensions.get('window').height*0.15}}
+                style={{width: 100, height: 100, borderRadius: 15, position: 'absolute', backgroundColor: 'gray', right: 0}}
               />
             ) : null}
 
               <LinearGradient 
-                colors={[color, color, color, 'transparent']}
-                locations={[0.0, 0.33, 0.66, 1.0]}
+                colors={[color, color, color, color, 'transparent']}
+                locations={[0.0, 0.33, 0.66, 0.7, 1.0]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={[styles.genrebox]}

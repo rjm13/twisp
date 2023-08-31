@@ -173,10 +173,10 @@ const SignIn = ({navigation} : any) => {
             
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={[styles.container, {justifyContent: 'center'}]}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+            <View style={[styles.container, {justifyContent: 'center', height: Dimensions.get('window').height}]}>
             
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.container, {justifyContent: 'center', height: Dimensions.get('window').height}]}>
 
                 <View style={{ margin: 20}}>
                     {isErr ? (
@@ -273,7 +273,7 @@ const SignIn = ({navigation} : any) => {
                 <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
 
                     <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
-                        <View style={[styles.socialbuttonlayout]}>
+                        <View style={[styles.socialbuttonlayout, {justifyContent: 'center'}]}>
                             <Image 
                                 source={require('../../assets/google-logo.png')}
                                 style={{width: 30, height: 30, margin: 0}}
@@ -285,7 +285,7 @@ const SignIn = ({navigation} : any) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
-                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5'}]}>
+                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5', justifyContent: 'center'}]}>
                             <Image 
                                 source={require('../../assets/apple-logo.png')}
                                 style={{width: 30, height: 30, margin: 0}}

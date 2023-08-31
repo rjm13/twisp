@@ -383,7 +383,7 @@ const SearchScreen = ({navigation} : any) => {
                                                             style={{height: 100, width: 100, borderRadius: 10}}
                                                           />
                                                           <View style={{marginLeft: 10}}>
-                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: '65%'}}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: Dimensions.get('window').width*0.55}}>
                                                               <Text numberOfLines={1} style={{color: '#fff', fontSize: 16, fontWeight: '700', flexWrap: 'wrap'}}>
                                                                 {penName}
                                                               </Text>
