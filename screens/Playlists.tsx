@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import {LinearGradient} from 'expo-linear-gradient';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import PinnedStoryFlatList from '../components/lists/PinnedStoryFlatList';
 import FavedStoryFlatList from '../components/lists/FavedStoryFlatList';
@@ -27,7 +28,7 @@ const PlaylistScreen = () => {
                         alignItems: 'flex-end',
                         marginHorizontal: 10,
                         height: 80,
-                        marginTop: 10,
+                        //marginTop: getStatusBarHeight() + 20,
                     }}>
                         <TouchableWithoutFeedback onPress={() => setSelectedId(1)}>
                             <Text style={{ 
