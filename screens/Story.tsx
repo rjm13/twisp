@@ -361,6 +361,9 @@ const StoryScreen  = ({navigation} : any) => {
     //updating state
     const [isUpdating, setIsUpdating] = useState(false);
 
+    //see spoilers states to see comments
+    const [seeSpoilers, setSeeSpoilers] = useState(false)
+
     //submitting a new rating to AWS
     const SubmitRating = async () => {
 
@@ -784,6 +787,8 @@ const StoryScreen  = ({navigation} : any) => {
                 setPickedReaction(false)
             }
         }, [userReaction])
+
+        
 
         return (
             <TouchableWithoutFeedback onPress={() => handleReaction()}>    
@@ -1383,11 +1388,19 @@ const StoryScreen  = ({navigation} : any) => {
                                                 />
                                             </View>
                                         ) : (
-                                            <View>
-                                                <Text>
-                                                    
-                                                </Text>
-                                            </View>
+                                            <TouchableOpacity onPress={() => setSeeSpoilers(true)}>
+                                                <View style={{alignItems: 'center', justifyContent: 'center', padding: 20, borderRadius: 15, borderWidth: 1, borderColor: 'red'}}>
+                                                    <Text style={{color: '#fff', fontSize: 16}}>
+                                                        Spoiler Warning!
+                                                    </Text>
+                                                    <Text style={{color: '#fff', fontSize: 16}}>
+                                                        Tap to view comments.
+                                                    </Text>
+                                                </View>
+                                                <View style={{height:  Platform.OS === 'ios' ? 500 : 300}}>
+                                                </View>
+                                            </TouchableOpacity>
+                                            
                                         )}
                                         
                                         
