@@ -70,6 +70,7 @@ export const onCreateUser = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -260,6 +261,7 @@ export const onUpdateUser = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -450,6 +452,7 @@ export const onDeleteUser = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -1721,6 +1724,8 @@ export const onCreateStory = /* GraphQL */ `
           content
           userID
           approved
+          reactionID
+          ratingID
           __typename
         }
         nextToken
@@ -1762,6 +1767,7 @@ export const onCreateStory = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -1775,8 +1781,7 @@ export const onCreateStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          reaction
-          icon
+          reactionTypeID
           __typename
         }
         nextToken
@@ -2010,6 +2015,8 @@ export const onUpdateStory = /* GraphQL */ `
           content
           userID
           approved
+          reactionID
+          ratingID
           __typename
         }
         nextToken
@@ -2051,6 +2058,7 @@ export const onUpdateStory = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -2064,8 +2072,7 @@ export const onUpdateStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          reaction
-          icon
+          reactionTypeID
           __typename
         }
         nextToken
@@ -2299,6 +2306,8 @@ export const onDeleteStory = /* GraphQL */ `
           content
           userID
           approved
+          reactionID
+          ratingID
           __typename
         }
         nextToken
@@ -2340,6 +2349,7 @@ export const onDeleteStory = /* GraphQL */ `
           storyID
           userID
           rating
+          reactionTypeID
           __typename
         }
         nextToken
@@ -2353,8 +2363,7 @@ export const onDeleteStory = /* GraphQL */ `
           updatedAt
           userID
           storyID
-          reaction
-          icon
+          reactionTypeID
           __typename
         }
         nextToken
@@ -5186,6 +5195,157 @@ export const onCreateComment = /* GraphQL */ `
       }
       userID
       approved
+      reactionID
+      reaction {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
+      ratingID
+      rating {
+        id
+        createdAt
+        updatedAt
+        type
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        rating
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -5385,6 +5545,157 @@ export const onUpdateComment = /* GraphQL */ `
       }
       userID
       approved
+      reactionID
+      reaction {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
+      ratingID
+      rating {
+        id
+        createdAt
+        updatedAt
+        type
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        rating
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -5584,6 +5895,157 @@ export const onDeleteComment = /* GraphQL */ `
       }
       userID
       approved
+      reactionID
+      reaction {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
+      ratingID
+      rating {
+        id
+        createdAt
+        updatedAt
+        type
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        rating
+        reactionTypeID
+        reactionType {
+          id
+          type
+          createdAt
+          updatedAt
+          reaction
+          icon
+          imageUri
+          __typename
+        }
+        __typename
+      }
       __typename
     }
   }
@@ -5721,8 +6183,17 @@ export const onCreateReaction = /* GraphQL */ `
         }
         __typename
       }
-      reaction
-      icon
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
       __typename
     }
   }
@@ -5860,8 +6331,17 @@ export const onUpdateReaction = /* GraphQL */ `
         }
         __typename
       }
-      reaction
-      icon
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
       __typename
     }
   }
@@ -5999,8 +6479,65 @@ export const onDeleteReaction = /* GraphQL */ `
         }
         __typename
       }
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const onCreateReactionType = /* GraphQL */ `
+  subscription OnCreateReactionType(
+    $filter: ModelSubscriptionReactionTypeFilterInput
+  ) {
+    onCreateReactionType(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
       reaction
       icon
+      imageUri
+      __typename
+    }
+  }
+`;
+export const onUpdateReactionType = /* GraphQL */ `
+  subscription OnUpdateReactionType(
+    $filter: ModelSubscriptionReactionTypeFilterInput
+  ) {
+    onUpdateReactionType(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
+      reaction
+      icon
+      imageUri
+      __typename
+    }
+  }
+`;
+export const onDeleteReactionType = /* GraphQL */ `
+  subscription OnDeleteReactionType(
+    $filter: ModelSubscriptionReactionTypeFilterInput
+  ) {
+    onDeleteReactionType(filter: $filter) {
+      id
+      type
+      createdAt
+      updatedAt
+      reaction
+      icon
+      imageUri
       __typename
     }
   }
@@ -6199,6 +6736,17 @@ export const onCreateRating = /* GraphQL */ `
         __typename
       }
       rating
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
       __typename
     }
   }
@@ -6397,6 +6945,17 @@ export const onUpdateRating = /* GraphQL */ `
         __typename
       }
       rating
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
       __typename
     }
   }
@@ -6595,6 +7154,17 @@ export const onDeleteRating = /* GraphQL */ `
         __typename
       }
       rating
+      reactionTypeID
+      reactionType {
+        id
+        type
+        createdAt
+        updatedAt
+        reaction
+        icon
+        imageUri
+        __typename
+      }
       __typename
     }
   }

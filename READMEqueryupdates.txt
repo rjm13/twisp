@@ -88,7 +88,7 @@ eroticStoryTagsByEroticTagId {
 	}
 }
 
-storyTagsBTagId {
+storyTagsByTagId {
 	items {
 		story {
 			genre {
@@ -114,6 +114,15 @@ getUser {
 			}
 		}
 	}
-	
+}
+
+commentsByStory {
+	rating {
+		reactionType {
+            id
+            reaction
+            icon
+        }
+	}
 }
 

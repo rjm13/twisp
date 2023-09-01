@@ -225,6 +225,10 @@ type Comment @model @auth(rules: [{ allow: private, operations: [create, delete,
     user: User @hasOne (fields: ["userID"])
     userID: ID 
     approved: Boolean
+    reactionID: ID
+    reaction: Reaction @hasOne (fields: ["reactionID"])
+    ratingID: ID
+    rating: Rating @hasOne (fields: ["ratingID"])
 }
 
 type Reaction @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -237,8 +241,19 @@ type Reaction @model @auth( rules: [{ allow: private, operations: [create, delet
   user: User @hasOne (fields: ["userID"])
   storyID: ID @index(name: "byStory", queryField: "reactionsByStory", sortKeyFields: ["id"])
   story: User @hasOne (fields: ["storyID"])
+  reactionTypeID: ID
+  reactionType: ReactionType @hasOne (fields: ["reactionTypeID"])
+}
+
+type ReactionType @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  type: String
+  createdAt: String
+  updatedAt: String
   reaction: String
   icon: String
+  imageUri: String
 }
 
   type Rating @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -251,7 +266,9 @@ type Reaction @model @auth( rules: [{ allow: private, operations: [create, delet
     story: Story @hasOne (fields: ["storyID"])
     userID: ID! @index(name: "byUser", queryField: "ratingsByUser", sortKeyFields: ["id"])
     user: User @hasOne (fields: ["userID"])
-    rating: Int   
+    rating: Int
+    reactionTypeID: ID
+    reactionType: ReactionType @hasOne (fields: ["reactionTypeID"])
 }
 
 type Message @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

@@ -26,6 +26,8 @@ import { StatusBar } from 'expo-status-bar';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import uuid from 'react-native-uuid';
 
 import * as Animatable from 'react-native-animatable';
 import { formatRelative, parseISO } from "date-fns";
@@ -33,8 +35,26 @@ import ShareStory from '../components/functions/ShareStory';
 import useStyles from '../styles';
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getStory, getUser, ratingsByUser, commentsByStory, eroticStoryTagsByStoryId, pinnedStoriesByUser} from '../src/graphql/queries';
-import { createComment, createRating, updateRating, updateStory, deletePinnedStory, createPinnedStory  } from '../src/graphql/mutations';
+
+import { 
+    getStory, 
+    getUser, 
+    ratingsByUser, 
+    commentsByStory, 
+    eroticStoryTagsByStoryId, 
+    pinnedStoriesByUser,
+    listReactionTypes
+} from '../src/graphql/queries';
+
+import { 
+    createComment, 
+    createRating, 
+    updateRating, 
+    updateStory, 
+    deletePinnedStory, 
+    createPinnedStory,
+    createReaction
+} from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 
@@ -330,7 +350,7 @@ const StoryScreen  = ({navigation} : any) => {
     const [isRated, setIsRated] = useState(false);
 
     //the rating average
-    const [ratingNum, setRatingNum] = useState(0);
+    const [ratingNum, setRatingNum] = useState(null);
 
     //the rating average
     const [ratingOldNum, setRatingOldNum] = useState(0);
@@ -348,6 +368,9 @@ const StoryScreen  = ({navigation} : any) => {
 
         let userInfo = await Auth.currentAuthenticatedUser();
 
+        const reactionid = uuid.v4().toString();
+        const ratingid = uuid.v4().toString();        
+
         let arr = userRates
 
         if (isRated === true) {
@@ -355,6 +378,7 @@ const StoryScreen  = ({navigation} : any) => {
                 updateRating, {input: {
                     id: ratingID,
                     rating: ratingNum,
+                    reaction: userReaction,
                 }}
             ))
 
@@ -369,12 +393,14 @@ const StoryScreen  = ({navigation} : any) => {
         } else {
             const response = await API.graphql(graphqlOperation(
                 createRating, {input: {
+                    id: ratingid,
                     userID: userInfo.attributes.sub, 
                     storyID: storyID,
                     rating: ratingNum,
                     type: 'Rating',
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    reactionTypeID: userReaction,
                 }}
             ))
 
@@ -394,6 +420,43 @@ const StoryScreen  = ({navigation} : any) => {
                 ))          
                 arr.push(storyID) 
             }
+        }
+
+        if (comment.length > 0) {
+            try {
+                const response = await API.graphql(
+                    graphqlOperation(createComment, { input: 
+                        {
+                            type: 'Comment',
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            storyID: storyID,
+                            content: comment,
+                            userID: userInfo.attributes.sub,
+                            approved: false,
+                            ratingID: ratingID ? ratingID : ratingid,
+                        }
+                }))
+
+                if (response) {
+                    await API.graphql(
+                        graphqlOperation(updateStory, { input: 
+                            {
+                                id: storyID,
+                                updatedAt: new Date(),
+                                numComments: Story?.numComments + 1,
+                            }
+                    }))
+                }
+
+                
+            } catch (e) {
+                console.error(e);
+            }
+                
+            setComment('');
+            setCommentUpdated(!commentUpdated)
+            //SendPush();
         }
 
         setUserRates(arr)
@@ -448,7 +511,7 @@ const StoryScreen  = ({navigation} : any) => {
     }
 
     //comment item
-    const Item = ({content, createdAt, userName, userImageUri}: any) => {
+    const Item = ({content, createdAt, userName, userImageUri, reaction, icon, rating}: any) => {
 
         const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg');
 
@@ -473,14 +536,49 @@ const StoryScreen  = ({navigation} : any) => {
                                 style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'lightgray'}}
                         /> 
                     </View>
-                    <View style={{marginHorizontal: 20, alignSelf: 'center'}}>
-                        <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
-                            {userName}
-                        </Text>
-                        <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
-                            {formatRelative(parseISO(createdAt), new Date())}
-                        </Text>
+                    <View>
+                        <View style={{width: Dimensions.get('window').width*0.6, justifyContent: 'space-between', marginHorizontal: 20, alignSelf: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                            <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
+                                {userName}
+                            </Text>
+                            <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
+                                {formatRelative(parseISO(createdAt), new Date())}
+                            </Text>
+                        </View>
+
+                        <View style={{marginTop: 10, width: Dimensions.get('window').width*0.6, marginHorizontal: 20, alignSelf: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                            {rating ? (
+                                <View style={{backgroundColor: '#000000a5',paddingVertical: 2, marginRight: 10, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome 
+                                        name='star'
+                                        color='gold'
+                                        size={14}
+                                        style={{marginRight: 10}}
+                                    />
+                                    <Text style={{fontSize: 14, color: '#ffffffa5', fontWeight: 'bold', textTransform: 'capitalize'}}>
+                                        {rating}
+                                    </Text>
+                                </View>
+                            ) : null}
+                            
+                            {reaction ? (
+                                <View style={{backgroundColor: '#000000a5', paddingVertical: 2, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
+                                    <MaterialCommunityIcons 
+                                        name='emoticon-cool-outline'
+                                        color='#ffffffa5'
+                                        size={18}
+                                        style={{marginRight: 10}}
+                                    />
+                                    <Text style={{textTransform: 'lowercase', fontSize: 14, color: '#ffffffa5', fontWeight: '400'}}>
+                                        Felt {reaction}
+                                    </Text>
+                                </View>
+                            ) : null}
+                            
+                        </View>
                     </View>
+                    
+                    
                 </View>
     
                 <View>
@@ -554,6 +652,7 @@ const StoryScreen  = ({navigation} : any) => {
                     if (userRatingData.data.ratingsByUser.items[i].storyID === storyID ) {
                         setRatingID(userRatingData.data.ratingsByUser.items[i].id);
                         setRatingNum(userRatingData.data.ratingsByUser.items[i].rating);
+                        setUserReaction(userRatingData.data.ratingsByUser.items[i].reactionTypeID)
                         setRatingOldNum(userRatingData.data.ratingsByUser.items[i].rating);
                     }
                     
@@ -569,6 +668,7 @@ const StoryScreen  = ({navigation} : any) => {
         }
     }, [didUpdate])
 
+
 //check if the story is finished but not rated
     useEffect(() => {
         if (isRated === false && isFinished === true ) {
@@ -578,16 +678,21 @@ const StoryScreen  = ({navigation} : any) => {
         }
     }, [isRated, isFinished])
         
-    const renderItem = ({ item } : any) => (
+    const renderItem = ({ item } : any) => {
 
-        <Item 
-            //id={item.id}
-            content={item.content}
-            createdAt={item.createdAt}
-            userName={item.user && item.user.name}
-            userImageUri={item.user && item.user.imageUri}
-        />
-        );
+
+        return (
+            <Item 
+                //id={item.id}
+                content={item.content}
+                createdAt={item.createdAt}
+                userName={item.user && item.user.name}
+                userImageUri={item.user && item.user.imageUri}
+                rating={item.rating && item.rating.rating}
+                reaction={item.rating && item.rating.reactionType.reaction}
+                icon={item.rating && item.rating.reactionType.icon}
+            />
+        )}
         
     const [comment, setComment] = useState('');
     
@@ -631,46 +736,206 @@ const StoryScreen  = ({navigation} : any) => {
         }
     }
 
+    const [reactions, setReactions] = useState([
+        {
+        id: '1',
+        reaction: 'huh',
+        icon: 'trash'
+        }
+    ]);
+
+    useEffect(() => {
+        const fetchReactions = async () => {
+
+            const response = await API.graphql(
+                graphqlOperation(listReactionTypes))
+
+            console.log('response is', response)
+
+            if (response) {
+                setReactions(response.data.listReactionTypes.items)
+            }
+
+        }
+        
+        fetchReactions();
+
+    }, [])
+
+    const [userReaction, setUserReaction] = useState(null)
+
+    const ReactionItem = ({id, icon, reaction} : any) => {
+
+        const [pickedReaction, setPickedReaction] = useState(false);
+
+        const handleReaction = () => {
+            if (userReaction === id) {
+                setUserReaction(null)
+            } else {
+               setUserReaction(id) 
+            }
+            setPickedReaction(!pickedReaction); 
+        }
+
+        useEffect(() => {
+            if (userReaction === id) {
+                setPickedReaction(true)
+            } else {
+                setPickedReaction(false)
+            }
+        }, [userReaction])
+
+        return (
+            <TouchableWithoutFeedback onPress={() => handleReaction()}>    
+                <View key={id} style={{margin: 10, borderWidth: 1, borderRadius: 15, overflow: 'hidden', borderColor: pickedReaction === true ? '#00ffff' : '#fff',  backgroundColor: pickedReaction === true ? '#00ffff33' : 'transparent', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', width: Dimensions.get('window').width*0.25, height: Dimensions.get('window').width*0.28}}>
+                    
+                        <View style={{ padding: 10, marginVertical: 10, alignItems: 'center'}}>
+                            <MaterialCommunityIcons 
+                                name={icon}
+                                size={40}
+                                color='#fff'
+                                style={{marginBottom: 10}}
+                            />
+                            <Text style={{
+                                color: '#fff',
+                                fontWeight: '500',
+                                fontSize: 12,
+                                textTransform: 'capitalize',
+                            }}>
+                                {reaction}
+                            </Text>
+                        </View>
+                
+                </View>
+            </TouchableWithoutFeedback>
+        )
+    }
+
+    const renderReactionItem = ({item} : any) => {
+        return (
+            <ReactionItem 
+                id={item.id}
+                icon={item.icon}
+                reaction={item.reaction}
+            />
+        )
+    }
+
     return (
             <View style={styles.container}>
 {/* Rate the story modal */}
                     <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => {setVisible(!visible);}}>             
-                        <TouchableOpacity onPress={hideRatingModal} style={{backgroundColor: '#000000'}}>
-                            <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
-                                <View style={{}}>
-                                    <Text style={{margin: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
-                                        Tell us what you think {':)'}
-                                    </Text>
-                                    <Text style={{margin: 20, textAlign: 'center', fontSize: 20, color: '#fff'}}>
-                                        {ratingNum}/10
-                                    </Text>
-                                </View>
-                                <View style={{marginBottom: 20, flexDirection: 'row'}}>
-                                    <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
-                                    <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
-                                </View>
-                                {isUpdating === true ? (
-                                    <ActivityIndicator size='large' color='cyan '/>
-                                ) :
-                                <TouchableOpacity onPress={SubmitRating}>
-                                    <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
-                                            <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
-                                                Submit
-                                            </Text>
+                        {/* <TouchableOpacity onPress={hideRatingModal} style={{ }}> */}
+                            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000'}}>
+
+                                <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
+                                    <View style={{width: Dimensions.get('window').width}}>
+                                        <AntDesign 
+                                            name='close'
+                                            size={22}
+                                            color='#fff'
+                                            style={{paddingVertical: 40, paddingHorizontal: 20}}
+                                            onPress={() => setVisible(false)}
+                                        />
                                     </View>
-                                </TouchableOpacity>
-                                }
-                            </View>
-                        </TouchableOpacity>
+
+                                    <View style={{marginBottom: 10, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center'}}>
+                                        <Text style={{textAlign: 'center', color: '#fff', fontSize: 26, fontWeight: '600'}}>
+                                            {Story?.title}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
+                                        <Text style={{margin: 20, fontSize: 20, fontWeight: '600', color: '#fff'}}>
+                                            How did you like the story?
+                                        </Text>
+                                        <Text style={{margin: 20, textAlign: 'center', fontSize: 28, color: '#fff'}}>
+                                            {ratingNum}/10
+                                        </Text>
+                                        <View style={{marginBottom: 20, flexDirection: 'row'}}>
+                                            <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
+                                            <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
+                                        </View>
+                                    </View>
+                                    
+                                    <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  justifyContent: 'center', backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
+                                        <FlatList 
+                                            data={reactions}
+                                            renderItem={renderReactionItem}
+                                            numColumns={3}
+                                            style={{alignSelf: 'center', marginTop: 20, width: Dimensions.get('window').width, backgroundColor: 'transparent',  marginBottom: 20}}
+                                            columnWrapperStyle={{ flex: 1, justifyContent: "space-around" , marginHorizontal: 10}}
+                                            keyExtractor={(item) => item.id}
+                                            scrollEnabled={false}
+                                            ListHeaderComponent={() => {return (
+                                                <View style={{alignSelf: 'center', marginVertical: 20}}>
+                                                    <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
+                                                        How do you feel?
+                                                    </Text>
+                                                </View>
+                                            )}}
+                                        />
+                                    </View>
+                                    
+
+                                    <KeyboardAvoidingView
+                                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                                        //style={{flex: 1}}
+                                    >
+                                        <View style={{backgroundColor: '#171717', padding: 20, marginVertical: 30, borderRadius: 15, }}>
+                                            <View style={{ flexDirection: 'row', }}>
+                                            <TextInput 
+                                                placeholder='Leave a comment'
+                                                placeholderTextColor='#ffFFFFa5'
+                                                style={{
+                                                    color: '#ffffff',
+                                                    fontSize: 14,
+                                                    marginLeft: 0,
+                                                    marginRight: 30,    
+                                                    width: Dimensions.get('window').width*0.7,
+                                                    //alignSelf: 'center',
+                                                    height: 120,
+                                                    textAlignVertical: 'top'
+                                                }}
+                                                maxLength={250}
+                                                multiline={true}
+                                                numberOfLines={10}
+                                                onChangeText={comment => setComment(comment)}
+                                                value={comment}
+                                                ref={focus}
+                                            />
+                                                </View>
+                                            </View>
+                                        </KeyboardAvoidingView>
+
+
+                                    {isUpdating === true ? (
+                                        <ActivityIndicator size='large' color='cyan '/>
+                                    ) :
+                                    <TouchableOpacity onPress={() => ratingNum && userReaction ? SubmitRating() : alert('Please select both a rating and a reaction')}>
+                                        <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
+                                                <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
+                                                    Submit
+                                                </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    }
+                                    <View style={{height: 100}}/>
+
+                                </View>
+                                
+                            </ScrollView>
+                        {/* </TouchableOpacity> */}
                     </Modal>
+
 {/* flag this story modal */}
                     {/* <Modal visible={visibleFlag} onDismiss={hideFlagModal} contentContainerStyle={containerStyleFlag}>
                         <View style={{alignItems: 'center'}}>
@@ -1098,22 +1363,34 @@ const StoryScreen  = ({navigation} : any) => {
                                         </View>
                                         </KeyboardAvoidingView>
 
-                                        <FlatList 
-                                            data={commentList}
-                                            renderItem={renderItem}
-                                            keyExtractor={item => item.id}
-                                            showsVerticalScrollIndicator={false}
-                                            scrollEnabled={false}
-                                            extraData={commentList}
-                                            initialNumToRender={10}
-                                            maxToRenderPerBatch={20}
-                                            ListFooterComponent={ () => {
-                                                return (
-                                                    <View style={{height:  Platform.OS === 'ios' ? 500 : 300}}>
-                                                    </View>
-                                                );
-                                            }}
-                                        />
+                                        {seeSpoilers === true ? (
+                                            <View>
+                                                <FlatList 
+                                                    data={commentList}
+                                                    renderItem={renderItem}
+                                                    keyExtractor={item => item.id}
+                                                    showsVerticalScrollIndicator={false}
+                                                    scrollEnabled={false}
+                                                    extraData={commentList}
+                                                    initialNumToRender={10}
+                                                    maxToRenderPerBatch={20}
+                                                    ListFooterComponent={ () => {
+                                                        return (
+                                                            <View style={{height:  Platform.OS === 'ios' ? 500 : 300}}>
+                                                            </View>
+                                                        );
+                                                    }}
+                                                />
+                                            </View>
+                                        ) : (
+                                            <View>
+                                                <Text>
+                                                    
+                                                </Text>
+                                            </View>
+                                        )}
+                                        
+                                        
                                     </View>
                                 </View>
 
