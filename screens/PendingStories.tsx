@@ -100,6 +100,8 @@ const PendingStories = ({navigation} : any) => {
                     }}
                 ))
 
+                console.log('story updated', response.data.updateStory.approved)
+
                 if (response) {
 
                     let creator = await API.graphql(graphqlOperation(
@@ -118,6 +120,8 @@ const PendingStories = ({navigation} : any) => {
                         }}
                     ))
 
+                    console.log('updated creator count')
+
                     let user = await API.graphql(graphqlOperation(
                         getUser, {
                             id: authorID   
@@ -133,11 +137,15 @@ const PendingStories = ({navigation} : any) => {
                             numAuthored: number
                         }}
                     ))
+
+                    console.log('updated user')
                 }
 
                 let storyresponse = await API.graphql(graphqlOperation(
                     getStory, {id : id}
                 ))
+
+                console.log('story repsonse is', storyresponse)
 
                 for (let i = 0; i < storyresponse.data.getStory.eroticTags.items.length; i++) {
                     await API.graphql(graphqlOperation(
@@ -147,6 +155,7 @@ const PendingStories = ({navigation} : any) => {
                             updatedAt: new Date()
                         }}
                     ))
+                    console.log('update erotica tag', storyresponse.data.getStory.eroticTags.items[i].eroticTag.count)
                 }
 
                 if (response) {
@@ -164,6 +173,7 @@ const PendingStories = ({navigation} : any) => {
 
                         }}
                     ))
+
                     if (sendmessage) {
                         setPending(false)
                         alert ('Story approved!')
@@ -171,8 +181,9 @@ const PendingStories = ({navigation} : any) => {
                         
                     }
                 }
-            } catch {
+            } catch (e) {
                 alert ('Error')
+                console.log(e)
                 setPending(false)
             }
         } else {
@@ -258,8 +269,9 @@ const PendingStories = ({navigation} : any) => {
                         
                     }
                 }
-            } catch {
+            } catch (e) {
                 alert ('Error')
+                console.log(e)
                 setPending(false)
             }
         }

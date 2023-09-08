@@ -50,8 +50,7 @@ const AfterDarkTagSearch = ({navigation} : any) => {
 
             if (response.data.eroticStoryTagsByEroticTagId.items.length > 0) {
                 for(let i = 0; i < response.data.eroticStoryTagsByEroticTagId.items.length; i++) {
-                    if (
-                    response.data.eroticStoryTagsByEroticTagId.items[i].story.hidden === false) {
+                    if (response.data.eroticStoryTagsByEroticTagId.items[i].story.hidden === false) {
                         
                             stories.push(response.data.eroticStoryTagsByEroticTagId.items[i].story)
                         

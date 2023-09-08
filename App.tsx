@@ -157,7 +157,7 @@ export default function App() {
 
   const [nsfwOn, setNSFWOn] = useState<boolean>(false);
 
-  const [ADon, setADon] = useState<boolean>(false);
+  const [ADon, setADon] = useState<boolean>(true);
 
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
 

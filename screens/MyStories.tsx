@@ -113,7 +113,7 @@ const MyStories = ({navigation} : any) => {
                             </View>
                         </TouchableWithoutFeedback>
 
-                        <TouchableWithoutFeedback onPress={() => navigation.navigate('EditAudioStory', {storyID: id})}>
+                        <TouchableWithoutFeedback onPress={() => navigation.navigate('EditAudioStory', {storyID: id, genre: genreName})}>
                             <View style={{alignItems: 'center', marginTop: 20, width: 80, paddingVertical: 6, borderRadius: 20, backgroundColor: '#00ffffa5'}}>
                                 <Text style={{color: '#000'}}>
                                     Edit

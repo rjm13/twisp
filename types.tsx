@@ -17,6 +17,7 @@ export type RootStackParamList = {
     Welcome: undefined;
     UploadAudio: undefined;
     CreatorScreen: undefined;
+    AfterDarkTagSearch: undefined;
   
   };
   
@@ -73,6 +74,7 @@ export type RootStackParamList = {
     AuthorProfileSelect: undefined;
     EditAuthorProfile: undefined;
     CreateCreator: undefined;
+    
   
   };
   

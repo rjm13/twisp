@@ -15,6 +15,7 @@ import UserScreen from '../screens/UserScreen';
 import CreatorScreen from '../screens/CreatorScreen';
 import UploadAudio from '../screens/UploadAudio';
 import TagSearchScreen from '../screens/TagSearch';
+import AfterDarkTagSearch from '../screens/AfterDarkTagSearch';
 import RedirectScreen from '../screens/auth/Redirect';
 import SignUpScreen from '../screens/auth/SignUp';
 import SignInScreen from '../screens/auth/SignIn';
@@ -141,6 +142,7 @@ function RootNavigator() {
       <Stack.Screen name="CreatorScreen" component={CreatorScreen} />
       <Stack.Screen name="Redirect" component={RedirectScreen} />
       <Stack.Screen name="TagSearchScreen" component={TagSearchScreen} />
+      <Stack.Screen name="AfterDarkTagSearch" component={AfterDarkTagSearch} />
       <Stack.Screen name="SplashCarousel" component={SplashCarousel} />
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="UploadAudio" component={UploadAudio} />

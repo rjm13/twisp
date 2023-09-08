@@ -12,6 +12,7 @@ import NotificationSetting from '../screens/Settings';
 import AuthorProfileSelect from '../screens/AuthorProfileSelect';
 import EditAuthorProfile from '../screens/EditAuthorProfile';
 import CreateCreator from '../screens/CreateCreator';
+import EditAudioStory from '../screens/EditAudioStory';
 
 import History from '../screens/History';
 import Following from '../screens/Following';
@@ -256,6 +257,11 @@ function HomeNavigator() {
         component={CreateCreator} 
         options={{ headerShown: false }} 
       />
+      <HomeStack.Screen 
+        name="EditAudioStory" 
+        component={EditAudioStory} 
+        options={{ headerShown: false }} 
+      />
 
     </HomeStack.Navigator>
   );
@@ -311,11 +317,11 @@ function StoriesNavigator() {
         component={AfterDarkHome}
         options={{ headerShown: false }}
       />
-      <StoriesStack.Screen
+      {/* <StoriesStack.Screen
         name="AfterDarkTagSearch"
         component={AfterDarkTagSearch}
         options={{ headerShown: false }}
-      />
+      /> */}
       <StoriesStack.Screen
         name="BrowseAfterDark"
         component={BrowseAfterDark}

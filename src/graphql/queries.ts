@@ -5725,6 +5725,45 @@ export const tagsByUpdated = /* GraphQL */ `
     }
   }
 `;
+export const tagsByName = /* GraphQL */ `
+  query TagsByName(
+    $tagName: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tagsByName(
+      tagName: $tagName
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        updatedAt
+        createdAt
+        type
+        tagName
+        genre {
+          nextToken
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
+        count
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const EroticTagsByCreated = /* GraphQL */ `
   query EroticTagsByCreated(
     $type: String!
@@ -5776,6 +5815,45 @@ export const EroticTagsByUpdated = /* GraphQL */ `
     EroticTagsByUpdated(
       type: $type
       updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        updatedAt
+        createdAt
+        type
+        tagName
+        genre {
+          nextToken
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
+        count
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const eroticTagsByName = /* GraphQL */ `
+  query EroticTagsByName(
+    $tagName: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEroticTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    eroticTagsByName(
+      tagName: $tagName
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -6695,7 +6773,7 @@ export const commentsByStory = /* GraphQL */ `
             id
             reaction
             icon
-          }
+        }
           __typename
         }
         __typename

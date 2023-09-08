@@ -132,7 +132,7 @@ const Publisher = ({navigation} : any) => {
                             <TouchableWithoutFeedback onPress={ () => navigation.navigate('MyStories')}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                                     <Text style={{ color: '#fff', fontSize: 16}}>
-                                        Published Stories
+                                        My Published Stories
                                     </Text>
                                     <Text style={styles.textcounter}>
                                         {user?.authored?.items.length}

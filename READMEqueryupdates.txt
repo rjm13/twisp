@@ -1,5 +1,5 @@
 The depth level for API AWS queries is not enough for some functions. Every time the API is updated these
-will need to be updated
+will need to be updated in src/queries
 
 
 getStory {

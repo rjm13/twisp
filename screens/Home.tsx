@@ -3,6 +3,7 @@ import {
     ScrollView, 
     TouchableWithoutFeedback,
     View,
+    Text
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -76,11 +77,28 @@ const HomeScreen = ({navigation} : any) => {
 
     }, [])
 
+    const welcomeText = [
+        "Curiouser, curious",
+        "Relax. Have a listen",
+        "Greetings, Traveler",
+        "Enjoy your storytime",
+        "Go down the rabbit hole"
+    ]
+
+    function getRandomInt(max : any) {
+        return Math.floor(Math.random() * max);
+      }
+
+      let text = welcomeText[getRandomInt(welcomeText.length)]
+
     return (
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <ScrollView style={{ }} showsVerticalScrollIndicator={false}> 
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: getStatusBarHeight() + 20, marginBottom: 10, marginHorizontal: 20}}>
                     <View style={{ flexDirection: 'row'}}>
+                        <Text style={{color: '#fff', fontSize: 24, marginTop: 4, fontWeight: '600' }}>
+                            {text}
+                        </Text>
                     </View>
 
                     <TouchableWithoutFeedback onPress={() => navigation.navigate('ProfileScreen')}>

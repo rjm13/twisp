@@ -280,14 +280,14 @@ const UploadAudio = ({navigation} : any) => {
       });
       }
 
+      const [seriesid, setSeriesid] = useState()
+
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
     const PublishStory = async () => {
 
         setIsPublishing(true);
-
-        const [seriesid, setSeriesid] = useState('')
 
         try {
 
@@ -305,6 +305,7 @@ const UploadAudio = ({navigation} : any) => {
                 }))
 
                 setSeriesid(result.data.createSeries.id)
+                console.log(result.data.createSeries.id)
             }
 
             let userInfo = await Auth.currentAuthenticatedUser();
@@ -350,12 +351,14 @@ const UploadAudio = ({navigation} : any) => {
                     type: 'PendingStory',
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    seriesID: seriesid.length > 0 ? seriesid : null,
+                    seriesID: seriesid ? seriesid : null,
                     seriesPart: data.seriesPart,
                     numComments: 0,
                     numListens: 0,
                 }
         }))
+
+        console.log('story id is', result.data.createStory.id)
 
             if (data.genre === 'after dark') {
                 //if the user has added after dark tags to the story
@@ -381,12 +384,14 @@ const UploadAudio = ({navigation} : any) => {
                             ))
 
                             if (newTag) {
-                                await API.graphql(graphqlOperation(
-                                    createEroticStoryTag, {input: {eroticTagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                                const newthing = await API.graphql(graphqlOperation(
+                                    createEroticStoryTag, {input: {eroticTagId: newTag.data.createEroticTag.id, storyId: result.data.createStory.id}}
                                 ))
-                                await API.graphql(graphqlOperation(
-                                    createEroticaTag, {input: {eroticTagId: newTag.data.createTag.id, genreId: data.genreID}}
+                                console.log('new tag is', newthing.data.createEroticStoryTag.id)
+                                let newthing2 = await API.graphql(graphqlOperation(
+                                    createEroticaTag, {input: {eroticTagId: newTag.data.createEroticTag.id, genreId: data.genreID}}
                                 ))
+                                console.log('new tag is', newthing2.data.createEroticaTag.id)
                             }
                         }
                     }
@@ -428,9 +433,6 @@ const UploadAudio = ({navigation} : any) => {
                     }
                 }
             }
-
-
-
 
         await API.graphql(graphqlOperation(
             createMessage, {

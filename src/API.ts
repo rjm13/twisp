@@ -16489,6 +16489,39 @@ export type TagsByUpdatedQuery = {
   } | null,
 };
 
+export type TagsByNameQueryVariables = {
+  tagName: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTagFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TagsByNameQuery = {
+  tagsByName?:  {
+    __typename: "ModelTagConnection",
+    items:  Array< {
+      __typename: "Tag",
+      id: string,
+      updatedAt?: string | null,
+      createdAt?: string | null,
+      type?: string | null,
+      tagName: string,
+      genre?:  {
+        __typename: "ModelGenreTagConnection",
+        nextToken?: string | null,
+      } | null,
+      stories?:  {
+        __typename: "ModelStoryTagConnection",
+        nextToken?: string | null,
+      } | null,
+      count?: number | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type EroticTagsByCreatedQueryVariables = {
   type: string,
   createdAt?: ModelStringKeyConditionInput | null,
@@ -16533,6 +16566,39 @@ export type EroticTagsByUpdatedQueryVariables = {
 
 export type EroticTagsByUpdatedQuery = {
   EroticTagsByUpdated?:  {
+    __typename: "ModelEroticTagConnection",
+    items:  Array< {
+      __typename: "EroticTag",
+      id: string,
+      updatedAt?: string | null,
+      createdAt?: string | null,
+      type?: string | null,
+      tagName: string,
+      genre?:  {
+        __typename: "ModelEroticaTagConnection",
+        nextToken?: string | null,
+      } | null,
+      stories?:  {
+        __typename: "ModelEroticStoryTagConnection",
+        nextToken?: string | null,
+      } | null,
+      count?: number | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type EroticTagsByNameQueryVariables = {
+  tagName: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelEroticTagFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type EroticTagsByNameQuery = {
+  eroticTagsByName?:  {
     __typename: "ModelEroticTagConnection",
     items:  Array< {
       __typename: "EroticTag",

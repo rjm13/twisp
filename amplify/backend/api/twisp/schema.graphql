@@ -84,7 +84,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
     @index(name: "storiesByUpdated", queryField: "storiesByUpdated", sortKeyFields: ["updatedAt"]  )
   createdAt: String
   updatedAt: String
-  title: String!
+  title: String! @index(name: "storiesByTitle", queryField: "storiesByTitle", sortKeyFields: ["title"]  )
   imageUri: String
   audioUri: String!
   publisher: User @hasOne (fields: ["publisherID"])
@@ -151,7 +151,7 @@ type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, upd
     type: String 
       @index(name: "tagsByCreated", queryField: "tagsByCreated", sortKeyFields: ["createdAt"])
       @index(name: "tagsByUpdated", queryField: "tagsByUpdated", sortKeyFields: ["updatedAt"])
-    tagName: String!
+    tagName: String! @index(name: "tagsByName", queryField: "tagsByName", sortKeyFields: ["createdAt"])
     genre: [Genre] @manyToMany (relationName: "GenreTag")
     stories: [Story] @manyToMany(relationName: "StoryTag")
     count: Int
@@ -165,7 +165,7 @@ type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, upd
     type: String 
       @index(name: "EroticTagsByCreated", queryField: "EroticTagsByCreated", sortKeyFields: ["createdAt"])
       @index(name: "EroticTagsByUpdated", queryField: "EroticTagsByUpdated", sortKeyFields: ["updatedAt"])
-    tagName: String!
+    tagName: String! @index(name: "eroticTagsByName", queryField: "eroticTagsByName", sortKeyFields: ["createdAt"])
     genre: [Genre] @manyToMany (relationName: "EroticaTag")
     stories: [Story] @manyToMany(relationName: "EroticStoryTag")
     count: Int
