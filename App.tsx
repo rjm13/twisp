@@ -5,6 +5,8 @@ import { Platform } from 'react-native';
 import 'expo-dev-client'; 
 import 'react-native-gesture-handler';
 
+import { Linking } from 'react-native';
+
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation'
 import Constants from 'expo-constants';
@@ -14,14 +16,40 @@ import * as Device from 'expo-device';
 import Purchases from 'react-native-purchases';
 import TrackPlayer, {Capability, AppKilledPlaybackBehavior} from 'react-native-track-player';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
+import * as WebBrowser from 'expo-web-browser';
 
 import Amplify from '@aws-amplify/core';
 import config from './src/aws-exports.js';
-Amplify.configure(config);
+import { Auth, Hub } from 'aws-amplify';
+
+//Amplify.configure(config);
+
+Amplify.configure({
+  ...config,
+  oauth: {
+    ...config.oauth,
+    urlOpener,
+  },
+});
 
 import { AppContext } from './AppContext';
 import AudioTrackPlayer from './components/AudioTrackPlayer';
 
+
+async function urlOpener(url, redirectUrl) {
+  //await InAppBrowser.isAvailable();
+  
+
+  const { type, url: newUrl } = await WebBrowser.openAuthSessionAsync(url, redirectUrl, {
+    showTitle: false,
+  });
+
+  //WebBrowser.openBrowserAsync(url, {showTitle: true})
+
+  if (type === 'success') {
+    Linking.openURL(newUrl);
+  }
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

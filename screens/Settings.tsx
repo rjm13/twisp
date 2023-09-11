@@ -81,12 +81,13 @@ const Settings = ({navigation} : any) => {
         if (premium === true) {
             setIsAfterDarkOn(!isAfterDarkOn); 
             const userInfo = await Auth.currentAuthenticatedUser();
-            await API.graphql(graphqlOperation(
+            const resp = await API.graphql(graphqlOperation(
                 updateUser, {input: {
                     id: userInfo.attributes.sub,
                     setting2: !ADon
                 } }
             ))
+            console.log(resp.data.updateUser.setting2)
             setADon(!ADon);
         } else if (premium === false) {
             return;

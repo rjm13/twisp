@@ -78,6 +78,8 @@ export default function Navigation(
     
     }
 
+    
+
     useEffect(() => {
       Linking.getInitialURL()
           .then((url) => {

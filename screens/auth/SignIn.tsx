@@ -11,7 +11,7 @@ import {
     TouchableWithoutFeedback,
     Image,
     Platform,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -54,9 +54,17 @@ const SignIn = ({navigation} : any) => {
                 }
                 setSigningIn(false)
               break;
+            //   case 'cognitoHostedUI':
+            //     getUser().then(userData => setUser(userData));
+            //     break;
             case "signOut":
-              Auth.signOut()
+              Auth.signOut();
+              navigation.navigate('Redirect', {trigger: Math.random()});
               break;
+              case 'signIn_failure':
+              case 'cognitoHostedUI_failure':
+                console.log('Sign in failure', data);
+                break;
             // case "customOAuthState":
             //   setCustomState(data);
           }

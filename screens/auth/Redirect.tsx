@@ -134,6 +134,7 @@ const Redirect = ({route, navigation} : any) => {
                         } 
                         if (userData.data.getUser.setting2) {
                             setADon(userData.data.getUser.setting2)
+                            console.log('setting2 is', userData.data.getUser.setting2)
                         } 
 
                         setUserID(userData.data.getUser.id);
