@@ -60,7 +60,7 @@ const EditAudio = ({navigation} : any) => {
             const tagData = await API.graphql(graphqlOperation(
                 storyTagsByStoryId, {storyId: storyID}
             ))
-            setCurrentStoryTags(tagData.data.storyTagsByStoryId)
+            setCurrentStoryTags(tagData.data.storyTagsByStoryId.items)
             
 
             
@@ -88,7 +88,7 @@ const EditAudio = ({navigation} : any) => {
                     eroticStoryTagsByStoryId, {storyId: storyID}
                 ))
 
-                setCurrentStoryTags(tagData.data.eroticStoryTagsByStoryId)
+                setCurrentStoryTags(tagData.data.eroticStoryTagsByStoryId.items)
                 
     
                 
@@ -591,6 +591,8 @@ const ListAllEroticTags =  (tagCheck : any) => {
 
        //remove a tag from the tag array
        const RemoveFromCurrentTagArray = (index : any) => {
+
+        console.log('index is', index)
 
         let Tags = [...currentTags]
         let StoryTags = [...currentStoryTags]
