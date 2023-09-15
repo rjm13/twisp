@@ -57,9 +57,9 @@ const ShortSweet = () => {
                                     imageUri: {
                                         attributeExists: true
                                     },
-                                    ratingAvg: {
-                                        gt: 6
-                                    },
+                                    // ratingAvg: {
+                                    //     gt: 6
+                                    // },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
                                     }

@@ -425,6 +425,8 @@ const UploadAudio = ({navigation} : any) => {
                                 await API.graphql(graphqlOperation(
                                     createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
                                 ))
+                                console.log('genre id is', data.genreID)
+                                console.log('tagid is', newTag.data.createTag.id)
                                 await API.graphql(graphqlOperation(
                                     createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
                                 ))
@@ -443,7 +445,6 @@ const UploadAudio = ({navigation} : any) => {
                     receiverID: userInfo.attributes.sub,
                     content: 'Your story, ' + data.title + ' is under review.\n\nIt may take up to 48 hours for approval. You will be notified when your story goes live.',
                     title: 'Thank you for submitting your story!',
-                    subtitle: null,
                     isReadByReceiver: false,
                     status: 'noreply',
                 }

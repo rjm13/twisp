@@ -47,12 +47,12 @@ const Inbox = ({navigation} : any) => {
         getMessages();
     }, [didUpdate])
 
-    const Item = ({index, id, title, content, psuedonym, subtitle, userID, createdAt, isReadbyReceiver} : any) => {
+    const Item = ({index, id, title, content, psuedonym, subtitle, userID, createdAt, isReadByReceiver} : any) => {
 
         return (
             <TouchableWithoutFeedback onPress={() => navigation.navigate('ViewMessage', {messageid: id})}>
                 <View style={{backgroundColor: index%2 === 0 ? '#303030a5' : 'transparent', alignItems: 'center', paddingVertical: 6, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    {isReadbyReceiver === false ? (
+                    {isReadByReceiver === false ? (
                         <View style={{}}>
                             <FontAwesome5 
                                 name='hand-point-right'
@@ -63,7 +63,7 @@ const Inbox = ({navigation} : any) => {
                         </View>
                     ) : null}
                     
-                    <View style={{marginRight: 20, marginVertical: 10, paddingHorizontal: 20, width: isReadbyReceiver === false ? Dimensions.get('window').width - 40 : Dimensions.get('window').width}}>
+                    <View style={{marginRight: 20, marginVertical: 10, paddingHorizontal: 20, width: isReadByReceiver === false ? Dimensions.get('window').width - 40 : Dimensions.get('window').width}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                            
                             <Text style={{color: '#fff', fontSize: 13, marginTop: 4, fontWeight: '600' }}>
@@ -100,7 +100,7 @@ const Inbox = ({navigation} : any) => {
                 subtitle={item.subtitle}
                 receiverID={item.ReceiverID}
                 createdAt={item.createdAt}
-                isReadbyReceiver={item.isReadbyReceiver}
+                isReadByReceiver={item.isReadByReceiver}
                 index={index}
                 pseudonym={pseudonym}
             />

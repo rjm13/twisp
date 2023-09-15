@@ -168,7 +168,7 @@ const PendingStories = ({navigation} : any) => {
                             content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
                             title: 'Your story, ' + title + ' has been approved!',
                             subtitle: 'approval',
-                            isReadbyReceiver: false,
+                            isReadByReceiver: false,
                             status: 'noreply'
 
                         }}
@@ -237,18 +237,20 @@ const PendingStories = ({navigation} : any) => {
                     getStory, {id : id}
                 ))
 
+                let counted = storyresponse.data.getStory.tags.items[i].tag.count + 1
+
                 for (let i = 0; i < storyresponse.data.getStory.tags.items.length; i++) {
                     await API.graphql(graphqlOperation(
                         updateTag, {input: {
-                            id: storyresponse.data.getStory.tags.items[i].tag.id,
-                            count: storyresponse.data.getStory.tags.items[i].tag.count + 1,
+                            id: storyresponse.data.getStory.tags.items[i].tagId,
+                            count: counted,
                             updatedAt: new Date()
                         }}
                     ))
                 }
 
                 if (response) {
-                    let sendmessage = await API.graphql(graphqlOperation(
+                    const sendmessage = await API.graphql(graphqlOperation(
                         createMessage, {input: {
                             type: 'Message',
                             createdAt: new Date(),
@@ -257,11 +259,12 @@ const PendingStories = ({navigation} : any) => {
                             content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
                             title: 'Your story, ' + title + ' has been approved!',
                             subtitle: 'approval',
-                            isReadbyReceiver: false,
+                            isReadByReceiver: false,
                             status: 'noreply'
 
                         }}
                     ))
+                    console.log(sendmessage)
                     if (sendmessage) {
                         setPending(false)
                         alert ('Story approved!')
@@ -331,7 +334,7 @@ const PendingStories = ({navigation} : any) => {
                         content: 'Your story is not approved.\n\nReason:\n\n' + reasonsArr + '\n\n' + reason + '\nPlease correct and resubmit your story.',
                         title: 'Your story, ' + rejectedTitle + ' has been rejected.',
                         subtitle: 'approval',
-                        isReadbyReceiver: false,
+                        isReadByReceiver: false,
                         status: 'noreply'
 
                     }}

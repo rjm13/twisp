@@ -429,7 +429,7 @@ const AddToHistory = async () => {
 const AddProgress = async () => {
     let userInfo = await Auth.currentAuthenticatedUser();
 
-    if (storyID !== null && position !== 0) {
+    if (storyID !== null && position !== 0 && Story?.approved === true) {
         let response = await API.graphql(graphqlOperation(
             createInProgressStory, {input: {
                 userID: userInfo.attributes.sub,

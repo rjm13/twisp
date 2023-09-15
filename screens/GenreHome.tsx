@@ -70,9 +70,9 @@ const [trendingTags, setTrendingTags] = useState([]);
 
                       for (let i = 0; i < respons.data.genreTagsByGenreId.items.length; i++) {
                             if (Tags[0]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[1]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[2]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags.length < 4) {
-                                if (respons.data.genreTagsByGenreId.items[i].tag.count > 0) {
+                                //if (respons.data.genreTagsByGenreId.items[i].tag.count > 0) {
                                     Tags.push(respons.data.genreTagsByGenreId.items[i].tag)
-                                }
+                                //}
                             }
                         }
 
