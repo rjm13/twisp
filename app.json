@@ -76,9 +76,6 @@
               "scheme": "http",
               "host": "*.twisp.space",
               "pathPrefix": "/"
-            },
-            {
-              "scheme": "twisp"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]

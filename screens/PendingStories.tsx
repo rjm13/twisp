@@ -237,9 +237,10 @@ const PendingStories = ({navigation} : any) => {
                     getStory, {id : id}
                 ))
 
-                let counted = storyresponse.data.getStory.tags.items[i].tag.count + 1
+                
 
                 for (let i = 0; i < storyresponse.data.getStory.tags.items.length; i++) {
+                    let counted = storyresponse.data.getStory.tags.items[i].tag.count + 1
                     await API.graphql(graphqlOperation(
                         updateTag, {input: {
                             id: storyresponse.data.getStory.tags.items[i].tagId,
