@@ -126,13 +126,15 @@ const Redirect = ({route, navigation} : any) => {
 
                     const userData = await API.graphql(graphqlOperation(
                         getUser,{ id: userInfo.attributes.sub}))
+
+                        console.log('user data is', userData)
         
                     if (userData.data.getUser) {
 
-                        if (userData.data.getUser.setting1) {
+                        if (userData.data.getUser.setting1 !== null) {
                             setNSFWOn(userData.data.getUser.setting1);
                         } 
-                        if (userData.data.getUser.setting2) {
+                        if (userData.data.getUser.setting2 !== null) {
                             setADon(userData.data.getUser.setting2)
                             console.log('setting2 is', userData.data.getUser.setting2)
                         } 

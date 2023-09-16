@@ -51,11 +51,11 @@ const Trending = () => {
                                 },
                                 type: 'FinishedStory',
                                 sortDirection: 'DESC',
-                                filter: {
-                                    nsfw: {
-                                        ne: nsfwOn === true ? true : null
-                                    }
-                                }
+                                // filter: {
+                                //     nsfw: {
+                                //         ne: nsfwOn === true ? true : null
+                                //     }
+                                // }
                             } 
                         )
                     )

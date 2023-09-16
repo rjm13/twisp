@@ -12,9 +12,9 @@ const handleShareWithLinking = async ({id, title}: any) => {
 
     try {
       const result = await Share.share({
-        message: title,
+        message: deeperUri,
         url: deeperUri,
-        title: 'Check out this short story!'
+        title: 'Check out this short story on Twisp! ' + title
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
