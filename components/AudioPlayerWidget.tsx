@@ -265,31 +265,38 @@ const AddToHistory = async () => {
 
     //if item is not in history then...
     if (isFinished === false) {
+        console.log('isFinished is', isFinished)
         //create the history object
-        await API.graphql(graphqlOperation(
+        const fin = await API.graphql(graphqlOperation(
                 createFinishedStory, {input: {
                     userID: userInfo.attributes.sub, 
                     storyID: storyID, 
                     type: 'FinishedStory', 
                     createdAt: new Date(),
+                    updatedAt: new Date(),
                     genreID: Story?.genreID,
-                    nsfw: Story?.nsfw
                 }}
             ))
 
-        await API.graphql(graphqlOperation(
+        console.log('finishedstory is', fin)
+
+        const up = await API.graphql(graphqlOperation(
             updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
         ))
 
+        console.log('updated story is', up)
+
         //unpin the story, if pinned
-        unPinStory();
+        unPinStory(storyID);
 
         //delete the inProgress story, if it exists
-        await API.graphql(graphqlOperation(
+        const del = await API.graphql(graphqlOperation(
             deleteInProgressStory, {input: {
                 id: inProgressID
             }}
         ))
+
+        console.log('inprogress is', del)
 
         setProgUpdate(!progUpdate);
 
@@ -426,10 +433,12 @@ const ProgressCheck = () => {
     }
 
     useInterval(() => {
+        console.log('position is', position)
+        console.log('slideLength is', slideLength)
         if (isPlaying === true && position < slideLength) {
         setPosition(position + 1000);
         }
-        if (isPlaying === true && position >= slideLength) {
+        if (position >= slideLength) {
             setPosition(0);
             setIsPlaying(false);
             AddToHistory();
