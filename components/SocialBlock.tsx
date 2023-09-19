@@ -8,7 +8,7 @@ import {
     Platform,
     Linking,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from 'react-native';
 
 import {AppContext} from '../AppContext';

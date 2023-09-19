@@ -58,7 +58,7 @@ const GenreTrending = ({genreid} : any) => {
                     )
 
                     for (let i = 0; i < response.data.finishedStoriesByGenre.items.length; i++) {
-                        trendingids.push(response.data.finishedStoriesByGenre.items[i].id)   
+                        trendingids.push(response.data.finishedStoriesByGenre.items[i].story.id)   
                     }
 
                     let pp = trendingids.filter( (ele, ind) => ind === trendingids.findIndex( elem => elem === ele))
@@ -75,9 +75,9 @@ const GenreTrending = ({genreid} : any) => {
                     //filter the top 8 and add them to the array
                     for (let i = 0; i < sortarr.length; i++) {
                         let final = response.data.finishedStoriesByGenre.items.find((element) => {
-                            return element.id === sortarr[i];
+                            return element.storyID === sortarr[i].story;
                         })
-                        finalTrends.push(final)
+                        finalTrends.push(final.story)
                     }
 
                     setStories(finalTrends);

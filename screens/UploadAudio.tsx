@@ -1096,14 +1096,14 @@ const UploadAudio = ({navigation} : any) => {
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Summary *
                 </Text>
-                <View style={[styles.inputfield, {height: 80}]}>
+                <View style={[styles.inputfield, {height: 140}]}>
                     <TextInput
                         placeholder='Max 200 characters'
                         placeholderTextColor='#ffffffa5'
-                        style={{ height: 80, color: '#fff', width: '92%' }}
+                        style={{ height: 140, color: '#fff', width: '92%' }}
                         maxLength={200}
                         multiline={true}
-                        numberOfLines={5}
+                        numberOfLines={8}
                         onChangeText={val => setData({...data, summary: val})}
                         textAlignVertical='top'
                     />
@@ -1117,11 +1117,11 @@ const UploadAudio = ({navigation} : any) => {
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Description *
                 </Text>
-                <View style={[styles.inputfield, {height: 120}]}>
+                <View style={[styles.inputfield, {height: 300}]}>
                     <TextInput
                         placeholder='Max 1500 characters'
                         placeholderTextColor='#ffffffa5'
-                        style={[{ height: 120, color: '#fff', width: '92%' }]}
+                        style={[{ height: 300, color: '#fff', width: '92%', paddingBottom: 20 }]}
                         maxLength={1500}
                         multiline={true}
                         numberOfLines={10}

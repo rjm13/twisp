@@ -6,7 +6,9 @@ import {
     RefreshControl, 
     TouchableWithoutFeedback, 
     ActivityIndicator, 
-    ScrollView
+    ScrollView,
+    Modal,
+    Dimensions
 } from 'react-native';
 
 import { AppContext } from '../../AppContext';
@@ -26,12 +28,14 @@ const AudioStoryList = ({genreID} : any) => {
 
     const flatListRef = useRef();
 
-    
-
     const ScrollToThisThing = ({letter, id}: any) => {
         flatListRef.current?.scrollTo({x: id * id, animated: true});
         setSelectedLetter(letter);
       }
+
+    const [lengthFilter, setLengthFilter] = useState('Any Length');
+    const [ratingFilter, setRatingFilter] = useState('Any Popularity');
+    const [dateFilter, setDateFilter] = useState('Any Date');
 
 
     const alphabet = [{id: 1, letter: 'a'},{id: 2,letter: 'b'},{id: 3,letter: 'c'},{id: 4,letter: 'd'},{id: 5,letter: 'e'},{id: 6,letter: 'f'},{id: 7,letter: 'g'},{id: 8,letter: 'h'},{id: 9,letter: 'i'},{id: 10,letter: 'j'},{id: 11,letter: 'k'},{id: 12,letter: 'l'},{id: 13,letter: 'm'},{id: 14,letter: 'n'},{id: 15,letter: 'o'},{id: 16,letter: 'p'},{id: 17,letter: 'q'},{id: 18,letter: 'r'},{id: 19,letter: 's'},{id: 20,letter: 't'},{id: 21,letter: 'u'},{id: 22,letter: 'v'},{id: 23,letter: 'w'},{id: 24,letter: 'x'},{id: 25,letter: 'y'},{id: 26,letter: 'z'},]
@@ -47,7 +51,8 @@ const AudioStoryList = ({genreID} : any) => {
 
     const [nextToken, setNextToken] = useState()
 
-    
+    const [startingTime, setStartingTime] = useState(0);
+    const [endingTime, setEndingTime] = useState(5400000);
 
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
@@ -78,6 +83,12 @@ const AudioStoryList = ({genreID} : any) => {
                             nsfw: {
                                 ne: nsfwOn === true ? true : null
                             },
+                            time: {
+                                between: [
+                                    startingTime,
+                                    endingTime
+                                ]
+                            }
                         }
                 }))
 
@@ -109,7 +120,7 @@ const AudioStoryList = ({genreID} : any) => {
         fetchStories(null)
         
            
-      }, [selectedLetter, didUpdate])
+      }, [selectedLetter, didUpdate, lengthFilter])
 
 
     const [isFetching, setIsFetching] = useState(false);
@@ -156,8 +167,66 @@ const AudioStoryList = ({genreID} : any) => {
 
       const [isLoading, setIsLoading] = useState(false);
 
+      const [visible, setVisible] = useState(false)
+
     return (
             <View style={{}}>
+        {/* //Select length modal */}
+            <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={() => {setVisible(!visible);}}>                    
+                <TouchableWithoutFeedback onPress={() => {setVisible(false)}} style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000033' }}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000b3', height: Dimensions.get('window').height}}>
+                        <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 15, backgroundColor: '#101010', alignSelf: 'center', height: Dimensions.get('window').height*0.8, width: Dimensions.get('window').width*0.8 }}>
+                            <Text style={{fontWeight: '700', fontSize: 20, paddingVertical: 16, color: '#fff', marginBottom: 40}}>
+                                Select story length
+                            </Text>
+                            
+                            <View style={{alignItems: 'center', marginVertical: 0}}>
+
+                                <TouchableWithoutFeedback onPress={() => {setLengthFilter('Any Length'); setStartingTime(0); setEndingTime(5400000); setVisible(false)}}>
+                                    <View style={{marginVertical: 10, alignItems: 'center', borderRadius: 8, backgroundColor: lengthFilter === 'Any Length' ? '#00ffff80' : '#202020', width: Dimensions.get('window').width*0.74}}>
+                                        <Text style={{fontWeight: '500', fontSize: 20, paddingVertical: 16, color: '#fff'}}>
+                                            any
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {setLengthFilter('< 10 min'); setEndingTime(600000); setVisible(false)}}>
+                                    <View style={{marginVertical: 10, alignItems: 'center', borderRadius: 8, backgroundColor: lengthFilter === '< 10 min' ? '#00ffff80' : '#202020', width: Dimensions.get('window').width*0.74}}>
+                                        <Text style={{fontWeight: '500', fontSize: 20, paddingVertical: 16, color: '#fff'}}>
+                                            under 10
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {setLengthFilter('10 - 30 min'); setStartingTime(600000); setEndingTime(1800000); setVisible(false)}}>
+                                    <View style={{marginVertical: 10, alignItems: 'center', borderRadius: 8, backgroundColor: lengthFilter === '10 - 30 min' ? '#00ffff80' : '#202020', width: Dimensions.get('window').width*0.74}}>
+                                        <Text style={{fontWeight: '500', fontSize: 20, paddingVertical: 16, color: '#fff'}}>
+                                            10 - 30
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {setLengthFilter('30 - 60 min'); setStartingTime(1800000); setEndingTime(3600000); setVisible(false)}}>
+                                    <View style={{marginVertical: 10, alignItems: 'center', borderRadius: 8, backgroundColor: lengthFilter === '10 - 60 min' ? '#00ffff80' : '#202020', width: Dimensions.get('window').width*0.74}}>
+                                        <Text style={{fontWeight: '500', fontSize: 20, paddingVertical: 16, color: '#fff'}}>
+                                            30 - 60
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+
+                                <TouchableWithoutFeedback onPress={() => {setLengthFilter('60+ min'); setStartingTime(3600000); setEndingTime(5400000); setVisible(false)}}>
+                                    <View style={{marginVertical: 10, alignItems: 'center', borderRadius: 8, backgroundColor: lengthFilter === '60+ min' ? '#00ffff80' : '#202020', width: Dimensions.get('window').width*0.74}}>
+                                        <Text style={{fontWeight: '500', fontSize: 20, paddingVertical: 16, color: '#fff'}}>
+                                            60 +
+                                        </Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+
                 <View>
                     <ScrollView style={{paddingHorizontal: 20}} horizontal={true} ref={flatListRef} showsHorizontalScrollIndicator={false}>        
                         {alphabet.map(({ id, letter } : any) => (
@@ -176,10 +245,46 @@ const AudioStoryList = ({genreID} : any) => {
                                     </TouchableWithoutFeedback>
                                 </View>
                         ))}
-                        <View style={{width: 40}}>
-
-                        </View>
+                        <View style={{width: 40}} />
                     </ScrollView>
+
+                    <View style={{marginLeft: 20, flexDirection: 'row', alignItems: 'center'}}>
+                        
+
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{}}>
+                            <TouchableWithoutFeedback onPress={() => setVisible(true)}>
+                                <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: lengthFilter === 'Any Length' ? '#656565' : '#00ffffb3'}}>
+                                    <Text style={{color: '#000'}}>
+                                    {lengthFilter}
+                                    </Text> 
+                                </View>
+                            </TouchableWithoutFeedback>
+                            
+                            <TouchableWithoutFeedback>
+                                <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: ratingFilter === 'Any Popularity' ? '#656565' : '#00ffffb3'}}>
+                                    <Text style={{color: '#000'}}>
+                                    {ratingFilter}
+                                    </Text> 
+                                </View>
+                            </TouchableWithoutFeedback>
+                            
+                            <TouchableWithoutFeedback>
+                                <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: dateFilter === 'Any Date' ? '#656565' : '#00ffffb3'}}>
+                                    <Text style={{color: '#000'}}>
+                                    {dateFilter}
+                                    </Text> 
+                                </View> 
+                            </TouchableWithoutFeedback>
+
+                            <View style={{width: 20}}/>
+
+                        </ScrollView>
+
+
+                        
+
+                    </View>
+                    
                     </View>
 
 

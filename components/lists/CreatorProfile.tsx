@@ -312,9 +312,28 @@ const CreatorProfile = ({status} : any) => {
             )}
             scrollEventThrottle={1}
             showsVerticalScrollIndicator={false}   >
-          
 
-            
+
+        <Animated.FlatList 
+            data={Storys}
+            renderItem={renderItem}
+            keyExtractor={item => item.id} 
+            scrollEnabled={false}
+            ListFooterComponent={ () => {
+                return (
+                <View style={{ height:  120}}/>
+                );}
+            }
+            ListHeaderComponent={ () => {
+
+                return (
+                        <View>
+                            <View style={{ height: 600}}/>
+                        </View>
+                                    
+                                );
+            }}
+        />
         <Animated.View style={[ {backgroundColor: animatedColor, height: animatedHeaderHeight, width: Dimensions.get('window').width, position: 'absolute', flex: 1}]}>              
             {/* <View style={{ position: 'absolute', top: getStatusBarHeight() + 20, flexDirection: 'row',  justifyContent: 'space-between',  width: Dimensions.get('window').width -40, marginHorizontal: 20, alignItems: 'center'}}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', width: '50%' }}>
@@ -360,6 +379,7 @@ const CreatorProfile = ({status} : any) => {
                         
                     </View>
 
+                        
                 <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
                     <Text style={{fontSize: 22, color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
                         {User?.penName}
@@ -410,27 +430,6 @@ const CreatorProfile = ({status} : any) => {
 
             
         </Animated.View>
-
-        <Animated.FlatList 
-            data={Storys}
-            renderItem={renderItem}
-            keyExtractor={item => item.id} 
-            scrollEnabled={false}
-            ListFooterComponent={ () => {
-                return (
-                <View style={{ height:  120}}/>
-                );}
-            }
-            ListHeaderComponent={ () => {
-
-                return (
-                        <View>
-                            <View style={{ height: 600}}/>
-                        </View>
-                                    
-                                );
-            }}
-        />
 
         </ScrollView>
 

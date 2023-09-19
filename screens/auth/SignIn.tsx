@@ -38,8 +38,6 @@ const SignIn = ({navigation} : any) => {
 
     const [signingIn, setSigningIn] = useState(false);
 
-    const [trigger, setTrigger] = useState(false);
-
 //listener for google sign in
     useEffect(() => {
         const unsubscribe = Hub.listen("auth", ({ payload: { event, data }}) => {
@@ -48,11 +46,13 @@ const SignIn = ({navigation} : any) => {
                 console.log('this guy logged in', data)
                 if (data.username.startsWith('google')) {
                     navigation.navigate('Redirect', {trigger: Math.random()});
+                    setSigningIn(false)
                 }
                 if (data.username.startsWith('signinwithapple')) {
                     navigation.navigate('Redirect', {trigger: Math.random()});
+                    setSigningIn(false)
                 }
-                setSigningIn(false)
+                
               break;
             //   case 'cognitoHostedUI':
             //     getUser().then(userData => setUser(userData));
@@ -116,12 +116,14 @@ const SignIn = ({navigation} : any) => {
           );
     
           if (userInfo === 'The user is not authenticated') {
+            setSigningIn(false);
             return;
           }
 
           if (userInfo.attributes.email_verified === false) {
               await Auth.resendSignUp(username)
               .then(navigation.navigate('ConfirmEmail', {username, password}))
+              setSigningIn(false);
           }
     
           else if (userInfo) {
@@ -137,9 +139,8 @@ const SignIn = ({navigation} : any) => {
             if (userData.data.getUser) {
                 setUserID(userData.data.getUser);
                 setIsErr(false);
-                setTrigger(!trigger);
                 navigation.navigate('Redirect', {trigger: Math.random()});
-                return;
+                
             };
           }
         }
@@ -169,6 +170,7 @@ const SignIn = ({navigation} : any) => {
         try {
             await Auth.signIn(username.replace(/ /g, ''), password)
             .then (CreateUser)
+            //setSigningIn(false);
         } 
         catch (error) {
             console.log(error.message)
@@ -176,7 +178,7 @@ const SignIn = ({navigation} : any) => {
             setIsErr(true);
             setSigningIn(false);
         }
-        setSigningIn(false);
+        //setSigningIn(false);
     } 
             
 
@@ -260,17 +262,22 @@ const SignIn = ({navigation} : any) => {
                     </View>
                 </View>
 
-            {signingIn === true ? (
+        {signingIn === true ? (
                 <ActivityIndicator size="small" color='cyan'/>
                 ) : (
-                    <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
-                        <View style={[styles.buttonlayout, {alignSelf: 'center'}]}>
-                            <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
-                                Login
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
+
+            <View>
+                <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
+                    <View style={[styles.socialbuttonlayout, {justifyContent: 'center', backgroundColor: '#00ffff'}]}>
+                        <Image 
+                            source={require('../../assets/twisp-b-small.png')}
+                            style={{width: 30, height: 30, margin: 0}}
+                        />
+                        <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
+                            Continue with Email
+                        </Text>
+                    </View>
+                </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp') }>
                     <Text style={[styles.buttontext, { alignSelf: 'center', margin: 30, color: '#fff'}]}>
@@ -280,29 +287,31 @@ const SignIn = ({navigation} : any) => {
 
                 <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
 
-                    <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
-                        <View style={[styles.socialbuttonlayout, {justifyContent: 'center'}]}>
-                            <Image 
-                                source={require('../../assets/google-logo.png')}
-                                style={{width: 30, height: 30, margin: 0}}
-                            />
-                            <Text style={[styles.socialbuttontext]}>
-                                Continue with Google
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
+                    <View style={[styles.socialbuttonlayout, {justifyContent: 'center'}]}>
+                        <Image 
+                            source={require('../../assets/google-logo.png')}
+                            style={{width: 30, height: 30, margin: 0}}
+                        />
+                        <Text style={[styles.socialbuttontext]}>
+                            Continue with Google
+                        </Text>
+                    </View>
+                </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
-                        <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5', justifyContent: 'center'}]}>
-                            <Image 
-                                source={require('../../assets/apple-logo.png')}
-                                style={{width: 30, height: 30, margin: 0}}
-                            />
-                            <Text style={[styles.socialbuttontext, {backgroundColor: '#000'}]}>
-                                Continue with Apple
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
+                    <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5', justifyContent: 'center'}]}>
+                        <Image 
+                            source={require('../../assets/apple-logo.png')}
+                            style={{width: 30, height: 30, margin: 0}}
+                        />
+                        <Text style={[styles.socialbuttontext, {backgroundColor: '#000'}]}>
+                            Continue with Apple
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View> 
+        )}
 
             <StatusBar style='light' backgroundColor='transparent'/>
             </ScrollView>
