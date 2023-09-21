@@ -841,65 +841,58 @@ export const getStory = /* GraphQL */ `
       }
       publisherID
       creator {
+        id
         type
         createdAt
         updatedAt
-        id
-        name
-        email
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
         imageUri
         bio
-        publisherName
+        penName
+        email
         website
-        isPublisher
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
         numAuthored
-        topthree
-        following {
+        stories {
           nextToken
           __typename
         }
-        numFolowing
         followers {
           nextToken
           __typename
         }
         numFollowers
-        Pinned {
-          nextToken
-          __typename
-        }
-        Rated {
-          nextToken
-          __typename
-        }
-        Finished {
-          nextToken
-          __typename
-        }
-        plan
-        messageRec {
-          nextToken
-          __typename
-        }
-        inProgressStories {
-          nextToken
-          __typename
-        }
-        published {
-          nextToken
-          __typename
-        }
-        numPublished
-        isMod
-        setting1
-        setting2
-        setting3
-        setting4
-        setting5
-        creatorProfiles {
-          nextToken
-          __typename
-        }
         __typename
       }
       creatorID
@@ -1111,29 +1104,24 @@ export const listStories = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -1685,29 +1673,24 @@ export const getPinnedStory = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -1959,29 +1942,24 @@ export const getInProgressStory = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -2241,29 +2219,24 @@ export const getFinishedStory = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -2482,29 +2455,24 @@ export const getComment = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -3202,29 +3170,24 @@ export const getRating = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -3630,29 +3593,24 @@ export const getStoryTag = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -3840,29 +3798,24 @@ export const getEroticStoryTag = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -4702,29 +4655,24 @@ export const storiesByDate = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -4846,6 +4794,118 @@ export const storiesByUpdated = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        creatorID
+        author
+        narrator
+        artist
+        time
+        summary
+        description
+        nsfw
+        comments {
+          nextToken
+          __typename
+        }
+        numComments
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        ratingAvg
+        ratingAmt
+        ratings {
+          nextToken
+          __typename
+        }
+        reactions {
+          nextToken
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        hidden
+        status
+        numListens
+        approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          creatorID
+          __typename
+        }
+        seriesPart
+        premium
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const storiesByTitle = /* GraphQL */ `
+  query StoriesByTitle(
+    $title: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByTitle(
+      title: $title
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        title
+        imageUri
+        audioUri
+        publisher {
           type
           createdAt
           updatedAt
@@ -4869,6 +4929,28 @@ export const storiesByUpdated = /* GraphQL */ `
           setting3
           setting4
           setting5
+          __typename
+        }
+        publisherID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
           __typename
         }
         creatorID
@@ -4990,29 +5072,24 @@ export const storiesByPublisher = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -5134,29 +5211,24 @@ export const storiesByCreator = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -5278,29 +5350,24 @@ export const storiesByGenre = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID
@@ -5422,29 +5489,24 @@ export const storiesBySeries = /* GraphQL */ `
         }
         publisherID
         creator {
+          id
           type
           createdAt
           updatedAt
-          id
-          name
-          email
+          userID
           imageUri
           bio
-          publisherName
+          penName
+          email
           website
-          isPublisher
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
           numAuthored
-          topthree
-          numFolowing
           numFollowers
-          plan
-          numPublished
-          isMod
-          setting1
-          setting2
-          setting3
-          setting4
-          setting5
           __typename
         }
         creatorID

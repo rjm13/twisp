@@ -120,17 +120,18 @@ const AuthorProfileSelect = ({navigation} : any) => {
                         />
                     </View>
                     <View style={{alignItems: 'center', marginVertical: 30}}>
+                        {isLoading ? (
+                            <ActivityIndicator size="small" color="#00ffff"/>
+                        ) : 
                         <TouchableOpacity onPress={CreateNewCreator}>
                             <View style={styles.buttonlayout} >
-                                {isLoading ? (
-                                        <ActivityIndicator size="small" color="#00ffff"/>
-                                ) : 
                                 <Text style={styles.buttontext}>
                                     Create
                                 </Text>  
-                                } 
                             </View>
                         </TouchableOpacity>
+                        }       
+                            
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -190,6 +191,7 @@ const AuthorProfileSelect = ({navigation} : any) => {
                                     </View>
                             ))}
                         </View>
+                        <View style={{height: 80}}/>
                     </View>
                 </ScrollView>
 

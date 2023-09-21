@@ -200,6 +200,8 @@ const PendingStories = ({navigation} : any) => {
 
                 if (response) {
 
+                    console.log('creator id is', creatorID)
+
                     let creator = await API.graphql(graphqlOperation(
                         getCreatorProfile, {
                             id: creatorID   
@@ -233,35 +235,38 @@ const PendingStories = ({navigation} : any) => {
                     ))
                 }
 
-                let storyresponse = await API.graphql(graphqlOperation(
+                const storyresponse = await API.graphql(graphqlOperation(
                     getStory, {id : id}
                 ))
 
-                
+                console.log('story response is', storyresponse.data.getStory.tags.items)
 
                 for (let i = 0; i < storyresponse.data.getStory.tags.items.length; i++) {
                     let counted = storyresponse.data.getStory.tags.items[i].tag.count + 1
-                    await API.graphql(graphqlOperation(
+                    const tagg = await API.graphql(graphqlOperation(
                         updateTag, {input: {
                             id: storyresponse.data.getStory.tags.items[i].tagId,
                             count: counted,
                             updatedAt: new Date()
                         }}
                     ))
+                    console.log('tags is', tagg.data.updateTag)
                 }
 
                 if (response) {
+                    console.log('author id is', authorID)
                     const sendmessage = await API.graphql(graphqlOperation(
-                        createMessage, {input: {
-                            type: 'Message',
-                            createdAt: new Date(),
-                            updatedAt: new Date(),
-                            receiverID: authorID,
-                            content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
-                            title: 'Your story, ' + title + ' has been approved!',
-                            subtitle: 'approval',
-                            isReadByReceiver: false,
-                            status: 'noreply'
+                        createMessage, {
+                            input: {
+                                type: 'Message',
+                                createdAt: new Date(),
+                                updatedAt: new Date(),
+                                receiverID: authorID,
+                                content: 'Your story has been approved and is now live in the app!\n\nTo view your story, go to Publisher Home >> Published Stories',
+                                title: 'Your story, ' + title + ' has been approved!',
+                                subtitle: 'approval',
+                                isReadByReceiver: false,
+                                status: 'noreply'
 
                         }}
                     ))
@@ -356,7 +361,7 @@ const PendingStories = ({navigation} : any) => {
 
     
 
-    const Item = ({title, genreName, summary, imageUri, nsfw, audioUri, author, authorID, narrator, time, id,ratingAvg,ratingAmt,icon} : any) => {
+    const Item = ({title, genreName, summary, imageUri, nsfw, audioUri, author, authorID, creatorID, narrator, time, id,ratingAvg,ratingAmt,icon} : any) => {
 
         //temporary signed image uri
         const [imageU, setImageU] = useState('')
@@ -488,7 +493,7 @@ const PendingStories = ({navigation} : any) => {
                             {pending===true ? (
                                 <ActivityIndicator size='small' color='cyan'/>
                             ) : (
-                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw, genreName})}>
+                                <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw, genreName, creatorID})}>
                                     <Text style={{color: '#000', backgroundColor: 'cyan', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6}}>
                                         Approve
                                     </Text>
@@ -537,17 +542,12 @@ const PendingStories = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
-        }
-
-        if (item.prompt) {
-            promptCount = item.prompt.count
+            primary = item.genre.color
         }
 
         return  (
             <Item 
                 title={item.title}
-                publisherID={item.publisherID}
                 creatorID={item.creatorID}
                 imageUri={item.imageUri}
                 genreName={genreName}
@@ -556,13 +556,12 @@ const PendingStories = ({navigation} : any) => {
                 audioUri={item.audioUri}
                 summary={item.summary}
                 author={item.author}
+                authorID={item.publisherID}
                 narrator={item.narrator}
                 time={item.time}
                 id={item.id}
                 ratingAvg={item.ratingAvg}
                 ratingAmt={item.ratingAmt}
-                promptID={item.promptID}
-                promptCount={promptCount}
                 //flags={flags}
             />
         )

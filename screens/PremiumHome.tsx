@@ -122,9 +122,9 @@ const PremiumHome = ({navigation} : any) => {
         try {
             const ENTITLEMENT_ID = userInfo.attributes.sub
 
-            const {purchaserInfo} = await Purchases.purchasePackage(purchasePackage)
+            const {customerInfo, productIdentifier} = await Purchases.purchasePackage(purchasePackage)
             
-            if (typeof purchaserInfo.entitlements.active[0] !== 'undefined') {
+            if (typeof customerInfo.entitlements.active[0] !== 'undefined') {
                 navigation.navigate('Redirect', {trigger: Math.random()})
             }
         } catch (error) {
@@ -235,7 +235,7 @@ const PremiumHome = ({navigation} : any) => {
                     
 
                     <View style={{alignSelf: 'center', justifyContent: 'center', alignContent: 'center', marginHorizontal: 30, marginBottom: 40}}>
-                        <View style={{flexDirection: 'row', marginBottom: 20}}>
+                        {/* <View style={{flexDirection: 'row', marginBottom: 20}}>
                             <FontAwesome5 
                                 name='check'
                                 size={18}
@@ -245,7 +245,7 @@ const PremiumHome = ({navigation} : any) => {
                             <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
                                 No Ads
                             </Text>
-                        </View>
+                        </View> */}
 
                         <View style={{flexDirection: 'row', marginBottom: 20}}>
                             <FontAwesome5 
@@ -255,11 +255,11 @@ const PremiumHome = ({navigation} : any) => {
                                 style={{marginRight: 20, alignSelf: 'center'}}
                             />
                             <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
-                                Access all curated and explicit content
+                                Access all curated content
                             </Text>
                         </View>
 
-                        <View style={{flexDirection: 'row', marginBottom: 20}}>
+                        {/* <View style={{flexDirection: 'row', marginBottom: 20}}>
                             <FontAwesome5 
                                 name='check'
                                 size={18}
@@ -269,7 +269,7 @@ const PremiumHome = ({navigation} : any) => {
                             <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
                                 Access the After Dark genre
                             </Text>
-                        </View>
+                        </View> */}
 
                         
                         

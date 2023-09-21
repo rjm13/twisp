@@ -84,12 +84,12 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
     @index(name: "storiesByUpdated", queryField: "storiesByUpdated", sortKeyFields: ["updatedAt"]  )
   createdAt: String
   updatedAt: String
-  title: String! @index(name: "storiesByTitle", queryField: "storiesByTitle", sortKeyFields: ["title"]  )
+  title: String! @index(name: "storiesByTitle", queryField: "storiesByTitle", sortKeyFields: ["createdAt"]  )
   imageUri: String
   audioUri: String!
   publisher: User @hasOne (fields: ["publisherID"])
   publisherID: ID @index(name: "byPublisher", queryField: "storiesByPublisher", sortKeyFields: ["createdAt"])
-  creator: User @hasOne (fields: ["creatorID"])
+  creator: CreatorProfile @hasOne (fields: ["creatorID"])
   creatorID: ID @index(name: "byCreatorProfile", queryField: "storiesByCreator", sortKeyFields: ["createdAt"])
   author: String
   narrator: String

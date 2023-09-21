@@ -16,6 +16,8 @@ import { listRatings, listFinishedStories } from '../src/graphql/queries';
 
 import {useNavigation} from '@react-navigation/native';
 
+import PlayButton from './PlayButton';
+
 const HorzStoryTile = ({
     title, 
     genreName, 
@@ -24,7 +26,8 @@ const HorzStoryTile = ({
     ratingAvg,
     icon,
     numComments,
-    numListens
+    numListens,
+    time
 } : any) => {
         
 //temporary signed image uri
@@ -58,9 +61,12 @@ const HorzStoryTile = ({
             {imageU !== '' ? (
                 <ImageBackground
                     source={{uri: imageU}}
-                    style={{marginBottom: 12, backgroundColor: '#ffffffa5', width: 200, height: 180, justifyContent: 'flex-end', borderRadius: 15}}
+                    style={{marginBottom: 12, backgroundColor: '#ffffffa5', width: 220, height: 180, justifyContent: 'space-between', borderRadius: 15}}
                     imageStyle={{borderRadius: 15,}}
                 >
+                    <View>
+                        <PlayButton id={id} time={time}/>
+                    </View>
                     <View style={{ backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
                         <View style={{marginBottom: 0}}>
                             <Text style={{width: 140, color: '#fff', fontSize: 12, fontWeight: 'bold'}}>

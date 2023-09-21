@@ -106,14 +106,19 @@ const Trending = () => {
         
         return (
         <HorzStoryTile 
-          title={item.title}
-          imageUri={item.imageUri}
-          genreName={genreName}
-          icon={icon}
-          id={item.id}
-          ratingAvg={item.ratingAvg}
-          numComments={item.numComments}
-          numListens={item.numListens}
+        title={item.title}
+        imageUri={item.imageUri}
+        genreName={null}
+        icon={icon}
+        audioUri={item.audioUri}
+        summary={item.summary}
+        author={item.author}
+        narrator={item.narrator}
+        time={item.time}
+        id={item.id}
+        ratingAvg={item.ratingAvg}
+        numComments={item.numComments}
+        numListens={item.numListens}
         />
       );}
 

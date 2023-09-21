@@ -25,6 +25,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Audio } from 'expo-av';
 import ImageCompress from '../components/functions/CompressImage'
 import uuid from 'react-native-uuid';
+import * as Progress from 'react-native-progress';
 
 import useStyles from '../styles';
 import { AppContext } from '../AppContext'
@@ -818,10 +819,20 @@ const UploadAudio = ({navigation} : any) => {
                     <View style={{ width: '100%', alignItems: 'center', marginBottom: 40}}>
                         {isPublishing ? (
                             <View style={{marginVertical: 40, alignContent: 'center'}}>
-                                <ActivityIndicator size="large" color="cyan"/> 
-                                <Text style={{fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
-                                    {progressText} %
-                                </Text>
+                                {/* <ActivityIndicator size="large" color="cyan"/>  */}
+                            <Text style={{fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
+                                {progressText} %
+                            </Text>
+
+                            <Progress.Bar 
+                                progress={Number(progressText)/10} 
+                                width={Dimensions.get('window').width/2} 
+                                color={'#00ffff'}
+                                unfilledColor={'#000'}
+                                borderWidth={1}
+                                borderColor={'#00ffff'}
+                                borderRadius={4}
+                            />
                             </View>
                             
                             ) : (

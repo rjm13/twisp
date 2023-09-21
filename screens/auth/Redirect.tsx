@@ -4,7 +4,8 @@ import {
     Text, 
     ActivityIndicator, 
     Dimensions, 
-    TouchableWithoutFeedback 
+    TouchableWithoutFeedback,
+    Platform
 } from "react-native";
 
 import { AppContext } from '../../AppContext';
@@ -30,6 +31,8 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 
 
 const Redirect = ({route, navigation} : any) => {
+
+
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -64,16 +67,22 @@ const Redirect = ({route, navigation} : any) => {
           const userInfo = await Auth.currentAuthenticatedUser();
     
           const ENTITLEMENT_ID = userInfo.attributes.sub
+
+          if (userInfo) {
+            const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
+        }
     
           try {
             const customerInfo = await Purchases.getCustomerInfo();
 
             //console.log(customerInfo)
 
+            console.log('subscriber is', customerInfo )
+
              if (typeof customerInfo.entitlements.active !== "undefined") {
             setPremium(true);
           } else {
-            setPremium(true)
+            setPremium(false)
           }
           } catch (e) {
            console.log(e)
@@ -112,13 +121,19 @@ const Redirect = ({route, navigation} : any) => {
                     //setPremium(true)
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
                     // }
+                    if (userInfo) {
+                        const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
+                    }
 
                     try {
                         const customerInfo = await Purchases.getCustomerInfo();
+
+                        console.log('subscriber is', customerInfo )
+                        
                          if (typeof customerInfo.entitlements.active !== "undefined") {
                         setPremium(true);
                       } else {
-                        setPremium(true)
+                        setPremium(false)
                       }
                       } catch (e) {
                        console.log(e)

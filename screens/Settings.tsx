@@ -44,7 +44,6 @@ const Settings = ({navigation} : any) => {
     const { setADon } = useContext(AppContext);
     const { ADon } = useContext(AppContext);
 
-    const { setPremium } = useContext(AppContext);
     const { premium } = useContext(AppContext);
 
     useEffect(() => {
