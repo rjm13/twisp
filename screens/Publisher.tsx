@@ -135,7 +135,7 @@ const Publisher = ({navigation} : any) => {
                                         My Published Stories
                                     </Text>
                                     <Text style={styles.textcounter}>
-                                        {user?.authored?.items.length}
+                                        {user?.published.items.length}
                                     </Text>
                                 </View>
                             </TouchableWithoutFeedback>
@@ -145,9 +145,31 @@ const Publisher = ({navigation} : any) => {
                                     <Text style={{ color: '#fff', fontSize: 16}}>
                                         Author Profiles
                                     </Text>
-                                    <Text style={styles.textcounter}>
-                                        {user?.authored?.items.length}
+                                    {/* <Text style={styles.textcounter}>
+                                        {user?.creatorProfiles?.items.length}
+                                    </Text> */}
+                                </View>
+                            </TouchableWithoutFeedback>
+
+                            <TouchableWithoutFeedback onPress={ () => navigation.navigate('NarratorProfileSelect')}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
+                                    <Text style={{ color: '#fff', fontSize: 16}}>
+                                        Narrator Profiles
                                     </Text>
+                                    {/* <Text style={styles.textcounter}>
+                                        {user?.authored?.items.length}
+                                    </Text> */}
+                                </View>
+                            </TouchableWithoutFeedback>
+
+                            <TouchableWithoutFeedback onPress={ () => navigation.navigate('IllustratorProfileSelect')}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
+                                    <Text style={{ color: '#fff', fontSize: 16}}>
+                                        Illustrator Profiles
+                                    </Text>
+                                    {/* <Text style={styles.textcounter}>
+                                        {user?.authored?.items.length}
+                                    </Text> */}
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -160,7 +182,7 @@ const Publisher = ({navigation} : any) => {
                         {isPublisher === true ? (
                             <View>
                                 <TouchableWithoutFeedback onPress={() => {navigation.navigate('UploadAudio')}}>
-                                    <View style={[styles.button, {backgroundColor: 'cyan'}]}>
+                                    <View style={[styles.button, {backgroundColor: '#00ffffa5'}]}>
                                         <Text style={styles.buttontext}>
                                             Publish a Story
                                         </Text>

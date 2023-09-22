@@ -858,7 +858,7 @@ const EditAuthorProfile = ({navigation} : any) => {
 {/* primary visible content */}
             <ScrollView>
                 <View style={{  alignItems: 'center', flexDirection: 'row', marginTop: 50, marginBottom: 20, marginHorizontal: 20,}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('AuthorProfileSelect')}>
+                    <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                         <View style={{padding: 30, margin: -30}}>
                             <FontAwesome5 
                                 name='chevron-left'

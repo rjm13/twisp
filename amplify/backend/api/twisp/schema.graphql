@@ -89,8 +89,12 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   audioUri: String!
   publisher: User @hasOne (fields: ["publisherID"])
   publisherID: ID @index(name: "byPublisher", queryField: "storiesByPublisher", sortKeyFields: ["createdAt"])
-  creator: CreatorProfile @hasOne (fields: ["creatorID"])
+  creator: CreatorProfile @hasOne (fields: ["creatorID"]) #this is the author profile
   creatorID: ID @index(name: "byCreatorProfile", queryField: "storiesByCreator", sortKeyFields: ["createdAt"])
+  narratorProfile: CreatorProfile @hasOne (fields: ["narratorID"])
+  narratorID: ID @index(name: "byNarratorProfile", queryField: "storiesByNarrator", sortKeyFields: ["createdAt"])
+  illustrator: CreatorProfile @hasOne (fields: ["illustratorID"])
+  illustratorID: ID @index(name: "byIllustratorProfile", queryField: "storiesByIllustrator", sortKeyFields: ["createdAt"])
   author: String
   narrator: String
   artist: String

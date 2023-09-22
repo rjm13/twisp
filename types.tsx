@@ -74,6 +74,8 @@ export type RootStackParamList = {
     AuthorProfileSelect: undefined;
     EditAuthorProfile: undefined;
     CreateCreator: undefined;
+    NarratorProfileSelect: undefined;
+    IllustratorProfileSelect: undefined;
     
   
   };

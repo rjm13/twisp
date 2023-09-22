@@ -10,6 +10,8 @@ import ProfileScreen from '../screens/Profile';
 import EditProfileScreen from '../screens/EditProfile';
 import NotificationSetting from '../screens/Settings';
 import AuthorProfileSelect from '../screens/AuthorProfileSelect';
+import IllustratorProfileSelect from '../screens/IllustratorProfileSelect';
+import NarratorProfileSelect from '../screens/NarratorProfileSelect';
 import EditAuthorProfile from '../screens/EditAuthorProfile';
 import CreateCreator from '../screens/CreateCreator';
 import EditAudioStory from '../screens/EditAudioStory';
@@ -245,6 +247,16 @@ function HomeNavigator() {
       <HomeStack.Screen 
         name="AuthorProfileSelect" 
         component={AuthorProfileSelect} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="NarratorProfileSelect" 
+        component={NarratorProfileSelect} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="IllustratorProfileSelect" 
+        component={IllustratorProfileSelect} 
         options={{ headerShown: false }} 
       />
       <HomeStack.Screen 

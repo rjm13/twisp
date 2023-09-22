@@ -83,7 +83,7 @@ const FollowingScreen = ({navigation} : any) => {
     const [SelectedId, setSelectedId] = useState(1);
 
     //title item for the flatlist that displays the authors the user following
-    const Item = ({ numAuthored, penName, imageUri, id, bio } : any) => {
+    const Item = ({ numAuthored, penName, imageUri, id, bio, type } : any) => {
 
         const [imageU, setImageU] = useState('')
 
@@ -101,7 +101,7 @@ const FollowingScreen = ({navigation} : any) => {
         return (
             <View style={{backgroundColor: '#383838a5', marginHorizontal: 20, marginVertical: 10, padding: 20, borderRadius: 15,}}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id, status: 'publisher', rootChange: 'bottom'})}>
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('CreatorScreen', {userID: id, status: 'publisher', rootChange: 'bottom', creatorType: type})}>
                         <View style={{ flexDirection: 'row'}}>
                             <Image 
                                 source={ imageUri ? { uri: imageU} : require('../assets/blankprofile.png')}
@@ -155,6 +155,7 @@ const FollowingScreen = ({navigation} : any) => {
             imageUri={item.imageUri}
             bio={item.bio}
             numAuthored={item.numAuthored}
+            type={item.type}
         />
       );
 

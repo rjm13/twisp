@@ -12,11 +12,13 @@ import {
     ScrollView,
     Dimensions,
     Linking,
-    Modal
+    Modal,
+    FlatList
 }
 from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {LinearGradient} from 'expo-linear-gradient';
@@ -30,8 +32,10 @@ import * as Progress from 'react-native-progress';
 import useStyles from '../styles';
 import { AppContext } from '../AppContext'
 
+import TimeConversion from '../components/functions/TimeConversion';
+
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
+import { createStory, updateStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
 import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser, seriesByCreator, storiesByCreator } from '../src/graphql/queries';
 
 
@@ -67,6 +71,8 @@ const UploadAudio = ({navigation} : any) => {
         approved: false,
         numListens: 0,
         creatorID: '',
+        illustratorID: '',
+        narratorID: '',
         seriesID: null,
         seriesPart: 1,
     });
@@ -305,8 +311,19 @@ const UploadAudio = ({navigation} : any) => {
                         }
                 }))
 
+                const resultish = await API.graphql(
+                    graphqlOperation(updateStory, { input: 
+                        {
+                            id: seriesStory,
+                            seriesID: result.data.createSeries.id,
+                            updatedAt: new Date(),
+                        }
+                }))
+
+                console.log(resultish.data)
+
                 setSeriesid(result.data.createSeries.id)
-                console.log(result.data.createSeries.id)
+                console.log('new series id is', result.data.createSeries.id)
             }
 
             let userInfo = await Auth.currentAuthenticatedUser();
@@ -337,6 +354,8 @@ const UploadAudio = ({navigation} : any) => {
                     genreID: data.genreID,
                     author: data.author,
                     creatorID: data.creatorID,
+                    narratorID: data.narratorID,
+                    illustratorID: data.illustratorID,
                     narrator: data.narrator,
                     artist: data.artist,
                     time: data.time,
@@ -546,6 +565,8 @@ const UploadAudio = ({navigation} : any) => {
 
     //Modal dropdown for selecting  an author. Height of the dropdown is dependent on the number of genres
     const [Authors, setAuthors] = useState([]);
+    const [Narrators, setNarrators] = useState([]);
+    const [Illustrators, setIllustrators] = useState([]);
 
     //Modal dropdown for selecting a series. Height of the dropdown is dependent on the number of genres
     const [seriesArr, setSeriesArr] = useState([]);
@@ -556,6 +577,11 @@ const UploadAudio = ({navigation} : any) => {
     const [seriesStoryName, setSeriesStoryName] = useState('');
 
     useEffect(() => {
+
+        if (pickedCreator === '') {
+            return;
+        }
+
         const fetchSeries = async () => {
             const result = await API.graphql(graphqlOperation(
                 seriesByCreator, {
@@ -589,24 +615,107 @@ const UploadAudio = ({navigation} : any) => {
 
         let authorarray = []
 
-        const fetchCreators = async () => {
+        const fetchCreators = async (nextToken:any) => {
 
             const userInfo = await Auth.currentAuthenticatedUser()
             
             const result = await API.graphql(graphqlOperation(
                 creatorProfilesByUser, {
-                    userID: userInfo.attributes.sub
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    filter: {
+                        type: {
+                            eq: 'Author'
+                        }
+                    }
                 }
             ))
 
-            if (result) {
-                authorarray = result.data.creatorProfilesByUser.items
+            for (let i = 0; i < result.data.creatorProfilesByUser.items.length; i++) {
+                authorarray.push(result.data.creatorProfilesByUser.items[i])
+            }
+
+            if (result.data.creatorProfilesByUser.nextToken) {
+                fetchCreators(result.data.creatorProfilesByUser.nextToken)
+            } else {
                 setAuthors(authorarray.sort((a : any, b : any) => a.penName.localeCompare(b.penName)))
             }
 
         }
 
-        fetchCreators();
+        fetchCreators(null);
+
+    },[])
+
+    useEffect(() => {
+
+        let narratorarray = []
+
+        const fetchCreators = async (nextToken:any) => {
+
+            const userInfo = await Auth.currentAuthenticatedUser()
+            
+            const result = await API.graphql(graphqlOperation(
+                creatorProfilesByUser, {
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    filter: {
+                        type: {
+                            eq: 'Narrator'
+                        }
+                    }
+                }
+            ))
+
+            for (let i = 0; i < result.data.creatorProfilesByUser.items.length; i++) {
+                narratorarray.push(result.data.creatorProfilesByUser.items[i])
+            }
+
+            if (result.data.creatorProfilesByUser.nextToken) {
+                fetchCreators(result.data.creatorProfilesByUser.nextToken)
+            } else {
+                setNarrators(narratorarray.sort((a : any, b : any) => a.penName.localeCompare(b.penName)))
+            }
+
+        }
+
+        fetchCreators(null);
+
+    },[])
+
+    useEffect(() => {
+
+        let illustratorarray = []
+
+        const fetchCreators = async (nextToken:any) => {
+
+            const userInfo = await Auth.currentAuthenticatedUser()
+            
+            const result = await API.graphql(graphqlOperation(
+                creatorProfilesByUser, {
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    filter: {
+                        type: {
+                            eq: 'Illustrator'
+                        }
+                    }
+                }
+            ))
+
+            for (let i = 0; i < result.data.creatorProfilesByUser.items.length; i++) {
+                illustratorarray.push(result.data.creatorProfilesByUser.items[i])
+            }
+
+            if (result.data.creatorProfilesByUser.nextToken) {
+                fetchCreators(result.data.creatorProfilesByUser.nextToken)
+            } else {
+                setIllustrators(illustratorarray.sort((a : any, b : any) => a.penName.localeCompare(b.penName)))
+            }
+
+        }
+
+        fetchCreators(null);
 
     },[])
   
@@ -622,6 +731,20 @@ const UploadAudio = ({navigation} : any) => {
         const showModalVisible = () => setModalVisible(true);
 
         const hideModalVisible = () => setModalVisible(false);
+
+    //narrator select modal
+        const [modalVisible2, setModalVisible2] = useState(false);
+
+        const showModalVisible2 = () => setModalVisible2(true);
+
+        const hideModalVisible2 = () => setModalVisible2(false);
+
+    //illustrator select modal
+        const [modalVisible3, setModalVisible3] = useState(false);
+
+        const showModalVisible3 = () => setModalVisible3(true);
+
+        const hideModalVisible3 = () => setModalVisible3(false);
 
     //series select modal
         const [seriesModal, setSeriesModal] = useState(false);
@@ -710,6 +833,143 @@ const UploadAudio = ({navigation} : any) => {
         
     }  
 
+    const Item = ({id, title, author, narrator, imageUri, numComments, numListens, ratingAvg} : any) => {
+
+            //temporary signed image uri
+                const [imageU, setImageU] = useState('')
+                
+                //push the s3 image key to get the signed uri
+                    useEffect(() => {
+                        const fetchImage = async () => {
+                            let response = await Storage.get(imageUri);
+                            setImageU(response);
+                        }
+                        fetchImage()
+                    }, [])  
+            
+            return (
+                <TouchableOpacity onPress={() => {
+                    setSeriesStory(id);
+                    setSeriesStoryName(title);
+                    setSeries(title);
+                    setData({...data, seriesPart: data.seriesPart + 1});
+                    hideNewSeriesModal();
+                    hideSeriesModal();
+                }}
+                >
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#171717a5', padding: 10, margin: 10, borderRadius: 15, overflow: 'hidden'  }}>
+<View style={{}}>
+        <Image 
+            source={{uri: imageU}}
+            style={{
+                width:  70,
+                height: 70,
+                borderRadius: 15,
+                marginVertical: 0,
+                marginRight: 12,
+                marginLeft: -6,
+                backgroundColor: '#ffffffa5'
+            }}
+        />
+    
+    </View>
+                    <View style={{ width: Dimensions.get('window').width*0.68}}>
+            <View style={{justifyContent: 'space-between'}}>
+                <Text style={[{fontSize: 16, fontWeight: 'bold', color: '#fff', flexWrap: 'wrap', width: '96%'}]}>
+                    {title}
+                </Text> 
+
+                <View style={{ flexDirection: 'row', width: '99%', marginTop: 0, alignItems: 'center', flexWrap: 'wrap'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <FontAwesome5 
+                            name='book-open'
+                            size={12}
+                            color='#ffffffa5'
+                        />
+                        <Text style={{fontSize: 12,color: '#ffffffa5',marginRight: 15,marginLeft: 5,textTransform: 'capitalize'}}>
+                            {author}
+                        </Text>  
+                    </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <FontAwesome5 
+                            name='book-reader'
+                            size={12}
+                            color='#ffffffa5'
+                        />
+                        <Text style={{fontSize: 12,color: '#ffffffa5',marginRight: 15,marginLeft: 5,textTransform: 'capitalize'}}>
+                            {narrator}
+                        </Text>  
+                    </View>
+                    
+                    
+                </View>
+            </View>
+
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 12, width: Dimensions.get('window').width-40, justifyContent: 'space-between'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    {/* <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                        {item.genre.genre}
+                    </Text> */}
+                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                    <FontAwesome 
+                        name='comment'
+                        color='#ffffffa5'
+                        size={12}
+                    />
+                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                        {numComments ? numComments : 0}
+                    </Text>
+                </View>
+                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                    <FontAwesome5 
+                        name='headphones'
+                        color='#ffffffa5'
+                        size={12}
+                    />
+                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                        {numListens ? numListens : 0}
+                    </Text>
+                </View>
+                
+                    <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                        <FontAwesome 
+                            name='star'
+                            color='#ffffffa5'
+                            size={12}
+                        />
+                        <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                            {(ratingAvg/10).toFixed(1)}
+                        </Text>
+                    </View>
+                </View>
+                
+                        
+                
+            </View>
+    </View>
+    </View>         
+                </TouchableOpacity>  
+            )
+        
+    }
+
+    const renderItem = ({item} : any) => {
+        return (
+            <Item
+                id={item.id}
+                title={item.title}
+                author={item.author}
+                narrator={item.narrator}
+                imageUri={item.imageUri}
+                ratingAvg={item.ratingAvg}
+                numComments={item.numComments}
+                numListens={item.numListens}
+            />
+        )
+        
+    }
+
   return (
 
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -793,6 +1053,21 @@ const UploadAudio = ({navigation} : any) => {
                         </Text>
                     </View>
 
+                    <View style={{marginVertical: 10,flexDirection: 'row', borderBottomWidth: 1, borderColor: 'gray',}}>
+                        <Text style={{ marginRight: 10,  color: '#ffffffa5',  paddingBottom: 20,}}>
+                            Series:
+                        </Text>
+                        <View>
+                            <Text style={{width: Dimensions.get('window').width*0.8 ,fontWeight: 'bold', color: '#ffffff', paddingBottom: 20,}}>
+                                {series}
+                            </Text>
+                            <Text style={{fontWeight: 'bold', color: '#00ffffa5', paddingBottom: 20,}}>
+                                Part {data.seriesPart}
+                            </Text>
+                        </View>
+                        
+                    </View>
+
                     <View>
                         <Image 
                             source={{ uri: localImageUri}}
@@ -820,12 +1095,12 @@ const UploadAudio = ({navigation} : any) => {
                         {isPublishing ? (
                             <View style={{marginVertical: 40, alignContent: 'center'}}>
                                 {/* <ActivityIndicator size="large" color="cyan"/>  */}
-                            <Text style={{fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
+                            <Text style={{marginBottom: 10, fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
                                 {progressText} %
                             </Text>
 
                             <Progress.Bar 
-                                progress={Number(progressText)/10} 
+                                progress={Number(progressText)/100} 
                                 width={Dimensions.get('window').width/2} 
                                 color={'#00ffff'}
                                 unfilledColor={'#000'}
@@ -907,9 +1182,11 @@ const UploadAudio = ({navigation} : any) => {
 
 {/* author modal */}
             <Modal visible={modalVisible} onDismiss={showModalVisible} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible(false);}}>
-                <TouchableOpacity onPress={hideModalVisible} style={{backgroundColor: '#000000'}}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
+                <TouchableOpacity onPress={hideModalVisible} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
+                    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
+                       
+                        <View style={{alignSelf: 'center', alignItems: 'center', backgroundColor: '#000000', borderRadius: 15, overflow: 'hidden', marginVertical: 80, width: Dimensions.get('window').width*0.80}}>
+                            <View style={{height: 40}}/>
                             {Authors.map(item => {
                                 return (
                                     <TouchableOpacity onPress={() => {
@@ -918,14 +1195,76 @@ const UploadAudio = ({navigation} : any) => {
                                         hideModalVisible();
                                     }}
                                     >
-                                        <View>
+                                        <View style={{marginVertical: 6, backgroundColor: '#171717a5', borderRadius: 8, overflow: 'hidden', width: Dimensions.get('window').width*0.7}}>
                                             <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                                                 {item.penName}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>  
                                 )})} 
+                                <View style={{height: 40}}/>
                         </View>
+                        
+                    </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* narrator modal */}
+            <Modal visible={modalVisible2} onDismiss={showModalVisible2} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible2(false);}}>
+                <TouchableOpacity onPress={hideModalVisible2} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
+                    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
+                       
+                        <View style={{alignSelf: 'center', alignItems: 'center', backgroundColor: '#000000', borderRadius: 15, overflow: 'hidden', marginVertical: 80, width: Dimensions.get('window').width*0.80}}>
+                            <View style={{height: 40}}/>
+                            {Narrators.map(item => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setData({...data, narrator: item.penName, narratorID: item.id});
+                                        //setPickedCreator(item.id);
+                                        hideModalVisible2();
+                                    }}
+                                    >
+                                        <View style={{marginVertical: 6, backgroundColor: '#171717a5', borderRadius: 8, overflow: 'hidden', width: Dimensions.get('window').width*0.7}}>
+                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                                {item.penName}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>  
+                                )})} 
+                                <View style={{height: 40}}/>
+                        </View>
+                        
+                    </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* illustrator modal */}
+            <Modal visible={modalVisible3} onDismiss={showModalVisible3} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible3(false);}}>
+                <TouchableOpacity onPress={hideModalVisible3} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
+                    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
+                       
+                        <View style={{alignSelf: 'center', alignItems: 'center', backgroundColor: '#000000', borderRadius: 15, overflow: 'hidden', marginVertical: 80, width: Dimensions.get('window').width*0.80}}>
+                            <View style={{height: 40}}/>
+                            {Illustrators.map(item => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        setData({...data, artist: item.penName, illustratorID: item.id});
+                                        //setPickedCreator(item.id);
+                                        hideModalVisible3();
+                                    }}
+                                    >
+                                        <View style={{marginVertical: 6, backgroundColor: '#171717a5', borderRadius: 8, overflow: 'hidden', width: Dimensions.get('window').width*0.7}}>
+                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                                                {item.penName}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>  
+                                )})} 
+                                <View style={{height: 40}}/>
+                        </View>
+                        
                     </ScrollView>
                 </TouchableOpacity>
                 
@@ -936,12 +1275,19 @@ const UploadAudio = ({navigation} : any) => {
                 <TouchableOpacity onPress={hideSeriesModal} style={{backgroundColor: '#000000'}}>
 
                     <TouchableOpacity onPress={() => {showNewSeriesModal();}}>
-                        <View style={{alignSelf: 'center', marginTop: 40, borderWidth: 1, borderColor: '#fff', borderRadius: 15, overflow: 'hidden'}}>
-                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                        <View style={{backgroundColor: '#00ffffa5', alignSelf: 'center', marginTop: 40, borderWidth: 0, borderColor: '#fff', borderRadius: 15, overflow: 'hidden'}}>
+                            <Text style={{textTransform: 'capitalize', fontSize: 20, fontWeight: '600',  paddingHorizontal: 20, paddingVertical: 20, color: '#000'}}>
                                 Create New Series
                             </Text>
                         </View>
                     </TouchableOpacity>  
+
+                    <View style={{alignSelf: 'center', marginTop: 40}}>
+                            <Text style={{textAlign: 'center', fontSize: 14, paddingHorizontal: 20, paddingVertical: 20, color: '#999999'}}>
+                                Please select a series from the list below. 
+                                If this is the second story of a series, create a new series.
+                            </Text>
+                        </View>
 
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
@@ -970,28 +1316,19 @@ const UploadAudio = ({navigation} : any) => {
             <Modal visible={newSeriesModal} onDismiss={showNewSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setNewSeriesModal(false);}}>
                 <TouchableOpacity onPress={hideNewSeriesModal} style={{backgroundColor: '#000000'}}>
 
-                    <Text style={{marginTop: 40, textTransform: 'capitalize', fontSize: 18, textAlign: 'center', paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
+                    <Text style={{marginTop: 40, fontWeight: '600', fontSize: 18, textAlign: 'center', paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
                         Select the first story of this series
                     </Text>
 
                     <ScrollView showsVerticalScrollIndicator={false} style={{height: Dimensions.get('window').height}}>
                         <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
-                            {seriesStories.map(item => {
-                                return (
-                                    <TouchableOpacity onPress={() => {
-                                        setSeriesStory(item.id);
-                                        setSeriesStoryName(item.title);
-                                        hideNewSeriesModal();
-                                        hideSeriesModal();
-                                    }}
-                                    >
-                                        <View>
-                                            <Text style={{textTransform: 'capitalize', fontSize: 20, paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
-                                                {item.title}
-                                            </Text>
-                                        </View>
-                                    </TouchableOpacity>  
-                                )})} 
+                           <FlatList 
+                            data={seriesStories}
+                            keyExtractor={item => item.id}
+                            renderItem={renderItem}
+                           />
+                           
+                           
                         </View>
                     </ScrollView>
                 </TouchableOpacity>
@@ -1017,11 +1354,11 @@ const UploadAudio = ({navigation} : any) => {
                     Story Title *
                 </Text>
 
-                <View style={[styles.inputfield, {flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
+                <View style={[styles.inputfield, {height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
                     <TextInput
                         placeholder='....'
                         placeholderTextColor='#ffffffa5'
-                        style={styles.textInputTitle}
+                        style={[styles.textInputTitle, {width: Dimensions.get('window').width - 80}]}
                         maxLength={70}
                         multiline={true}
                         numberOfLines={2}
@@ -1059,8 +1396,6 @@ const UploadAudio = ({navigation} : any) => {
                             color={data.creatorID !== '' ? 'cyan' : '#292929'}
                             size={20}
                             />  
-                        
-
                     </View>
                 </TouchableOpacity>
                 
@@ -1079,21 +1414,68 @@ const UploadAudio = ({navigation} : any) => {
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Narrator *
                 </Text>
-                <View style={styles.inputfield}>
+
+                <TouchableOpacity onPress={() => setModalVisible2(true)}>
+                    <View style={{ 
+                            width: Dimensions.get('window').width - 40, 
+                            marginBottom: 0, 
+                            backgroundColor: '#363636',
+                            marginHorizontal: 20,
+                            paddingVertical: 10,
+                            paddingHorizontal: 20,
+                            borderRadius: 10,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            }}>
+                                <Text style={{backgroundColor: 'transparent', color: '#fff', fontSize: 14, textTransform: 'capitalize',}}>
+                                    {data.narrator.length < 1 ? 'Select narrator' : data.narrator}
+                                </Text>
+                        
+                          <FontAwesome5 
+                            name='check-circle'
+                            color={data.narratorID !== '' ? 'cyan' : '#292929'}
+                            size={20}
+                            />  
+                    </View>
+                </TouchableOpacity>
+                {/* <View style={styles.inputfield}>
                     <TextInput 
-                        placeholder='....'
+                        placeholder='Select Narrator'
                         placeholderTextColor='#ffffffa5'
                         style={styles.textInputTitle}
                         maxLength={30}
                         onChangeText={val => setData({...data, narrator: val})}
                         autoCapitalize='words'
                     />
-                </View>
+                </View> */}
 
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Cover Artist *
                 </Text>
-                <View style={styles.inputfield}>
+                <TouchableOpacity onPress={() => setModalVisible3(true)}>
+                    <View style={{ 
+                            width: Dimensions.get('window').width - 40, 
+                            marginBottom: 0, 
+                            backgroundColor: '#363636',
+                            marginHorizontal: 20,
+                            paddingVertical: 10,
+                            paddingHorizontal: 20,
+                            borderRadius: 10,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            }}>
+                                <Text style={{backgroundColor: 'transparent', color: '#fff', fontSize: 14, textTransform: 'capitalize',}}>
+                                    {data.artist.length < 1 ? 'Select illustrator' : data.artist}
+                                </Text>
+                        
+                          <FontAwesome5 
+                            name='check-circle'
+                            color={data.illustratorID !== '' ? 'cyan' : '#292929'}
+                            size={20}
+                            />  
+                    </View>
+                </TouchableOpacity>
+                {/* <View style={styles.inputfield}>
                     <TextInput 
                         placeholder='....'
                         placeholderTextColor='#ffffffa5'
@@ -1102,7 +1484,7 @@ const UploadAudio = ({navigation} : any) => {
                         onChangeText={val => setData({...data, artist: val})}
                         autoCapitalize='words'
                     />
-                </View>
+                </View> */}
 
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Summary *
@@ -1239,7 +1621,7 @@ const UploadAudio = ({navigation} : any) => {
                     </TouchableWithoutFeedback>
 
                     {series !== '' ? (
-                        <View style={{marginTop: 20, }}>
+                        <View style={{marginTop: 20, marginHorizontal: 20 }}>
                             <Text style={{color: 'cyan'}}>
                                 {series}
                             </Text>

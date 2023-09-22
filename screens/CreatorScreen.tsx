@@ -17,7 +17,7 @@ const CreatorScreen = () => {
     
 
     const route = useRoute();
-    const {userID, rootChange} = route.params
+    const {userID, rootChange, creatorType} = route.params
 
     useEffect(() => {
         if (rootChange === 'bottom') {
@@ -28,7 +28,7 @@ const CreatorScreen = () => {
     return (
         <View style={styles.container}>
         
-            <CreatorProfile userID={userID} rootChange={rootChange}/>
+            <CreatorProfile userID={userID} rootChange={rootChange} type={creatorType}/>
             <StatusBar style="light" />
         </View>
     );

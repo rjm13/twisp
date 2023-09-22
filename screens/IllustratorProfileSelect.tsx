@@ -27,7 +27,7 @@ import { API, graphqlOperation, Auth } from "aws-amplify";
 import { creatorProfilesByUser } from '../src/graphql/queries';
 import { updateUser, createCreatorProfile } from '../src/graphql/mutations';
 
-const AuthorProfileSelect = ({navigation} : any) => {
+const IllustratorProfileSelect = ({navigation} : any) => {
 
     const styles = useStyles();
 
@@ -61,7 +61,7 @@ useEffect(() => {
                 userID: userInfo.attributes.sub,
                 filter: {
                     type: {
-                        eq: 'Author'
+                        eq: 'Illustrator'
                     }
                 }
             }
@@ -86,16 +86,16 @@ useEffect(() => {
       const CreateNewCreator = async () => {
 
         setCreateModal(false);
-        
+
         if (name.length > 1) {
            try {
                 const userInfo = await Auth.currentAuthenticatedUser();
 
                 const userData = await API.graphql(graphqlOperation(
                     createCreatorProfile, {input: {
-                        type: 'Author',
+                        type: 'Illustrator',
                         userID: userInfo.attributes.sub,
-                        penName: name.toLowerCase(),
+                        penName: name,
                         numAuthored: 0,
                         numFollowers: 0
                     }}
@@ -177,7 +177,7 @@ useEffect(() => {
                             </TouchableWithoutFeedback>
                             
                             <Text style={[styles.h1, {marginLeft: 20}]}>
-                                Author Profiles
+                                Illustrator Profiles
                             </Text>
                             
                         </View>
@@ -250,4 +250,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AuthorProfileSelect;
+export default IllustratorProfileSelect;

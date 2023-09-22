@@ -134,6 +134,8 @@ export const onCreateUser = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -325,6 +327,8 @@ export const onUpdateUser = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -516,6 +520,8 @@ export const onDeleteUser = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -670,6 +676,8 @@ export const onCreateCreatorProfile = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -807,6 +815,8 @@ export const onUpdateCreatorProfile = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -944,6 +954,8 @@ export const onDeleteCreatorProfile = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -1700,6 +1712,118 @@ export const onCreateStory = /* GraphQL */ `
         __typename
       }
       creatorID
+      narratorProfile {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      narratorID
+      illustrator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      illustratorID
       author
       narrator
       artist
@@ -1984,6 +2108,118 @@ export const onUpdateStory = /* GraphQL */ `
         __typename
       }
       creatorID
+      narratorProfile {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      narratorID
+      illustrator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      illustratorID
       author
       narrator
       artist
@@ -2268,6 +2504,118 @@ export const onDeleteStory = /* GraphQL */ `
         __typename
       }
       creatorID
+      narratorProfile {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      narratorID
+      illustrator {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      illustratorID
       author
       narrator
       artist
@@ -2575,6 +2923,8 @@ export const onCreateSeries = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -2696,6 +3046,8 @@ export const onUpdateSeries = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -2817,6 +3169,8 @@ export const onDeleteSeries = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -3256,6 +3610,50 @@ export const onCreatePinnedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -3450,6 +3848,50 @@ export const onUpdatePinnedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -3644,6 +4086,50 @@ export const onDeletePinnedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -3838,6 +4324,50 @@ export const onCreateInProgressStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4033,6 +4563,50 @@ export const onUpdateInProgressStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4228,6 +4802,50 @@ export const onDeleteInProgressStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4425,6 +5043,50 @@ export const onCreateFinishedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4638,6 +5300,50 @@ export const onUpdateFinishedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4851,6 +5557,50 @@ export const onDeleteFinishedStory = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -4999,6 +5749,50 @@ export const onCreateComment = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -5214,6 +6008,8 @@ export const onCreateComment = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -5344,6 +6140,50 @@ export const onUpdateComment = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -5559,6 +6399,8 @@ export const onUpdateComment = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -5689,6 +6531,50 @@ export const onDeleteComment = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -5904,6 +6790,8 @@ export const onDeleteComment = /* GraphQL */ `
           audioUri
           publisherID
           creatorID
+          narratorID
+          illustratorID
           author
           narrator
           artist
@@ -6526,6 +7414,50 @@ export const onCreateRating = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -6730,6 +7662,50 @@ export const onUpdateRating = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -6934,6 +7910,50 @@ export const onDeleteRating = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -7376,6 +8396,50 @@ export const onCreateStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -7522,6 +8586,50 @@ export const onUpdateStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -7668,6 +8776,50 @@ export const onDeleteStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -7816,6 +8968,50 @@ export const onCreateEroticStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -7964,6 +9160,50 @@ export const onUpdateEroticStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist
@@ -8112,6 +9352,50 @@ export const onDeleteEroticStoryTag = /* GraphQL */ `
           __typename
         }
         creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
         author
         narrator
         artist

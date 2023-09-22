@@ -27,7 +27,7 @@ import { API, graphqlOperation, Auth } from "aws-amplify";
 import { creatorProfilesByUser } from '../src/graphql/queries';
 import { updateUser, createCreatorProfile } from '../src/graphql/mutations';
 
-const AuthorProfileSelect = ({navigation} : any) => {
+const NarratorProfileSelect = ({navigation} : any) => {
 
     const styles = useStyles();
 
@@ -43,59 +43,58 @@ const AuthorProfileSelect = ({navigation} : any) => {
 
 
 //get the current user and list their followings and followers
-//get the current user and list their followings and followers
-useEffect(() => {
+    useEffect(() => {
 
-    let arr = [];
+        let arr = [];
 
-    const fetchUser = async (nextToken : any) => {
+        const fetchUser = async (nextToken : any) => {
 
-      const userInfo = await Auth.currentAuthenticatedUser();
+          const userInfo = await Auth.currentAuthenticatedUser();
 
-        if (!userInfo) {return;}
+            if (!userInfo) {return;}
 
-      try {
-        const userData = await API.graphql(graphqlOperation(
-            creatorProfilesByUser, {
-                nextToken,
-                userID: userInfo.attributes.sub,
-                filter: {
-                    type: {
-                        eq: 'Author'
+          try {
+            const userData = await API.graphql(graphqlOperation(
+                creatorProfilesByUser, {
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    filter: {
+                        type: {
+                            eq: 'Narrator'
+                        }
                     }
                 }
+            ))
+
+            for (let i = 0; i < userData.data.creatorProfilesByUser.items.length; i++) {
+                arr.push(userData.data.creatorProfilesByUser.items[i])
             }
-        ))
 
-        for (let i = 0; i < userData.data.creatorProfilesByUser.items.length; i++) {
-            arr.push(userData.data.creatorProfilesByUser.items[i])
+            if (userData.data.creatorProfilesByUser.nextToken) {
+                fetchUser(userData.data.creatorProfilesByUser.nextToken)
+            } else {
+                setCreatorProfiles(arr);
+            }
+          } catch (e) {
+            console.log(e);
+          }
         }
-
-        if (userData.data.creatorProfilesByUser.nextToken) {
-            fetchUser(userData.data.creatorProfilesByUser.nextToken)
-        } else {
-            setCreatorProfiles(arr);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    fetchUser(null);
-  }, [didUpdate])
+        fetchUser(null);
+      }, [didUpdate])
 
       const CreateNewCreator = async () => {
 
         setCreateModal(false);
-        
+
         if (name.length > 1) {
            try {
                 const userInfo = await Auth.currentAuthenticatedUser();
 
                 const userData = await API.graphql(graphqlOperation(
                     createCreatorProfile, {input: {
-                        type: 'Author',
+                        type: 'Narrator',
                         userID: userInfo.attributes.sub,
-                        penName: name.toLowerCase(),
+                        penName: name,
                         numAuthored: 0,
                         numFollowers: 0
                     }}
@@ -177,7 +176,7 @@ useEffect(() => {
                             </TouchableWithoutFeedback>
                             
                             <Text style={[styles.h1, {marginLeft: 20}]}>
-                                Author Profiles
+                                Narrator Profiles
                             </Text>
                             
                         </View>
@@ -250,4 +249,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AuthorProfileSelect;
+export default NarratorProfileSelect;

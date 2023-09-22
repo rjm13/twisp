@@ -57,41 +57,44 @@ const Redirect = ({route, navigation} : any) => {
 
     const [nextToken, setNextToken] = useState()
 
-    useEffect(() => {
-        //TODO check to see if the user has a premium subscription
-        //if they do, do nothing, it will be taken care of on redirect screen
-        //if they not subscribed and in the premium group, remove them
+    // useEffect(() => {
+    //     //TODO check to see if the user has a premium subscription
+    //     //if they do, do nothing, it will be taken care of on redirect screen
+    //     //if they not subscribed and in the premium group, remove them
     
-        const performMagic = async () => {
+    //     const performMagic = async () => {
     
-          const userInfo = await Auth.currentAuthenticatedUser();
+    //       const userInfo = await Auth.currentAuthenticatedUser();
     
-          const ENTITLEMENT_ID = userInfo.attributes.sub
+    //       const ENTITLEMENT_ID = userInfo.attributes.sub
 
-          if (userInfo) {
-            const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
-        }
+    //     //   if (userInfo) {
+    //     //     const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
+    //     // }
     
-          try {
-            const customerInfo = await Purchases.getCustomerInfo();
+    //       try {
+    //         //const customerInfo = await Purchases.getCustomerInfo();
 
-            //console.log(customerInfo)
+    //         const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
 
-            console.log('subscriber is', customerInfo )
 
-             if (typeof customerInfo.entitlements.active !== "undefined") {
-            setPremium(true);
-          } else {
-            setPremium(false)
-          }
-          } catch (e) {
-           console.log(e)
-          }
-        }
+    //         //console.log(customerInfo)
 
-        performMagic();
+    //         console.log('subscriber is', customerInfo )
+
+    //          if (typeof customerInfo.entitlements.active !== "undefined") {
+    //         setPremium(true);
+    //       } else {
+    //         setPremium(false)
+    //       }
+    //       } catch (e) {
+    //        console.log(e)
+    //       }
+    //     }
+
+    //     performMagic();
     
-      }, [])
+    //   }, [])
 
     useEffect(() => {
 
@@ -121,20 +124,24 @@ const Redirect = ({route, navigation} : any) => {
                     //setPremium(true)
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
                     // }
-                    if (userInfo) {
-                        const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
-                    }
+                    // if (userInfo) {
+                    //     const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
+                    // }
 
                     try {
-                        const customerInfo = await Purchases.getCustomerInfo();
+                        //const customerInfo = await Purchases.getCustomerInfo();
+
+                        
+                        const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
+                        
 
                         console.log('subscriber is', customerInfo )
                         
-                         if (typeof customerInfo.entitlements.active !== "undefined") {
-                        setPremium(true);
-                      } else {
-                        setPremium(false)
-                      }
+                        if (typeof customerInfo.entitlements.active !== "undefined") {
+                            setPremium(true);
+                        } else {
+                            setPremium(false)
+                        }
                       } catch (e) {
                        console.log(e)
                       }

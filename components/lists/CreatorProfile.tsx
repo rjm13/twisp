@@ -25,7 +25,7 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower,  } from '../../src/graphql/queries';
+import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower, storiesByNarrator, storiesByIllustrator } from '../../src/graphql/queries';
 import { createFollowConnection, deleteFollowConnection, updateUser, updateCreatorProfile} from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
@@ -62,7 +62,7 @@ const CreatorProfile = ({status} : any) => {
     const [User, setUser] = useState(null);
 
     const route = useRoute();
-    const {userID, rootChange} = route.params
+    const {userID, rootChange, creatorType} = route.params
 
 
     useEffect( () => {
@@ -92,13 +92,32 @@ const CreatorProfile = ({status} : any) => {
                     let responseBuk = await Storage.get(response.data.getCreatorProfile.imageUri)
                     setImageU(responseBuk);
 
-                    const fetchStories = await API.graphql(
-                        graphqlOperation(
-                            storiesByCreator, {creatorID: userID }
+                    if (creatorType === 'Author') {
+                        const fetchStories = await API.graphql(
+                            graphqlOperation(
+                                storiesByCreator, {creatorID: userID }
+                            )
                         )
-                    )
-                    
-                    setStorys(fetchStories.data.storiesByCreator.items);
+                        setStorys(fetchStories.data.storiesByCreator.items);
+                    }
+
+                    if (creatorType === 'Narrator') {
+                        const fetchStories = await API.graphql(
+                            graphqlOperation(
+                                storiesByNarrator, {narratorID: userID }
+                            )
+                        )
+                        setStorys(fetchStories.data.storiesByNarrator.items);
+                    }
+
+                    if (creatorType === 'Illustrator') {
+                        const fetchStories = await API.graphql(
+                            graphqlOperation(
+                                storiesByIllustrator, {illustratorID: userID }
+                            )
+                        )
+                        setStorys(fetchStories.data.storiesByIllustrator.items);
+                    }
 
                     if (userFollowing.includes(userID)) {
                         

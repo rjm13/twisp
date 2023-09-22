@@ -193,6 +193,7 @@ const StoryScreen  = ({navigation} : any) => {
 
 //get the story attributes using the storyID
     useEffect(() => {
+
         const fetchStory = async () => {
 
             if (!storyID) {
@@ -1108,7 +1109,7 @@ const StoryScreen  = ({navigation} : any) => {
                         <View style={{ height: 220, backgroundColor: 'transparent', alignItems: 'flex-start'}}>
                             {Story?.imageUri ? (
                                 <View style={{width: Dimensions.get('window').width - 20, marginTop: 186, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.illustratorID, creatorType: 'Illustrator'})}>
                                         <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717a5', flexDirection: 'row'}}>
                                             <FontAwesome5 
                                                 name='palette'
@@ -1144,7 +1145,7 @@ const StoryScreen  = ({navigation} : any) => {
                                     </Text>
 
                                     <View style={{ width: '100%', flexDirection: 'row', marginVertical: 10, justifyContent: 'space-between'}}>
-                                        <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.creatorID})}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.creatorID, creatorType: 'Author'})}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                                                 <FontAwesome5 
                                                     name='book-open'
@@ -1158,7 +1159,7 @@ const StoryScreen  = ({navigation} : any) => {
                                             </View>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity onPress={() => navigation.navigate('UserScreen', {userID: Story?.publisherID})}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.narratorID, creatorType: 'Narrator'})}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                                                 <FontAwesome5 
                                                     name='book-reader'
