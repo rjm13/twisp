@@ -244,6 +244,7 @@ export type Story = {
   series?: Series | null,
   seriesPart?: number | null,
   premium?: boolean | null,
+  contributors?: ModelContributorConnection | null,
 };
 
 export type ModelCommentConnection = {
@@ -439,6 +440,23 @@ export type Series = {
   stories?: ModelStoryConnection | null,
   creatorID?: string | null,
   creator?: CreatorProfile | null,
+};
+
+export type ModelContributorConnection = {
+  __typename: "ModelContributorConnection",
+  items:  Array<Contributor | null >,
+  nextToken?: string | null,
+};
+
+export type Contributor = {
+  __typename: "Contributor",
+  id: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  storyID?: string | null,
+  name?: string | null,
+  contribution?: string | null,
+  link?: string | null,
 };
 
 export type ModelPinnedStoryConnection = {
@@ -818,6 +836,42 @@ export type UpdateGenreInput = {
 };
 
 export type DeleteGenreInput = {
+  id: string,
+};
+
+export type CreateContributorInput = {
+  id?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  storyID?: string | null,
+  name?: string | null,
+  contribution?: string | null,
+  link?: string | null,
+};
+
+export type ModelContributorConditionInput = {
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  storyID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  contribution?: ModelStringInput | null,
+  link?: ModelStringInput | null,
+  and?: Array< ModelContributorConditionInput | null > | null,
+  or?: Array< ModelContributorConditionInput | null > | null,
+  not?: ModelContributorConditionInput | null,
+};
+
+export type UpdateContributorInput = {
+  id: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  storyID?: string | null,
+  name?: string | null,
+  contribution?: string | null,
+  link?: string | null,
+};
+
+export type DeleteContributorInput = {
   id: string,
 };
 
@@ -1452,6 +1506,19 @@ export type ModelGenreConnection = {
   nextToken?: string | null,
 };
 
+export type ModelContributorFilterInput = {
+  id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  storyID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  contribution?: ModelStringInput | null,
+  link?: ModelStringInput | null,
+  and?: Array< ModelContributorFilterInput | null > | null,
+  or?: Array< ModelContributorFilterInput | null > | null,
+  not?: ModelContributorFilterInput | null,
+};
+
 export type ModelSeriesFilterInput = {
   id?: ModelIDInput | null,
   type?: ModelStringInput | null,
@@ -1850,6 +1917,18 @@ export type ModelSubscriptionGenreFilterInput = {
   imageUri?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGenreFilterInput | null > | null,
   or?: Array< ModelSubscriptionGenreFilterInput | null > | null,
+};
+
+export type ModelSubscriptionContributorFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
+  storyID?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  contribution?: ModelSubscriptionStringInput | null,
+  link?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionContributorFilterInput | null > | null,
+  or?: Array< ModelSubscriptionContributorFilterInput | null > | null,
 };
 
 export type ModelSubscriptionSeriesFilterInput = {
@@ -4023,6 +4102,20 @@ export type CreateStoryMutation = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4423,6 +4516,20 @@ export type UpdateStoryMutation = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4823,6 +4930,20 @@ export type DeleteStoryMutation = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4949,6 +5070,60 @@ export type DeleteGenreMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type CreateContributorMutationVariables = {
+  input: CreateContributorInput,
+  condition?: ModelContributorConditionInput | null,
+};
+
+export type CreateContributorMutation = {
+  createContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
+  } | null,
+};
+
+export type UpdateContributorMutationVariables = {
+  input: UpdateContributorInput,
+  condition?: ModelContributorConditionInput | null,
+};
+
+export type UpdateContributorMutation = {
+  updateContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
+  } | null,
+};
+
+export type DeleteContributorMutationVariables = {
+  input: DeleteContributorInput,
+  condition?: ModelContributorConditionInput | null,
+};
+
+export type DeleteContributorMutation = {
+  deleteContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
   } | null,
 };
 
@@ -5813,6 +5988,10 @@ export type CreatePinnedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -6053,6 +6232,10 @@ export type UpdatePinnedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -6293,6 +6476,10 @@ export type DeletePinnedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -6533,6 +6720,10 @@ export type CreateInProgressStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -6774,6 +6965,10 @@ export type UpdateInProgressStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -7015,6 +7210,10 @@ export type DeleteInProgressStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -7258,6 +7457,10 @@ export type CreateFinishedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -7517,6 +7720,10 @@ export type UpdateFinishedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -7776,6 +7983,10 @@ export type DeleteFinishedStoryMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -7972,6 +8183,10 @@ export type CreateCommentMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -8367,6 +8582,10 @@ export type UpdateCommentMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -8762,6 +8981,10 @@ export type DeleteCommentMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -9667,6 +9890,10 @@ export type CreateRatingMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -9919,6 +10146,10 @@ export type UpdateRatingMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -10171,6 +10402,10 @@ export type DeleteRatingMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -10673,6 +10908,10 @@ export type CreateStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -10867,6 +11106,10 @@ export type UpdateStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -11061,6 +11304,10 @@ export type DeleteStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -11255,6 +11502,10 @@ export type CreateEroticStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -11449,6 +11700,10 @@ export type UpdateEroticStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -11643,6 +11898,10 @@ export type DeleteEroticStoryTagMutation = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -13139,6 +13398,20 @@ export type GetStoryQuery = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -13311,6 +13584,10 @@ export type ListStoriesQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13383,6 +13660,46 @@ export type ListGenresQuery = {
       } | null,
       createdAt: string,
       updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetContributorQueryVariables = {
+  id: string,
+};
+
+export type GetContributorQuery = {
+  getContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
+  } | null,
+};
+
+export type ListContributorsQueryVariables = {
+  filter?: ModelContributorFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListContributorsQuery = {
+  listContributors?:  {
+    __typename: "ModelContributorConnection",
+    items:  Array< {
+      __typename: "Contributor",
+      id: string,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+      storyID?: string | null,
+      name?: string | null,
+      contribution?: string | null,
+      link?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -13945,6 +14262,10 @@ export type GetPinnedStoryQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -14264,6 +14585,10 @@ export type GetInProgressStoryQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -14587,6 +14912,10 @@ export type GetFinishedStoryQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -14873,6 +15202,10 @@ export type GetCommentQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -15648,6 +15981,10 @@ export type GetRatingQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -16125,6 +16462,10 @@ export type GetStoryTagQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -16380,6 +16721,10 @@ export type GetEroticStoryTagQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -17256,6 +17601,10 @@ export type StoriesByDateQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -17433,6 +17782,10 @@ export type StoriesByUpdatedQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -17610,6 +17963,10 @@ export type StoriesByTitleQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -17787,6 +18144,10 @@ export type StoriesByPublisherQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -17964,6 +18325,10 @@ export type StoriesByCreatorQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -18141,6 +18506,10 @@ export type StoriesByNarratorQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -18318,6 +18687,10 @@ export type StoriesByIllustratorQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -18495,6 +18868,10 @@ export type StoriesByGenreQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -18672,6 +19049,36 @@ export type StoriesBySeriesQuery = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ContributorsByStoryQueryVariables = {
+  storyID: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelContributorFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ContributorsByStoryQuery = {
+  contributorsByStory?:  {
+    __typename: "ModelContributorConnection",
+    items:  Array< {
+      __typename: "Contributor",
+      id: string,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+      storyID?: string | null,
+      name?: string | null,
+      contribution?: string | null,
+      link?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -22685,6 +23092,20 @@ export type OnCreateStorySubscription = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -23084,6 +23505,20 @@ export type OnUpdateStorySubscription = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -23483,6 +23918,20 @@ export type OnDeleteStorySubscription = {
     } | null,
     seriesPart?: number | null,
     premium?: boolean | null,
+    contributors?:  {
+      __typename: "ModelContributorConnection",
+      items:  Array< {
+        __typename: "Contributor",
+        id: string,
+        createdAt?: string | null,
+        updatedAt?: string | null,
+        storyID?: string | null,
+        name?: string | null,
+        contribution?: string | null,
+        link?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -23606,6 +24055,57 @@ export type OnDeleteGenreSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateContributorSubscriptionVariables = {
+  filter?: ModelSubscriptionContributorFilterInput | null,
+};
+
+export type OnCreateContributorSubscription = {
+  onCreateContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
+  } | null,
+};
+
+export type OnUpdateContributorSubscriptionVariables = {
+  filter?: ModelSubscriptionContributorFilterInput | null,
+};
+
+export type OnUpdateContributorSubscription = {
+  onUpdateContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
+  } | null,
+};
+
+export type OnDeleteContributorSubscriptionVariables = {
+  filter?: ModelSubscriptionContributorFilterInput | null,
+};
+
+export type OnDeleteContributorSubscription = {
+  onDeleteContributor?:  {
+    __typename: "Contributor",
+    id: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    storyID?: string | null,
+    name?: string | null,
+    contribution?: string | null,
+    link?: string | null,
   } | null,
 };
 
@@ -24460,6 +24960,10 @@ export type OnCreatePinnedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -24699,6 +25203,10 @@ export type OnUpdatePinnedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -24938,6 +25446,10 @@ export type OnDeletePinnedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -25177,6 +25689,10 @@ export type OnCreateInProgressStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -25417,6 +25933,10 @@ export type OnUpdateInProgressStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -25657,6 +26177,10 @@ export type OnDeleteInProgressStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -25899,6 +26423,10 @@ export type OnCreateFinishedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -26157,6 +26685,10 @@ export type OnUpdateFinishedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -26415,6 +26947,10 @@ export type OnDeleteFinishedStorySubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     genreID?: string | null,
     genre?:  {
@@ -26610,6 +27146,10 @@ export type OnCreateCommentSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -27004,6 +27544,10 @@ export type OnUpdateCommentSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -27398,6 +27942,10 @@ export type OnDeleteCommentSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     content: string,
     user?:  {
@@ -28296,6 +28844,10 @@ export type OnCreateRatingSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -28547,6 +29099,10 @@ export type OnUpdateRatingSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -28798,6 +29354,10 @@ export type OnDeleteRatingSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     } | null,
     userID: string,
     user?:  {
@@ -29296,6 +29856,10 @@ export type OnCreateStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -29489,6 +30053,10 @@ export type OnUpdateStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -29682,6 +30250,10 @@ export type OnDeleteStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     tag:  {
       __typename: "Tag",
@@ -29875,6 +30447,10 @@ export type OnCreateEroticStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -30068,6 +30644,10 @@ export type OnUpdateEroticStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",
@@ -30261,6 +30841,10 @@ export type OnDeleteEroticStoryTagSubscription = {
       } | null,
       seriesPart?: number | null,
       premium?: boolean | null,
+      contributors?:  {
+        __typename: "ModelContributorConnection",
+        nextToken?: string | null,
+      } | null,
     },
     eroticTag:  {
       __typename: "EroticTag",

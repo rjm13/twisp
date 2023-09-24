@@ -1993,6 +1993,20 @@ export const createStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2392,6 +2406,20 @@ export const updateStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2791,6 +2819,20 @@ export const deleteStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2914,6 +2956,57 @@ export const deleteGenre = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      __typename
+    }
+  }
+`;
+export const createContributor = /* GraphQL */ `
+  mutation CreateContributor(
+    $input: CreateContributorInput!
+    $condition: ModelContributorConditionInput
+  ) {
+    createContributor(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
+      __typename
+    }
+  }
+`;
+export const updateContributor = /* GraphQL */ `
+  mutation UpdateContributor(
+    $input: UpdateContributorInput!
+    $condition: ModelContributorConditionInput
+  ) {
+    updateContributor(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
+      __typename
+    }
+  }
+`;
+export const deleteContributor = /* GraphQL */ `
+  mutation DeleteContributor(
+    $input: DeleteContributorInput!
+    $condition: ModelContributorConditionInput
+  ) {
+    deleteContributor(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
       __typename
     }
   }
@@ -3767,6 +3860,10 @@ export const createPinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4006,6 +4103,10 @@ export const updatePinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4245,6 +4346,10 @@ export const deletePinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4484,6 +4589,10 @@ export const createInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4724,6 +4833,10 @@ export const updateInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4964,6 +5077,10 @@ export const deleteInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -5206,6 +5323,10 @@ export const createFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5464,6 +5585,10 @@ export const updateFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5722,6 +5847,10 @@ export const deleteFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5917,6 +6046,10 @@ export const createComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -6311,6 +6444,10 @@ export const updateComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -6705,6 +6842,10 @@ export const deleteComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -7603,6 +7744,10 @@ export const createRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -7854,6 +7999,10 @@ export const updateRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -8105,6 +8254,10 @@ export const deleteRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -8603,6 +8756,10 @@ export const createStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -8796,6 +8953,10 @@ export const updateStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -8989,6 +9150,10 @@ export const deleteStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -9182,6 +9347,10 @@ export const createEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
@@ -9375,6 +9544,10 @@ export const updateEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
@@ -9568,6 +9741,10 @@ export const deleteEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {

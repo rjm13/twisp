@@ -35,7 +35,7 @@ import { AppContext } from '../AppContext'
 import TimeConversion from '../components/functions/TimeConversion';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, updateStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
+import { createStory, createContributor, updateStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
 import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser, seriesByCreator, storiesByCreator } from '../src/graphql/queries';
 
 
@@ -380,81 +380,100 @@ const UploadAudio = ({navigation} : any) => {
 
         console.log('story id is', result.data.createStory.id)
 
-            if (data.genre === 'after dark') {
-                //if the user has added after dark tags to the story
-                if (TagsArray.length > 0) {
-                    //then for each tag, check to see if it already exists
-                    for (let i = 0; i < TagsArray.length; i++) {
-                        let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+        if (data.genre === 'after dark') {
+            //if the user has added after dark tags to the story
+            if (TagsArray.length > 0) {
+                //then for each tag, check to see if it already exists
+                for (let i = 0; i < TagsArray.length; i++) {
+                    let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
 
-                        let extag = await ListAllEroticTags(tagCheck);
+                    let extag = await ListAllEroticTags(tagCheck);
 
-                        //if the tag exists, create a StoryTag with the tagID and storyID
-                        if (extag !== undefined) {
-                            await API.graphql(graphqlOperation(
-                                createEroticStoryTag, {input: {eroticTagId: extag, storyId: result.data.createStory.id, }}
+                    //if the tag exists, create a StoryTag with the tagID and storyID
+                    if (extag !== undefined) {
+                        await API.graphql(graphqlOperation(
+                            createEroticStoryTag, {input: {eroticTagId: extag, storyId: result.data.createStory.id, }}
+                        ))
+
+                        ListAllGenreEroticTags(extag);
+                        
+                    //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                    } else if (extag === undefined) {
+                        let newTag = await API.graphql(graphqlOperation(
+                            createEroticTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                        ))
+
+                        if (newTag) {
+                            const newthing = await API.graphql(graphqlOperation(
+                                createEroticStoryTag, {input: {eroticTagId: newTag.data.createEroticTag.id, storyId: result.data.createStory.id}}
                             ))
-
-                            ListAllGenreEroticTags(extag);
-                            
-                        //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
-                        } else if (extag === undefined) {
-                            let newTag = await API.graphql(graphqlOperation(
-                                createEroticTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                            console.log('new tag is', newthing.data.createEroticStoryTag.id)
+                            let newthing2 = await API.graphql(graphqlOperation(
+                                createEroticaTag, {input: {eroticTagId: newTag.data.createEroticTag.id, genreId: data.genreID}}
                             ))
-
-                            if (newTag) {
-                                const newthing = await API.graphql(graphqlOperation(
-                                    createEroticStoryTag, {input: {eroticTagId: newTag.data.createEroticTag.id, storyId: result.data.createStory.id}}
-                                ))
-                                console.log('new tag is', newthing.data.createEroticStoryTag.id)
-                                let newthing2 = await API.graphql(graphqlOperation(
-                                    createEroticaTag, {input: {eroticTagId: newTag.data.createEroticTag.id, genreId: data.genreID}}
-                                ))
-                                console.log('new tag is', newthing2.data.createEroticaTag.id)
-                            }
+                            console.log('new tag is', newthing2.data.createEroticaTag.id)
                         }
                     }
-                } 
+                }
             } 
+        } 
 
-            else {
-            //if the user has added tags for this story
-                if (TagsArray.length > 0) {
-                    //then for each tag, check to see if it already exists
-                    for (let i = 0; i < TagsArray.length; i++) {
-                        let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+        else {
+        //if the user has added tags for this story
+            if (TagsArray.length > 0) {
+                //then for each tag, check to see if it already exists
+                for (let i = 0; i < TagsArray.length; i++) {
+                    let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
 
-                        let extag = await ListAllTags(tagCheck);
+                    let extag = await ListAllTags(tagCheck);
 
-                        //if the tag exists, create a StoryTag with the tagID and storyID
-                        if (extag !== undefined) {
+                    //if the tag exists, create a StoryTag with the tagID and storyID
+                    if (extag !== undefined) {
+                        await API.graphql(graphqlOperation(
+                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
+                        ))
+
+                        ListAllGenreTags(extag);
+                        
+                    //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                    } else if (extag === undefined) {
+                        let newTag = await API.graphql(graphqlOperation(
+                            createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                        ))
+
+                        if (newTag) {
                             await API.graphql(graphqlOperation(
-                                createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
+                                createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
                             ))
-
-                            ListAllGenreTags(extag);
-                            
-                        //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
-                        } else if (extag === undefined) {
-                            let newTag = await API.graphql(graphqlOperation(
-                                createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                            console.log('genre id is', data.genreID)
+                            console.log('tagid is', newTag.data.createTag.id)
+                            await API.graphql(graphqlOperation(
+                                createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
                             ))
-
-                            if (newTag) {
-                                await API.graphql(graphqlOperation(
-                                    createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
-                                ))
-                                console.log('genre id is', data.genreID)
-                                console.log('tagid is', newTag.data.createTag.id)
-                                await API.graphql(graphqlOperation(
-                                    createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
-                                ))
-                            }
                         }
                     }
                 }
             }
+        }
+
+        if (contributors.length > 0) {
+            for (let i = 0; i < contributors.length; i++) {
+                const contribe = await API.graphql(graphqlOperation(
+                    createContributor, {
+                        input: {
+                            //type: 'Contributor'
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            storyID: result.data.createStory.id,
+                            name: contributors[i].name,
+                            contribution: contributors[i].contribution,
+                            link: contributors[i].link
+                        }
+                    }
+                ))
+                console.log(contribe.data.createContributor)
+            }
+        }
 
         await API.graphql(graphqlOperation(
             createMessage, {
@@ -970,6 +989,44 @@ const UploadAudio = ({navigation} : any) => {
         
     }
 
+    const clear1 = useRef()
+    const clear2 = useRef()
+    const clear3 = useRef()
+
+    const [contributors, setContributors] = useState([])
+
+    const [contData, setcontData] = useState({
+        name: '',
+        contribution: '',
+        link: '',
+    })
+
+    const AddContributor = () => {
+
+        let contribs = [...contributors]
+
+        contribs.push(contData)
+        clear1.current.clear();
+        clear2.current.clear();
+        clear3.current.clear();
+        setContributors(contribs)
+        setcontData({
+            name: '',
+            contribution: '',
+            link: '',
+        })
+    }
+
+    const RemoveContributor = (index : any) => {
+        let contribs = [...contributors]
+
+        if (index > -1) { // only splice array when item is found
+            contribs.splice(index, 1); // 2nd parameter means remove one item only
+        }
+
+        setContributors(contribs) 
+    }
+
   return (
 
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -1371,7 +1428,7 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View>
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Author *
                 </Text>
 
@@ -1411,7 +1468,7 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View> */}
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Narrator *
                 </Text>
 
@@ -1449,7 +1506,7 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View> */}
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Cover Artist *
                 </Text>
                 <TouchableOpacity onPress={() => setModalVisible3(true)}>
@@ -1486,6 +1543,109 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View> */}
 
+                <View style={{marginTop: 20, width: Dimensions.get('window').width, marginHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 0, alignSelf: 'flex-start'}]}>
+                        Additional Contributors
+                    </Text>
+
+                    {/* <TouchableOpacity >
+                        <View style={{ borderWidth: 0.5, borderColor: '#fff', borderRadius: 15, overflow: 'hidden', alignSelf: 'center', marginHorizontal: 20, padding: 0, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 6}}>
+                            <Text style={{fontSize: 10, color: '#fff', marginLeft: 0}}>
+                                ADD EXISTING
+                            </Text>
+                        </View>
+                    </TouchableOpacity> */}
+                </View>
+
+                <View style={{marginVertical: 20, alignSelf: 'center',}}>
+                    <View style={{ flexDirection: 'row', width: Dimensions.get('window').width*0.90, justifyContent: 'space-between'}}>
+                        <View style={{width: '90%', justifyContent: 'space-between', height: 132}}>
+                            <View style={[{backgroundColor: '#363636', padding: 10, borderRadius: 10,overflow: 'hidden', width: '96%', height: 40}]}>
+                                <TextInput
+                                    placeholder='Name'
+                                    placeholderTextColor='#ffffffa5'
+                                    style={[styles.textInputTitle, {width: '100%'}]}
+                                    maxLength={70}
+                                    multiline={true}
+                                    numberOfLines={2}
+                                    ref={clear1}
+                                    onChangeText={val => setcontData({...contData, name: val})}
+                                />
+                            </View>
+                            <View style={[{backgroundColor: '#363636', padding: 10, borderRadius: 10,overflow: 'hidden', width: '96%', height: 40}]}>
+                                <TextInput
+                                    placeholder='Contribution'
+                                    placeholderTextColor='#ffffffa5'
+                                    style={[styles.textInputTitle, {width: '100%'}]}
+                                    maxLength={70}
+                                    multiline={true}
+                                    numberOfLines={2}
+                                    ref={clear2}
+                                    onChangeText={val => setcontData({...contData, contribution: val})}
+                                />
+                            </View>
+                            <View style={[{backgroundColor: '#363636', padding: 10, borderRadius: 10,overflow: 'hidden', width: '96%', height: 40}]}>
+                                <TextInput
+                                    placeholder='Website'
+                                    placeholderTextColor='#ffffffa5'
+                                    style={[styles.textInputTitle, {width: '100%'}]}
+                                    maxLength={70}
+                                    multiline={true}
+                                    numberOfLines={2}
+                                    ref={clear3}
+                                    onChangeText={val => setcontData({...contData, link: val})}
+                                />
+                            </View>
+                        </View>
+
+                        <TouchableOpacity 
+                            style={{width: '10%', alignItems: 'center', justifyContent: 'center', backgroundColor: '#00ffffa5', borderRadius: 6, overflow: 'hidden'}}
+                            onPress={() => AddContributor()}
+                            >
+                            <View style={{}}>
+                                <FontAwesome 
+                                    name='chevron-right'
+                                    color='#000'
+                                    size={20}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                        
+                        
+                    </View>
+                    
+                </View>
+
+                {contributors.map((item, index) => {
+                    return (
+                        <View style={{}}>
+                            <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8, padding: 10, backgroundColor: '#171717', borderRadius: 12, overflow: 'hidden', width: Dimensions.get('window').width-80}}>
+                                <View>
+                                    <Text style={{fontWeight: '600', color: '#fff', fontSize: 13}}>
+                                        {item.name}
+                                    </Text>
+                                    <Text style={{fontWeight: '400', color: '#ffffffa5', fontSize: 13}}>
+                                        {item.contribution}
+                                    </Text>
+                                    <Text style={{fontWeight: '400', color: '#00ffff', fontSize: 13}}>
+                                        {item.link}
+                                    </Text>
+                                </View>
+                                <TouchableWithoutFeedback onPress={() => RemoveContributor(index)}>
+                                    <FontAwesome 
+                                        name='trash'
+                                        color='#ffffffa5'
+                                        size={20}
+                                        style={{padding: 10}}
+                                    />
+                                </TouchableWithoutFeedback>
+                            </View>
+                            
+                        </View>
+                )})} 
+                
+                
+
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Summary *
                 </Text>
@@ -1507,7 +1667,7 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View>
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Description *
                 </Text>
                 <View style={[styles.inputfield, {height: 300}]}>
@@ -1528,7 +1688,7 @@ const UploadAudio = ({navigation} : any) => {
                     />
                 </View>
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Genre *
                 </Text>
 
@@ -1558,7 +1718,7 @@ const UploadAudio = ({navigation} : any) => {
                     </View>
                 </TouchableOpacity>
 
-                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 10, alignSelf: 'flex-start'}]}>
+                <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Tags
                 </Text>
 
@@ -1613,7 +1773,7 @@ const UploadAudio = ({navigation} : any) => {
                     </Text>
 
                     <TouchableWithoutFeedback onPress={showSeriesModal}>
-                        <View style={{ marginTop: 20, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
+                        <View style={{ marginTop: 0, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
                             <Text style={{ color: '#ffffffa5'}}>
                                 Select series
                             </Text>
@@ -1635,7 +1795,7 @@ const UploadAudio = ({navigation} : any) => {
                     </Text>
 
                     <TouchableWithoutFeedback onPress={pickImage}>
-                        <View style={{ marginTop: 20, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
+                        <View style={{ marginTop: 0, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
                             <Text style={{ color: '#ffffffa5'}}>
                                 Select cover art
                             </Text>
@@ -1657,7 +1817,7 @@ const UploadAudio = ({navigation} : any) => {
                     </Text>
 
                     <TouchableWithoutFeedback onPress={pickAudio}>
-                        <View style={{ marginTop: 20, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
+                        <View style={{ marginTop: 0, marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
                             <Text style={{ color: '#ffffffa5'}}>
                                 Select audio file
                             </Text>

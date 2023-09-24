@@ -1173,6 +1173,20 @@ export const getStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -1343,6 +1357,10 @@ export const listStories = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -1411,6 +1429,42 @@ export const listGenres = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getContributor = /* GraphQL */ `
+  query GetContributor($id: ID!) {
+    getContributor(id: $id) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
+      __typename
+    }
+  }
+`;
+export const listContributors = /* GraphQL */ `
+  query ListContributors(
+    $filter: ModelContributorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContributors(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        updatedAt
+        storyID
+        name
+        contribution
+        link
         __typename
       }
       nextToken
@@ -1958,6 +2012,10 @@ export const getPinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -2273,6 +2331,10 @@ export const getInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -2596,6 +2658,10 @@ export const getFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -2878,6 +2944,10 @@ export const getComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -3641,6 +3711,10 @@ export const getRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -4110,6 +4184,10 @@ export const getStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -4361,6 +4439,10 @@ export const getEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
@@ -5264,6 +5346,10 @@ export const storiesByDate = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -5447,6 +5533,10 @@ export const storiesByUpdated = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -5630,6 +5720,10 @@ export const storiesByTitle = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -5813,6 +5907,10 @@ export const storiesByPublisher = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -5996,6 +6094,10 @@ export const storiesByCreator = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -6179,6 +6281,10 @@ export const storiesByNarrator = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -6362,6 +6468,10 @@ export const storiesByIllustrator = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -6545,6 +6655,10 @@ export const storiesByGenre = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       nextToken
@@ -6728,6 +6842,42 @@ export const storiesBySeries = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const contributorsByStory = /* GraphQL */ `
+  query ContributorsByStory(
+    $storyID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelContributorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    contributorsByStory(
+      storyID: $storyID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        updatedAt
+        storyID
+        name
+        contribution
+        link
         __typename
       }
       nextToken
@@ -8013,7 +8163,7 @@ export const commentsByStory = /* GraphQL */ `
             id
             reaction
             icon
-        }
+          }
           __typename
         }
         __typename

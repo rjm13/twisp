@@ -120,6 +120,7 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   series: Series @hasOne (fields: ["seriesID"])
   seriesPart: Int
   premium: Boolean
+  contributors: [Contributor] @hasMany(indexName: "byStory", fields: ["id"])
   }
 
 type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
@@ -131,6 +132,17 @@ type Genre @model @auth(rules: [{ allow: private, operations: [create, delete, u
   imageUri: String
   tags: [Tag] @manyToMany (relationName: "GenreTag")
   eroticTags: [EroticTag] @manyToMany (relationName: "EroticaTag")
+}
+
+type Contributor @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
+{
+  id: ID!
+  createdAt: String
+  updatedAt: String
+  storyID: ID @index(name: "byStory", queryField: "contributorsByStory", sortKeyFields: ["createdAt"])
+  name: String
+  contribution: String
+  link: String
 }
 
 type Series @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])

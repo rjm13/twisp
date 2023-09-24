@@ -1975,6 +1975,20 @@ export const onCreateStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2371,6 +2385,20 @@ export const onUpdateStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2767,6 +2795,20 @@ export const onDeleteStory = /* GraphQL */ `
       }
       seriesPart
       premium
+      contributors {
+        items {
+          id
+          createdAt
+          updatedAt
+          storyID
+          name
+          contribution
+          link
+          __typename
+        }
+        nextToken
+        __typename
+      }
       __typename
     }
   }
@@ -2881,6 +2923,54 @@ export const onDeleteGenre = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateContributor = /* GraphQL */ `
+  subscription OnCreateContributor(
+    $filter: ModelSubscriptionContributorFilterInput
+  ) {
+    onCreateContributor(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
+      __typename
+    }
+  }
+`;
+export const onUpdateContributor = /* GraphQL */ `
+  subscription OnUpdateContributor(
+    $filter: ModelSubscriptionContributorFilterInput
+  ) {
+    onUpdateContributor(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
+      __typename
+    }
+  }
+`;
+export const onDeleteContributor = /* GraphQL */ `
+  subscription OnDeleteContributor(
+    $filter: ModelSubscriptionContributorFilterInput
+  ) {
+    onDeleteContributor(filter: $filter) {
+      id
+      createdAt
+      updatedAt
+      storyID
+      name
+      contribution
+      link
       __typename
     }
   }
@@ -3712,6 +3802,10 @@ export const onCreatePinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -3950,6 +4044,10 @@ export const onUpdatePinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4188,6 +4286,10 @@ export const onDeletePinnedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4426,6 +4528,10 @@ export const onCreateInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4665,6 +4771,10 @@ export const onUpdateInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -4904,6 +5014,10 @@ export const onDeleteInProgressStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       createdAt
@@ -5145,6 +5259,10 @@ export const onCreateFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5402,6 +5520,10 @@ export const onUpdateFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5659,6 +5781,10 @@ export const onDeleteFinishedStory = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       genreID
@@ -5851,6 +5977,10 @@ export const onCreateComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -6242,6 +6372,10 @@ export const onUpdateComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -6633,6 +6767,10 @@ export const onDeleteComment = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       content
@@ -7516,6 +7654,10 @@ export const onCreateRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -7764,6 +7906,10 @@ export const onUpdateRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -8012,6 +8158,10 @@ export const onDeleteRating = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       userID
@@ -8498,6 +8648,10 @@ export const onCreateStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -8688,6 +8842,10 @@ export const onUpdateStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -8878,6 +9036,10 @@ export const onDeleteStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       tag {
@@ -9070,6 +9232,10 @@ export const onCreateEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
@@ -9262,6 +9428,10 @@ export const onUpdateEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
@@ -9454,6 +9624,10 @@ export const onDeleteEroticStoryTag = /* GraphQL */ `
         }
         seriesPart
         premium
+        contributors {
+          nextToken
+          __typename
+        }
         __typename
       }
       eroticTag {
