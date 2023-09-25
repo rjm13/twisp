@@ -15,6 +15,7 @@ import NarratorProfileSelect from '../screens/NarratorProfileSelect';
 import EditAuthorProfile from '../screens/EditAuthorProfile';
 import CreateCreator from '../screens/CreateCreator';
 import EditAudioStory from '../screens/EditAudioStory';
+import PrivacyPolicy from '../screens/PrivacyPolicy';
 
 import History from '../screens/History';
 import Following from '../screens/Following';
@@ -157,6 +158,11 @@ function HomeNavigator() {
       <HomeStack.Screen
         name="AboutScreen"
         component={AboutScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
         options={{ headerShown: false }}
       />
       <HomeStack.Screen

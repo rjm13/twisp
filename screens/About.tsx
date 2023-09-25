@@ -46,7 +46,7 @@ const AboutScreen = ({navigation} : any) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                         <View style={{width: '75%'}}>
-                            <Text style={styles.paragraph}>
+                            <Text style={[styles.paragraph, {fontSize: 16}]}>
                                 Version
                             </Text>
                             <Text style={styles.subtext}>
@@ -59,6 +59,19 @@ const AboutScreen = ({navigation} : any) => {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                             <Text style={{ color: '#fff', fontSize: 16}}>
                                 Terms and Conditions
+                            </Text>
+                            <FontAwesome5 
+                                name='chevron-right'
+                                color='#fff'
+                                size={15}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    <TouchableWithoutFeedback onPress={() => navigation.navigate('PrivacyPolicy')}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
+                            <Text style={{ color: '#fff', fontSize: 16}}>
+                                Privacy Policy
                             </Text>
                             <FontAwesome5 
                                 name='chevron-right'
