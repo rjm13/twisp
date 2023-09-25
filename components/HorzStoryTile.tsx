@@ -10,6 +10,7 @@ import {
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AnimatedGradient, {presetColors} from './functions/AnimatedGradient';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { listRatings, listFinishedStories } from '../src/graphql/queries';
@@ -29,6 +30,19 @@ const HorzStoryTile = ({
     numListens,
     time
 } : any) => {
+
+    const LoadingItem = () => {
+        return (
+            <View style={{
+                width: 220,
+                height: 180,
+                borderRadius: 15,
+                marginBottom: 12
+            }}>
+                <AnimatedGradient customColors={presetColors.loading} speed={2000} />
+            </View>
+        )
+    }
         
 //temporary signed image uri
     const [imageU, setImageU] = useState('')
@@ -111,7 +125,7 @@ const HorzStoryTile = ({
                     </View>
                 </ImageBackground>
             ) : (
-                <View />
+                <LoadingItem />
             )}
         </TouchableWithoutFeedback>
         

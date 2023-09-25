@@ -18,6 +18,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
+import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
+
 import { AppContext } from '../../AppContext';
 import TimeConversion from '../functions/TimeConversion';
 
@@ -94,6 +96,19 @@ const GenreCarousel = ({genreid} : any) => {
 
     //update list state
     const [didUpdate, setDidUpdate] = useState(false);
+
+    const LoadingItem = () => {
+        return (
+            <View style={{
+                width: 300,
+                height: 280,
+                borderRadius: 15,
+                margin: 10
+            }}>
+                <AnimatedGradient customColors={presetColors.loading} speed={2000} />
+            </View>
+        )
+    }
 
 
 //fetch the stories for a specific genre for promoted carousel      
@@ -350,7 +365,7 @@ const GenreCarousel = ({genreid} : any) => {
                     </View>
                         </ImageBackground>
                     ) : (
-                        <View />
+                        <LoadingItem />
                     )}
                         
                 </TouchableWithoutFeedback>

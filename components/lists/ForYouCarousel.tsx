@@ -24,6 +24,7 @@ import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { AppContext } from '../../AppContext';
 import TimeConversion from '../functions/TimeConversion';
 
+import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 const ForYouCarousel = () => {
 
@@ -96,6 +97,19 @@ const ForYouCarousel = () => {
 
     //data for the flatlist. 
     const [Storys, setStorys] = useState([]);
+
+    const LoadingItem = () => {
+        return (
+            <View style={{
+                width: 300,
+                height: 280,
+                borderRadius: 15,
+                margin: 10
+            }}>
+                <AnimatedGradient customColors={presetColors.loading} speed={2000} />
+            </View>
+        )
+    }
 
     //carousel tile
     const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
@@ -305,7 +319,7 @@ const ForYouCarousel = () => {
                     </View>
                         </ImageBackground>
                     ) : (
-                        <View />
+                        <LoadingItem />
                     )}
                         
                 </TouchableWithoutFeedback>
@@ -384,48 +398,53 @@ const ForYouCarousel = () => {
         }
         
         return (
-        <Item 
-          title={item?.title}
-          imageUri={item?.imageUri}
-          genreName={genreName}
-          icon={icon}
-          primary={primary}
-          audioUri={item?.audioUri}
-          summary={item?.summary}
-          author={item?.author}
-          narrator={item?.narrator}
-          narratorID={item?.narratorID}
-          artistID={item?.artistID}
-          time={item?.time}
-          id={item?.id}
-          userID={item?.userID}
-          numListens={item?.numListens}
-          numComments={item?.numComments}
-          ratingAvg={item?.ratingAvg}
-        />
-      );}
+         
+            <Item 
+                title={item?.title}
+                imageUri={item?.imageUri}
+                genreName={genreName}
+                icon={icon}
+                primary={primary}
+                audioUri={item?.audioUri}
+                summary={item?.summary}
+                author={item?.author}
+                narrator={item?.narrator}
+                narratorID={item?.narratorID}
+                artistID={item?.artistID}
+                time={item?.time}
+                id={item?.id}
+                userID={item?.userID}
+                numListens={item?.numListens}
+                numComments={item?.numComments}
+                ratingAvg={item?.ratingAvg}
+                />
+       
+      );} 
+            
+        
 
     return (
         <SafeAreaView style={{alignItems: 'center'}}>
-            <Carousel
-                data={Storys}
-                renderItem={renderItem}
-                width={Dimensions.get('window').width}
-                height={300}
-                scrollAnimationDuration={1000}
-                onSnapToItem={(index) => console.log('current index:', index)}
-                pagingEnabled={true}
-                snapEnabled={true}
-                mode="parallax"
-                modeConfig={{
-                    parallaxScrollingScale: 0.9,
-                    parallaxScrollingOffset: 70,
-                    parallaxAdjacentItemScale: 0.8,
-                }}
-                style={{
-                    width: Dimensions.get('window').width,
-                 }}
-            />
+                <Carousel
+                    data={Storys}
+                    renderItem={renderItem}
+                    width={Dimensions.get('window').width}
+                    height={300}
+                    scrollAnimationDuration={1000}
+                    onSnapToItem={(index) => console.log('current index:', index)}
+                    pagingEnabled={true}
+                    snapEnabled={true}
+                    mode="parallax"
+                    modeConfig={{
+                        parallaxScrollingScale: 0.9,
+                        parallaxScrollingOffset: 70,
+                        parallaxAdjacentItemScale: 0.8,
+                    }}
+                    style={{
+                        width: Dimensions.get('window').width,
+                    }}
+                />
+            
         </SafeAreaView>
     );
 }

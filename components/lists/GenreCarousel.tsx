@@ -19,9 +19,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { AppContext } from '../../AppContext';
-//import PinStory from '../functions/PinStory';
-//import unPinStory from '../functions/UnPinStory';
 import TimeConversion from '../functions/TimeConversion';
+import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 import { storiesByGenre, pinnedStoriesByUser } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
@@ -153,6 +152,19 @@ const GenreCarousel = ({genreid} : any) => {
         fetchStorys();
 
     },[didUpdate])
+
+    const LoadingItem = () => {
+        return (
+            <View style={{
+                width: 300,
+                height: 280,
+                borderRadius: 15,
+                margin: 10
+            }}>
+                <AnimatedGradient customColors={presetColors.loading} speed={2000} />
+            </View>
+        )
+    }
 
 //item for the flatlist carousel
 const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
@@ -361,7 +373,7 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                 </View>
                     </ImageBackground>
                 ) : (
-                    <View />
+                    <LoadingItem />
                 )}
                     
             </TouchableWithoutFeedback>

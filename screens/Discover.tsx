@@ -24,6 +24,7 @@ import { AppContext } from '../AppContext';
 import { listGenres, tagsByUpdated, inProgressStoriesByUser } from '../src/graphql/queries';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
+import AnimatedGradient, {presetColors} from '../components/functions/AnimatedGradient';
 
 
 const AudioStoryHome = ({navigation} : any) => {
@@ -37,6 +38,19 @@ const AudioStoryHome = ({navigation} : any) => {
 
   //genre array state
   const [genres, setGenres] = useState([]);
+
+  const LoadingItem = ({width, height, radius} : any) => {
+    return (
+        <View style={{
+            width: width,
+            height: height,
+            borderRadius: radius,
+            margin: 10
+        }}>
+            <AnimatedGradient customColors={presetColors.loading} speed={2000} />
+        </View>
+    )
+}
     
 //fetch the genres
   useEffect(() => {
@@ -51,9 +65,11 @@ const AudioStoryHome = ({navigation} : any) => {
         genrearray = result.data.listGenres.items
         setGenres(genrearray.sort((a, b) => a.genre.localeCompare(b.genre)))
       }
+
     }
 
     fetchGenres();
+    
 
   }, [])
 
@@ -110,7 +126,7 @@ const AudioStoryHome = ({navigation} : any) => {
     );
   }
     
-  const renderItem = ({ item } : any) => {
+  const renderItem = ({ item, index } : any) => {
 
     return (
       <Item 
@@ -118,6 +134,7 @@ const AudioStoryHome = ({navigation} : any) => {
           genre={item.genre}
           color={item.color}
           imageUri={item.imageUri}
+          index={index}
       />
     );
   }
@@ -188,7 +205,6 @@ const AudioStoryHome = ({navigation} : any) => {
 
   useEffect(() => {
 
-    console.log(progUpdate)
     const fetchProgressStory = async () => {
       let userInfo = await Auth.currentAuthenticatedUser();
       let response = await API.graphql(graphqlOperation(
@@ -198,7 +214,7 @@ const AudioStoryHome = ({navigation} : any) => {
         }
       ))
 
-        console.log('inprogress', response.data.inProgressStoriesByUser.items)
+        //console.log('inprogress', response.data.inProgressStoriesByUser.items)
 
       if (response.data.inProgressStoriesByUser.items.length > 0) {
         setProgressStory(response.data.inProgressStoriesByUser.items[0].story)
@@ -222,7 +238,7 @@ const AudioStoryHome = ({navigation} : any) => {
 
 //return the primary function
     return (
-      <View style={{flex: 1, backgroundColor: '#000000'}}>
+      <View style={{backgroundColor: '#000000'}}>
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: getStatusBarHeight() + 20, marginBottom: 0, marginHorizontal: 20}}/ >
@@ -289,14 +305,17 @@ const AudioStoryHome = ({navigation} : any) => {
             </TouchableWithoutFeedback>
             ) : null}
 
-            <View style={{ marginHorizontal: 20, height: '100%'}}>
+            <View style={{ marginHorizontal: 20, }}>
               <View>
-                <FlatList 
+                {genres.length > 0 && tags.length > 0 ? (
+                  <FlatList 
                     data={genres}
-                    renderItem={renderItem}
+                    renderItem={({item, index}) => renderItem({item, index})}
                     keyExtractor={item => item.id}
                     scrollEnabled={false}
                     showsVerticalScrollIndicator={false}
+                    initialNumToRender={genres.length}
+                    contentContainerStyle={{paddingBottom: 80}}
                     ListHeaderComponent={ () => {
 
                         return (
@@ -327,32 +346,42 @@ const AudioStoryHome = ({navigation} : any) => {
                             </View>                           
                         );
                     }}
-                    ListFooterComponent={ () => {
-                        return (
-                        <View style={{ height: 40}}/>
-                        );
-                    }}
+                    
                 />
-              </View>
-              <View style={{marginBottom: 120}}>
-                {/* <Text style={styles.header}>
-                    Authors
-                </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20}}>
+                ) : (
+                  <View>
+                     <View style={{ marginTop: 0}}>
+                                <View style={{marginTop: 10}}>
+                                  <Text style={styles.header}>
+                                      Popular Tags
+                                  </Text>
+                                  <View>
+                                  <LoadingItem width={80} height={40} radius={15}/>
+                                  <LoadingItem width={80} height={40} radius={15}/>
+                                  <LoadingItem width={80} height={40} radius={15}/>
+                                  <LoadingItem width={80} height={40} radius={15}/>
 
-                    <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseAuthor', {searchParam: ''})}>
-                        <View style={[styles.box, { backgroundColor: '#15c7ca', flexDirection: 'row', paddingLeft: 20}]}>
-                            <FontAwesome5 
-                            name='book-open'
-                            color='#000000'
-                            size={22}
-                            />
-                            <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold', marginLeft: 20}}>
-                                Browse Publishers
-                            </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View> */}
+                                  </View>
+                                </View>
+
+                                <View style={{marginTop: 20}}>
+                                  <Text style={styles.header}>
+                                      Genres
+                                  </Text>
+                                </View>
+                                
+                            </View> 
+                    <LoadingItem width={Dimensions.get('window').width - 40} height={100} radius={15}/>
+                    <LoadingItem width={Dimensions.get('window').width - 40} height={100} radius={15}/>
+                    <LoadingItem width={Dimensions.get('window').width - 40} height={100} radius={15}/>
+                    <LoadingItem width={Dimensions.get('window').width - 40} height={100} radius={15}/>
+                    <LoadingItem width={Dimensions.get('window').width - 40} height={100} radius={15}/>
+                  </View>
+                  
+                )
+
+                }
+                
               </View>
             </View>
             <View>
@@ -362,6 +391,7 @@ const AudioStoryHome = ({navigation} : any) => {
       </View>
     );
 }
+
 
 const styles = StyleSheet.create ({
   title: {
