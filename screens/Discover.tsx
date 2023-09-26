@@ -89,7 +89,7 @@ const AudioStoryHome = ({navigation} : any) => {
     }, [nsfwOn, ADon])
 
     return (
-      <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri}))) : null}>
+      <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri})) : (navigation.navigate('GenreHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri}))) : null}>
         <View style={{
           flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
             {imageUri ? (

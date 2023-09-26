@@ -13,7 +13,7 @@ import {
 
 import { AppContext } from '../../AppContext';
 
-import { storiesByGenre } from '../../src/graphql/queries';
+import { storiesByGenreByTitle } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 import StoryTile from '../../components/StoryTile';
@@ -57,23 +57,26 @@ const AudioStoryList = ({genreID} : any) => {
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-        let genresarr = []
+        let genresarr = [];
+
+        let count = 0;
+
         setGenreStories([])
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
 
             setIsLoading(true);
 
             try {
 
                 const genreData = await API.graphql(graphqlOperation(
-                    storiesByGenre, {
+                    storiesByGenreByTitle, {
                         nextToken,
                         genreID: genreID,
-                        filter: {
-                            title: {
+                        title: {
                                 beginsWith: selectedLetter.toUpperCase()
                             },
+                        filter: {
                             hidden: {
                                 eq: false
                             },
@@ -91,27 +94,25 @@ const AudioStoryList = ({genreID} : any) => {
                             }
                         }
                 }))
-
-                console.log(genreData.data.storiesByGenre.items)
                 
-                for(let i = 0; i < genreData.data.storiesByGenre.items.length; i++ ){
-                    genresarr.push(genreData.data.storiesByGenre.items[i])
+                for(let i = 0; i < genreData.data.storiesByGenreByTitle.items.length; i++ ){
+                    genresarr.push(genreData.data.storiesByGenreByTitle.items[i])
+                    count++
                 }
 
-                setNextToken(genreData.data.storiesByGenre.nextToken);
-
-                if(genreData.data.storiesByGenre.nextToken !== null) {
-                    fetchStories();
-                    return
+                if(count < 30 && genreData.data.storiesByGenreByTitle.nextToken) {
+                    fetchStories(genreData.data.storiesByGenreByTitle.nextToken);
                 }
 
-                if (genreData.data.storiesByGenre.nextToken === null) {
+                if (count === 30) {
                     setIsLoading(false);
                     setGenreStories(genresarr);
-                    return
                 }
 
-                
+                if (count < 30 && genreData.data.storiesByGenreByTitle.nextToken === null) {
+                    setIsLoading(false);
+                    setGenreStories(genresarr);
+                }
 
             } catch (e) {
             console.log(e);

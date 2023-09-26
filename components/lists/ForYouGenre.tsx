@@ -73,7 +73,10 @@ const ForYouGenre = ({genreid} : any) => {
                                     },
                                     nsfw: {
                                         ne: nsfwOn === true ? true : null
-                                    }
+                                    },
+                                    imageUri: {
+                                        attributeExists: true
+                                    },
                                 }
                             } 
                         )

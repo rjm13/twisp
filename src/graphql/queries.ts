@@ -147,6 +147,12 @@ export const getUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -1036,6 +1042,11 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
+          tag {
+            id
+            tagName
+            count
+          }
           createdAt
           updatedAt
           __typename
@@ -1048,6 +1059,11 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           eroticTagId
+          eroticTag {
+            id
+            tagName
+            count
+          }
           createdAt
           updatedAt
           __typename
@@ -6650,6 +6666,193 @@ export const storiesByGenre = /* GraphQL */ `
     }
   }
 `;
+export const storiesByGenreByTitle = /* GraphQL */ `
+  query StoriesByGenreByTitle(
+    $genreID: ID!
+    $title: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByGenreByTitle(
+      genreID: $genreID
+      title: $title
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        title
+        imageUri
+        audioUri
+        publisher {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        publisherID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
+        author
+        narrator
+        artist
+        time
+        summary
+        description
+        nsfw
+        comments {
+          nextToken
+          __typename
+        }
+        numComments
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        ratingAvg
+        ratingAmt
+        ratings {
+          nextToken
+          __typename
+        }
+        reactions {
+          nextToken
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        hidden
+        status
+        numListens
+        approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          creatorID
+          __typename
+        }
+        seriesPart
+        premium
+        contributors {
+          nextToken
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const storiesBySeries = /* GraphQL */ `
   query StoriesBySeries(
     $seriesID: ID!
@@ -7487,6 +7690,12 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -7679,6 +7888,12 @@ export const finishedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -8113,6 +8328,11 @@ export const commentsByStory = /* GraphQL */ `
           userID
           storyID
           reactionTypeID
+          reactionType {
+              id
+              reaction
+              icon
+          }
           __typename
         }
         ratingID
@@ -8476,6 +8696,12 @@ export const ratingsByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -8704,6 +8930,12 @@ export const storyTagsByTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -8842,6 +9074,12 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens

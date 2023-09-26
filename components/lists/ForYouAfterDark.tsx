@@ -116,9 +116,12 @@ const GenreCarousel = ({genreid} : any) => {
 
     useEffect(() => {
 
-        let RandomStories = []
+        let genreArr = [];
 
-        const fetchStorys = async () => {
+        let count = 0;
+            
+        //gets the most recently rated stories in a genre with a rating over 6, sorts by the most recently created
+        const fetchStorys = async (nextToken : any) => {
                 
             if (genreid) {
                 try {
@@ -127,40 +130,52 @@ const GenreCarousel = ({genreid} : any) => {
                             storiesByGenre, {
                                 nextToken,
                                 genreID: genreid,
+                                sortDirection: 'DESC',
                                 filter: {
-                                    hidden: {
-                                        eq: false
-                                    },
+                                    // ratingAvg: {
+                                    //     gt: 6
+                                    // },
                                     approved: {
                                         eq: true
                                     },
+                                    hidden: {
+                                        eq: false
+                                    },
                                     imageUri: {
                                         attributeExists: true
-                                    }
+                                    },
                                 }
                             } 
                         )
                     )
-                    if (response) {
-                        let randomarr = []
-                        for (let i = 0; i < 10; i++) {
-                            let x = Math.floor(Math.random() * response.data.storiesByGenre.items.length)
-                            if (randomarr.includes(x) === false) {
-                                randomarr.push(x)
-                                RandomStories.push(response.data.storiesByGenre.items[x])
-                            }
-                            
+                 
+                    for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                        if (count < 10) {
+                            genreArr.push(response.data.storiesByGenre.items[i])
+                            count++
                         }
                     }
-                    setCarouselStories(RandomStories);
+                    
+                    if (count === 10) {
+                        setCarouselStories(genreArr)
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken) {
+                        fetchStorys(response.data.storiesByGenre.nextToken);
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken === null) {
+                        setCarouselStories(genreArr)
+                    }
+       
                 } catch (e) {
                     console.log(e);}
             }
         }
 
-        fetchStorys();
+        fetchStorys(null);
 
-    },[didUpdate])
+    },[genreid])
 
 //item for the flatlist carousel
     const Item = ({ title, genreName, icon, summary, imageUri, author, narrator, time, id, numComments, numListens, ratingAvg, ratingAmt} : any) => {

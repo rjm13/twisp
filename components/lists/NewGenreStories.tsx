@@ -34,7 +34,6 @@ const NewGenreStories = ({genreid} : any) => {
                             storiesByGenre, {
                                 nextToken,
                                 genreID: genreid,
-                                type: 'Story',
                                 sortDirection: 'DESC',
                                 filter: {
                                     approved: {

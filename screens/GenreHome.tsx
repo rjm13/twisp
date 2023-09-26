@@ -17,7 +17,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { getGenre, genreTagsByGenreId,  } from '../src/graphql/queries';
+import { genreTagsByGenreId,  } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 import GenreCarousel from '../components/lists/GenreCarousel';

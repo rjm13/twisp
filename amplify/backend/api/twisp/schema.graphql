@@ -110,7 +110,9 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   ratingAmt: Int
   ratings: [Rating] @hasMany(indexName: "byStory", fields: ["id"])
   reactions: [Reaction] @hasMany(indexName: "byStory", fields: ["id"])
-  genreID: ID @index(name: "byGenre", queryField: "storiesByGenre", sortKeyFields: ["createdAt"])
+  genreID: ID 
+    @index(name: "byGenre", queryField: "storiesByGenre", sortKeyFields: ["createdAt"])
+    @index(name: "byGenreAndTitle", queryField: "storiesByGenreByTitle", sortKeyFields: ["title"])
   genre: Genre @hasOne (fields: ["genreID"])
   hidden: Boolean
   status: Boolean
