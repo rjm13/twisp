@@ -45,10 +45,12 @@ const ForYouGenre = ({genreid} : any) => {
 
     useEffect(() => {
 
-        let genreArr = []
+        let genreArr = [];
+
+        let count = 0;
             
         //gets the most recently rated stories in a genre with a rating over 6, sorts by the most recently created
-        const fetchStorys = async () => {
+        const fetchStorys = async (nextToken : any) => {
                 
             if (genreid) {
                 try {
@@ -76,44 +78,34 @@ const ForYouGenre = ({genreid} : any) => {
                             } 
                         )
                     )
-
-                    if (response.data.storiesByGenre.items.length > 0) {
-                        for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
-                            if (i === response.data.storiesByGenre.items.length - 1 ) {
-                                genreArr.push(response.data.storiesByGenre.items[i])
-                                if (genreArr.length === 8) {
-                                    setTagStories(genreArr);
-                                    return
-                                }
-                                if (response.data.storiesByGenre.nextToken) {
-                                    setNextToken(response.data.storiesByGenre.nextToken)
-                                    fetchStorys()
-                                    return
-                                } 
-                                else {
-                                    setTagStories(genreArr);
-                                    return;
-                                }
-                            } else {
-                                if (genreArr.length === 8) {
-                                    setTagStories(genreArr);
-                                    return
-                                }
-                                else {genreArr.push(response.data.storiesByGenre.items[i])}
-                                setTagStories(genreArr);
-                                
-                            }
+                 
+                    for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                        if (count < 10) {
+                            genreArr.push(response.data.storiesByGenre.items[i])
+                            count++
                         }
-                    } 
+                    }
+                    
+                    if (count === 10) {
+                        setTagStories(genreArr)
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken) {
+                        fetchStorys(response.data.storiesByGenre.nextToken);
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken === null) {
+                        setTagStories(genreArr)
+                    }
        
                 } catch (e) {
                     console.log(e);}
             }
         }
 
-        fetchStorys();
+        fetchStorys(null);
 
-    },[genreid, nextToken])
+    },[genreid])
 
 
     const renderItem = ({ item }: any) => {

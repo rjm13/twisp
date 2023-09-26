@@ -330,14 +330,19 @@ const ForYouCarousel = () => {
     //get the data for the flatlist. Must have: image, not be hidden, be approved, not after dark
     useEffect( () => {
 
+        let count = 0
+
         const RandomStories = []
 
-        const fetchStorys = async () => {
+        const finalRandom = []
+
+        const fetchStorys = async (nextToken : any) => {
             try {
                 const response = await API.graphql(
                     graphqlOperation(
                         
                         storiesByUpdated, {
+                            nextToken,
                             type: 'Story',
                             sortDirection: 'DESC',
                             filter: {
@@ -365,24 +370,46 @@ const ForYouCarousel = () => {
                 )
 
                 if (response) {
-                    let randomarr = []
-                    for (let i = 0; i < 10; i++) {
-                        let x = Math.floor(Math.random() * response.data.storiesByUpdated.items.length)
-                        if (randomarr.includes(x) === false) {
-                            randomarr.push(x)
-                            RandomStories.push(response.data.storiesByUpdated.items[x])
+                    let randomarr = [];
+
+                    for (let i = 0; i < response.data.storiesByUpdated.items.length; i++) {
+                        if (count < 10) {
+                            RandomStories.push(response.data.storiesByUpdated.items[i])
+                            count++
                         }
-                        
+                        if (count < 10 && i === response.data.storiesByUpdated.items.length - 1 && response.data.storiesByUpdated.nextToken) {   
+                            fetchStorys(response.data.storiesByUpdated.nextToken)
+                        }
                     }
+                    if (count === 10) {
+                        //let random = [...RandomStories]
+                        for (let i = 0; i < count; i++) {
+                            let x = Math.floor(Math.random() * count)
+                            if (randomarr.includes(x) === false) {
+                                randomarr.push(x)
+                                finalRandom.push(RandomStories[x])
+                            } 
+                        }  
+                        setStorys(finalRandom);   
+                    }
+                    if (count < 10 && response.data.storiesByUpdated.nextToken === null) {
+                        //let random = [...RandomStories]
+                        for (let i = 0; i < count; i++) {
+                            let x = Math.floor(Math.random() * count)
+                            if (randomarr.includes(x) === false) {
+                                randomarr.push(x)
+                                finalRandom.push(RandomStories[x])
+                            } 
+                        }  
+                        setStorys(finalRandom);   
+                    }
+                     
                 }
-
-
-                setStorys(RandomStories);
             } catch (e) {
                 console.log(e);
             }
         }
-        fetchStorys();
+        fetchStorys(null);
     },[])
 
     const renderItem = ({ item }: any) => {

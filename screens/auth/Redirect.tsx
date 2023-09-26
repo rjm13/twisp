@@ -239,8 +239,6 @@ const Redirect = ({route, navigation} : any) => {
                                 //return;
                             }
                             setUserFollowing(following);
-                            console.log('the initial following is')
-                            console.log(following)
                         }
 
                         getThePins(null);

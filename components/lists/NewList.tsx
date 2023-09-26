@@ -22,7 +22,11 @@ const NewList = () => {
 
     useEffect(() => {
 
-        const fetchStorys = async () => {
+        let arr = [];
+
+        let count = 0;
+
+        const fetchStorys = async (nextToken : any) => {
                 
                 try {
                     const response = await API.graphql(
@@ -47,12 +51,32 @@ const NewList = () => {
                             } 
                         )
                     )
-                    setStories(response.data.storiesByDate.items.splice(0, 9));
+
+                    for (let i = 0; i < response.data.storiesByDate.items.length; i++ ) {
+                        if (count < 10) {
+                            arr.push(response.data.storiesByDate.items[i])
+                            count++
+                        }
+                    }
+
+                    if (count < 10 && response.data.storiesByDate.nextToken) {
+                        fetchStorys(response.data.storiesByDate.nextToken);
+                    }
+
+                    if (count === 10) {
+                        setStories(arr);
+                    }
+
+                    if (count < 10 && response.data.storiesByDate.nextToken === null) {
+                        setStories(arr);
+                    }
+
+                    
                 } catch (e) {
                     console.log(e);}
         }
 
-        fetchStorys();
+        fetchStorys(null);
 
     },[])
 
