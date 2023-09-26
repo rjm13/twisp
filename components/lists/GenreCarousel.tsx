@@ -104,9 +104,13 @@ const GenreCarousel = ({genreid} : any) => {
 
     useEffect(() => {
 
+        let count = 0
+
         let RandomStories = []
 
-        const fetchStorys = async () => {
+        let finalRandom = []
+
+        const fetchStorys = async (nextToken : any) => {
                 
             if (genreid) {
                 try {
@@ -132,24 +136,51 @@ const GenreCarousel = ({genreid} : any) => {
                             } 
                         )
                     )
+                   
                     if (response) {
-                        let randomarr = []
-                        for (let i = 0; i < 10; i++) {
-                            let x = Math.floor(Math.random() * response.data.storiesByGenre.items.length)
-                            if (randomarr.includes(x) === false) {
-                                randomarr.push(x)
-                                RandomStories.push(response.data.storiesByGenre.items[x])
+                        let randomarr = [];
+    
+                        for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                            if (count < 10) {
+                                RandomStories.push(response.data.storiesByGenre.items[i])
+                                count++
                             }
-                            
+                            if (count < 10 && i === response.data.storiesByGenre.items.length - 1 && response.data.storiesByGenre.nextToken) {   
+                                fetchStorys(response.data.storiesByGenre.nextToken)
+                            }
                         }
+                        if (count === 10) {
+                            //let random = [...RandomStories]
+                            for (let i = 0; i < count; i++) {
+                                let x = Math.floor(Math.random() * count)
+                                if (randomarr.includes(x) === false) {
+                                    randomarr.push(x)
+                                    finalRandom.push(RandomStories[x])
+                                } 
+                            }  
+                            setCarouselStories(finalRandom);   
+                        }
+                        if (count < 10 && response.data.storiesByGenre.nextToken === null) {
+                            //let random = [...RandomStories]
+                            for (let i = 0; i < count; i++) {
+                                let x = Math.floor(Math.random() * count)
+                                if (randomarr.includes(x) === false) {
+                                    randomarr.push(x)
+                                    finalRandom.push(RandomStories[x])
+                                } 
+                            }  
+                            setCarouselStories(finalRandom);   
+                        }
+                         
                     }
-                    setCarouselStories(RandomStories);
+
+
                 } catch (e) {
                     console.log(e);}
             }
         }
 
-        fetchStorys();
+        fetchStorys(null);
 
     },[didUpdate])
 

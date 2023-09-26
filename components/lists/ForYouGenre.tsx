@@ -154,7 +154,7 @@ const ForYouGenre = ({genreid} : any) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 ListFooterComponent={
-                    <TouchableOpacity onPress={() => navigation.navigate('GenreHome', {genreRoute: Genre?.id})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('GenreHome', {genreID: Genre?.id, genreColor: Genre?.color, genreIcon: Genre?.icon, genreName: Genre?.genre, genreImage: Genre?.imageUri})}>
                         {tagStories.length === 0 ? null : (
                         <View style={{ width: 100, height: 200, justifyContent: 'center', alignItems: 'center'}}>
                             <FontAwesome5 

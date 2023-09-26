@@ -21,13 +21,18 @@ const NewGenreStories = ({genreid} : any) => {
 
     useEffect(() => {
 
-        const fetchStorys = async () => {
+        let arr = [];
+
+        let count = 0;
+
+        const fetchStorys = async (nextToken : any) => {
                 
             if (genreid) {
                 try {
                     const response = await API.graphql(
                         graphqlOperation(
                             storiesByGenre, {
+                                nextToken,
                                 genreID: genreid,
                                 type: 'Story',
                                 sortDirection: 'DESC',
@@ -45,13 +50,34 @@ const NewGenreStories = ({genreid} : any) => {
                             } 
                         )
                     )
-                    setTagStories(response.data.storiesByGenre.items.splice(0,9));
+
+                    for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                        if (count < 10) {
+                            arr.push(response.data.storiesByGenre.items[i])
+                            count++
+                        }
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken) {
+                        fetchStorys(response.data.storiesByGenre.nextToken)
+                    }
+
+                    if (count === 10) {
+                        setTagStories(response.data.storiesByGenre.items.splice(0,9));
+                    }
+
+                    if (count < 10 && response.data.storiesByGenre.nextToken === null) {
+                        setTagStories(response.data.storiesByGenre.items.splice(0,9));
+                    }
+
+
+                    
                 } catch (e) {
                     console.log(e);}
             }
         }
 
-        fetchStorys();
+        fetchStorys(null);
 
     },[genreid])
 

@@ -28,16 +28,8 @@ const GenreHome = ({navigation} : any) => {
 
 //route params from the StoriesScreen to specifiy the genre
     const route = useRoute();
-    const {genreRoute} = route.params
+    const {genreID, genreName, genreColor, genreIcon, genreImage} = route.params
 
-//get the genre information
-    const [GenreInfo, setGenreInfo] = useState({
-        id: 1,
-        genre: 'random',
-        icon: 'dumpster-fire',
-        color: 'gray',
-        imageUri: null,
-    });
 
 //get 2 trending tags in the genre
 const [trendingTags, setTrendingTags] = useState([]);
@@ -49,42 +41,21 @@ const [trendingTags, setTrendingTags] = useState([]);
         const fetchGenre = async () => {
             
                 try {
-                    const response = await API.graphql(
-                        graphqlOperation(
-                            getGenre, {
-                                id: genreRoute
-                            } 
-                        )
-                    )
-                    setGenreInfo(response.data.getGenre);
-
                     const respons = await API.graphql(
                         graphqlOperation(
                             genreTagsByGenreId, {
-                                genreId: genreRoute
+                                genreId: genreID
                             } 
                         )
                     )
 
-                    console.log(respons.data.genreTagsByGenreId.items)
-
                       for (let i = 0; i < respons.data.genreTagsByGenreId.items.length; i++) {
-                            if (Tags[0]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[1]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[2]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags.length < 4) {
-                                if (respons.data.genreTagsByGenreId.items[i].tag.count > 0) {
+                            //if (Tags[0]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[1]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags[2]?.id !== respons.data.genreTagsByGenreId.items[i].tag.id && Tags.length < 4) {
+                                if (respons.data.genreTagsByGenreId.items[i].tag.count > 0 && Tags.length < 4) {
                                     Tags.push(respons.data.genreTagsByGenreId.items[i].tag)
                                 }
-                            }
+                            //}
                         }
-
-                    // if (genreRoute === '1108a619-1c0e-4064-8fce-41f1f6262070') {
-                    //     for (let i = 0; i < response.data.getGenre.tags.items.length; i++) {
-                    //         if (Tags[0]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[1]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags[2]?.id !== response.data.getGenre.tags.items[i].tag.id && Tags.length < 4) {
-                    //             if (response.data.getGenre.tags.items[i].tag.count > 0) {
-                    //                 Tags.push(response.data.getGenre.tags.items[i].tag)
-                    //             }
-                    //         }
-                    //     }
-                    // }
                     
                     setTrendingTags(Tags);
                 } catch (e) {
@@ -92,7 +63,7 @@ const [trendingTags, setTrendingTags] = useState([]);
             
         }
         fetchGenre();
-    }, [genreRoute])
+    }, [genreID])
 
 
     const GenreTag = ({id, tagName} : any) => {
@@ -195,7 +166,7 @@ const [trendingTags, setTrendingTags] = useState([]);
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={[GenreInfo.color, '#212121', '#000', '#000',]}
+                colors={[genreColor, '#212121', '#000', '#000',]}
                 style={{height: '100%'}}
                 start={{ x: 1, y: 1 }}
                 end={{ x: 0.5, y: 0.5 }}
@@ -204,7 +175,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                     
 
                     <View style={{ marginTop: 100}}>
-                        <GenreCarousel genreid={genreRoute}/>
+                        <GenreCarousel genreid={genreID}/>
                     </View>
 
                     <View style={{marginTop: 20}}>
@@ -225,7 +196,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                                                     Popular Tags in 
                                                 </Text>
                                                 <Text style={{ marginLeft: 6, color: '#fff', fontWeight: 'bold', fontSize: 18, textTransform: 'capitalize'}}>
-                                                    {GenreInfo.genre}
+                                                    {genreName}
                                                 </Text>
                                             </View>
                                             <FontAwesome5 
@@ -233,7 +204,7 @@ const [trendingTags, setTrendingTags] = useState([]);
                                                 color='#fff'
                                                 size={17}
                                                 style={{padding: 10, }}
-                                                onPress={() => navigation.navigate('ViewGenreTags', {genreRoute: genreRoute, genreName: GenreInfo.genre})}
+                                                onPress={() => navigation.navigate('ViewGenreTags', {genreRoute: genreID, genreName: genreName})}
                                             />
                                         </View>
                                     )
@@ -243,11 +214,11 @@ const [trendingTags, setTrendingTags] = useState([]);
                     </View>
 
                     <View style={{ marginTop: 20}}>
-                        <GenreTrending genreid={genreRoute}/>
+                        <GenreTrending genreid={genreID}/>
                     </View>
 
                     <View style={{ marginTop: 0}}>
-                        <NewGenreStories genreid={genreRoute}/>
+                        <NewGenreStories genreid={genreID}/>
                     </View>
 
                     <View style={{height: 40}}>
@@ -267,11 +238,11 @@ const [trendingTags, setTrendingTags] = useState([]);
                                 onPress={() => navigation.goBack()}
                             /> 
                             <Text style={{fontWeight: 'bold', marginLeft: 20, fontSize: 22, color: '#fff', textTransform: 'capitalize'}}>
-                                {GenreInfo.genre}
+                                {genreName}
                             </Text>
                         </View>
                         <View>
-                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: GenreInfo.id, genreName: GenreInfo.genre})}>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('BrowseGenre', {genreID: genreID, genreName: genreName})}>
                                 <Text style={{marginRight: 20, color: '#fff'}}>
                                     Browse
                                 </Text> 

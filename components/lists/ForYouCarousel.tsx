@@ -332,9 +332,9 @@ const ForYouCarousel = () => {
 
         let count = 0
 
-        const RandomStories = []
+        let RandomStories = []
 
-        const finalRandom = []
+        let finalRandom = []
 
         const fetchStorys = async (nextToken : any) => {
             try {

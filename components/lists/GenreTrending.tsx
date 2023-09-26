@@ -48,11 +48,11 @@ const GenreTrending = ({genreid} : any) => {
                         graphqlOperation(
                             finishedStoriesByGenre, {
                                 genreID: genreid,
-                                // createdAt: {
-                                //     gt: newdate
-                                // },
-                                //type: 'FinishedStory',
-                                //sortDirection: 'DESC',
+                                createdAt: {
+                                    gt: newdate
+                                },
+                                type: 'FinishedStory',
+                                sortDirection: 'DESC',
                             } 
                         )
                     )

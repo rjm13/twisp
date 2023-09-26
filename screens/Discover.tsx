@@ -74,7 +74,7 @@ const AudioStoryHome = ({navigation} : any) => {
   }, [])
 
   //genre tile item should show genre name, color, and image
-  const Item = ({genre, id, color, imageUri} : any) => {
+  const Item = ({genre, id, color, imageUri, icon} : any) => {
 
     //state that locks the after dark tile
     const [locked, setIsLocked] = useState(false);
@@ -89,7 +89,7 @@ const AudioStoryHome = ({navigation} : any) => {
     }, [nsfwOn, ADon])
 
     return (
-      <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreRoute: id}))) : null}>
+      <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreRoute: id})) : (navigation.navigate('GenreHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri}))) : null}>
         <View style={{
           flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
             {imageUri ? (

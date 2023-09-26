@@ -25,7 +25,7 @@ const AudioStoryList = () => {
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
 
             setIsLoading(true);
 
@@ -39,27 +39,34 @@ const AudioStoryList = () => {
 
                 const favedData = await API.graphql(graphqlOperation(
                     ratingsByUser, {
+                        nextToken,
                         userID: userInfo.attributes.sub,
                         filter: {
                             rating: {
-                                gt: 6
+                                gt: 7
                             }
                         }
                 }))
 
-                if (favedData.data.ratingsByUser.items.length > 0) {
-                    for (let i = 0; i < favedData.data.ratingsByUser.items.length; i++) {
-                            Faved.push(favedData.data.ratingsByUser.items[i].story) 
-                    } 
+                for (let i = 0; i < favedData.data.ratingsByUser.items.length; i++) {
+                        Faved.push(favedData.data.ratingsByUser.items[i].story) 
+                } 
+
+                if (favedData.data.ratingsByUser.nextToken) {
+                    fetchStories(favedData.data.ratingsByUser.nextToken)
+                }
+
+                if (favedData.data.ratingsByUser.nextToken === null) {
+                    setFavedStories(Faved);
+                    setIsLoading(false);
                 }
                 
-                setFavedStories(Faved);
-                setIsLoading(false);
+                
             } catch (e) {
             console.log(e);
           }
         }
-        fetchStories(); 
+        fetchStories(null); 
            
       }, [didUpdate])
 

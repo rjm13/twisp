@@ -147,12 +147,6 @@ export const getUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -1042,11 +1036,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
-          tag {
-            id
-            tagName
-            count
-          }
           createdAt
           updatedAt
           __typename
@@ -1059,11 +1048,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           eroticTagId
-          eroticTag {
-            id
-            tagName
-            count
-          }
           createdAt
           updatedAt
           __typename
@@ -7324,12 +7308,6 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -7509,12 +7487,6 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -7707,12 +7679,6 @@ export const finishedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -8159,11 +8125,6 @@ export const commentsByStory = /* GraphQL */ `
           userID
           rating
           reactionTypeID
-          reactionType {
-            id
-            reaction
-            icon
-          }
           __typename
         }
         __typename
@@ -8515,12 +8476,6 @@ export const ratingsByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -8749,12 +8704,6 @@ export const storyTagsByTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -8893,12 +8842,6 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
