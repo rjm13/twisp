@@ -65,9 +65,13 @@ const PendingStories = ({navigation} : any) => {
 
     //fetch the stories that are not approved
     useEffect(() => {
-        const getStories = async () => {
-            let response = await API.graphql(graphqlOperation(
+
+        let arr = []
+
+        const getStories = async (nextToken : any) => {
+            const response = await API.graphql(graphqlOperation(
                 storiesByDate, {
+                    nextToken,
                     sortDirection: 'DESC',
                     type: 'PendingStory',
                     filter: {
@@ -77,9 +81,21 @@ const PendingStories = ({navigation} : any) => {
                     }
                 }
             ))
-            setStories(response.data.storiesByDate.items)
+
+            for (let i = 0; i < response.data.storiesByDate.items.length; i++) {
+                arr.push(response.data.storiesByDate.items[i])
+            }
+
+            if (response.data.storiesByDate.nextToken) {
+                getStories(response.data.storiesByDate.nextToken)
+            }
+
+            if (response.data.storiesByDate.nextToken === null) {
+                setStories(arr)
+            }
+            
         }
-        getStories();
+        getStories(null);
     }, [didUpdate])
 
     const [pending, setPending] = useState(false)
