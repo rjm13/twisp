@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import { getGenre, eroticaTagsByGenreId } from '../src/graphql/queries';
+import { eroticaTagsByGenreId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const ViewAfterDarkTags = ({navigation} : any) => {
@@ -30,24 +30,30 @@ const ViewAfterDarkTags = ({navigation} : any) => {
 
         let tagsarr = []
 
-        const fetchTags = async () => {
+        const fetchTags = async (nextToken : any) => {
             let response = await API.graphql(graphqlOperation(
                 eroticaTagsByGenreId, {
+                        nextToken,
                         genreId: genreRoute
                 }
             ))
 
-            console.log(response.data.eroticaTagsByGenreId.items)
-
             for (let i = 0; i < response.data.eroticaTagsByGenreId.items.length; i++) {
-                //if (response.data.eroticaTagsByGenreId.items[i].eroticTag.count > 0) {
+                if (response.data.eroticaTagsByGenreId.items[i].eroticTag.count > 0) {
                     tagsarr.push(response.data.eroticaTagsByGenreId.items[i].eroticTag)
-                //}
+                }
                 
             }
-            setTags(tagsarr)
+
+            if (response.data.eroticaTagsByGenreId.nextToken) {
+                fetchTags(response.data.eroticaTagsByGenreId.nextToken)
+            }
+
+            if (response.data.eroticaTagsByGenreId.nextToken === null) {
+                setTags(tagsarr)
+            }
         }
-        fetchTags();
+        fetchTags(null);
     }, [])
 
   

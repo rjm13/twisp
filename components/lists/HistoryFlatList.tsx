@@ -11,7 +11,7 @@ import {
 
 import StoryTile from '../../components/StoryTile';
 
-import { finishedStoriesByUser, getUser } from '../../src/graphql/queries';
+import { finishedStoriesByUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 
 
@@ -30,7 +30,7 @@ const HistoryList = () => {
 
         const History = []
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
 
             setIsLoading(true);
 
@@ -51,23 +51,24 @@ const HistoryList = () => {
                 if (historyData.data.finishedStoriesByUser.items.length > 0) {
                     for (let i = 0; i < historyData.data.finishedStoriesByUser.items.length; i++) {
                             History.push(historyData.data.finishedStoriesByUser.items[i].story)
-                    } 
-                   
-                    if (historyData.data.finishedStoriesByUser.nextToken) {
-                        setNextToken(historyData.data.finishedStoriesByUser.nextToken)
-                        fetchStories();
-                        return;
-                    }
+                    }  
                 }
-                   
-                setFinishedStories(History);
+
+                if (historyData.data.finishedStoriesByUser.nextToken) {
+                    fetchStories(historyData.data.finishedStoriesByUser.nextToken);
+                }
+
+                if (historyData.data.finishedStoriesByUser.nextToken === null) {
+                    setFinishedStories(History);
+                }
+
                 setIsLoading(false);
               
             } catch (e) {
             console.log(e);
           }
         }
-           fetchStories(); 
+           fetchStories(null); 
       }, [didUpdate])
 
 //on render, get the user and then list the following connections for that user

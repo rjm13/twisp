@@ -53,6 +53,8 @@ const UploadAudio = ({navigation} : any) => {
         createdAt: '',
         updatedAt: '',
         title: '',
+        titleLowerCase: '',
+        titleLowerCaseNoThe: '',
         imageUri: '',
         audioUri: '',
         publisherID: '',
@@ -76,6 +78,7 @@ const UploadAudio = ({navigation} : any) => {
         seriesID: null,
         seriesPart: 1,
     });
+
 
     //set state for the number authored so that upon upload can increase it by +1
     const [numAuthored, setNumAuthored] = useState(0)
@@ -785,7 +788,22 @@ const UploadAudio = ({navigation} : any) => {
 
         const hideModal2 = () => setVisible2(false);
   
-      const showModal = () => 
+      const showModal = () => {
+
+        let lower = data.title.toLowerCase();
+
+        let parsed = data.title.toLowerCase();
+
+       
+        if (data.title.startsWith('The ' || 'the ')) {
+            parsed = data.title.slice(4).toLowerCase()
+        }
+
+        if (data.title.startsWith('a ' || 'A ')) {
+            parsed = data.title.slice(2).toLowerCase()
+        }
+        
+        setData({...data, titleLowerCase: parsed, titleLowerCaseNoThe: lower});
       
         termsAgree === true &&
         audioName !== '' &&
@@ -795,7 +813,8 @@ const UploadAudio = ({navigation} : any) => {
         data.summary !== '' &&
         data.title !== '' ?
 
-      setVisible(true) : null;
+        setVisible(true) : null;
+      }
 
       const hideModal = () => setVisible(false);
  

@@ -17,7 +17,7 @@ import { AppContext } from '../AppContext';
 import StoryTile from '../components/StoryTile';
 
 
-import { getTag, storyTagsByTagId } from '../src/graphql/queries';
+import { storyTagsByTagId } from '../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 const TagSearchScreen = ({navigation} : any) => {
@@ -38,17 +38,17 @@ const TagSearchScreen = ({navigation} : any) => {
 
         let stories = []
 
-        const fetchTags = async () => {
+        const fetchTags = async (nextToken : any) => {
             let response = await API.graphql(graphqlOperation(
                 storyTagsByTagId, {
+                    nextToken,
                     tagId: mainTag,
                 }
             ))
-
-            if (response.data.storyTagsByTagId.items.length > 0) {
-                for(let i = 0; i < response.data.storyTagsByTagId.items.length; i++) {
-                    if (
-                    response.data.storyTagsByTagId.items[i].story.hidden === false) {
+       
+            for(let i = 0; i < response.data.storyTagsByTagId.items.length; i++) {
+                if (response.data.storyTagsByTagId.items[i].story.type === 'Story') {
+                   if (response.data.storyTagsByTagId.items[i].story.hidden === false) {
                         if (nsfwOn === false) {
                             if (ADon === false) {
                                 stories.push(response.data.storyTagsByTagId.items[i].story)
@@ -60,15 +60,23 @@ const TagSearchScreen = ({navigation} : any) => {
                         if (nsfwOn === true && response.data.storyTagsByTagId.items[i].story.nsfw === false) {
                             stories.push(response.data.storyTagsByTagId.items[i].story)
                         }  
-                    }   
+                    } 
                 }
+                   
             }
 
-            setSearchedStories(stories)
+            if (response.data.storyTagsByTagId.nextToken) {
+                fetchTags(response.data.storyTagsByTagId.nextToken)
+            }
+
+            if (response.data.storyTagsByTagId.nextToken === null) {
+                setSearchedStories(stories)
+            }
 
         }
-        fetchTags()
+        fetchTags(null)
     }, [])
+
 
     const renderItem = ({ item } : any) => {
         
@@ -124,7 +132,7 @@ const TagSearchScreen = ({navigation} : any) => {
                 </TouchableWithoutFeedback>
                 
                 <View style={{marginLeft: 40}}>
-                    <Text style={{color: 'cyan', fontSize: 22 }}>
+                    <Text style={{color: 'cyan', fontSize: 24 }}>
                         #{tagName}
                     </Text>
                 </View>

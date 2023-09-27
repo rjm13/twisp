@@ -133,6 +133,8 @@ export const createUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -179,6 +181,7 @@ export const createUser = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -329,6 +332,8 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -375,6 +380,7 @@ export const updateUser = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -525,6 +531,8 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -571,6 +579,7 @@ export const deleteUser = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -666,6 +675,7 @@ export const createCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      penNameLowerCase
       email
       website
       instagram
@@ -682,6 +692,8 @@ export const createCreatorProfile = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -806,6 +818,7 @@ export const updateCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      penNameLowerCase
       email
       website
       instagram
@@ -822,6 +835,8 @@ export const updateCreatorProfile = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -946,6 +961,7 @@ export const deleteCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      penNameLowerCase
       email
       website
       instagram
@@ -962,6 +978,8 @@ export const deleteCreatorProfile = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -1182,6 +1200,7 @@ export const createFollowConnection = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1378,6 +1397,7 @@ export const updateFollowConnection = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1574,6 +1594,7 @@ export const deleteFollowConnection = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1609,6 +1630,8 @@ export const createStory = /* GraphQL */ `
       createdAt
       updatedAt
       title
+      titleLowerCase
+      titleLowerCaseNoThe
       imageUri
       audioUri
       publisher {
@@ -1709,6 +1732,7 @@ export const createStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1765,6 +1789,7 @@ export const createStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1821,6 +1846,7 @@ export const createStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1977,6 +2003,7 @@ export const createStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2022,6 +2049,8 @@ export const updateStory = /* GraphQL */ `
       createdAt
       updatedAt
       title
+      titleLowerCase
+      titleLowerCaseNoThe
       imageUri
       audioUri
       publisher {
@@ -2122,6 +2151,7 @@ export const updateStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2178,6 +2208,7 @@ export const updateStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2234,6 +2265,7 @@ export const updateStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2390,6 +2422,7 @@ export const updateStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2435,6 +2468,8 @@ export const deleteStory = /* GraphQL */ `
       createdAt
       updatedAt
       title
+      titleLowerCase
+      titleLowerCaseNoThe
       imageUri
       audioUri
       publisher {
@@ -2535,6 +2570,7 @@ export const deleteStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2591,6 +2627,7 @@ export const deleteStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2647,6 +2684,7 @@ export const deleteStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -2803,6 +2841,7 @@ export const deleteStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3048,6 +3087,8 @@ export const createSeries = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -3113,6 +3154,7 @@ export const createSeries = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -3174,6 +3216,8 @@ export const updateSeries = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -3239,6 +3283,7 @@ export const updateSeries = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -3300,6 +3345,8 @@ export const deleteSeries = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -3365,6 +3412,7 @@ export const deleteSeries = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -3707,6 +3755,8 @@ export const createPinnedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -3745,6 +3795,7 @@ export const createPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3767,6 +3818,7 @@ export const createPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3789,6 +3841,7 @@ export const createPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3950,6 +4003,8 @@ export const updatePinnedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -3988,6 +4043,7 @@ export const updatePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4010,6 +4066,7 @@ export const updatePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4032,6 +4089,7 @@ export const updatePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4193,6 +4251,8 @@ export const deletePinnedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4231,6 +4291,7 @@ export const deletePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4253,6 +4314,7 @@ export const deletePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4275,6 +4337,7 @@ export const deletePinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4436,6 +4499,8 @@ export const createInProgressStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4474,6 +4539,7 @@ export const createInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4496,6 +4562,7 @@ export const createInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4518,6 +4585,7 @@ export const createInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4680,6 +4748,8 @@ export const updateInProgressStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4718,6 +4788,7 @@ export const updateInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4740,6 +4811,7 @@ export const updateInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4762,6 +4834,7 @@ export const updateInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4924,6 +4997,8 @@ export const deleteInProgressStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4962,6 +5037,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4984,6 +5060,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5006,6 +5083,7 @@ export const deleteInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5170,6 +5248,8 @@ export const createFinishedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5208,6 +5288,7 @@ export const createFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5230,6 +5311,7 @@ export const createFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5252,6 +5334,7 @@ export const createFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5432,6 +5515,8 @@ export const updateFinishedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5470,6 +5555,7 @@ export const updateFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5492,6 +5578,7 @@ export const updateFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5514,6 +5601,7 @@ export const updateFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5694,6 +5782,8 @@ export const deleteFinishedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5732,6 +5822,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5754,6 +5845,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5776,6 +5868,7 @@ export const deleteFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5893,6 +5986,8 @@ export const createComment = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5931,6 +6026,7 @@ export const createComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5953,6 +6049,7 @@ export const createComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5975,6 +6072,7 @@ export const createComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6203,6 +6301,8 @@ export const createComment = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -6291,6 +6391,8 @@ export const updateComment = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6329,6 +6431,7 @@ export const updateComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6351,6 +6454,7 @@ export const updateComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6373,6 +6477,7 @@ export const updateComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6601,6 +6706,8 @@ export const updateComment = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -6689,6 +6796,8 @@ export const deleteComment = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6727,6 +6836,7 @@ export const deleteComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6749,6 +6859,7 @@ export const deleteComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6771,6 +6882,7 @@ export const deleteComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6999,6 +7111,8 @@ export const deleteComment = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7591,6 +7705,8 @@ export const createRating = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -7629,6 +7745,7 @@ export const createRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7651,6 +7768,7 @@ export const createRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7673,6 +7791,7 @@ export const createRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7846,6 +7965,8 @@ export const updateRating = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -7884,6 +8005,7 @@ export const updateRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7906,6 +8028,7 @@ export const updateRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7928,6 +8051,7 @@ export const updateRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8101,6 +8225,8 @@ export const deleteRating = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -8139,6 +8265,7 @@ export const deleteRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8161,6 +8288,7 @@ export const deleteRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8183,6 +8311,7 @@ export const deleteRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8603,6 +8732,8 @@ export const createStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -8641,6 +8772,7 @@ export const createStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8663,6 +8795,7 @@ export const createStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8685,6 +8818,7 @@ export const createStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8800,6 +8934,8 @@ export const updateStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -8838,6 +8974,7 @@ export const updateStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8860,6 +8997,7 @@ export const updateStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8882,6 +9020,7 @@ export const updateStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -8997,6 +9136,8 @@ export const deleteStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -9035,6 +9176,7 @@ export const deleteStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9057,6 +9199,7 @@ export const deleteStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9079,6 +9222,7 @@ export const deleteStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9194,6 +9338,8 @@ export const createEroticStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -9232,6 +9378,7 @@ export const createEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9254,6 +9401,7 @@ export const createEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9276,6 +9424,7 @@ export const createEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9391,6 +9540,8 @@ export const updateEroticStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -9429,6 +9580,7 @@ export const updateEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9451,6 +9603,7 @@ export const updateEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9473,6 +9626,7 @@ export const updateEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9588,6 +9742,8 @@ export const deleteEroticStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -9626,6 +9782,7 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9648,6 +9805,7 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -9670,6 +9828,7 @@ export const deleteEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram

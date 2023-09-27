@@ -130,6 +130,8 @@ export const getUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -182,6 +184,7 @@ export const getUser = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -348,6 +351,7 @@ export const getCreatorProfile = /* GraphQL */ `
       imageUri
       bio
       penName
+      penNameLowerCase
       email
       website
       instagram
@@ -364,6 +368,8 @@ export const getCreatorProfile = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -454,6 +460,7 @@ export const listCreatorProfiles = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -648,6 +655,7 @@ export const getFollowConnection = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -752,6 +760,7 @@ export const listFollowConnections = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -779,6 +788,8 @@ export const getStory = /* GraphQL */ `
       createdAt
       updatedAt
       title
+      titleLowerCase
+      titleLowerCaseNoThe
       imageUri
       audioUri
       publisher {
@@ -879,6 +890,7 @@ export const getStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -935,6 +947,7 @@ export const getStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -991,6 +1004,7 @@ export const getStory = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1157,6 +1171,7 @@ export const getStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1204,6 +1219,8 @@ export const listStories = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -1242,6 +1259,7 @@ export const listStories = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1264,6 +1282,7 @@ export const listStories = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1286,6 +1305,7 @@ export const listStories = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1506,6 +1526,8 @@ export const getSeries = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -1571,6 +1593,7 @@ export const getSeries = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -1633,6 +1656,7 @@ export const listSeries = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1859,6 +1883,8 @@ export const getPinnedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -1897,6 +1923,7 @@ export const getPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1919,6 +1946,7 @@ export const getPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -1941,6 +1969,7 @@ export const getPinnedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2068,6 +2097,8 @@ export const listPinnedStories = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -2178,6 +2209,8 @@ export const getInProgressStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -2216,6 +2249,7 @@ export const getInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2238,6 +2272,7 @@ export const getInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2260,6 +2295,7 @@ export const getInProgressStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2392,6 +2428,8 @@ export const listInProgressStories = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -2505,6 +2543,8 @@ export const getFinishedStory = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -2543,6 +2583,7 @@ export const getFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2565,6 +2606,7 @@ export const getFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2587,6 +2629,7 @@ export const getFinishedStory = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2733,6 +2776,8 @@ export const listFinishedStories = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -2791,6 +2836,8 @@ export const getComment = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -2829,6 +2876,7 @@ export const getComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2851,6 +2899,7 @@ export const getComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -2873,6 +2922,7 @@ export const getComment = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3101,6 +3151,8 @@ export const getComment = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -3191,6 +3243,8 @@ export const listComments = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -3558,6 +3612,8 @@ export const getRating = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -3596,6 +3652,7 @@ export const getRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3618,6 +3675,7 @@ export const getRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3640,6 +3698,7 @@ export const getRating = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -3815,6 +3874,8 @@ export const listRatings = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -4031,6 +4092,8 @@ export const getStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4069,6 +4132,7 @@ export const getStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4091,6 +4155,7 @@ export const getStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4113,6 +4178,7 @@ export const getStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4230,6 +4296,8 @@ export const listStoryTags = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -4286,6 +4354,8 @@ export const getEroticStoryTag = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -4324,6 +4394,7 @@ export const getEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4346,6 +4417,7 @@ export const getEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4368,6 +4440,7 @@ export const getEroticStoryTag = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -4485,6 +4558,8 @@ export const listEroticStoryTags = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -4753,6 +4828,85 @@ export const creatorsByType = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
+        email
+        website
+        instagram
+        tikTok
+        facebook
+        deviantArt
+        reddit
+        youTube
+        numAuthored
+        stories {
+          nextToken
+          __typename
+        }
+        followers {
+          nextToken
+          __typename
+        }
+        numFollowers
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const creatorsByName = /* GraphQL */ `
+  query CreatorsByName(
+    $type: String!
+    $penNameLowerCase: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCreatorProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    creatorsByName(
+      type: $type
+      penNameLowerCase: $penNameLowerCase
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        imageUri
+        bio
+        penName
+        penNameLowerCase
         email
         website
         instagram
@@ -4830,6 +4984,7 @@ export const creatorProfilesByUser = /* GraphQL */ `
         imageUri
         bio
         penName
+        penNameLowerCase
         email
         website
         instagram
@@ -4941,6 +5096,7 @@ export const connectionsByFollower = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5046,6 +5202,7 @@ export const connectionsByAuthor = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5151,6 +5308,7 @@ export const connectionsByCreator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5193,6 +5351,8 @@ export const storiesByDate = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5231,6 +5391,7 @@ export const storiesByDate = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5253,6 +5414,7 @@ export const storiesByDate = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5275,6 +5437,7 @@ export const storiesByDate = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5380,6 +5543,8 @@ export const storiesByUpdated = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5418,6 +5583,7 @@ export const storiesByUpdated = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5440,6 +5606,7 @@ export const storiesByUpdated = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5462,6 +5629,7 @@ export const storiesByUpdated = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5546,16 +5714,16 @@ export const storiesByUpdated = /* GraphQL */ `
 `;
 export const storiesByTitle = /* GraphQL */ `
   query StoriesByTitle(
-    $title: String!
-    $createdAt: ModelStringKeyConditionInput
+    $type: String!
+    $titleLowerCase: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelStoryFilterInput
     $limit: Int
     $nextToken: String
   ) {
     storiesByTitle(
-      title: $title
-      createdAt: $createdAt
+      type: $type
+      titleLowerCase: $titleLowerCase
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -5567,6 +5735,8 @@ export const storiesByTitle = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5605,6 +5775,7 @@ export const storiesByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5627,6 +5798,7 @@ export const storiesByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5649,6 +5821,199 @@ export const storiesByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        illustratorID
+        author
+        narrator
+        artist
+        time
+        summary
+        description
+        nsfw
+        comments {
+          nextToken
+          __typename
+        }
+        numComments
+        tags {
+          nextToken
+          __typename
+        }
+        eroticTags {
+          nextToken
+          __typename
+        }
+        ratingAvg
+        ratingAmt
+        ratings {
+          nextToken
+          __typename
+        }
+        reactions {
+          nextToken
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        hidden
+        status
+        numListens
+        approved
+        seriesID
+        series {
+          id
+          type
+          createdAt
+          updatedAt
+          name
+          genreID
+          creatorID
+          __typename
+        }
+        seriesPart
+        premium
+        contributors {
+          nextToken
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const storiesByTitleLower = /* GraphQL */ `
+  query StoriesByTitleLower(
+    $type: String!
+    $titleLowerCaseNoThe: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByTitleLower(
+      type: $type
+      titleLowerCaseNoThe: $titleLowerCaseNoThe
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        title
+        titleLowerCase
+        titleLowerCaseNoThe
+        imageUri
+        audioUri
+        publisher {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        publisherID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          penNameLowerCase
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        creatorID
+        narratorProfile {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          penNameLowerCase
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        narratorID
+        illustrator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5754,6 +6119,8 @@ export const storiesByPublisher = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5792,6 +6159,7 @@ export const storiesByPublisher = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5814,6 +6182,7 @@ export const storiesByPublisher = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5836,6 +6205,7 @@ export const storiesByPublisher = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -5941,6 +6311,8 @@ export const storiesByCreator = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -5979,6 +6351,7 @@ export const storiesByCreator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6001,6 +6374,7 @@ export const storiesByCreator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6023,6 +6397,7 @@ export const storiesByCreator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6128,6 +6503,8 @@ export const storiesByNarrator = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6166,6 +6543,7 @@ export const storiesByNarrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6188,6 +6566,7 @@ export const storiesByNarrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6210,6 +6589,7 @@ export const storiesByNarrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6315,6 +6695,8 @@ export const storiesByIllustrator = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6353,6 +6735,7 @@ export const storiesByIllustrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6375,6 +6758,7 @@ export const storiesByIllustrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6397,6 +6781,7 @@ export const storiesByIllustrator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6502,6 +6887,8 @@ export const storiesByGenre = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6540,6 +6927,7 @@ export const storiesByGenre = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6562,6 +6950,7 @@ export const storiesByGenre = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6584,6 +6973,7 @@ export const storiesByGenre = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6689,6 +7079,8 @@ export const storiesByGenreByTitle = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6727,6 +7119,7 @@ export const storiesByGenreByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6749,6 +7142,7 @@ export const storiesByGenreByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6771,6 +7165,7 @@ export const storiesByGenreByTitle = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6876,6 +7271,8 @@ export const storiesBySeries = /* GraphQL */ `
         createdAt
         updatedAt
         title
+        titleLowerCase
+        titleLowerCaseNoThe
         imageUri
         audioUri
         publisher {
@@ -6914,6 +7311,7 @@ export const storiesBySeries = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6936,6 +7334,7 @@ export const storiesBySeries = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -6958,6 +7357,7 @@ export const storiesBySeries = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7120,6 +7520,7 @@ export const seriesByGenre = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7187,6 +7588,7 @@ export const seriesByCreator = /* GraphQL */ `
           imageUri
           bio
           penName
+          penNameLowerCase
           email
           website
           instagram
@@ -7257,6 +7659,45 @@ export const tagsByUpdated = /* GraphQL */ `
     tagsByUpdated(
       type: $type
       updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        updatedAt
+        createdAt
+        type
+        tagName
+        genre {
+          nextToken
+          __typename
+        }
+        stories {
+          nextToken
+          __typename
+        }
+        count
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const tagsByTitle = /* GraphQL */ `
+  query TagsByTitle(
+    $type: String!
+    $tagName: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    tagsByTitle(
+      type: $type
+      tagName: $tagName
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -7494,6 +7935,8 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7511,6 +7954,12 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            genre
+            icon
+            color
+          }
           hidden
           status
           numListens
@@ -7583,6 +8032,8 @@ export const inProgressStoriesByUpdated = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7673,6 +8124,8 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7771,6 +8224,8 @@ export const finishedStoriesByDate = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7871,6 +8326,8 @@ export const finishedStoriesByUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -7977,6 +8434,8 @@ export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8077,6 +8536,8 @@ export const finishedStoriesByGenre = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8150,6 +8611,8 @@ export const commentsByCreated = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8264,6 +8727,8 @@ export const commentsByStory = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8329,9 +8794,9 @@ export const commentsByStory = /* GraphQL */ `
           storyID
           reactionTypeID
           reactionType {
-              id
-              reaction
-              icon
+            id
+            reaction
+            icon
           }
           __typename
         }
@@ -8477,6 +8942,8 @@ export const ratingsByUpdated = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8578,6 +9045,8 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8679,6 +9148,8 @@ export const ratingsByUser = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8844,6 +9315,8 @@ export const storyTagsByStoryId = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8913,6 +9386,8 @@ export const storyTagsByTagId = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -8988,6 +9463,8 @@ export const eroticStoryTagsByStoryId = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID
@@ -9057,6 +9534,8 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           createdAt
           updatedAt
           title
+          titleLowerCase
+          titleLowerCaseNoThe
           imageUri
           audioUri
           publisherID

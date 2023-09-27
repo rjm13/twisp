@@ -30,7 +30,7 @@ const InProgressList = () => {
 
         const InProgress = []
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
 
             setIsLoading(true);
 
@@ -46,23 +46,24 @@ const InProgressList = () => {
                 if (progressData.data.inProgressStoriesByUser.items.length > 0) {
                     for (let i = 0; i < progressData.data.inProgressStoriesByUser.items.length; i++) {
                         InProgress.push(progressData.data.inProgressStoriesByUser.items[i])  
-                    } 
-                    
-                    if (progressData.data.inProgressStoriesByUser.nextToken) {
-                        setNextToken(progressData.data.inProgressStoriesByUser.nextToken)
-                        fetchStories();
-                        return;
-                    }
+                    }    
+                }
+
+                if (progressData.data.inProgressStoriesByUser.nextToken) {
+                    fetchStories(progressData.data.inProgressStoriesByUser.nextToken);
+                }
+
+                if (progressData.data.inProgressStoriesByUser.nextToken === null) {
+                    setInProgressStories(InProgress);
                 }
                    
-                setInProgressStories(InProgress);
                 setIsLoading(false);
               
             } catch (e) {
             console.log(e);
           }
         }
-           fetchStories(); 
+           fetchStories(null); 
       }, [didUpdate])
 
 

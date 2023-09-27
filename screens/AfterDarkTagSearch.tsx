@@ -38,30 +38,33 @@ const AfterDarkTagSearch = ({navigation} : any) => {
 
         let stories = []
 
-        const fetchTags = async () => {
+        const fetchTags = async (nextToken : any) => {
             let response = await API.graphql(graphqlOperation(
                 eroticStoryTagsByEroticTagId, {
+                    nextToken,
                     eroticTagId: mainTag,
                 }
             ))
 
-            console.log(response.data.eroticStoryTagsByEroticTagId.items[0])
-
-
-            if (response.data.eroticStoryTagsByEroticTagId.items.length > 0) {
-                for(let i = 0; i < response.data.eroticStoryTagsByEroticTagId.items.length; i++) {
+            for(let i = 0; i < response.data.eroticStoryTagsByEroticTagId.items.length; i++) {
+                if (response.data.eroticStoryTagsByEroticTagId.items[i].story.type === 'EroticStory') {
                     if (response.data.eroticStoryTagsByEroticTagId.items[i].story.hidden === false) {
-                        
-                            stories.push(response.data.eroticStoryTagsByEroticTagId.items[i].story)
-                        
-                    }   
+                        stories.push(response.data.eroticStoryTagsByEroticTagId.items[i].story)
+                    }  
                 }
+                 
             }
 
-            setSearchedStories(stories)
+            if (response.data.eroticStoryTagsByEroticTagId.nextToken) {
+                fetchTags(response.data.eroticStoryTagsByEroticTagId.nextToken)
+            }
+
+            if (response.data.eroticStoryTagsByEroticTagId.nextToken === null) {
+                setSearchedStories(stories)
+            }
 
         }
-        fetchTags()
+        fetchTags(null)
     }, [])
 
     const renderItem = ({ item } : any) => {
@@ -101,7 +104,7 @@ const AfterDarkTagSearch = ({navigation} : any) => {
     return (
         <View >
           <LinearGradient
-          colors={['#363636','#2f217966', '#000']}
+          colors={['#363636','#17171766', '#000']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
@@ -118,7 +121,7 @@ const AfterDarkTagSearch = ({navigation} : any) => {
                 </TouchableWithoutFeedback>
                 
                 <View style={{marginLeft: 40}}>
-                    <Text style={{color: 'magenta', fontSize: 22 }}>
+                    <Text style={{color: 'magenta', fontSize: 24 }}>
                         #{tagName}
                     </Text>
                 </View>

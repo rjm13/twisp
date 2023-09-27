@@ -45,7 +45,7 @@ const FollowingScreen = ({navigation} : any) => {
 //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-        const fetchUser = async () => {
+        const fetchUser = async (nextToken : any) => {
 
             let Following = []
 
@@ -66,17 +66,19 @@ const FollowingScreen = ({navigation} : any) => {
                 }
                 
                 if (userData.data.connectionsByFollower.nextToken) {
-                    setNextToken(userData.data.connectionsByFollower.nextToken)
-                    fetchUser();
-                    return;
+                    fetchUser(userData.data.connectionsByFollower.nextToken);
                 }
 
-              setUsers(Following);
+                if (userData.data.connectionsByFollower.nextToken === null) {
+                    setUsers(Following);
+                }
+
+              
             } catch (e) {
             console.log(e);
           }
         }
-        fetchUser();
+        fetchUser(null);
       }, [didUpdate])
 
     //legacy function for selected the state toggle between followers and following

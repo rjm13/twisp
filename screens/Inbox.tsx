@@ -27,24 +27,36 @@ const Inbox = ({navigation} : any) => {
     const [currentUserID, setCurrentUserID] = useState()
 
     useEffect(() => {
-        let getMessages = async () => {
 
+        let arr = []
+
+        const getMessages = async (nextToken : any) => {
 
             const userInfo = await Auth.currentAuthenticatedUser();
 
             setCurrentUserID(userInfo.attributes.sub)
 
             const response = await API.graphql(graphqlOperation(
-                messagesByUser, {receiverID: userInfo.attributes.sub}
+                messagesByUser, {
+                    nextToken,
+                    sortDirection: 'DESC',
+                    receiverID: userInfo.attributes.sub
+                }
             ))
 
-            let arr = response.data.messagesByUser.items
+            for (let i = 0; i < response.data.messagesByUser.items.length; i++) {
+                arr.push(response.data.messagesByUser.items[i])
+            }
 
-            let sortmess = arr.sort((a, b) => a.updatedAt < b.updatedAt ? 1 : -1)
+            if (response.data.messagesByUser.nextToken) {
+                getMessages(response.data.messagesByUser.nextToken)
+            }
 
-            setMessages(sortmess)
+            if (response.data.messagesByUser.nextToken === null) {
+                setMessages(arr)
+            }
         }
-        getMessages();
+        getMessages(null);
     }, [didUpdate])
 
     const Item = ({index, id, title, content, psuedonym, subtitle, userID, createdAt, isReadByReceiver} : any) => {

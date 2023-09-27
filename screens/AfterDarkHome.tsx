@@ -16,7 +16,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { getGenre, eroticaTagsByGenreId } from '../src/graphql/queries';
+import { eroticaTagsByGenreId } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 import ForYouAfterDark from '../components/lists/ForYouAfterDark';

@@ -201,7 +201,7 @@ const EditAuthorProfile = ({navigation} : any) => {
 
         if ( Pseudonym.length !== 0 ) {
 
-            const updatedUser = { id: user?.id, penName: Pseudonym.toLowerCase() }
+            const updatedUser = { id: user?.id, penName: Pseudonym, penNameLowerCase: Pseudonym.toLowerCase() }
 
             let result = await API.graphql(graphqlOperation(
                 updateCreatorProfile, { input: updatedUser }

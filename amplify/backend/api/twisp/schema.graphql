@@ -40,7 +40,9 @@ type User @model @auth(rules: [{ allow: private, operations: [create, delete, up
 type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, delete, update, read]}])
 {
     id: ID!
-    type: String @index(name: "creatorsByType", queryField: "creatorsByType", sortKeyFields: ["updatedAt"]  )
+    type: String 
+      @index(name: "creatorsByType", queryField: "creatorsByType", sortKeyFields: ["updatedAt"]  )
+      @index(name: "creatorsByName", queryField: "creatorsByName", sortKeyFields: ["penNameLowerCase"]  )
     createdAt: String
     updatedAt: String
     userID: ID @index(name: "byCreatorProfile", queryField: "creatorProfilesByUser", sortKeyFields: ["createdAt"])
@@ -48,6 +50,7 @@ type CreatorProfile @model @auth(rules: [{ allow: private, operations: [create, 
     imageUri: String
     bio: String
     penName: String
+    penNameLowerCase: String
     email: String
     website: String
     instagram: String
@@ -82,9 +85,13 @@ type Story @model @auth(rules: [{ allow: private, operations: [create, delete, u
   type: String 
     @index(name: "storiesByDate", queryField: "storiesByDate", sortKeyFields: ["createdAt"]  )
     @index(name: "storiesByUpdated", queryField: "storiesByUpdated", sortKeyFields: ["updatedAt"]  )
+    @index(name: "storiesByTitle", queryField: "storiesByTitle", sortKeyFields: ["titleLowerCase"]  )
+    @index(name: "storiesByTitleLower", queryField: "storiesByTitleLower", sortKeyFields: ["titleLowerCaseNoThe"]  )
   createdAt: String
   updatedAt: String
-  title: String! @index(name: "storiesByTitle", queryField: "storiesByTitle", sortKeyFields: ["createdAt"]  )
+  title: String!
+  titleLowerCase: String #this is backwards with titlelowercasenothe
+  titleLowerCaseNoThe: String #this is backwards with titlelowercase
   imageUri: String
   audioUri: String!
   publisher: User @hasOne (fields: ["publisherID"])
@@ -169,6 +176,7 @@ type Tag @model @auth(rules: [{ allow: private, operations: [create, delete, upd
     type: String 
       @index(name: "tagsByCreated", queryField: "tagsByCreated", sortKeyFields: ["createdAt"])
       @index(name: "tagsByUpdated", queryField: "tagsByUpdated", sortKeyFields: ["updatedAt"])
+      @index(name: "tagsByTitle", queryField: "tagsByTitle", sortKeyFields: ["tagName"]  )
     tagName: String! @index(name: "tagsByName", queryField: "tagsByName", sortKeyFields: ["createdAt"])
     genre: [Genre] @manyToMany (relationName: "GenreTag")
     stories: [Story] @manyToMany(relationName: "StoryTag")
@@ -219,7 +227,7 @@ type InProgressStory @model @auth( rules: [{ allow: private, operations: [create
 type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, delete, update, read]}])
 {
   id: ID!
-  type: String @index(name: "finishedStoriesByDate", queryField: "finishedStoriesByDate", sortKeyFields: [ "createdAt" ])
+  type: String @index(name: "finishedStoriesByDate", queryField: "finishedStoriesByDate", sortKeyFields: ["createdAt"])
   createdAt: String 
   updatedAt: String
   userID: ID @index(name: "byUser", queryField: "finishedStoriesByUser", sortKeyFields: ["createdAt"])

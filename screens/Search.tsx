@@ -20,8 +20,9 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import StoryTile from '../components/StoryTile';
 import { AppContext } from '../AppContext';
 
-import {listStories, listTags, creatorsByType } from '../src/graphql/queries';
+import {storiesByTitle, storiesByTitleLower, listTags, creatorsByType } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 const SearchScreen = ({navigation} : any) => {
 
@@ -101,11 +102,13 @@ const SearchScreen = ({navigation} : any) => {
 
       let search = newSearch ? newSearch.toLowerCase() : null
 
+      let arr = [];
+
         if (newSearch !== '') {
-            const fetchTags = async () => {
+            const fetchTags = async (nextToken : any) => {
                 const tagResults = await API.graphql(graphqlOperation(
                     listTags, {
-                        tagToken,
+                        nextToken,
                         filter: {
                             tagName: {
                                 contains: search
@@ -113,10 +116,21 @@ const SearchScreen = ({navigation} : any) => {
                         }
                     }
                 ))
-                //setTagToken(tagResults.data.listTags.nextToken)
-                setTagsArray(tagResults.data.listTags.items)
+
+                for (let i = 0; i < tagResults.data.listTags.items.length; i++) {
+                  arr.push(tagResults.data.listTags.items[i])
+                }
+
+                if (tagResults.data.listTags.nextToken) {
+                  fetchTags(tagResults.data.listTags.nextToken);
+                }
+
+                if (tagResults.data.listTags.nextToken === null) {
+                  setTagsArray(arr)
+                }
+                
             }
-            fetchTags();
+            fetchTags(null);
         }
     },[didUpdate])
 
@@ -125,16 +139,19 @@ const SearchScreen = ({navigation} : any) => {
 
       let arr = []
 
+      let count = 0;
+
       let search = newSearch ? newSearch.toLowerCase() : null
 
-      if (newSearch !== '') {
-          const fetchAuthors = async () => {
+      console.log('search is', search)
+
+          const fetchAuthors = async (nextToken : any) => {
               const authorResults = await API.graphql(graphqlOperation(
                   creatorsByType, {
-                    authorToken,
+                    nextToken,
                     type: "Author",
                     filter: {
-                      penName: {
+                      penNameLowerCase: {
                         contains: search
                       }
                     }
@@ -142,22 +159,27 @@ const SearchScreen = ({navigation} : any) => {
                
               ))
 
-              setAuthorToken(authorResults.data.creatorsByType.nextToken)
-
               for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
-                arr.push(authorResults.data.creatorsByType.items[i])
+                if (count < 3) {
+                  arr.push(authorResults.data.creatorsByType.items[i])
+                  count++
+                }
               }
 
-              if (authorResults.data.creatorsByType.nextToken) {
-                fetchAuthors();
-                return;
+              if (authorResults.data.creatorsByType.nextToken && count < 3) {
+                fetchAuthors(authorResults.data.creatorsByType.nextToken)
               }
+
               if (authorResults.data.creatorsByType.nextToken === null) {
                 setAuthorArray(arr)
               }
+
+              if (count === 3 ) {
+                setAuthorArray(arr)
+              }
           }
-          fetchAuthors();
-      }
+          fetchAuthors(null);
+      
   },[didUpdate])
 
     const [nextToken, setNextToken] = useState(null)
@@ -165,58 +187,93 @@ const SearchScreen = ({navigation} : any) => {
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-      let search = newSearch ? newSearch.toLowerCase() : null
+      let search = newSearch ? newSearch.toLowerCase() : ''
 
-      const fetchStories = async () => {
+      let arr = [];
 
-          if (search?.length > 2 ) {
+    const fetchStories = async (nextToken : any) => {
+
+          if (search?.length > 1 ) {
 
           try {
 
-              const searchResults = await API.graphql(graphqlOperation(
-                  listStories, {
-                      nextToken,
-                      filter: {
-                        or: [
-                          {title: {
-                              contains: newSearch
-                          },
-                          type: {
-                            eq: 'Story'
-                          },
-                          approved: {
-                              eq: true
-                          },
-                          hidden: {
-                              eq: false
-                          },
-                          nsfw: {
-                            ne: nsfwOn === true ? true : null
-                          }
-                        },
-                          {summary: {
-                            contains: newSearch
-                            },
-                            type: {
-                              eq: 'Story'
-                            },
-                            approved: {
-                                eq: true
-                            },
-                            hidden: {
-                                eq: false
-                            },
-                            nsfw: {
-                              ne: nsfwOn === true ? true : null
-                            }
-                        }
-                        ]
-                      }
-              }))
+            const searchResults = await API.graphql(graphqlOperation(
+              storiesByTitle, {
+                nextToken,
+                type: 'Story',
+                titleLowerCase: {
+                  beginsWith: search
+                },
+                filter: {
+                  approved: {
+                    eq: true
+                  },
+                  hidden: {
+                    eq: false
+                  },
+                  nsfw: {
+                    ne: nsfwOn === true ? true : null
+                  },
+                }
+              }
+            ))
+
+            console.log(searchResults.data.storiesByTitle.items)
+
+              // const searchResults = await API.graphql(graphqlOperation(
+              //     listStories, {
+              //         nextToken,
+              //         filter: {
+              //           or: [
+              //             {title: {
+              //                 contains: newSearch
+              //             },
+              //             type: {
+              //               eq: 'Story'
+              //             },
+              //             approved: {
+              //                 eq: true
+              //             },
+              //             hidden: {
+              //                 eq: false
+              //             },
+              //             nsfw: {
+              //               ne: nsfwOn === true ? true : null
+              //             }
+              //           },
+              //             {summary: {
+              //               contains: newSearch
+              //               },
+              //               type: {
+              //                 eq: 'Story'
+              //               },
+              //               approved: {
+              //                   eq: true
+              //               },
+              //               hidden: {
+              //                   eq: false
+              //               },
+              //               nsfw: {
+              //                 ne: nsfwOn === true ? true : null
+              //               }
+              //           }
+              //           ]
+              //         }
+              // }))
+
+            for (let i = 0; i < searchResults.data.storiesByTitle.items.length; i++) {
+                  arr.push(searchResults.data.storiesByTitle.items[i])
+                }
               
-              setNextToken(searchResults.data.listStories.nextToken)
+            if (searchResults.data.storiesByTitle.nextToken) {
+              fetchStories(searchResults.data.storiesByTitle.nextToken)
+              console.log('theres a token')
+            }
+
+            if (searchResults.data.storiesByTitle.nextToken === null) {
+              setSearchedStories(arr);
+            }
               
-              setSearchedStories(searchedStories.concat(searchResults.data.listStories.items));
 
           } catch (e) {
           console.log(e);
@@ -225,7 +282,47 @@ const SearchScreen = ({navigation} : any) => {
         return;
       }
     }
-        fetchStories(); 
+
+    const fetchMoreStories = async (nextToken : any) => {
+        const searchResultsTwice = await API.graphql(graphqlOperation(
+          storiesByTitleLower, {
+            nextToken,
+            type: 'Story',
+            titleLowerCaseNoThe: {
+              beginsWith: search
+            },
+            filter: {
+              approved: {
+                eq: true
+              },
+              hidden: {
+                eq: false
+              },
+              nsfw: {
+                ne: nsfwOn === true ? true : null
+              },
+            }
+        }))
+
+        for (let i = 0; i < searchResultsTwice.data.storiesByTitleLower.items.length; i++) {
+          arr.push(searchResultsTwice.data.storiesByTitleLower.items[i])
+        }
+
+        if (searchResultsTwice.data.storiesByTitleLower.nextToken) {
+          fetchMoreStories(searchResultsTwice.data.storiesByTitleLower.nextToken)
+        }
+
+        if (searchResultsTwice.data.storiesByTitleLower.nextToken === null) {
+          setSearchedStories(arr);
+        }
+    
+    }
+    
+    fetchStories(null); 
+
+    if (search.startsWith('the ' || search.startsWith('a '))) {
+      fetchMoreStories(null)
+    }
     
     }, [didUpdate])
 
@@ -301,11 +398,11 @@ const SearchScreen = ({navigation} : any) => {
                 ListFooterComponent={ () => {
                     return (
                         <View style={{ height:  150, alignItems: 'center', marginTop: 40}}>
-                            <TouchableOpacity onPress={() => setDidUpdate(!didUpdate)}>
+                            {/* <TouchableOpacity onPress={() => setDidUpdate(!didUpdate)}>
                               <Text style={{color: '#fff'}}>
                                 {nextToken ? 'Load More' : null}
                               </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                 );}}
                 ListHeaderComponent={ () => {
@@ -380,10 +477,10 @@ const SearchScreen = ({navigation} : any) => {
                                                         <View style={{flexDirection: 'row'}}>
                                                           <Image 
                                                             source={imageUri ? {uri: imageU} : require('../assets/blankprofile.png')}
-                                                            style={{height: 100, width: 100, borderRadius: 10}}
+                                                            style={{height: 60, width: 60, borderRadius: 10}}
                                                           />
                                                           <View style={{marginLeft: 10}}>
-                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: Dimensions.get('window').width*0.55}}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: Dimensions.get('window').width*0.66}}>
                                                               <Text numberOfLines={1} style={{color: '#fff', fontSize: 16, fontWeight: '700', flexWrap: 'wrap'}}>
                                                                 {penName}
                                                               </Text>
@@ -396,7 +493,7 @@ const SearchScreen = ({navigation} : any) => {
                                                               
                                                             </View>
                                                             
-                                                            <Text numberOfLines={5} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.54, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
+                                                            <Text numberOfLines={3} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.66, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
                                                               {bio}
                                                             </Text>
                                                           </View>

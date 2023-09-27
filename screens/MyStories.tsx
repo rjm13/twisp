@@ -167,11 +167,11 @@ const MyStories = ({navigation} : any) => {
     //on render, list the stories for that user
     useEffect(() => {
 
-        const fetchStories = async () => {
+        let storiesarr = []
 
-            let storiesarr = []
+        setIsLoading(true);
 
-            setIsLoading(true);
+        const fetchStories = async (nextToken : any) => {
 
             const userInfo = await Auth.currentAuthenticatedUser();
 
@@ -181,6 +181,7 @@ const MyStories = ({navigation} : any) => {
 
                 const userStories = await API.graphql(graphqlOperation(
                     storiesByPublisher, {
+                        nextToken,
                         publisherID: userInfo.attributes.sub
                 }))
 
@@ -188,15 +189,21 @@ const MyStories = ({navigation} : any) => {
                     storiesarr.push(userStories.data.storiesByPublisher.items[i])
                 }
 
-                setStories(storiesarr);
-                
+                if (userStories.data.storiesByPublisher.nextToken) {
+                    setStories(userStories.data.storiesByPublisher.nextToken);
+                }
+
+                if (userStories.data.storiesByPublisher.nextToken === null) {
+                    setStories(storiesarr);
+                }
+
                 setIsLoading(false);
 
             } catch (e) {
             console.log(e);
           }
         }
-           fetchStories(); 
+           fetchStories(null); 
       }, [didUpdate])
 
     const [isFetching, setIsFetching] = useState(false);

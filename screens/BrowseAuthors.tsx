@@ -75,14 +75,13 @@ const BrowseAuthor = ({navigation} : any) => {
   
         let search = searchQ ? searchQ.toLowerCase() : null
   
-        if (searchParam !== '') {
-            const fetchAuthors = async () => {
+            const fetchAuthors = async (nextToken : any) => {
                 const authorResults = await API.graphql(graphqlOperation(
                     creatorsByType, {
-                      authorToken,
+                      nextToken,
                       type: "Author",
                       filter: {
-                        penName: {
+                        penNameLowerCase: {
                           contains: search
                         }
                       }
@@ -90,24 +89,20 @@ const BrowseAuthor = ({navigation} : any) => {
                  
                 ))
   
-                setAuthorToken(authorResults.data.creatorsByType.nextToken)
-  
-                console.log(authorResults.data.creatorsByType)
-  
                 for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
                   arr.push(authorResults.data.creatorsByType.items[i])
                 }
   
                 if (authorResults.data.creatorsByType.nextToken) {
-                  fetchAuthors();
-                  return;
+                  fetchAuthors(authorResults.data.creatorsByType.nextToken);
                 }
+
                 if (authorResults.data.creatorsByType.nextToken === null) {
                   setAuthorArray(arr)
                 }
             }
-            fetchAuthors();
-        }
+            fetchAuthors(null);
+        
     },[didUpdate, searchQ])
 
       //search bar

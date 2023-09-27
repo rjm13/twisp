@@ -25,7 +25,7 @@ import useStyles from '../styles';
 
 import { API, graphqlOperation, Auth } from "aws-amplify";
 import { creatorProfilesByUser } from '../src/graphql/queries';
-import { updateUser, createCreatorProfile } from '../src/graphql/mutations';
+import { createCreatorProfile } from '../src/graphql/mutations';
 
 const IllustratorProfileSelect = ({navigation} : any) => {
 
@@ -88,6 +88,9 @@ useEffect(() => {
         setCreateModal(false);
 
         if (name.length > 1) {
+
+            let lowername = name.toLowerCase()
+
            try {
                 const userInfo = await Auth.currentAuthenticatedUser();
 
@@ -97,7 +100,8 @@ useEffect(() => {
                         userID: userInfo.attributes.sub,
                         penName: name,
                         numAuthored: 0,
-                        numFollowers: 0
+                        numFollowers: 0,
+                        penNameLowerCase: lowername,
                     }}
                 ))
 

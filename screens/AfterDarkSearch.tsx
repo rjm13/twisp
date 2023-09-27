@@ -19,7 +19,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import StoryTile from '../components/StoryTile';
 import { AppContext } from '../AppContext';
 
-import {listStories, listEroticTags, creatorsByType } from '../src/graphql/queries';
+import {storiesByTitleLower, storiesByTitle, listEroticTags, creatorsByType } from '../src/graphql/queries';
 import {graphqlOperation, API, Storage} from 'aws-amplify';
 
 const AfterDarkSearch = ({navigation} : any) => {
@@ -29,7 +29,7 @@ const AfterDarkSearch = ({navigation} : any) => {
     const { ADon } = useContext(AppContext);
 
   //search function states
-    const [newSearch, setNewSearch] = useState();
+    const [newSearch, setNewSearch] = useState('');
 
     //search function trigger that refreshes the search results
     const [didUpdate, setDidUpdate] = useState(false);
@@ -60,8 +60,8 @@ const AfterDarkSearch = ({navigation} : any) => {
               placeholderTextColor='#000000a5'
               //autoComplete={true}
               onChangeText={onChangeSearch}
-              onIconPress={() => {setNewSearch(searchQuery); setSearchedStories([]); setNextToken(null); setDidUpdate(!didUpdate); }}
-              onSubmitEditing={() => {setNewSearch(searchQuery); setSearchedStories([]); setNextToken(null); setDidUpdate(!didUpdate);}}
+              onIconPress={() => {setNewSearch(searchQuery); setSearchedStories([]); setDidUpdate(!didUpdate); }}
+              onSubmitEditing={() => {setNewSearch(searchQuery); setSearchedStories([]); setDidUpdate(!didUpdate);}}
               value={searchQuery}
               ref={focus}
               maxLength={20}
@@ -97,42 +97,60 @@ const AfterDarkSearch = ({navigation} : any) => {
     const [authorToken, setAuthorToken] = useState(null);
 
 //fetch tags
-    useEffect(() => {
+  useEffect(() => {
 
-        if (newSearch !== '') {
-            const fetchTags = async () => {
-                const tagResults = await API.graphql(graphqlOperation(
-                    listEroticTags, {
-                        tagToken,
-                        filter: {
-                            tagName: {
-                                contains: newSearch.toLowerCase()
-                            },
-                        }
-                    }
-                ))
-                //setTagToken(tagResults.data.listTags.nextToken)
-                setTagsArray(tagResults.data.listEroticTags.items)
-            }
-            fetchTags();
-        }
-    },[didUpdate])
+    let search = newSearch ? newSearch.toLowerCase() : null
+
+    let arr = [];
+
+      if (newSearch !== '') {
+          const fetchTags = async (nextToken : any) => {
+              const tagResults = await API.graphql(graphqlOperation(
+                  listEroticTags, {
+                      nextToken,
+                      filter: {
+                          tagName: {
+                              contains: search
+                          },
+                      }
+                  }
+              ))
+
+              for (let i = 0; i < tagResults.data.listEroticTags.items.length; i++) {
+                arr.push(tagResults.data.listEroticTags.items[i])
+              }
+
+              if (tagResults.data.listEroticTags.nextToken) {
+                fetchTags(tagResults.data.listEroticTags.nextToken);
+              }
+
+              if (tagResults.data.listEroticTags.nextToken === null) {
+                setTagsArray(arr)
+              }
+              
+          }
+          fetchTags(null);
+      }
+  },[didUpdate])
 
     //fetch authors
     useEffect(() => {
 
       let arr = []
 
+      let count = 0;
+
       let search = newSearch ? newSearch.toLowerCase() : null
 
-      if (newSearch !== '') {
-          const fetchAuthors = async () => {
+      console.log('search is', search)
+
+          const fetchAuthors = async (nextToken : any) => {
               const authorResults = await API.graphql(graphqlOperation(
                   creatorsByType, {
-                    authorToken,
+                    nextToken,
                     type: "Author",
                     filter: {
-                      penName: {
+                      penNameLowerCase: {
                         contains: search
                       }
                     }
@@ -140,81 +158,118 @@ const AfterDarkSearch = ({navigation} : any) => {
                
               ))
 
-              setAuthorToken(authorResults.data.creatorsByType.nextToken)
-
-              console.log(authorResults.data.creatorsByType)
-
               for (let i = 0; i < authorResults.data.creatorsByType.items.length; i++) {
-                arr.push(authorResults.data.creatorsByType.items[i])
+                if (count < 3) {
+                  arr.push(authorResults.data.creatorsByType.items[i])
+                  count++
+                }
               }
 
-              if (authorResults.data.creatorsByType.nextToken) {
-                fetchAuthors();
-                return;
+              if (authorResults.data.creatorsByType.nextToken && count < 3) {
+                fetchAuthors(authorResults.data.creatorsByType.nextToken)
               }
+
               if (authorResults.data.creatorsByType.nextToken === null) {
                 setAuthorArray(arr)
               }
+
+              if (count === 3 ) {
+                setAuthorArray(arr)
+              }
           }
-          fetchAuthors();
-      }
+          fetchAuthors(null);
+      
   },[didUpdate])
 
-    const [nextToken, setNextToken] = useState(null)
+   // const [nextToken, setNextToken] = useState(null)
 
     //on render, get the user and then list the following connections for that user
     useEffect(() => {
 
-      const fetchStories = async () => {
+      let search = newSearch ? newSearch.toLowerCase() : ''
 
-          if (newSearch.length > 2 ) {
+      let arr = [];
+
+    const fetchStories = async (nextToken : any) => {
+
+          if (search?.length > 1 ) {
 
           try {
 
-              const searchResults = await API.graphql(graphqlOperation(
-                  listStories, {
-                      nextToken,
-                      filter: {
-                        or: [
-                          {title: {
-                              contains: newSearch
-                          },
-                          type: {
-                            eq: 'EroticStory'
-                          },
-                          approved: {
-                              eq: true
-                          },
-                          hidden: {
-                              eq: false
-                          },
-                          nsfw: {
-                            ne: nsfwOn === true ? true : null
-                          }
-                        },
-                          {summary: {
-                            contains: newSearch
-                            },
-                            type: {
-                              eq: 'EroticStory'
-                            },
-                            approved: {
-                                eq: true
-                            },
-                            hidden: {
-                                eq: false
-                            },
-                            nsfw: {
-                              ne: nsfwOn === true ? true : null
-                            }
-                        }
-                        ]
-                      }
-              }))
+            const searchResults = await API.graphql(graphqlOperation(
+              storiesByTitle, {
+                nextToken,
+                type: 'EroticStory',
+                titleLowerCase: {
+                  beginsWith: search
+                },
+                filter: {
+                  approved: {
+                    eq: true
+                  },
+                  hidden: {
+                    eq: false
+                  },
+                  nsfw: {
+                    ne: nsfwOn === true ? true : null
+                  },
+                }
+              }
+            ))
+
+              // const searchResults = await API.graphql(graphqlOperation(
+              //     listStories, {
+              //         nextToken,
+              //         filter: {
+              //           or: [
+              //             {title: {
+              //                 contains: newSearch
+              //             },
+              //             type: {
+              //               eq: 'Story'
+              //             },
+              //             approved: {
+              //                 eq: true
+              //             },
+              //             hidden: {
+              //                 eq: false
+              //             },
+              //             nsfw: {
+              //               ne: nsfwOn === true ? true : null
+              //             }
+              //           },
+              //             {summary: {
+              //               contains: newSearch
+              //               },
+              //               type: {
+              //                 eq: 'Story'
+              //               },
+              //               approved: {
+              //                   eq: true
+              //               },
+              //               hidden: {
+              //                   eq: false
+              //               },
+              //               nsfw: {
+              //                 ne: nsfwOn === true ? true : null
+              //               }
+              //           }
+              //           ]
+              //         }
+              // }))
+
+            for (let i = 0; i < searchResults.data.storiesByTitle.items.length; i++) {
+                  arr.push(searchResults.data.storiesByTitle.items[i])
+                }
               
-              setNextToken(searchResults.data.listStories.nextToken)
+            if (searchResults.data.storiesByTitle.nextToken) {
+              fetchStories(searchResults.data.storiesByTitle.nextToken)
+            }
+
+            if (searchResults.data.storiesByTitle.nextToken === null) {
+              setSearchedStories(arr);
+            }
               
-              setSearchedStories(searchedStories.concat(searchResults.data.listStories.items));
 
           } catch (e) {
           console.log(e);
@@ -223,7 +278,47 @@ const AfterDarkSearch = ({navigation} : any) => {
         return;
       }
     }
-        fetchStories(); 
+
+    const fetchMoreStories = async (nextToken : any) => {
+        const searchResultsTwice = await API.graphql(graphqlOperation(
+          storiesByTitleLower, {
+            nextToken,
+            type: 'EroticStory',
+            titleLowerCaseNoThe: {
+              beginsWith: search
+            },
+            filter: {
+              approved: {
+                eq: true
+              },
+              hidden: {
+                eq: false
+              },
+              nsfw: {
+                ne: nsfwOn === true ? true : null
+              },
+            }
+        }))
+
+        for (let i = 0; i < searchResultsTwice.data.storiesByTitleLower.items.length; i++) {
+          arr.push(searchResultsTwice.data.storiesByTitleLower.items[i])
+        }
+
+        if (searchResultsTwice.data.storiesByTitleLower.nextToken) {
+          fetchMoreStories(searchResultsTwice.data.storiesByTitleLower.nextToken)
+        }
+
+        if (searchResultsTwice.data.storiesByTitleLower.nextToken === null) {
+          setSearchedStories(arr);
+        }
+    
+    }
+    
+    fetchStories(null); 
+
+    if (search.startsWith('the ' || search.startsWith('a '))) {
+      fetchMoreStories(null)
+    }
     
     }, [didUpdate])
 
@@ -299,11 +394,11 @@ const AfterDarkSearch = ({navigation} : any) => {
                 ListFooterComponent={ () => {
                     return (
                         <View style={{ height:  150, alignItems: 'center', marginTop: 40}}>
-                            <TouchableOpacity onPress={() => setDidUpdate(!didUpdate)}>
+                            {/* <TouchableOpacity onPress={() => setDidUpdate(!didUpdate)}>
                               <Text style={{color: '#fff'}}>
                                 {nextToken ? 'Load More' : null}
                               </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                 );}}
                 ListHeaderComponent={ () => {
@@ -381,11 +476,11 @@ const AfterDarkSearch = ({navigation} : any) => {
                                                     <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: id, rootChange: 'bottom', creatorType: type})}>
                                                         <View style={{flexDirection: 'row'}}>
                                                           <Image 
-                                                            source={imageU ? {uri: imageU} : require('../assets/blankprofile.png')}
-                                                            style={{height: 100, width: 100, borderRadius: 10}}
+                                                            source={imageUri ? {uri: imageU} : require('../assets/blankprofile.png')}
+                                                            style={{height: 60, width: 60, borderRadius: 10}}
                                                           />
                                                           <View style={{marginLeft: 10}}>
-                                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', width: Dimensions.get('window').width*0.66}}>
                                                               <Text numberOfLines={1} style={{color: '#fff', fontSize: 16, fontWeight: '700', flexWrap: 'wrap'}}>
                                                                 {penName}
                                                               </Text>
@@ -398,7 +493,7 @@ const AfterDarkSearch = ({navigation} : any) => {
                                                               
                                                             </View>
                                                             
-                                                            <Text numberOfLines={5} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.6, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
+                                                            <Text numberOfLines={3} style={{flexWrap: 'wrap', width: Dimensions.get('window').width*0.66, marginTop: 4, color: '#fff', fontSize: 12, fontWeight: '300'}}>
                                                               {bio}
                                                             </Text>
                                                           </View>
