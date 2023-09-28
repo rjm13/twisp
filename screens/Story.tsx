@@ -41,8 +41,9 @@ import {
     getUser, 
     ratingsByUser, 
     commentsByStory, 
-    eroticStoryTagsByStoryId, 
-    pinnedStoriesByUser,
+    eroticStoryTagsByStoryId,
+    storyTagsByStoryId,
+    pinnedStoriesByUserByStory,
     listReactionTypes
 } from '../src/graphql/queries';
 
@@ -104,35 +105,30 @@ const StoryScreen  = ({navigation} : any) => {
         let userInfo = await Auth.currentAuthenticatedUser();
     
     
-        const getThePins = async (nextToken: any) => {
+        const getThePins = async () => {
 
 
             let getPin = await API.graphql(graphqlOperation(
-                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+                pinnedStoriesByUserByStory, {
+                    nextToken, 
+                    userID: userInfo.attributes.sub,
+                    storyID: storyID
+                }
             ))
 
-            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
-                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
-                    let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
-                    ))
-                    console.log(deleteConnection)
-                }
-
-                const index = arr.indexOf(storyID);
-
-                arr.splice(index, 1);
-    
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]) {
+                let deleteConnection = await API.graphql(graphqlOperation(
+                    deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
+                ))
+                console.log(deleteConnection)
             }
-    
-            if (getPin.data.pinnedStoriesByUser.nextToken) {
-                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
-                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
-                return;
-            }     
+
+            const index = arr.indexOf(storyID);
+
+            arr.splice(index, 1); 
         }
         
-        getThePins(null); 
+        getThePins(); 
         setUserPins(arr)
     }
     
@@ -218,9 +214,14 @@ const StoryScreen  = ({navigation} : any) => {
                     setTags(tagarr)
 
                 } else {
-                    for(let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
-                        tagarr.push({id: storyData.data.getStory.tags.items[i].tag.id, tagName: storyData.data.getStory.tags.items[i].tag.tagName})
+                    const getSomeTags = await API.graphql(graphqlOperation(
+                        storyTagsByStoryId, {storyId: storyID}
+                    ))
+
+                    for(let i = 0; i < getSomeTags.data.storyTagsByStoryId.items.length; i++) {
+                        tagarr.push({id: getSomeTags.data.storyTagsByStoryId.items[i].tag.id, tagName: getSomeTags.data.storyTagsByStoryId.items[i].tag.tagName})
                     } 
+
                     setTags(tagarr)
                 }
 
@@ -230,20 +231,40 @@ const StoryScreen  = ({navigation} : any) => {
                     setImageU(response);
                 }
 
-                const storyComments = await API.graphql(graphqlOperation(
-                    commentsByStory, {
-                        nextToken, 
-                        sortDirection: 'DESC',
-                        storyID: storyID
-                }))
-
-
-                setCommentList(storyComments.data.commentsByStory.items)
 
             } catch (e) {
                 console.log('comment error', e);
             }}
         fetchStory();
+    }, [storyID, commentUpdated, didUpdate])
+
+    //fetch the comments using the storyID
+    useEffect(() => {
+
+        let arr = [];
+
+        const fetchComments = async (nextToken : any) => {
+            const storyComments = await API.graphql(graphqlOperation(
+                commentsByStory, {
+                    nextToken, 
+                    sortDirection: 'DESC',
+                    storyID: storyID
+            }))
+
+            for (let i = 0; i < storyComments.data.commentsByStory.items.length; i++) {
+                arr.push(storyComments.data.commentsByStory.items[i])
+            }
+
+            if (storyComments.data.commentsByStory.nextToken) {
+                fetchComments(storyComments.data.commentsByStory.nextToken)
+            }
+
+            if (storyComments.data.commentsByStory.nextToken === null) {
+               setCommentList(arr) 
+            }
+        }
+
+        fetchComments(null)
     }, [storyID, commentUpdated, didUpdate])
 
     const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
@@ -643,32 +664,27 @@ const StoryScreen  = ({navigation} : any) => {
            if (userRates.includes(storyID) === true) {
             setIsRated(true);
             
-            const getTheRatings = async (nextRatingToken : any) => {
+            const getTheRatings = async () => {
 
                 const userInfo = await Auth.currentAuthenticatedUser();
 
                 const userRatingData = await API.graphql(graphqlOperation(
-                    ratingsByUser,{ 
-                        nextRatingToken,
-                        userID: userInfo.attributes.sub}))
+                    ratingsByUser,{
+                        userID: userInfo.attributes.sub,
+                        storyID: {
+                            eq: storyID
+                        }
+                    }))
 
-                for (let i = 0; i < userRatingData.data.ratingsByUser.items.length; i++) {
-                    if (userRatingData.data.ratingsByUser.items[i].storyID === storyID ) {
-                        setRatingID(userRatingData.data.ratingsByUser.items[i].id);
-                        setRatingNum(userRatingData.data.ratingsByUser.items[i].rating);
-                        setUserReaction(userRatingData.data.ratingsByUser.items[i].reactionTypeID)
-                        setRatingOldNum(userRatingData.data.ratingsByUser.items[i].rating);
+                    if (userRatingData.data.ratingsByUser.items[0]) {
+                        setRatingID(userRatingData.data.ratingsByUser.items[0].id);
+                        setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
+                        setUserReaction(userRatingData.data.ratingsByUser.items[0].reactionTypeID)
+                        setRatingOldNum(userRatingData.data.ratingsByUser.items[0].rating);
                     }
-                    
-                }
-                if (userRatingData.data.ratingsByUser.nextToken) {
-                    //setNextToken(userRatingData.data.ratingsByUser.nextToken)
-                    getTheRatings(userRatingData.data.ratingsByUser.nextToken);
-                    //return;
-                }
             }
 
-            getTheRatings(null)
+            getTheRatings();
         }
     }, [didUpdate])
 
@@ -753,8 +769,6 @@ const StoryScreen  = ({navigation} : any) => {
 
             const response = await API.graphql(
                 graphqlOperation(listReactionTypes))
-
-            console.log('response is', response)
 
             if (response) {
                 setReactions(response.data.listReactionTypes.items)

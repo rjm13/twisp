@@ -25,8 +25,27 @@ import { useRoute } from '@react-navigation/native';
 import uuid from 'react-native-uuid';
 
 import { API, graphqlOperation, } from "aws-amplify";
-import { createTag, createEroticTag, createEroticStoryTag, deleteEroticStoryTag, createEroticaTag, updateStory, createStoryTag, deleteStoryTag, createGenreTag } from '../src/graphql/mutations';
-import { listTags, genreTagsByTagId, tagsByName, getStory, listGenreTags, eroticaTagsByEroticTagId, eroticTagsByName, storyTagsByStoryId, eroticStoryTagsByStoryId } from '../src/graphql/queries';
+import { 
+    createTag, 
+    createEroticTag, 
+    createEroticStoryTag, 
+    deleteEroticStoryTag, 
+    createEroticaTag, 
+    updateStory, 
+    createStoryTag, 
+    deleteStoryTag, 
+    createGenreTag 
+} from '../src/graphql/mutations';
+
+import { 
+    genreTagsByTagId, 
+    tagsByName, 
+    getStory, 
+    eroticaTagsByEroticTagId, 
+    eroticTagsByName, 
+    storyTagsByStoryId, 
+    eroticStoryTagsByStoryId 
+} from '../src/graphql/queries';
 
 
 const EditAudio = ({navigation} : any) => {  
@@ -51,6 +70,7 @@ const EditAudio = ({navigation} : any) => {
 
             if (storyData) {
                 setStory(storyData.data.getStory);
+
                 for (let i = 0; i < storyData.data.getStory.tags.items.length; i++) {
                     arr.push(storyData.data.getStory.tags.items[i].tag)
                 }
@@ -139,12 +159,12 @@ const [localImageUri, setLocalImageUri] = useState('');
 
         const Search = async (nextToken : any) => {
 
+            console.log('here is')
+
             const response = await API.graphql(graphqlOperation(
                 genreTagsByTagId, {
                     nextToken,
-                    input: {
-                        tagId: extag
-                    },
+                    tagId: extag,
                     filter: {
                         genreId: {
                             eq: Story.genreID
@@ -153,11 +173,13 @@ const [localImageUri, setLocalImageUri] = useState('');
                 }
             ))
 
-            if (response.data.genreTagsByTagId.items.length === 1) {
+            console.log('genretag is', response)
+
+            if (response.data.genreTagsByTagId.items.length > 0) {
                 return ('exists');
             } 
             
-            if (response.data.genreTagsByTagId.nextToken) {
+            if (response.data.genreTagsByTagId.nextToken && response.data.genreTagsByTagId.items.length === 0) {
                 let nextToken = response.data.genreTagsByTagId.nextToken
                 Search(nextToken)
             }
@@ -194,11 +216,11 @@ const [localImageUri, setLocalImageUri] = useState('');
 
             console.log('it worked', response)
 
-            if (response.data.tagsByName.items.length === 1) {
+            if (response.data.tagsByName.items.length > 0) {
                 return (response.data.tagsByName.items[0].id)
             }
 
-            if (response.data.tagsByName.nextToken) {
+            if (response.data.tagsByName.nextToken && response.data.tagsByName.items.length === 0) {
                 let nextToken = response.data.tagsByName.nextToken
                 Search(nextToken)
             } 
@@ -225,11 +247,11 @@ const ListAllEroticGenreTags = async (extag: any) => {
             }
         ))
 
-        if (response.data.eroticaTagsByEroticTagId.items.length === 1) {
+        if (response.data.eroticaTagsByEroticTagId.items.length > 0) {
             return ('exists');
         } 
         
-        if (response.data.eroticaTagsByEroticTagId.nextToken) {
+        if (response.data.eroticaTagsByEroticTagId.nextToken && response.data.eroticaTagsByEroticTagId.items.length === 0) {
             let nextToken = response.data.eroticaTagsByEroticTagId.nextToken
             Search(nextToken)
         }
@@ -261,13 +283,13 @@ const ListAllEroticTags =  (tagCheck : any) => {
             }
         ))
 
-        if (response.data.eroticTagsByName.items.length === 1) {
+        if (response.data.eroticTagsByName.items.length > 0) {
             return (response.data.eroticTagsByName.items[0].id)
         }
 
         console.log('resp is', response.data.eroticTagsByName.items[0].id)
 
-        if (response.data.eroticTagsByName.nextToken) {
+        if (response.data.eroticTagsByName.nextToken && response.data.eroticTagsByName.items.length === 0) {
             let nextToken = response.data.eroticTagsByName.nextToken
             Search(nextToken)
         } 

@@ -201,7 +201,9 @@ type PinnedStory @model @auth( rules: [{ allow: private, operations: [create, de
 {
   id: ID!
   type: String 
-  userID: ID @index(name: "byUser", queryField: "pinnedStoriesByUser", sortKeyFields: ["createdAt"])
+  userID: ID 
+    @index(name: "byUser", queryField: "pinnedStoriesByUser", sortKeyFields: ["createdAt"])
+    @index(name: "byUserByStory", queryField: "pinnedStoriesByUserByStory", sortKeyFields: ["storyID"])
   user: User @hasOne (fields: ["userID"])
   storyID: ID
   story: Story @hasOne (fields: ["storyID"])
@@ -290,7 +292,7 @@ type ReactionType @model @auth( rules: [{ allow: private, operations: [create, d
     type: String @index(name: "ratingsByUpdated", queryField: "ratingsByUpdated", sortKeyFields: ["updatedAt"]  )
     storyID: ID! @index(name: "byStory", sortKeyFields: ["id"])
     story: Story @hasOne (fields: ["storyID"])
-    userID: ID! @index(name: "byUser", queryField: "ratingsByUser", sortKeyFields: ["id"])
+    userID: ID! @index(name: "byUser", queryField: "ratingsByUser", sortKeyFields: ["storyID"])
     user: User @hasOne (fields: ["userID"])
     rating: Int
     reactionTypeID: ID

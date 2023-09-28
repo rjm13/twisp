@@ -35,8 +35,31 @@ import { AppContext } from '../AppContext'
 import TimeConversion from '../components/functions/TimeConversion';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
-import { createStory, createContributor, updateStory, createStoryTag, createEroticStoryTag, createTag, createEroticTag, createGenreTag, createMessage, createEroticaTag, createSeries  } from '../src/graphql/mutations';
-import { listEroticaTags, listEroticTags, listTags, getUser, listGenres, listGenreTags, creatorProfilesByUser, seriesByCreator, storiesByCreator } from '../src/graphql/queries';
+import { 
+    createStory, 
+    createContributor, 
+    updateStory, 
+    createStoryTag, 
+    createEroticStoryTag, 
+    createTag, 
+    createEroticTag, 
+    createGenreTag, 
+    createMessage, 
+    createEroticaTag, 
+    createSeries  
+} from '../src/graphql/mutations';
+
+import { 
+    eroticTagsByName,
+    tagsByName, 
+    getUser, 
+    listGenres,  
+    creatorProfilesByUser, 
+    seriesByCreator, 
+    storiesByCreator, 
+    genreTagsByTagId,
+    eroticaTagsByEroticTagId
+} from '../src/graphql/queries';
 
 
 
@@ -121,20 +144,27 @@ const UploadAudio = ({navigation} : any) => {
 //determine where the audio is coming from, locally or otherwise
     const [isLocalAudio, setIsLocalAudio] = useState(false);
 
+    const [genreTags, setGenreTags] = useState([])
+
+
 //select the series state
     const [series, setSeries] = useState('');
 
     const ListAllGenreTags = async (extag: any) => {
 
+        let gtags = [...genreTags];
+
         const Search = async (nextToken : any) => {
 
+            console.log('here is')
+
             const response = await API.graphql(graphqlOperation(
-                listGenreTags, {
+                genreTagsByTagId, {
                     nextToken,
+                    tagId: {
+                        eq: extag
+                    },
                     filter: {
-                        tagId: {
-                            eq: extag
-                        },
                         genreId: {
                             eq: data.genreID
                         }
@@ -142,13 +172,15 @@ const UploadAudio = ({navigation} : any) => {
                 }
             ))
 
-            if (response.data.listGenreTags.items.length === 1) {
+            console.log('genretag is', response)
+
+            if (response.data.listGenreTags.items.length > 0) {
+                gtags.push(response.data.listGenreTags.items[0])
                 return ('exists');
             } 
             
-            if (response.data.listGenreTags.nextToken) {
-                let nextToken = response.data.listGenreTags.nextToken
-                Search(nextToken)
+            if (response.data.listGenreTags.nextToken && response.data.listGenreTags.items.length === 0) {
+                Search(response.data.listGenreTags.nextToken)
             }
             
         }
@@ -156,12 +188,15 @@ const UploadAudio = ({navigation} : any) => {
         let s = await Search(null);
 
         if (s === 'exists') {
+            setGenreTags(gtags)
             return
         }
         else {
-            await API.graphql(graphqlOperation(
+            const newgt = await API.graphql(graphqlOperation(
                 createGenreTag, {input: {tagId: extag, genreId: data.genreID}}
             )) 
+            gtags.push(newgt.data.createGenreTag.items[0])
+            setGenreTags(gtags)
         }
     }
 
@@ -170,19 +205,18 @@ const UploadAudio = ({navigation} : any) => {
         const Search = async (nextToken : any) => {
                     
             const response = await API.graphql(graphqlOperation(
-                listTags,{
-                nextToken,
-                filter: {
-                    tagName: {eq: tagCheck}}
+                tagsByName, {
+                    nextToken,
+                    tagName: tagCheck
                 }
             ))
 
-            if (response.data.listTags.items.length === 1) {
-                return (response.data.listTags.items[0].id)
+            if (response.data.tagsByName.items.length > 0) {
+                return (response.data.tagsByName.items[0].id)
             }
 
-            if (response.data.listTags.nextToken) {
-                let nextToken = response.data.listTags.nextToken
+            if (response.data.tagsByName.nextToken && response.data.tagsByName.items.length === 0) {
+                let nextToken = response.data.tagsByName.nextToken
                 Search(nextToken)
             } 
         }
@@ -195,19 +229,18 @@ const UploadAudio = ({navigation} : any) => {
         const Search = async (nextToken : any) => {
                     
             const response = await API.graphql(graphqlOperation(
-                listEroticTags,{
+                eroticTagsByName,{
                 nextToken,
-                filter: {
-                    tagName: {eq: tagCheck}}
+                tagName: tagCheck
                 }
             ))
 
-            if (response.data.listEroticTags.items.length === 1) {
-                return (response.data.listEroticTags.items[0].id)
+            if (response.data.eroticTagsByName.items.length > 0) {
+                return (response.data.eroticTagsByName.items[0].id)
             }
 
-            if (response.data.listEroticTags.nextToken) {
-                let nextToken = response.data.listEroticTags.nextToken
+            if (response.data.eroticTagsByName.nextToken && response.data.eroticTagsByName.items.length === 0 ) {
+                let nextToken = response.data.eroticTagsByName.nextToken
                 Search(nextToken)
             } 
         }
@@ -220,12 +253,10 @@ const UploadAudio = ({navigation} : any) => {
         const Search = async (nextToken : any) => {
 
             const response = await API.graphql(graphqlOperation(
-                listEroticaTags, {
+                eroticaTagsByEroticTagId, {
                     nextToken,
+                    eroticTagId: extag,
                     filter: {
-                        eroticTagId: {
-                            eq: extag
-                        },
                         genreId: {
                             eq: data.genreID
                         }
@@ -234,11 +265,11 @@ const UploadAudio = ({navigation} : any) => {
             ))
 
 
-            if (response.data.listEroticaTags.items.length === 1) {
+            if (response.data.listEroticaTags.items.length > 0) {
                 return ('exists');
             } 
             
-            if (response.data.listEroticaTags.nextToken) {
+            if (response.data.listEroticaTags.nextToken && response.data.listEroticaTags.items.length === 0) {
                 let nextToken = response.data.listEroticaTags.nextToken
                 Search(nextToken)
             }
@@ -600,39 +631,66 @@ const UploadAudio = ({navigation} : any) => {
 
     useEffect(() => {
 
+        let seriesArray = [];
+
+        let storiesArray = [];
+
         if (pickedCreator === '') {
             return;
         }
 
-        const fetchSeries = async () => {
+        const fetchSeries = async (nextToken : any) => {
             const result = await API.graphql(graphqlOperation(
                 seriesByCreator, {
+                    nextToken,
                     creatorID: pickedCreator
                 }
             ))
 
             if (result) {
-                setSeriesArr(result.data.seriesByCreator.items)
+                for (let i = 0; i < result.data.seriesByCreator.items.length; i++) {
+                    seriesArray.push(result.data.seriesByCreator.items[i])
+                } 
+
+                if (result.data.seriesByCreator.nextToken) {
+                    fetchSeries(result.data.seriesByCreator.nextToken)
+                }
+
+                if (result.data.seriesByCreator.nextToken === null) {
+                    setSeriesArr(seriesArray)
+                }
             }
         }
 
-        const fetchStories = async () => {
+        const fetchStories = async (nextToken : any) => {
             const result = await API.graphql(graphqlOperation(
                 storiesByCreator, {
+                    nextToken,
                     creatorID: pickedCreator
                 }
             ))
 
             if (result) {
-                setSeriesStories(result.data.storiesByCreator.items)
+                for (let i = 0; i < result.data.storiesByCreator.items.length; i++) {
+                    storiesArray.push(result.data.storiesByCreator.items[i])
+                } 
+
+                if (result.data.storiesByCreator.nextToken) {
+                    fetchSeries(result.data.storiesByCreator.nextToken)
+                }
+
+                if (result.data.storiesByCreator.nextToken === null) {
+                    setSeriesStories(storiesArray)
+                }
             }
         }
 
-        fetchSeries();
-        fetchStories();
+        fetchSeries(null);
+        fetchStories(null);
 
     }, [pickedCreator])
 
+    //fetch the user's author profiles
     useEffect(() => {
 
         let authorarray = []
@@ -669,6 +727,7 @@ const UploadAudio = ({navigation} : any) => {
 
     },[])
 
+    //fetch the user's narrator profiles
     useEffect(() => {
 
         let narratorarray = []
@@ -705,6 +764,7 @@ const UploadAudio = ({navigation} : any) => {
 
     },[])
 
+    //fetch the user's illustrator profiles
     useEffect(() => {
 
         let illustratorarray = []

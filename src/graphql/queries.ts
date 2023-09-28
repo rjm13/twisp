@@ -149,12 +149,6 @@ export const getUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -1056,11 +1050,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           tagId
-          tag {
-            id
-            tagName
-            count
-          }
           createdAt
           updatedAt
           __typename
@@ -1073,11 +1062,6 @@ export const getStory = /* GraphQL */ `
           id
           storyId
           eroticTagId
-          eroticTag {
-            id
-            tagName
-            count
-          }
           createdAt
           updatedAt
           __typename
@@ -7954,12 +7938,97 @@ export const pinnedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const pinnedStoriesByUserByStory = /* GraphQL */ `
+  query PinnedStoriesByUserByStory(
+    $userID: ID!
+    $storyID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPinnedStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pinnedStoriesByUserByStory(
+      userID: $userID
+      storyID: $storyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          titleLowerCase
+          titleLowerCaseNoThe
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          narratorID
+          illustratorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
           hidden
           status
           numListens
@@ -8143,12 +8212,6 @@ export const inProgressStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -8345,12 +8408,6 @@ export const finishedStoriesByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -8793,11 +8850,6 @@ export const commentsByStory = /* GraphQL */ `
           userID
           storyID
           reactionTypeID
-          reactionType {
-            id
-            reaction
-            icon
-          }
           __typename
         }
         ratingID
@@ -9122,7 +9174,7 @@ export const ratingsByStoryIDAndId = /* GraphQL */ `
 export const ratingsByUser = /* GraphQL */ `
   query RatingsByUser(
     $userID: ID!
-    $id: ModelIDKeyConditionInput
+    $storyID: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelRatingFilterInput
     $limit: Int
@@ -9130,7 +9182,7 @@ export const ratingsByUser = /* GraphQL */ `
   ) {
     ratingsByUser(
       userID: $userID
-      id: $id
+      storyID: $storyID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -9167,12 +9219,6 @@ export const ratingsByUser = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -9405,12 +9451,6 @@ export const storyTagsByTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
@@ -9553,12 +9593,6 @@ export const eroticStoryTagsByEroticTagId = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
-          genre {
-            id
-            genre
-            icon
-            color
-          }
           hidden
           status
           numListens
