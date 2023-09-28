@@ -217,7 +217,9 @@ type InProgressStory @model @auth( rules: [{ allow: private, operations: [create
 {
   id: ID!
   type: String @index(name: "inProgressStoriesByUpdated", queryField: "inProgressStoriesByUpdated", sortKeyFields: [ "updatedAt" ])
-  userID: ID @index(name: "byUser", queryField: "inProgressStoriesByUser", sortKeyFields: ["updatedAt"])
+  userID: ID 
+    @index(name: "byUser", queryField: "inProgressStoriesByUser", sortKeyFields: ["updatedAt"])
+    @index(name: "byUserByStory", queryField: "inProgressStoriesByUserByStory", sortKeyFields: ["storyID"])
   user: User @hasOne (fields: ["userID"])
   storyID: ID
   story: Story @hasOne (fields: ["storyID"])

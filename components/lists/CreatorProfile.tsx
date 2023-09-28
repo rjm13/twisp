@@ -131,7 +131,7 @@ const CreatorProfile = ({status} : any) => {
             )
 
             for (let i = 0; i < response.data.storiesByCreator.items.length; i++) {
-                stories.push(response.data.storiesByCreator.items[0])
+                stories.push(response.data.storiesByCreator.items[i])
             }
 
             if (response.data.storiesByCreator.nextToken) {
@@ -158,8 +158,10 @@ const CreatorProfile = ({status} : any) => {
                 )
             )
 
+            //console.log('nextToken is', response.data.storiesByNarrator.nextToken)
+
             for (let i = 0; i < response.data.storiesByNarrator.items.length; i++) {
-                stories.push(response.data.storiesByNarrator.items[0])
+                stories.push(response.data.storiesByNarrator.items[i])
             }
 
             if (response.data.storiesByNarrator.nextToken) {
@@ -187,7 +189,7 @@ const CreatorProfile = ({status} : any) => {
             )
 
             for (let i = 0; i < response.data.storiesByIllustrator.items.length; i++) {
-                stories.push(response.data.storiesByIllustrator.items[0])
+                stories.push(response.data.storiesByIllustrator.items[i])
             }
 
             if (response.data.storiesByIllustrator.nextToken) {

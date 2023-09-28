@@ -21,12 +21,19 @@ import {Slider} from '@miblanchard/react-native-slider';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5, { FA5Style } from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {graphqlOperation, API, Storage, Auth} from 'aws-amplify';
-import { getStory, getUser, pinnedStoriesByUserByStory } from '../src/graphql/queries';
+import { 
+    getStory, 
+    getUser, 
+    finishedStoriesByUserByStory,
+    pinnedStoriesByUserByStory ,
+    inProgressStoriesByUserByStory
+} from '../src/graphql/queries';
+
 import { deletePinnedStory, createFinishedStory, updateStory, createInProgressStory, updateInProgressStory, deleteInProgressStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
@@ -238,26 +245,57 @@ useEffect(() => {
             ))
             setUser(UserData.data.getUser)
 
-            // for (let i = 0; i < UserData.data.getUser.Rated.items.length; i++) {
-            //     if (UserData.data.getUser.Rated.items[i].storyID === storyID) {
-            //         setIsRated(true);
-            //     }
-            // }
+        }
 
-            for (let i = 0; i < UserData.data.getUser.Finished.items.length; i++) {
-                if (UserData.data.getUser.Finished.items[i].storyID === storyID) {
-                    setIsFinished(true);
+        const fetchProgress = async (nextToken : any) => {
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const UserData = await API.graphql(graphqlOperation(
+                inProgressStoriesByUserByStory, {
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    storyID: {
+                        eq: storyID
+                    }
                 }
+            ))
+
+            if (UserData.data.inProgressStoriesByUserByStory.items.length > 0) {
+                setInProgressID(UserData.data.inProgressStoriesByUserByStory.items[0].id);
+                setPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
+                setInitialPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
             }
 
-            for (let i = 0; i < UserData.data.getUser.inProgressStories.items.length; i++) {
-                if (UserData.data.getUser.inProgressStories.items[i].storyID === storyID) {
-                    setInProgressID(UserData.data.getUser.inProgressStories.items[i].id);
-                    setPosition(UserData.data.getUser.inProgressStories.items[i].time);
-                    setInitialPosition(UserData.data.getUser.inProgressStories.items[i].time);
-                    console.log('initial is', UserData.data.getUser.inProgressStories.items[i].time)
-                    return;
+            if (UserData.data.inProgressStoriesByUserByStory.nextToken) {
+                fetchProgress(UserData.data.inProgressStoriesByUserByStory.nextToken)
+            }
+
+        }
+
+        const fetchFinished = async (nextToken : any) => {
+
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const UserData = await API.graphql(graphqlOperation(
+                finishedStoriesByUserByStory, {
+                    nextToken,
+                    id: userInfo.attributes.sub,
+                    storyID: {
+                        eq: storyID
+                    }
                 }
+            ))
+
+            if (UserData.data.finishedStoriesByUserByStory.items.length > 0) {
+                setIsFinished(true);
+            }
+
+            if (UserData.data.finishedStoriesByUserByStory.nextToken) {
+                fetchFinished(UserData.data.finishedStoriesByUserByStory.nextToken)
+            }
+
+            if (UserData.data.finishedStoriesByUserByStory.nextToken === null && UserData.data.finishedStoriesByUserByStory.items.length === 0) {
+                setIsFinished(false);
             }
         }
 
@@ -267,9 +305,13 @@ useEffect(() => {
             ProgressCheck()
             fetchStory();
             fetchUser();
+            fetchFinished(null);
+            fetchProgress(null);
         } else {
             fetchStory();
             fetchUser();
+            fetchFinished(null);
+            fetchProgress(null);
         }
     }, [storyID])
 
