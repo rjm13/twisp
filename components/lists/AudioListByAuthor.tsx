@@ -23,7 +23,7 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser, connectionsByFollower } from '../../src/graphql/queries';
+import { getUser, storiesByPublisher, connectionsByFollowerByCreator } from '../../src/graphql/queries';
 import { createFollowConnection, deleteFollowConnection, updateUser, updateCreatorProfile } from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
@@ -60,16 +60,6 @@ const AudioListByAuthor = ({status} : any) => {
 
         const fetchStorys = async () => {
 
-                let stories = []
-
-                //let samples = []
-
-                //let audiosam = []
-
-                //let narrstories = [];
-
-                //let artstories = []
-
                 try {
 
                     let userInfo = await Auth.currentAuthenticatedUser();
@@ -90,74 +80,85 @@ const AudioListByAuthor = ({status} : any) => {
                     setUser(response.data.getUser);
                     let responseBuk = await Storage.get(response.data.getUser.imageUri)
                     setImageU(responseBuk);
-
-                    for (let i = 0; i < response.data.getUser.published.items.length; i++) {
-                        if (response.data.getUser.published.items[i].hidden === false && 
-                            //response.data.getUser.published.items[i].approved === 'approved' &&
-                            //response.data.getUser.authored.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                            response.data.getUser.published.items[i].genreID !== (nsfwOn === true ? true : null)
-                            ) {
-                            stories.push(response.data.getUser.published.items[i])
-                        }
-                    }
-                    console.log(stories)
-                    setStorys(stories);
-
-                    // for (let i = 0; i < response.data.getUser.sharedImageAssets.items.length; i++) {
-                    //     if (response.data.getUser.sharedImageAssets.items[i].isSample === true) {
-                    //         samples.push(response.data.getUser.sharedImageAssets.items[i])
-                    //     }
-                    // } 
-                    // setArtSamples(samples);
-
-                    // for (let i = 0; i < response.data.getUser.sharedAssets.items.length; i++) {
-                    //     if (response.data.getUser.sharedAssets.items[i].isSample === true) {
-                    //         audiosam.push(response.data.getUser.sharedAssets.items[i])
-                    //     }
-                    // } 
-                    // setAudioSamples(audiosam);
-
-                    if (userFollowing.includes(userID)) {
-                        setFollowing(true);
-                        //setFollowingConnID(currentuser.data.getUser.following.items[i].id)
-                    } else {
-                        setFollowing(false);
-                    }
-
-                    // for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
-                    //     if (currentuser.data.getUser.following.items[i].authorID === response.data.getUser.id ) {
-                            
-                    //     }
-                    // }
-
-                    // for (let i = 0; i < response.data.getUser.narrated.items.length; i++) {
-                    //     if (response.data.getUser.narrated.items[i].hidden === false && 
-                    //         response.data.getUser.narrated.items[i].approved === 'approved' &&
-                    //         //response.data.getUser.narrated.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                    //         response.data.getUser.narrated.items[i].nsfw !== (nsfwOn === true ? true : null)
-                    //         ) {
-                    //         narrstories.push(response.data.getUser.narrated.items[i])
-                    //     }
-                    // }
-                    // setNarrations(narrstories);
-
-                    // for (let i = 0; i < response.data.getUser.art.items.length; i++) {
-                    //     if (response.data.getUser.art.items[i].hidden === false && 
-                    //         response.data.getUser.art.items[i].approved === 'approved' &&
-                    //         response.data.getUser.art.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                    //         response.data.getUser.art.items[i].genreID !== (nsfwOn === true ? true : null)
-                    //         ) {
-                    //         artstories.push(response.data.getUser.art.items[i])
-                    //     }
-                    // }
-                    // setArts(artstories);
-
                 } catch (e) {
                     console.log(e);}
         }
         fetchStorys();
         
     },[])
+
+    //determine if following or not
+    useEffect(() => {
+
+        const followCheck = async (nextToken : any) => {
+
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const response = await API.graphql(
+                graphqlOperation(
+                    connectionsByFollowerByCreator, {
+                        nextToken,
+                        followerID: userInfo.attributes.sub,
+                        creatorID: {
+                            eq: userID
+                        }
+                    }
+                )
+            )
+
+            if (response.data.connectionsByFollowerByCreator.items.length > 0) {
+                setFollowing(true);
+            } 
+
+            if (response.data.connectionsByFollowerByCreator.nextToken) {
+                followCheck(response.data.connectionsByFollowerByCreator.nextToken);
+            }
+
+            if (response.data.connectionsByFollowerByCreator.nextToken === null && response.data.connectionsByFollowerByCreator.items.length === 0 ) {
+                setFollowing(false);
+            }
+        }
+
+        followCheck(null);
+    }, [])
+
+    //fetch the stories
+    useEffect(() => {
+
+        let stories = []
+
+        const fetchStories = async (nextToken : any) => {
+            const response = await API.graphql(
+                graphqlOperation(
+                    storiesByPublisher, {
+                        nextToken,
+                        publisherID: userID,
+                        filter: {
+                            hidden: {
+                                eq: false,
+                            },
+                        }
+                    }
+                )
+            )
+
+            for (let i = 0; i < response.data.storiesByPublisher.items.length; i++) {
+                stories.push(response.data.storiesByPublisher.items[0])
+            }
+
+            if (response.data.storiesByPublisher.nextToken) {
+                fetchStories(response.data.storiesByPublisher.nextToken);
+            }
+
+            if (response.data.storiesByPublisher.nextToken === null) {
+                setStorys(stories);
+            }
+        }
+
+        fetchStories(null);
+
+    }, [])
+
 
     // const ArtItem = ({id, title, imageUri} : any) => {
 
@@ -363,26 +364,33 @@ const AudioListByAuthor = ({status} : any) => {
 
         const getTheFollowing = async (nextFollowToken : any) => {
 
+            const userInfo = await Auth.currentAuthenticatedUser();
+
             const userFollowingData = await API.graphql(graphqlOperation(
-                connectionsByFollower,{ nextFollowToken, followerID: currentUser.id}))
-
-            for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
-                if (userFollowingData.data.connectionsByFollower.items[i].creatorID === userID) {
-                    await API.graphql(graphqlOperation(
-                        deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollower.items[i].id}}
-                    ))
-                    const index = userFollowing.indexOf(userID);
-        
-                    const x = userFollowing.splice(index, 1);
-        
-                    setUserFollowing(x)
-
-                    return;
+                connectionsByFollowerByCreator,{ 
+                    nextFollowToken, 
+                    followerID: userInfo.attributes.sub,
+                    creatorID: {
+                        eq: userID
+                    }
                 }
+            ))
+
+            if (userFollowingData.data.connectionsByFollowerByCreator.items.length > 0) {
+                await API.graphql(graphqlOperation(
+                    deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollowerByCreator.items[0].id}}
+                ))
+                const index = userFollowing.indexOf(userID);
+    
+                const x = userFollowing.splice(index, 1);
+    
+                setUserFollowing(x)
+
+                return;
             }
 
-            if (userFollowingData.data.connectionsByFollower.nextToken) {
-                getTheFollowing(userFollowingData.data.connectionsByFollower.nextToken);
+            if (userFollowingData.data.connectionsByFollowerByCreator.nextToken && userFollowingData.data.connectionsByFollowerByCreator.items.length === 0) {
+                getTheFollowing(userFollowingData.data.connectionsByFollowerByCreator.nextToken);
             }
         }
         

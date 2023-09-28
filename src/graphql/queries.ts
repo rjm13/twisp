@@ -5100,6 +5100,112 @@ export const connectionsByFollower = /* GraphQL */ `
     }
   }
 `;
+export const connectionsByFollowerByCreator = /* GraphQL */ `
+  query ConnectionsByFollowerByCreator(
+    $followerID: ID!
+    $creatorID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowConnectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    connectionsByFollowerByCreator(
+      followerID: $followerID
+      creatorID: $creatorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        followerID
+        follower {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        authorID
+        author {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        creatorID
+        creator {
+          id
+          type
+          createdAt
+          updatedAt
+          userID
+          imageUri
+          bio
+          penName
+          penNameLowerCase
+          email
+          website
+          instagram
+          tikTok
+          facebook
+          deviantArt
+          reddit
+          youTube
+          numAuthored
+          numFollowers
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const connectionsByAuthor = /* GraphQL */ `
   query ConnectionsByAuthor(
     $authorID: ID!

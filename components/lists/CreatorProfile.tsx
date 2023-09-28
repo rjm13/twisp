@@ -25,8 +25,21 @@ import { AppContext } from '../../AppContext';
 
 
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
-import { getUser, getCreatorProfile, storiesByCreator, connectionsByFollower, storiesByNarrator, storiesByIllustrator } from '../../src/graphql/queries';
-import { createFollowConnection, deleteFollowConnection, updateUser, updateCreatorProfile} from '../../src/graphql/mutations';
+import { 
+    getUser, 
+    getCreatorProfile, 
+    storiesByCreator, 
+    connectionsByFollowerByCreator,
+    storiesByNarrator, 
+    storiesByIllustrator 
+} from '../../src/graphql/queries';
+
+import { 
+    createFollowConnection, 
+    deleteFollowConnection, 
+    updateUser, 
+    updateCreatorProfile
+} from '../../src/graphql/mutations';
 
 import StoryTile from '../../components/StoryTile';
 
@@ -69,8 +82,6 @@ const CreatorProfile = ({status} : any) => {
 
         const fetchStorys = async () => {
 
-                let stories = []
-
                 try {
 
                     let userInfo = await Auth.currentAuthenticatedUser();
@@ -92,77 +103,150 @@ const CreatorProfile = ({status} : any) => {
                     let responseBuk = await Storage.get(response.data.getCreatorProfile.imageUri)
                     setImageU(responseBuk);
 
-                    if (creatorType === 'Author') {
-                        const fetchStories = await API.graphql(
-                            graphqlOperation(
-                                storiesByCreator, {creatorID: userID }
-                            )
-                        )
-                        setStorys(fetchStories.data.storiesByCreator.items);
-                    }
-
-                    if (creatorType === 'Narrator') {
-                        const fetchStories = await API.graphql(
-                            graphqlOperation(
-                                storiesByNarrator, {narratorID: userID }
-                            )
-                        )
-                        setStorys(fetchStories.data.storiesByNarrator.items);
-                    }
-
-                    if (creatorType === 'Illustrator') {
-                        const fetchStories = await API.graphql(
-                            graphqlOperation(
-                                storiesByIllustrator, {illustratorID: userID }
-                            )
-                        )
-                        setStorys(fetchStories.data.storiesByIllustrator.items);
-                    }
-
-                    if (userFollowing.includes(userID)) {
-                        
-                        console.log('following', userFollowing)
-                        setFollowing(true);
-                        //setFollowingConnID(currentuser.data.getUser.following.items[i].id)
-                    } else {
-                        console.log('unfollowing', userFollowing)
-                        setFollowing(false)
-                    }
-
-                    // for (let i = 0; i < currentuser.data.getUser.following.items.length; i++) {
-                    //     if (currentuser.data.getUser.following.items[i].authorID === response.data.getUser.id ) {
-                            
-                    //     }
-                    // }
-
-                    // for (let i = 0; i < response.data.getUser.narrated.items.length; i++) {
-                    //     if (response.data.getUser.narrated.items[i].hidden === false && 
-                    //         response.data.getUser.narrated.items[i].approved === 'approved' &&
-                    //         //response.data.getUser.narrated.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                    //         response.data.getUser.narrated.items[i].nsfw !== (nsfwOn === true ? true : null)
-                    //         ) {
-                    //         narrstories.push(response.data.getUser.narrated.items[i])
-                    //     }
-                    // }
-                    // setNarrations(narrstories);
-
-                    // for (let i = 0; i < response.data.getUser.art.items.length; i++) {
-                    //     if (response.data.getUser.art.items[i].hidden === false && 
-                    //         response.data.getUser.art.items[i].approved === 'approved' &&
-                    //         response.data.getUser.art.items[i].genreID !== (ADon === true ? '1108a619-1c0e-4064-8fce-41f1f6262070' : null) &&
-                    //         response.data.getUser.art.items[i].genreID !== (nsfwOn === true ? true : null)
-                    //         ) {
-                    //         artstories.push(response.data.getUser.art.items[i])
-                    //     }
-                    // }
-                    // setArts(artstories);
-
                 } catch (e) {
                     console.log(e);}
         }
         fetchStorys();
         
     },[])
+
+       //fetch the stories
+       useEffect(() => {
+
+        let stories = []
+
+        const fetchAuthorStories = async (nextToken : any) => {
+            const response = await API.graphql(
+                graphqlOperation(
+                    storiesByCreator, {
+                        nextToken,
+                        creatorID: userID,
+                        filter: {
+                            hidden: {
+                                eq: false,
+                            },
+                        }
+                    }
+                )
+            )
+
+            for (let i = 0; i < response.data.storiesByCreator.items.length; i++) {
+                stories.push(response.data.storiesByCreator.items[0])
+            }
+
+            if (response.data.storiesByCreator.nextToken) {
+                fetchAuthorStories(response.data.storiesByCreator.nextToken);
+            }
+
+            if (response.data.storiesByCreator.nextToken === null) {
+                setStorys(stories);
+            }
+        }
+
+        const fetchNarratorStories = async (nextToken : any) => {
+            const response = await API.graphql(
+                graphqlOperation(
+                    storiesByNarrator, {
+                        nextToken,
+                        narratorID: userID,
+                        filter: {
+                            hidden: {
+                                eq: false,
+                            },
+                        }
+                    }
+                )
+            )
+
+            for (let i = 0; i < response.data.storiesByNarrator.items.length; i++) {
+                stories.push(response.data.storiesByNarrator.items[0])
+            }
+
+            if (response.data.storiesByNarrator.nextToken) {
+                fetchNarratorStories(response.data.storiesByNarrator.nextToken);
+            }
+
+            if (response.data.storiesByNarrator.nextToken === null) {
+                setStorys(stories);
+            }
+        }
+
+        const fetchIllustratorStories = async (nextToken : any) => {
+            const response = await API.graphql(
+                graphqlOperation(
+                    storiesByIllustrator, {
+                        nextToken,
+                        illustratorID: userID,
+                        filter: {
+                            hidden: {
+                                eq: false,
+                            },
+                        }
+                    }
+                )
+            )
+
+            for (let i = 0; i < response.data.storiesByIllustrator.items.length; i++) {
+                stories.push(response.data.storiesByIllustrator.items[0])
+            }
+
+            if (response.data.storiesByIllustrator.nextToken) {
+                fetchAuthorStories(response.data.storiesByIllustrator.nextToken);
+            }
+
+            if (response.data.storiesByIllustrator.nextToken === null) {
+                setStorys(stories);
+            }
+        }
+
+        if (creatorType === 'Author') {
+            fetchAuthorStories(null);
+        }
+
+        if (creatorType === 'Narrator') {
+            fetchNarratorStories(null);
+        }
+
+        if (creatorType === 'Illustrator') {
+            fetchIllustratorStories(null);
+        }
+        
+    }, [])
+
+        //determine if following or not
+        useEffect(() => {
+
+            const followCheck = async (nextToken : any) => {
+    
+                const userInfo = await Auth.currentAuthenticatedUser();
+    
+                const response = await API.graphql(
+                    graphqlOperation(
+                        connectionsByFollowerByCreator, {
+                            nextToken,
+                            followerID: userInfo.attributes.sub,
+                            creatorID: {
+                                eq: userID
+                            }
+                        }
+                    )
+                )
+    
+                if (response.data.connectionsByFollowerByCreator.items.length > 0) {
+                    setFollowing(true);
+                } 
+    
+                if (response.data.connectionsByFollowerByCreator.nextToken) {
+                    followCheck(response.data.connectionsByFollowerByCreator.nextToken);
+                }
+    
+                if (response.data.connectionsByFollowerByCreator.nextToken === null && response.data.connectionsByFollowerByCreator.items.length === 0 ) {
+                    setFollowing(false);
+                }
+            }
+    
+            followCheck(null);
+        }, [])
 
     const renderItem = ({ item } : any) => {
 
@@ -278,33 +362,38 @@ const CreatorProfile = ({status} : any) => {
 
     const unFollowUser = async () => {
 
-        let arr = userFollowing;
-
         const getTheFollowing = async (nextFollowToken : any) => {
 
+            const userInfo = await Auth.currentAuthenticatedUser();
+
             const userFollowingData = await API.graphql(graphqlOperation(
-                connectionsByFollower,{ nextFollowToken, followerID: currentUser.id}))
-
-            for (let i = 0; i < userFollowingData.data.connectionsByFollower.items.length; i++) {
-                if (userFollowingData.data.connectionsByFollower.items[i].creatorID === userID) {
-                    await API.graphql(graphqlOperation(
-                        deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollower.items[i].id}}
-                    ))
-
-                    const index = arr.indexOf(userID);
-
-                    arr.splice(index, 1)
+                connectionsByFollowerByCreator,{ 
+                    nextFollowToken, 
+                    followerID: userInfo.attributes.sub,
+                    creatorID: {
+                        eq: userID
+                    }
                 }
-            }
+            ))
 
-            if (userFollowingData.data.connectionsByFollower.nextToken) {
-                getTheFollowing(userFollowingData.data.connectionsByFollower.nextToken);
+            if (userFollowingData.data.connectionsByFollowerByCreator.items.length > 0) {
+                await API.graphql(graphqlOperation(
+                    deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollowerByCreator.items[0].id}}
+                ))
+                const index = userFollowing.indexOf(userID);
+    
+                const x = userFollowing.splice(index, 1);
+    
+                setUserFollowing(x)
+
                 return;
             }
-        }
 
-        getTheFollowing(null);
-        setUserFollowing(arr)
+            if (userFollowingData.data.connectionsByFollowerByCreator.nextToken && userFollowingData.data.connectionsByFollowerByCreator.items.length === 0) {
+                getTheFollowing(userFollowingData.data.connectionsByFollowerByCreator.nextToken);
+            }
+        }
+        
     }
 
     function FollowButton () {

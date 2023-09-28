@@ -71,7 +71,9 @@ type FollowConnection @model @auth(rules: [{ allow: private, operations: [create
     type: String
     createdAt: String
     updatedAt: String
-    followerID: ID @index(name: "byFollower", queryField: "connectionsByFollower", sortKeyFields: ["updatedAt"])
+    followerID: ID 
+      @index(name: "byFollower", queryField: "connectionsByFollower", sortKeyFields: ["updatedAt"])
+      @index(name: "byFollowerByCreator", queryField: "connectionsByFollowerByCreator", sortKeyFields: ["creatorID"])
     follower: User @hasOne (fields: ["followerID"])
     authorID: ID @index(name: "byAuthor", queryField: "connectionsByAuthor", sortKeyFields: ["createdAt"])
     author: User @hasOne (fields: ["authorID"])
