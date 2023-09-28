@@ -17,7 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { storiesByUpdated, pinnedStoriesByUser } from '../../src/graphql/queries';
+import { storiesByUpdated, pinnedStoriesByUserByStory } from '../../src/graphql/queries';
 import { deletePinnedStory, createPinnedStory } from '../../src/graphql/mutations';
 import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
@@ -60,35 +60,30 @@ const ForYouCarousel = () => {
         let userInfo = await Auth.currentAuthenticatedUser();
     
     
-        const getThePins = async (nextToken: any) => {
+        const getThePins = async () => {
 
 
             let getPin = await API.graphql(graphqlOperation(
-                pinnedStoriesByUser, {nextToken, userID: userInfo.attributes.sub}
+                pinnedStoriesByUserByStory, {
+                    nextToken, 
+                    userID: userInfo.attributes.sub,
+                    storyID: storyID
+                }
             ))
 
-            for (let i = 0; i < getPin.data.pinnedStoriesByUser.items.length; i++) {
-                if (getPin.data.pinnedStoriesByUser.items[i].storyID === storyID) {
-                    let deleteConnection = await API.graphql(graphqlOperation(
-                        deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUser.items[i].id}}
-                    ))
-                    console.log(deleteConnection)
-                }
-
-                const index = arr.indexOf(storyID);
-
-                arr.splice(index, 1);
-    
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]) {
+                let deleteConnection = await API.graphql(graphqlOperation(
+                    deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
+                ))
+                console.log(deleteConnection)
             }
-    
-            if (getPin.data.pinnedStoriesByUser.nextToken) {
-                //setNextToken(getPin.data.pinnedStoriesByUser.nextToken);
-                getThePins(getPin.data.pinnedStoriesByUser.nextToken);
-                return;
-            }     
+
+            const index = arr.indexOf(storyID);
+
+            arr.splice(index, 1); 
         }
         
-        getThePins(null); 
+        getThePins(); 
         setUserPins(arr)
     }
 

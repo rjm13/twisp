@@ -232,7 +232,9 @@ type FinishedStory @model @auth( rules: [{ allow: private, operations: [create, 
   type: String @index(name: "finishedStoriesByDate", queryField: "finishedStoriesByDate", sortKeyFields: ["createdAt"])
   createdAt: String 
   updatedAt: String
-  userID: ID @index(name: "byUser", queryField: "finishedStoriesByUser", sortKeyFields: ["createdAt"])
+  userID: ID 
+    @index(name: "byUser", queryField: "finishedStoriesByUser", sortKeyFields: ["createdAt"])
+    @index(name: "byUserByStory", queryField: "finishedStoriesByUserByStory", sortKeyFields: ["storyID"])
   user: User @hasOne (fields: ["userID"])
   storyID: ID @index(name: "byStory", sortKeyFields: ["createdAt"])
   story: Story @hasOne (fields: ["storyID"])

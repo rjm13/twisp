@@ -8435,6 +8435,108 @@ export const finishedStoriesByUser = /* GraphQL */ `
     }
   }
 `;
+export const finishedStoriesByUserByStory = /* GraphQL */ `
+  query FinishedStoriesByUserByStory(
+    $userID: ID!
+    $storyID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFinishedStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    finishedStoriesByUserByStory(
+      userID: $userID
+      storyID: $storyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        createdAt
+        updatedAt
+        userID
+        user {
+          type
+          createdAt
+          updatedAt
+          id
+          name
+          email
+          imageUri
+          bio
+          publisherName
+          website
+          isPublisher
+          numAuthored
+          topthree
+          numFolowing
+          numFollowers
+          plan
+          numPublished
+          isMod
+          setting1
+          setting2
+          setting3
+          setting4
+          setting5
+          __typename
+        }
+        storyID
+        story {
+          id
+          type
+          createdAt
+          updatedAt
+          title
+          titleLowerCase
+          titleLowerCaseNoThe
+          imageUri
+          audioUri
+          publisherID
+          creatorID
+          narratorID
+          illustratorID
+          author
+          narrator
+          artist
+          time
+          summary
+          description
+          nsfw
+          numComments
+          ratingAvg
+          ratingAmt
+          genreID
+          hidden
+          status
+          numListens
+          approved
+          seriesID
+          seriesPart
+          premium
+          __typename
+        }
+        genreID
+        genre {
+          id
+          genre
+          icon
+          color
+          imageUri
+          createdAt
+          updatedAt
+          __typename
+        }
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const finishedStoriesByStoryIDAndCreatedAt = /* GraphQL */ `
   query FinishedStoriesByStoryIDAndCreatedAt(
     $storyID: ID!

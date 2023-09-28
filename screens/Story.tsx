@@ -44,7 +44,8 @@ import {
     eroticStoryTagsByStoryId,
     storyTagsByStoryId,
     pinnedStoriesByUserByStory,
-    listReactionTypes
+    listReactionTypes,
+    finishedStoriesByUserByStory
 } from '../src/graphql/queries';
 
 import { 
@@ -644,12 +645,6 @@ const StoryScreen  = ({navigation} : any) => {
             if (userPins.includes(storyID) === true) {
                 setQd(true)
             }
-
-
-            //check if its been listened to or not
-            if (userFinished.includes(storyID) === true) {
-                setIsFinished(true);
-            }
             
             
         }
@@ -657,12 +652,63 @@ const StoryScreen  = ({navigation} : any) => {
     
     }, [update])
 
+        //fetch if pinned or not
+        useEffect(() => {
+
+            const getThePinners = async (nextToken : any) => {
+    
+                const userInfo = await Auth.currentAuthenticatedUser();
+    
+                const userPinnedData = await API.graphql(graphqlOperation(
+                    pinnedStoriesByUserByStory,{
+                        nextToken,
+                        userID: userInfo.attributes.sub,
+                        storyID: {
+                            eq: storyID
+                        }
+                    }
+                ))
+    
+                if (userPinnedData.data.pinnedStoriesByUserByStory.items.length > 0) {
+                    setQd(true)
+                }
+
+                if (userPinnedData.data.pinnedStoriesByUserByStory.nextToken && userPinnedData.data.pinnedStoriesByUserByStory.items.length === 0) {
+                    getThePinners(userPinnedData.data.pinnedStoriesByUserByStory.nextToken); 
+                }
+            }
+    
+            getThePinners(null);
+        }, [])
+
+    //fetch if finished or not
+    useEffect(() => {
+
+        const getTheFinishers = async () => {
+
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const userFinishData = await API.graphql(graphqlOperation(
+                finishedStoriesByUserByStory,{
+                    userID: userInfo.attributes.sub,
+                    storyID: {
+                        eq: storyID
+                    }
+                }
+            ))
+
+                if (userFinishData.data.finishedStoriesByUserByStory.items[0]) {
+                    setIsFinished(true)
+                }
+        }
+
+        getTheFinishers();
+    }, [])
+
 //fetch the ratings info
     useEffect(() => {
 
            //check if it's rated
-           if (userRates.includes(storyID) === true) {
-            setIsRated(true);
             
             const getTheRatings = async () => {
 
@@ -677,6 +723,7 @@ const StoryScreen  = ({navigation} : any) => {
                     }))
 
                     if (userRatingData.data.ratingsByUser.items[0]) {
+                        setIsRated(true);
                         setRatingID(userRatingData.data.ratingsByUser.items[0].id);
                         setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
                         setUserReaction(userRatingData.data.ratingsByUser.items[0].reactionTypeID)
@@ -685,7 +732,7 @@ const StoryScreen  = ({navigation} : any) => {
             }
 
             getTheRatings();
-        }
+        
     }, [didUpdate])
 
 
