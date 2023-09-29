@@ -39,6 +39,7 @@ const AudioStoryList = () => {
                 const pinnedData = await API.graphql(graphqlOperation(
                     pinnedStoriesByUser, {
                         nextToken,
+                        sortDirection: 'DESC',
                         userID: userInfo.attributes.sub,
                     }
                 ))

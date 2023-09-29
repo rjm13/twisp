@@ -73,19 +73,19 @@ const StoryTile = ({
     
         let userInfo = await Auth.currentAuthenticatedUser();
     
-    
         const getThePins = async () => {
 
 
             let getPin = await API.graphql(graphqlOperation(
                 pinnedStoriesByUserByStory, {
-                    nextToken, 
                     userID: userInfo.attributes.sub,
-                    storyID: storyID
+                    storyID: {
+                        eq: storyID
+                    }
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items[0]) {
+            if (getPin.data.pinnedStoriesByUserByStory.items) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))

@@ -9196,6 +9196,11 @@ export const commentsByStory = /* GraphQL */ `
           userID
           rating
           reactionTypeID
+          reactionType {
+            id
+            reaction
+            icon
+        }
           __typename
         }
         __typename

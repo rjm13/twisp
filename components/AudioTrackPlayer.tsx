@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
+
 import {
     Text, 
     View, 
@@ -16,16 +17,16 @@ import * as Device from 'expo-device';
 
 //import {AdMobRewarded,setTestDeviceIDAsync} from 'expo-ads-admob';
 
-//import Slider from '@react-native-community/slider';
 import {Slider} from '@miblanchard/react-native-slider';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import FontAwesome5, { FA5Style } from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {graphqlOperation, API, Storage, Auth} from 'aws-amplify';
+
 import { 
     getStory, 
     getUser, 
@@ -34,7 +35,14 @@ import {
     inProgressStoriesByUserByStory
 } from '../src/graphql/queries';
 
-import { deletePinnedStory, createFinishedStory, updateStory, createInProgressStory, updateInProgressStory, deleteInProgressStory } from '../src/graphql/mutations';
+import { 
+    deletePinnedStory, 
+    createFinishedStory, 
+    updateStory, 
+    createInProgressStory, 
+    updateInProgressStory, 
+    deleteInProgressStory 
+} from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 import * as RootNavigation from '../navigation/RootNavigation';
@@ -67,12 +75,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const AudioPlayer  = () => {
 
-    const [isSeeking, setIsSeeking] = useState(false);
-    const [seek, setSeek] = useState(0);
-
-    //pin to playlist functions
-    const [nextToken, setNextToken] = useState()
-
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
@@ -82,15 +84,11 @@ const AudioPlayer  = () => {
 //get the global page state for the audio player
     const { isRootScreen } = useContext(AppContext);
 
-//get context for storyID
     const { premium } = useContext(AppContext);
-    const { setPremium } = useContext(AppContext);
 
-//get context for storyID
     const { storyID } = useContext(AppContext);
     const { setStoryID } = useContext(AppContext);
 
-    //get context for storyID
     const { progUpdate } = useContext(AppContext);
     const { setProgUpdate } = useContext(AppContext);
 
@@ -101,7 +99,6 @@ const AudioPlayer  = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
 //load the ad
-
     const [complete, setComplete] = useState(false);
 
     // useEffect(() => {
@@ -166,12 +163,16 @@ const AudioPlayer  = () => {
 //     setInProgressID(null);
 // }, [storyID])
 
-useEffect(() => {
-    //if (premium === true) {
-        setComplete(true)
-    //}
-}, [storyID])
+//this controls if the user has watched the ad or not
 
+//determine if the user has watched the ad or not
+    useEffect(() => {
+        //if (premium === true) {
+            setComplete(true)
+        //}
+    }, [storyID])
+
+//minimize he track player
     const onChangeHandler = () => {
         if (isExpanded) {
             setIsExpanded(false);
@@ -202,6 +203,10 @@ useEffect(() => {
 //fetch the story and user attributes and audioUri from the s3 bucket
     useEffect(() => {
 
+        if (storyID === null) {
+            return;
+        }
+
         const fetchStory = async () => {
         
             try {
@@ -215,7 +220,7 @@ useEffect(() => {
                     const imageresponse = await Storage.get(storyData.data.getStory.imageUri)
                     setAudioUri(response);
                     setImageU(imageresponse);
-                    //setPosition(0);
+                    setPosition(0);
                     
                     await TrackPlayer.add([{
                         url: response,
@@ -225,8 +230,6 @@ useEffect(() => {
                         duration: storyData.data.getStory.time // Duration in seconds
                     }]);
                     let trackObject = await TrackPlayer.getQueue();
-                    console.log('slide length is')
-                    console.log(trackObject[0].duration)
                     
                     setSlideLength(trackObject[0].duration);
                     
@@ -264,6 +267,8 @@ useEffect(() => {
                 setInProgressID(UserData.data.inProgressStoriesByUserByStory.items[0].id);
                 setPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
                 setInitialPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
+            } else {
+                setInProgressID(null)
             }
 
             if (UserData.data.inProgressStoriesByUserByStory.nextToken) {
@@ -279,7 +284,7 @@ useEffect(() => {
             const UserData = await API.graphql(graphqlOperation(
                 finishedStoriesByUserByStory, {
                     nextToken,
-                    id: userInfo.attributes.sub,
+                    userID: userInfo.attributes.sub,
                     storyID: {
                         eq: storyID
                     }
@@ -312,6 +317,7 @@ useEffect(() => {
             fetchUser();
             fetchFinished(null);
             fetchProgress(null);
+            console.log('position is', position)
         }
     }, [storyID])
 
@@ -338,39 +344,39 @@ useEffect(() => {
     }
 
 //unpin a story
-const unPinStory = async ({storyID} : any) => {
+    const unPinStory = async ({storyID} : any) => {
 
-    let arr = userPins;
+        let arr = userPins;
 
-    let userInfo = await Auth.currentAuthenticatedUser();
+        let userInfo = await Auth.currentAuthenticatedUser();
+
+        const getThePins = async () => {
 
 
-    const getThePins = async () => {
-
-
-        let getPin = await API.graphql(graphqlOperation(
-            pinnedStoriesByUserByStory, {
-                nextToken, 
-                userID: userInfo.attributes.sub,
-                storyID: storyID
-            }
-        ))
-
-        if (getPin.data.pinnedStoriesByUserByStory.items[0]) {
-            let deleteConnection = await API.graphql(graphqlOperation(
-                deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
+            let getPin = await API.graphql(graphqlOperation(
+                pinnedStoriesByUserByStory, {
+                    userID: userInfo.attributes.sub,
+                    storyID: {
+                        eq: storyID
+                    }
+                }
             ))
-            console.log(deleteConnection)
+
+            if (getPin.data.pinnedStoriesByUserByStory.items) {
+                let deleteConnection = await API.graphql(graphqlOperation(
+                    deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
+                ))
+                console.log(deleteConnection)
+            }
+
+            const index = arr.indexOf(storyID);
+
+            arr.splice(index, 1); 
         }
-
-        const index = arr.indexOf(storyID);
-
-        arr.splice(index, 1); 
+        
+        getThePins(); 
+        setUserPins(arr)
     }
-    
-    getThePins(); 
-    setUserPins(arr)
-}
 
 //rating state (if rated or not)
     const [isLiked, setIsLiked] = useState(false);
@@ -392,125 +398,127 @@ const unPinStory = async ({storyID} : any) => {
 
 
 //add the story to the history list when finished by creating a new history item
-const AddToHistory = async () => {
-    
-    //check if the story is already in the history
-    let userInfo = await Auth.currentAuthenticatedUser();
+    const AddToHistory = async () => {
+        
+        //check if the story is already in the history
+        let userInfo = await Auth.currentAuthenticatedUser();
 
-    let arr = userFinished;
+        let arr = userFinished;
 
-    //if item is not in history then...
-    if (isFinished === false) {
-        //create the history object
-        await API.graphql(graphqlOperation(
-                createFinishedStory, {input: {
-                    userID: userInfo.attributes.sub, 
-                    storyID: storyID, 
-                    type: 'FinishedStory', 
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                    genreID: Story?.genreID,
+        //if item is not in history then...
+        if (isFinished === false) {
+            //create the history object
+            await API.graphql(graphqlOperation(
+                    createFinishedStory, {input: {
+                        userID: userInfo.attributes.sub, 
+                        storyID: storyID, 
+                        type: 'FinishedStory', 
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        genreID: Story?.genreID,
+                    }}
+                ))
+
+            await API.graphql(graphqlOperation(
+                updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
+            ))
+
+            console.log('added to history')
+
+            arr.push(storyID)
+
+            setUserFinished(arr)
+
+            //unpin the story, if pinned
+            unPinStory(storyID);
+
+            //delete the inProgress story, if it exists
+            await API.graphql(graphqlOperation(
+                deleteInProgressStory, {input: {
+                    id: inProgressID
                 }}
             ))
 
-        await API.graphql(graphqlOperation(
-            updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
-        ))
+            setProgUpdate(!progUpdate);
 
-        arr.push(storyID)
+            setInProgressID(null);
 
-        setUserFinished(arr)
+            //navigate to the story page and open the ratings modal, if not already rated
+                RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
+                onClose();
+        } else {
+            await API.graphql(graphqlOperation(
+                updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
+            ))
+            //delete the inProgress story, if it exists
+            await API.graphql(graphqlOperation(
+                deleteInProgressStory, {input: {
+                    id: inProgressID
+                }}
+            ))
 
-        //unpin the story, if pinned
-        unPinStory(storyID);
+            setProgUpdate(!progUpdate);
 
-        //delete the inProgress story, if it exists
-        await API.graphql(graphqlOperation(
-            deleteInProgressStory, {input: {
-                id: inProgressID
-            }}
-        ))
+            //unpin the story, if pinned
+            unPinStory(storyID);
 
-        setProgUpdate(!progUpdate);
-
-        setInProgressID(null);
-
-        //navigate to the story page and open the ratings modal, if not already rated
+            setInProgressID(null);
             RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
             onClose();
-    } else {
-        await API.graphql(graphqlOperation(
-            updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
-        ))
-        //delete the inProgress story, if it exists
-        await API.graphql(graphqlOperation(
-            deleteInProgressStory, {input: {
-                id: inProgressID
-            }}
-        ))
-
-        setProgUpdate(!progUpdate);
-
-          //unpin the story, if pinned
-          unPinStory(storyID);
-
-        setInProgressID(null);
-        RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
-        onClose();
-    }
+        }
+        
     
-   
-}
+    }
 
 //add the story as in progress
-const AddProgress = async () => {
-    let userInfo = await Auth.currentAuthenticatedUser();
+    const AddProgress = async () => {
+        let userInfo = await Auth.currentAuthenticatedUser();
 
-    if (storyID !== null && position !== 0 && Story?.approved === true) {
-        let response = await API.graphql(graphqlOperation(
-            createInProgressStory, {input: {
-                userID: userInfo.attributes.sub,
-                storyID: storyID,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                time: position
-            }}
-        ))
-        console.log('created new progress story')
-        setInProgressID(response.data.createInProgressStory.id)
-    }    
-}
+        if (storyID !== null && position !== 0 && Story?.approved === true) {
+            let response = await API.graphql(graphqlOperation(
+                createInProgressStory, {input: {
+                    userID: userInfo.attributes.sub,
+                    storyID: storyID,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    time: position
+                }}
+            ))
+            console.log('created new progress story')
+            setInProgressID(response.data.createInProgressStory.id)
+        }    
+    }
 
 //update the story that is in progress
-const UpdateProgress = async () => {
-    if (position !== 0) {
-        console.log(position)
-        const response = await API.graphql(graphqlOperation(
-            updateInProgressStory, {input: {
-                id: inProgressID,
-                time: position,
-            }}
-        ))
-        console.log('updated progress response is', response)
+    const UpdateProgress = async () => {
+        if (position !== 0) {
+            console.log(position)
+            const response = await API.graphql(graphqlOperation(
+                updateInProgressStory, {input: {
+                    id: inProgressID,
+                    time: position,
+                }}
+            ))
+            console.log('updated progress')
 
+        }
+        
+        
     }
-    
-    
-}
 
 //check if a progress story for this user already exists
-const ProgressCheck = () => {
-    if (inProgressID === null) {
-        AddProgress()
-    } else {
-        UpdateProgress()
+    const ProgressCheck = () => {
+        console.log('progress check id is', inProgressID)
+        if (inProgressID === null) {
+            console.log('add progress')
+            AddProgress()
+        } else {
+            console.log('update progress')
+            UpdateProgress()
+        }
+        setProgUpdate(!progUpdate)
     }
-    setProgUpdate(!progUpdate)
-}
     
-
-
-
     function millisToMinutesAndSeconds () {
         let minutes = Math.floor(position / 60000);
         let seconds = ((position % 60000) / 1000);
@@ -527,15 +535,15 @@ const ProgressCheck = () => {
     //const ifPlaying = playbackState === State.Playing;
 
     useEffect(() => {
-    if (playbackState === 2) {
-        setIsPlaying(true)
-    } else if (playbackState === 3) {
-        setIsPlaying(false)
-    } else if (playbackState === State.Playing) {
-        setIsPlaying(true)
-    } else {
-        setIsPlaying(false)
-    }
+        if (playbackState === 2) {
+            setIsPlaying(true)
+        } else if (playbackState === 3) {
+            setIsPlaying(false)
+        } else if (playbackState === State.Playing) {
+            setIsPlaying(true)
+        } else {
+            setIsPlaying(false)
+        }
     }, [playbackState]);
 
 //audio play and pause control
@@ -566,7 +574,6 @@ const ProgressCheck = () => {
             setPosition(0);
             setIsPlaying(false);
             AddToHistory();
-            console.log('added to history')
         }
       }, 1000);
     
@@ -576,18 +583,12 @@ const ProgressCheck = () => {
 
     //slider functions
     const SetPosition = (value : any) => {
-        console.log('this', value[0])
-        //setIsSeeking(true);
-        //setSeek(value);
         setPosition(value[0])
     }
 
-    const StoryPosition = async (value : any) => { 
-        console.log('this2', value[0])
-        //setPosition(value);
+    const StoryPosition = async (value : any) => {
         TrackPlayer.seekTo(Math.round(value[0])/1000);
         //await TrackPlayer.play();
-        
     }
 
     return (
