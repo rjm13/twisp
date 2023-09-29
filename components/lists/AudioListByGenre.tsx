@@ -13,14 +13,20 @@ import {
 
 import { AppContext } from '../../AppContext';
 
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import { storiesByGenreByTitle } from '../../src/graphql/queries';
 import {graphqlOperation, API} from 'aws-amplify';
 
 import StoryTile from '../../components/StoryTile';
 import useStyles from '../../styles';
+import {useNavigation} from '@react-navigation/native';
 
 
-const AudioStoryList = ({genreID} : any) => {
+const AudioStoryList = ({genreID, genreName} : any) => {
+
+    //navigation hook
+    const navigation = useNavigation();
 
     const styles = useStyles();
 
@@ -228,7 +234,9 @@ const AudioStoryList = ({genreID} : any) => {
                 </TouchableWithoutFeedback>
             </Modal>
 
-                <View>
+            
+
+                {/* <View>
                     <ScrollView style={{paddingHorizontal: 20}} horizontal={true} ref={flatListRef} showsHorizontalScrollIndicator={false}>        
                         {alphabet.map(({ id, letter } : any) => (
                                 <View key={id} style={{}}>
@@ -252,7 +260,7 @@ const AudioStoryList = ({genreID} : any) => {
                     <View style={{marginLeft: 20, flexDirection: 'row', alignItems: 'center'}}>
                         
 
-                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{}}>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginBottom: 10}}>
                             <TouchableWithoutFeedback onPress={() => setVisible(true)}>
                                 <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: lengthFilter === 'Any Length' ? '#656565' : '#00ffffb3'}}>
                                     <Text style={{color: '#000'}}>
@@ -285,8 +293,10 @@ const AudioStoryList = ({genreID} : any) => {
                         
 
                     </View>
+
                     
-                    </View>
+                    
+                    </View> */}
 
 
                 <FlatList 
@@ -299,6 +309,8 @@ const AudioStoryList = ({genreID} : any) => {
                         onRefresh={onRefresh}
                         />
                     }
+                    //stickyHeaderHiddenOnScroll={true}
+                    //stickyHeaderIndices={[0]}
                     showsVerticalScrollIndicator={false}  
                     ListFooterComponent={ () => {
                         return (
@@ -306,6 +318,72 @@ const AudioStoryList = ({genreID} : any) => {
                                 
                             </View>
                     );}}
+                    ListHeaderComponent={() => {
+                        return (
+                            <View>
+                            <ScrollView style={{paddingHorizontal: 20}} horizontal={true} ref={flatListRef} showsHorizontalScrollIndicator={false}>        
+                                {alphabet.map(({ id, letter } : any) => (
+                                        <View key={id} style={{}}>
+                                            <TouchableWithoutFeedback onPress={() => {ScrollToThisThing({letter, id})}}>
+                                                <View style={{ paddingHorizontal: 10, marginBottom: 20}}>
+                                                    <Text style={{
+                                                        color: selectedLetter === letter ? 'cyan' : '#fff',
+                                                        fontWeight: selectedLetter === letter ? 'bold' : 'normal',
+                                                        fontSize: selectedLetter === letter ? 20 : 17,
+                                                        textTransform: 'capitalize',
+                                                    }}>
+                                                        {letter}
+                                                    </Text>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        </View>
+                                ))}
+                                <View style={{width: 40}} />
+                            </ScrollView>
+        
+                            <View style={{marginLeft: 20, flexDirection: 'row', alignItems: 'center'}}>
+                                
+        
+                                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginBottom: 10}}>
+                                    <TouchableWithoutFeedback onPress={() => setVisible(true)}>
+                                        <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: lengthFilter === 'Any Length' ? '#656565' : '#00ffffb3'}}>
+                                            <Text style={{color: '#000'}}>
+                                            {lengthFilter}
+                                            </Text> 
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                    
+                                    <TouchableWithoutFeedback>
+                                        <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: ratingFilter === 'Any Popularity' ? '#656565' : '#00ffffb3'}}>
+                                            <Text style={{color: '#000'}}>
+                                            {ratingFilter}
+                                            </Text> 
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                    
+                                    <TouchableWithoutFeedback>
+                                        <View style={{paddingVertical: 4, paddingHorizontal: 10, marginHorizontal: 6, borderRadius: 15, backgroundColor: dateFilter === 'Any Date' ? '#656565' : '#00ffffb3'}}>
+                                            <Text style={{color: '#000'}}>
+                                            {dateFilter}
+                                            </Text> 
+                                        </View> 
+                                    </TouchableWithoutFeedback>
+        
+                                    <View style={{width: 20}}/>
+        
+                                </ScrollView>
+        
+        
+                                
+        
+                            </View>
+        
+                            
+                            
+                            </View>
+                        
+                        )
+                    }}
                     ListEmptyComponent={ () => {
                         return (
                             <View style={{ height:  70, alignItems: 'center'}}>
@@ -321,6 +399,8 @@ const AudioStoryList = ({genreID} : any) => {
                             </View>
                     );}}
                 />
+                
+                
 
             </View>
 

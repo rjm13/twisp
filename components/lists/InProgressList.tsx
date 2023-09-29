@@ -82,9 +82,11 @@ const InProgressList = () => {
         let percent = Math.ceil((item.time/item.story.time)*100).toString()
 
         let genreName = ''
+        let primary = ''
 
         if (item.story.genre) {
             genreName = item.story.genre.genre
+            primary = item.story.genre.color
         }
         
         return (
@@ -93,6 +95,7 @@ const InProgressList = () => {
                 title={item.story.title}
                 imageUri={item.story.imageUri}
                 genreName={genreName}
+                primary={primary}
                 audioUri={item.story.audioUri}
                 summary={item.story.summary}
                 author={item.story.author}

@@ -271,9 +271,9 @@ const SignIn = ({navigation} : any) => {
                     <View style={[styles.socialbuttonlayout, {justifyContent: 'center', backgroundColor: '#00ffff'}]}>
                         <Image 
                             source={require('../../assets/twisp-b-small.png')}
-                            style={{width: 30, height: 30, margin: 0}}
+                            style={{width: 20, height: 20, margin: 0, marginVertical: 5}}
                         />
-                        <Text style={[styles.buttontext, {width: Dimensions.get('window').width*0.5}]}>
+                        <Text style={[styles.socialbuttontext, {width: Dimensions.get('window').width*0.62, color: '#000'}]}>
                             Continue with Email
                         </Text>
                     </View>

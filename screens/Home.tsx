@@ -82,14 +82,24 @@ const HomeScreen = ({navigation} : any) => {
         "Relax. Have a listen",
         "Greetings, Traveler",
         "Enjoy your storytime",
-        "Go down the rabbit hole"
+        "Down the rabbit hole"
     ]
 
-    function getRandomInt(max : any) {
-        return Math.floor(Math.random() * max);
-      }
+    const [text, setText] = useState('')
 
-      let text = welcomeText[getRandomInt(welcomeText.length)]
+    useEffect(() => {
+
+        let txt = welcomeText[getRandomInt(welcomeText.length)]
+
+        function getRandomInt(max : any) {
+                return Math.floor(Math.random() * max);
+            }
+
+        setText(txt)
+        
+    }, [])
+
+    
 
     return (
         <LinearGradient colors={['#13192Ca5', '#161616', '#000000']} style={styles.container} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>

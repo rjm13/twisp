@@ -26,11 +26,12 @@ const GenreHome = ({navigation} : any) => {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['#363636a5', '#363636a5', 'transparent']}
+                colors={['#171717a5', '#171717', 'transparent']}
                 style={{height: '100%'}}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
             >
+                
                     <View style={{alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', marginTop: 20}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <FontAwesome5 
@@ -46,8 +47,8 @@ const GenreHome = ({navigation} : any) => {
                         </View>
                     </View>
 
-                    <View>
-                        <AudioListByGenre genreID={genreID}/>
+                    <View >
+                        <AudioListByGenre genreID={genreID} genreName={genreName}/>
                     </View>
 
                 

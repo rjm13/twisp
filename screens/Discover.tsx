@@ -63,7 +63,7 @@ const AudioStoryHome = ({navigation} : any) => {
 
       if (result) {
         genrearray = result.data.listGenres.items
-        setGenres(genrearray.sort((a, b) => a.genre.localeCompare(b.genre)))
+        setGenres(genrearray.sort((a, b) => b.genre.localeCompare(a.genre)))
       }
 
     }
@@ -276,7 +276,7 @@ const AudioStoryHome = ({navigation} : any) => {
                       />
                     ) : null}
                     
-                    <View style={{width: '66%'}}>
+                    <View style={{justifyContent: 'space-between', width: '66%', borderTopRightRadius: 15, borderBottomRightRadius: 15}}>
                       <View>
                         <Text numberOfLines={1} style={{marginTop: 4, color: '#fff', fontWeight: 'bold', fontSize: 16, width: '90%'}}>
                           {progressStory?.title}
@@ -292,11 +292,14 @@ const AudioStoryHome = ({navigation} : any) => {
                             {progressStory?.author}
                           </Text>
                         </View>
-                        <Text style={{color: '#fff', fontSize: 11, marginTop: 12}}>
+                        
+                      </View>
+                      <View>
+                        <Text style={{color: '#fff', fontSize: 11, marginTop: 4}}>
                           {timeLeft} minutes left
                         </Text>
-                      </View>
                       <View style={{alignSelf: 'flex-start', width: percent + '%', backgroundColor: '#00ffffa5', height: 2, marginTop: 7, marginLeft: -20}}/>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -321,7 +324,7 @@ const AudioStoryHome = ({navigation} : any) => {
                         return (
                             <View style={{ marginTop: 0}}>
                                 <View style={{marginTop: 10}}>
-                                  <Text style={styles.header}>
+                                  <Text style={[styles.header, {marginBottom: 10}]}>
                                       Popular Tags
                                   </Text>
                                   <View>
@@ -338,7 +341,7 @@ const AudioStoryHome = ({navigation} : any) => {
                                 </View>
 
                                 <View style={{marginTop: 20}}>
-                                  <Text style={styles.header}>
+                                  <Text style={[styles.header, {marginBottom: 10}]}>
                                       Genres
                                   </Text>
                                 </View>

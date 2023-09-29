@@ -331,7 +331,7 @@ const AfterDarkSearch = ({navigation} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.PrimaryColor
+            primary = item.genre.color
         }
 
         return (

@@ -23,6 +23,7 @@ import { deletePinnedStory, createPinnedStory } from '../src/graphql/mutations';
 
 import { AppContext } from '../AppContext';
 import TimeConversion from './functions/TimeConversion';
+import FireRating from '../components/FireRating'
 
 const StoryTile = ({
     title, 
@@ -38,6 +39,7 @@ const StoryTile = ({
     ratingAvg,
     ratingAmt,
     icon,
+    primary,
     numComments,
     numListens,
 } : any) => {
@@ -233,7 +235,7 @@ useEffect(() => {
                                         {title}
                                     </Text> 
 
-                                    <View style={{ flexDirection: 'row', width: '99%', marginTop: 0, alignItems: 'center', flexWrap: 'wrap'}}>
+                                    <View style={{flexDirection: 'row', width: '99%', marginTop: 0, alignItems: 'center', flexWrap: 'wrap'}}>
                                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                             <FontAwesome5 
                                                 name='book-open'
@@ -262,7 +264,7 @@ useEffect(() => {
 
                                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16, width: Dimensions.get('window').width-40, justifyContent: 'space-between'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        <Text style={{fontSize: 14, color: primary, textTransform: 'capitalize'}}>
                                             {genreName}
                                         </Text>
                                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
@@ -286,16 +288,7 @@ useEffect(() => {
                                         </Text>
                                     </View>
                                     {isVisible ? null : (
-                                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
-                                            <FontAwesome 
-                                                name='star'
-                                                color='#ffffffa5'
-                                                size={12}
-                                            />
-                                            <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                                {(ratingAvg/10).toFixed(1)}
-                                            </Text>
-                                        </View>
+                                        <FireRating ratingAvg={ratingAvg} />
                                     )}
                                     </View>
                                     
@@ -384,22 +377,10 @@ useEffect(() => {
                             <View>
                                 <View style={{justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <Text style={{color: '#ffffffa5', fontSize: 15, alignSelf: 'center'}}>
-                                            ({ratingAmt})
-                                        </Text>
-                                       <FontAwesome
-                                            //name={isRated ? 'star' : 'star-o'}
-                                            name='star'
-                                            size={17}
-                                            //color={isRated === true || isFinished === true ? 'gold' : 'white'}
-                                            color='gold'
-                                            style={{paddingHorizontal: 10}}
-                                        /> 
+                                    <FireRating ratingAvg={ratingAvg} fontSize={17} height={14} width={12} /> 
                                         
                                     </View>
-                                    <Text style={{textAlign: 'center', fontSize: 17, color: '#e0e0e0'}}>
-                                        {(ratingAvg/10).toFixed(1)}
-                                    </Text>
+                                    
                                 </View>
                             </View>
                     

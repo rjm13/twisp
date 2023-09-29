@@ -13,6 +13,7 @@ import {
 import {useNavigation} from '@react-navigation/native'
 
 import Carousel from 'react-native-reanimated-carousel';
+import FireRating from '../FireRating';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -182,8 +183,8 @@ const GenreCarousel = ({genreid} : any) => {
     const LoadingItem = () => {
         return (
             <View style={{
-                width: 300,
-                height: 280,
+                width: Dimensions.get('window').width*0.44,
+                height: Dimensions.get('window').width*0.9,
                 borderRadius: 15,
                 margin: 10
             }}>
@@ -193,7 +194,7 @@ const GenreCarousel = ({genreid} : any) => {
     }
 
 //item for the flatlist carousel
-const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
+const Item = ({title, genreName, primary, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
 
     //on render, determine if the story in alraedy pinned or not
     useEffect(() => {
@@ -261,7 +262,7 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                 {imageU !== '' ? (
                     <ImageBackground
                         source={{uri: imageU}}
-                        style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
+                        style={{backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.44, justifyContent: 'flex-end', borderRadius: 15}}
                         imageStyle={{borderRadius: 15}}
                     >
                 
@@ -272,8 +273,8 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                         borderBottomRightRadius: 15,
                         borderTopRightRadius: isVisible === true ? 15 : 0,
                         borderTopLeftRadius: isVisible === true ? 15 : 0,
-                        width: '100%',
-                        height: isVisible === true ? 280 : undefined,
+                        width: Dimensions.get('window').width*0.9,
+                        height: isVisible === true ? Dimensions.get('window').height*0.44 : undefined,
                         padding: 10, 
                         justifyContent: 'space-between'
                 }}>
@@ -307,8 +308,8 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                                         </Text> 
                                     </View>
                                 </View>
-                                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
-                                            <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
+                                            <Text style={{fontSize: 14, color: primary, textTransform: 'capitalize'}}>
                                                 {genreName}
                                             </Text>
                                             <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
@@ -331,16 +332,11 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                                                     {numListens ? numListens : 0}
                                                 </Text>
                                             </View>
-                                            <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
-                                                <FontAwesome 
-                                                    name='star'
-                                                    color='#ffffffa5'
-                                                    size={12}
-                                                />
-                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                                    {(ratingAvg/10).toFixed(1)}
-                                                </Text>
-                                            </View>
+                                            
+                                            <FireRating ratingAvg={ratingAvg} fontSize={16} iconSize={14} />
+
+                                        
+                                            
                                     </View>
                             </View>
                         </View>
@@ -452,19 +448,20 @@ const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time
                 data={carouselStories}
                 renderItem={renderItem}
                 width={Dimensions.get('window').width}
-                height={300}
+                    height={Dimensions.get('window').height*0.48}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => console.log('current index:', index)}
                 pagingEnabled={true}
                 snapEnabled={true}
                 mode="parallax"
                 modeConfig={{
-                    parallaxScrollingScale: 0.9,
-                    parallaxScrollingOffset: 70,
+                    parallaxScrollingScale: 1,
+                    parallaxScrollingOffset: 100,
                     parallaxAdjacentItemScale: 0.8,
                 }}
                 style={{
                     width: Dimensions.get('window').width,
+                    marginTop: 0
                  }}
             />
         </SafeAreaView>
@@ -491,7 +488,7 @@ const styles = StyleSheet.create({
 
     },
     title: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: 'bold',
       color: '#fff',
       flexWrap: 'wrap',

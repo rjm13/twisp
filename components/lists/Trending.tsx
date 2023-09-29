@@ -108,7 +108,8 @@ const Trending = () => {
         <HorzStoryTile 
         title={item.title}
         imageUri={item.imageUri}
-        genreName={null}
+        genreName={genreName}
+        primary={primary}
         icon={icon}
         audioUri={item.audioUri}
         summary={item.summary}

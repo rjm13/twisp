@@ -85,10 +85,12 @@ const ShortSweet = () => {
 
         let icon = ''
         let genreName = ''
+        let primary = ''
 
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
+            primary = item.genre.color
         }
         
         return (
@@ -96,6 +98,7 @@ const ShortSweet = () => {
         title={item.title}
         imageUri={item.imageUri}
         genreName={genreName}
+        primary={primary}
         icon={icon}
         audioUri={item.audioUri}
         summary={item.summary}

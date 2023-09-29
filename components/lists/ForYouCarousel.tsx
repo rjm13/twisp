@@ -7,7 +7,8 @@ import {
     Dimensions, 
     TouchableWithoutFeedback, 
     ImageBackground,
-    TouchableOpacity 
+    TouchableOpacity ,
+    Image
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -23,10 +24,13 @@ import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 
 import { AppContext } from '../../AppContext';
 import TimeConversion from '../functions/TimeConversion';
+import FireRating from '../FireRating';
 
 import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 const ForYouCarousel = () => {
+
+    const [currentIndex, setCurrentIndex] = useState(0)
 
     const [nextToken, setNextToken] = useState()
     const { userPins } = useContext(AppContext);
@@ -96,8 +100,8 @@ const ForYouCarousel = () => {
     const LoadingItem = () => {
         return (
             <View style={{
-                width: 300,
-                height: 280,
+                width: Dimensions.get('window').width*0.9,
+                height: Dimensions.get('window').height*0.44,
                 borderRadius: 15,
                 margin: 10
             }}>
@@ -107,7 +111,7 @@ const ForYouCarousel = () => {
     }
 
     //carousel tile
-    const Item = ({title, genreName, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
+    const Item = ({index, title, genreName, primary, icon, summary, imageUri, author, narrator, time, id, numListens, numComments, ratingAvg} : any) => {
 
         //on render, determine if the story in alraedy pinned or not
         useEffect(() => {
@@ -175,7 +179,7 @@ const ForYouCarousel = () => {
                     {imageU !== '' ? (
                         <ImageBackground
                             source={{uri: imageU}}
-                            style={{backgroundColor: '#ffffffa5', width: '100%', height: 280, justifyContent: 'flex-end', borderRadius: 15}}
+                            style={{alignSelf: 'center', backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.44, justifyContent: 'flex-end', borderRadius: 15}}
                             imageStyle={{borderRadius: 15}}
                         >
                     
@@ -186,8 +190,8 @@ const ForYouCarousel = () => {
                             borderBottomRightRadius: 15,
                             borderTopRightRadius: isVisible === true ? 15 : 0,
                             borderTopLeftRadius: isVisible === true ? 15 : 0,
-                            width: '100%',
-                            height: isVisible === true ? 280 : undefined,
+                            width: Dimensions.get('window').width*0.9,
+                            height: isVisible === true ? Dimensions.get('window').height*0.44 : undefined,
                             padding: 10, 
                             justifyContent: 'space-between'
                     }}>
@@ -221,17 +225,17 @@ const ForYouCarousel = () => {
                                             </Text> 
                                         </View>
                                     </View>
-                                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
-                                                <Text style={{fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
+                                                <Text style={{fontSize: 16, color: primary, textTransform: 'capitalize'}}>
                                                     {genreName}
                                                 </Text>
                                                 <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                                                     <FontAwesome 
                                                         name='comment'
                                                         color='#ffffffa5'
-                                                        size={12}
+                                                        size={14}
                                                     />
-                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    <Text style={{marginLeft: 4, fontSize: 16, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                                         {numComments ? numComments : 0}
                                                     </Text>
                                                 </View>
@@ -239,22 +243,14 @@ const ForYouCarousel = () => {
                                                     <FontAwesome5 
                                                         name='headphones'
                                                         color='#ffffffa5'
-                                                        size={12}
+                                                        size={14}
                                                     />
-                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                    <Text style={{marginLeft: 4, fontSize: 16, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                                         {numListens ? numListens : 0}
                                                     </Text>
                                                 </View>
-                                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
-                                                    <FontAwesome 
-                                                        name='star'
-                                                        color='#ffffffa5'
-                                                        size={12}
-                                                    />
-                                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                                        {(ratingAvg/10).toFixed(1)}
-                                                    </Text>
-                                                </View>
+                                                
+                                                <FireRating ratingAvg={ratingAvg} fontSize={16} iconSize={14} />
                                         </View>
                                 </View>
                             </View>
@@ -407,7 +403,7 @@ const ForYouCarousel = () => {
         fetchStorys(null);
     },[])
 
-    const renderItem = ({ item }: any) => {
+    const renderItem = ({ item, index }: any) => {
 
         let icon = ''
         let genreName = ''
@@ -422,6 +418,7 @@ const ForYouCarousel = () => {
         return (
          
             <Item 
+                index={index}
                 title={item?.title}
                 imageUri={item?.imageUri}
                 genreName={genreName}
@@ -451,19 +448,21 @@ const ForYouCarousel = () => {
                     data={Storys}
                     renderItem={renderItem}
                     width={Dimensions.get('window').width}
-                    height={300}
+                    height={Dimensions.get('window').height*0.48}
                     scrollAnimationDuration={1000}
-                    onSnapToItem={(index) => console.log('current index:', index)}
+                    //onSnapToItem={(index) => setCurrentIndex(index)}
                     pagingEnabled={true}
                     snapEnabled={true}
                     mode="parallax"
                     modeConfig={{
-                        parallaxScrollingScale: 0.9,
-                        parallaxScrollingOffset: 70,
+                        parallaxScrollingScale: 1,
+                        parallaxScrollingOffset: 100,
                         parallaxAdjacentItemScale: 0.8,
                     }}
                     style={{
                         width: Dimensions.get('window').width,
+                        marginTop: 20,
+                    
                     }}
                 />
             
@@ -490,7 +489,7 @@ const styles = StyleSheet.create({
 
     },
     title: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: 'bold',
       color: '#fff',
       flexWrap: 'wrap',

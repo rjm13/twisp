@@ -18,6 +18,7 @@ import { listRatings, listFinishedStories } from '../src/graphql/queries';
 import {useNavigation} from '@react-navigation/native';
 
 import PlayButton from './PlayButton';
+import FireRating from '../components/FireRating'
 
 const HorzStoryTile = ({
     title, 
@@ -26,6 +27,7 @@ const HorzStoryTile = ({
     id,
     ratingAvg,
     icon,
+    primary,
     numComments,
     numListens,
     time
@@ -83,12 +85,12 @@ const HorzStoryTile = ({
                     </View>
                     <View style={{ backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
                         <View style={{marginBottom: 0}}>
-                            <Text style={{width: 200, color: '#fff', fontSize: 12, fontWeight: 'bold'}}>
+                            <Text style={{width: 200, color: '#fff', fontSize: 15, fontWeight: 'bold'}}>
                                 {title}
                             </Text>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 0}}>
-                                <Text style={{fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                <Text style={{fontSize: 14, color: primary, textTransform: 'capitalize'}}>
                                     {genreName}
                                 </Text>
                                 <View style={{marginLeft: genreName ? 10 : 0, flexDirection: 'row', alignItems: 'center'}}>
@@ -97,7 +99,7 @@ const HorzStoryTile = ({
                                         color='#ffffffa5'
                                         size={11}
                                     />
-                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                         {numComments ? numComments : 0}
                                     </Text>
                                 </View>
@@ -107,20 +109,13 @@ const HorzStoryTile = ({
                                         color='#ffffffa5'
                                         size={11}
                                     />
-                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                    <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                         {numListens ? numListens : 0}
                                     </Text>
                                 </View>
-                                <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
-                                    <FontAwesome 
-                                        name='star'
-                                        color='#ffffffa5'
-                                        size={11}
-                                    />
-                                    <Text style={{marginLeft: 4, fontSize: 12, color: '#ffffffa5', textTransform: 'capitalize'}}>
-                                        {(ratingAvg/10).toFixed(1)}
-                                    </Text>
-                                </View>
+                                
+                                <FireRating ratingAvg={ratingAvg} width={10} height={12} fontSize={14} iconSize={11} />
+
                         </View>
                     </View>
                 </ImageBackground>

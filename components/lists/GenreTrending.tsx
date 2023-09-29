@@ -94,10 +94,12 @@ const GenreTrending = ({genreid} : any) => {
 
         let icon = ''
         let genreName = ''
+        let primary = ''
 
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
+            primary = item.genre.primary
         }
         
         return (
@@ -106,6 +108,7 @@ const GenreTrending = ({genreid} : any) => {
           imageUri={item.imageUri}
           genreName={null}
           icon={icon}
+          primary={primary}
           audioUri={item.audioUri}
           summary={item.summary}
           author={item.author}

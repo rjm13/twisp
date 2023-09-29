@@ -105,10 +105,12 @@ const AfterDarkTrending = ({genreid} : any) => {
 
         let icon = ''
         let genreName = ''
+        let primary = ''
 
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
+            primary = item.genre.primary
         }
         
         return (
@@ -116,6 +118,7 @@ const AfterDarkTrending = ({genreid} : any) => {
           title={item.title}
           imageUri={item.imageUri}
           genreName={null}
+          primary={primary}
           icon={icon}
           audioUri={item.audioUri}
           summary={item.summary}
