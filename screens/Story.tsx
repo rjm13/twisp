@@ -404,7 +404,7 @@ const StoryScreen  = ({navigation} : any) => {
                 updateRating, {input: {
                     id: ratingID,
                     rating: ratingNum,
-                    reaction: userReaction,
+                    reactionTypeID: userReaction,
                 }}
             ))
 
@@ -563,44 +563,13 @@ const StoryScreen  = ({navigation} : any) => {
                         /> 
                     </View>
                     <View>
-                        <View style={{width: Dimensions.get('window').width*0.6, justifyContent: 'space-between', marginHorizontal: 20, alignSelf: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                            <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold', textTransform: 'capitalize'}}>
+                        <View style={{width: Dimensions.get('window').width*0.6, marginHorizontal: 20}}>
+                            <Text style={{fontSize: 16, color: '#fff', fontWeight: '700', textTransform: 'capitalize'}}>
                                 {userName}
                             </Text>
                             <Text style={{color: '#ffffffa5', fontSize: 12, textTransform: 'capitalize'}}>
                                 {formatRelative(parseISO(createdAt), new Date())}
                             </Text>
-                        </View>
-
-                        <View style={{marginTop: 10, width: Dimensions.get('window').width*0.6, marginHorizontal: 20, alignSelf: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                            {rating ? (
-                                <View style={{backgroundColor: '#000000a5',paddingVertical: 2, marginRight: 10, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
-                                    <FontAwesome 
-                                        name='star'
-                                        color='gold'
-                                        size={14}
-                                        style={{marginRight: 10}}
-                                    />
-                                    <Text style={{fontSize: 14, color: '#ffffffa5', fontWeight: 'bold', textTransform: 'capitalize'}}>
-                                        {rating}
-                                    </Text>
-                                </View>
-                            ) : null}
-                            
-                            {reaction ? (
-                                <View style={{backgroundColor: '#000000a5', paddingVertical: 2, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
-                                    <MaterialCommunityIcons 
-                                        name='emoticon-cool-outline'
-                                        color='#ffffffa5'
-                                        size={18}
-                                        style={{marginRight: 10}}
-                                    />
-                                    <Text style={{textTransform: 'lowercase', fontSize: 14, color: '#ffffffa5', fontWeight: '400'}}>
-                                        Felt {reaction}
-                                    </Text>
-                                </View>
-                            ) : null}
-                            
                         </View>
                     </View>
                     
@@ -608,9 +577,39 @@ const StoryScreen  = ({navigation} : any) => {
                 </View>
     
                 <View>
-                    <Text style={{ color: '#ffffff', marginBottom: 20, marginTop: 10, marginHorizontal: 20}}>
+                    <Text style={{ color: '#ffffff', marginBottom: 0, marginTop: 10, marginHorizontal: 20}}>
                         {content}
                     </Text>
+                </View>
+                <View style={{marginVertical: 10, width: Dimensions.get('window').width*0.6, marginHorizontal: 20, alignItems: 'center', flexDirection: 'row'}}>
+                    {rating ? (
+                        <View style={{backgroundColor: '#000000a5',paddingVertical: 2, marginRight: 10, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
+                            <FontAwesome 
+                                name='star'
+                                color='gold'
+                                size={14}
+                                style={{marginRight: 10}}
+                            />
+                            <Text style={{fontSize: 14, color: '#ffffffa5', fontWeight: 'bold', textTransform: 'capitalize'}}>
+                                {rating}
+                            </Text>
+                        </View>
+                    ) : null}
+                    
+                    {reaction ? (
+                        <View style={{backgroundColor: '#000000a5', paddingVertical: 2, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
+                            <MaterialCommunityIcons 
+                                name='emoticon-cool-outline'
+                                color='#ffffffa5'
+                                size={18}
+                                style={{marginRight: 10}}
+                            />
+                            <Text style={{textTransform: 'lowercase', fontSize: 14, color: '#ffffffa5', fontWeight: '400'}}>
+                                Felt {reaction}
+                            </Text>
+                        </View>
+                    ) : null}
+                            
                 </View>
             </View>
         );

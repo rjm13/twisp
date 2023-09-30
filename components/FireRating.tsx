@@ -28,7 +28,7 @@ const FireRating = ({ratingAvg, fontSize, height, width, iconSize} : any) => {
                 />
             )}
             
-            <Text style={{marginLeft: 4, fontSize: fontSize || 14, color: ratingAverage > 8.5 ? '#F47B20' : '#ffffffa5', textTransform: 'capitalize'}}>
+            <Text style={{marginLeft: 4, fontSize: fontSize || 14, color: ratingAverage > 8.5 ? '#FFAD00' : '#ffffffa5', textTransform: 'capitalize'}}>
                 {ratingAverage}
             </Text>
         </View>
