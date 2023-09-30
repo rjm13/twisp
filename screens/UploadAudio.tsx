@@ -175,12 +175,12 @@ const UploadAudio = ({navigation} : any) => {
             console.log('genretag is', response)
 
             if (response.data.listGenreTags.items.length > 0) {
-                gtags.push(response.data.listGenreTags.items[0])
+                gtags.push(response.data.genreTagsByTagId.items[0])
                 return ('exists');
             } 
             
-            if (response.data.listGenreTags.nextToken && response.data.listGenreTags.items.length === 0) {
-                Search(response.data.listGenreTags.nextToken)
+            if (response.data.genreTagsByTagId.nextToken && response.data.genreTagsByTagId.items.length === 0) {
+                Search(response.data.genreTagsByTagId.nextToken)
             }
             
         }
@@ -265,12 +265,12 @@ const UploadAudio = ({navigation} : any) => {
             ))
 
 
-            if (response.data.listEroticaTags.items.length > 0) {
+            if (response.data.eroticaTagsByEroticTagId.items.length > 0) {
                 return ('exists');
             } 
             
-            if (response.data.listEroticaTags.nextToken && response.data.listEroticaTags.items.length === 0) {
-                let nextToken = response.data.listEroticaTags.nextToken
+            if (response.data.eroticaTagsByEroticTagId.nextToken && response.data.eroticaTagsByEroticTagId.items.length === 0) {
+                let nextToken = response.data.eroticaTagsByEroticTagId.nextToken
                 Search(nextToken)
             }
             
@@ -383,6 +383,8 @@ const UploadAudio = ({navigation} : any) => {
             graphqlOperation(createStory, { input: 
                 {
                     title: data.title,
+                    titleLowerCase: data.titleLowerCase,
+                    titleLowerCaseNoThe: data.titleLowerCaseNoThe,
                     summary: data.summary,
                     description: data.description,
                     genreID: data.genreID,
