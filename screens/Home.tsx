@@ -20,7 +20,8 @@ import ForYouGenre from '../components/lists/ForYouGenre';
 import NewList from '../components/lists/NewList';
 
 import { Auth, graphqlOperation, API } from 'aws-amplify';
-import {getUser, listGenres} from '../src/graphql/queries';
+import {getUser, listGenres, listFinishedStories} from '../src/graphql/queries';
+import {deleteFinishedStory} from '../src/graphql/mutations';
 
 
 const HomeScreen = ({navigation} : any) => {

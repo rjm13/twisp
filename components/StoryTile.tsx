@@ -377,7 +377,7 @@ useEffect(() => {
                             <View>
                                 <View style={{justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <FireRating ratingAvg={ratingAvg} fontSize={17} height={14} width={12} /> 
+                                    <FireRating ratingAvg={ratingAvg} fontSize={17} height={14} width={12} iconSize={18} /> 
                                         
                                     </View>
                                     
@@ -433,8 +433,8 @@ const styles = StyleSheet.create({
         
     },
     name: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontWeight: '700',
         color: '#fff',
         flexWrap: 'wrap',
         width: 225,

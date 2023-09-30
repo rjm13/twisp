@@ -32,7 +32,7 @@ import {
     getUser, 
     finishedStoriesByUserByStory,
     pinnedStoriesByUserByStory ,
-    inProgressStoriesByUserByStory
+    inProgressStoriesByUserByStory,
 } from '../src/graphql/queries';
 
 import { 
@@ -48,7 +48,7 @@ import { AppContext } from '../AppContext';
 import * as RootNavigation from '../navigation/RootNavigation';
 import ShareStory from './functions/ShareStory';
 
-import TrackPlayer, {State, useProgress, Capability, usePlaybackState} from 'react-native-track-player';
+import TrackPlayer, {State, Event, useProgress, Capability, usePlaybackState, useTrackPlayerEvents} from 'react-native-track-player';
 import { ConsoleLogger } from '@aws-amplify/core';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -190,8 +190,8 @@ const AudioPlayer  = () => {
     useEffect(() => {
         if (isPlaying === true) {
             const DoStuff = async () => {
-                setPosition(0);
-                setInitialPosition(0);
+                //setPosition(0);
+                //setInitialPosition(0);
                 setIsPlaying(false);
                 ProgressCheck()
                 await TrackPlayer.reset()
@@ -220,7 +220,7 @@ const AudioPlayer  = () => {
                     const imageresponse = await Storage.get(storyData.data.getStory.imageUri)
                     setAudioUri(response);
                     setImageU(imageresponse);
-                    setPosition(0);
+                    //setPosition(0);
                     
                     await TrackPlayer.add([{
                         url: response,
@@ -232,6 +232,8 @@ const AudioPlayer  = () => {
                     let trackObject = await TrackPlayer.getQueue();
                     
                     setSlideLength(trackObject[0].duration);
+                    //console.log('duration is', playbackProgress.duration)
+                    //setSlideLength(playbackProgress.duration*1000)
                     
                 }
             } catch (e) {
@@ -265,8 +267,11 @@ const AudioPlayer  = () => {
 
             if (UserData.data.inProgressStoriesByUserByStory.items.length > 0) {
                 setInProgressID(UserData.data.inProgressStoriesByUserByStory.items[0].id);
-                setPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
-                setInitialPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
+                console.log('progress beings at ', UserData.data.inProgressStoriesByUserByStory.items[0].time/1000 )
+                setInitialPosition(Math.floor(UserData.data.inProgressStoriesByUserByStory.items[0].time/1000))
+                //await TrackPlayer.seekTo(UserData.data.inProgressStoriesByUserByStory.items[0].time/1000)
+                //setPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
+                //setInitialPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);
             } else {
                 setInProgressID(null)
             }
@@ -305,7 +310,7 @@ const AudioPlayer  = () => {
         }
 
         if (isPlaying === true) {
-            setPosition(0);
+            //setPosition(0);
             setIsPlaying(false);
             ProgressCheck()
             fetchStory();
@@ -317,7 +322,6 @@ const AudioPlayer  = () => {
             fetchUser();
             fetchFinished(null);
             fetchProgress(null);
-            console.log('position is', position)
         }
     }, [storyID])
 
@@ -335,7 +339,6 @@ const AudioPlayer  = () => {
         ProgressCheck();
         setStoryID(null);
         setStory(null);
-        setPosition(0);
         setInitialPosition(0)
         setIsPlaying(false);
         setComplete(false);
@@ -474,14 +477,16 @@ const AudioPlayer  = () => {
     const AddProgress = async () => {
         let userInfo = await Auth.currentAuthenticatedUser();
 
-        if (storyID !== null && position !== 0 && Story?.approved === true) {
+        if (storyID !== null && playbackProgress.position !== 0 && Story?.approved === true) {
+            let time = Math.floor(playbackProgress.position*1000)
+            console.log('time is', time)
             let response = await API.graphql(graphqlOperation(
                 createInProgressStory, {input: {
                     userID: userInfo.attributes.sub,
                     storyID: storyID,
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    time: position
+                    time: time
                 }}
             ))
             console.log('created new progress story')
@@ -491,15 +496,15 @@ const AudioPlayer  = () => {
 
 //update the story that is in progress
     const UpdateProgress = async () => {
-        if (position !== 0) {
-            console.log(position)
-            const response = await API.graphql(graphqlOperation(
+        if (playbackProgress.position !== 0) {
+            let time = Math.floor(playbackProgress.position*1000)
+            await API.graphql(graphqlOperation(
                 updateInProgressStory, {input: {
                     id: inProgressID,
-                    time: position,
+                    time: time,
                 }}
             ))
-            console.log('updated progress')
+            console.log('updated progress to ', time)
 
         }
         
@@ -520,8 +525,8 @@ const AudioPlayer  = () => {
     }
     
     function millisToMinutesAndSeconds () {
-        let minutes = Math.floor(position / 60000);
-        let seconds = ((position % 60000) / 1000);
+        let minutes = Math.floor(playbackProgress.position / 60);
+        let seconds = Math.floor((playbackProgress.position % 60));
         return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
     } 
 
@@ -535,16 +540,24 @@ const AudioPlayer  = () => {
     //const ifPlaying = playbackState === State.Playing;
 
     useEffect(() => {
-        if (playbackState === 2) {
-            setIsPlaying(true)
-        } else if (playbackState === 3) {
-            setIsPlaying(false)
-        } else if (playbackState === State.Playing) {
+        console.log('playbackState is', playbackState)
+        if (playbackState === State.Playing) {
             setIsPlaying(true)
         } else {
             setIsPlaying(false)
         }
     }, [playbackState]);
+
+    useEffect(() => {
+        const domorestuff = async () => {
+            if (initialposition !== 0 && playbackState === State.Ready) {
+                await TrackPlayer.seekTo(initialposition)
+                setInitialPosition(0)
+            }
+        }
+        
+        domorestuff()
+    }, [playbackState])
 
 //audio play and pause control
     async function PlayPause() {
@@ -554,42 +567,87 @@ const AudioPlayer  = () => {
         }
 
         if (isPlaying === false && complete === true) {
-            await TrackPlayer.seekTo(position/1000);
+            //await TrackPlayer.seekTo(position/1000);
             await TrackPlayer.play();
+            await TrackPlayer.removeUpcomingTracks();
+            //setIsPlaying(true)
             //const positiontrack = await TrackPlayer.getDuration();
             //setSlideLength(positiontrack*1000);
             ProgressCheck();
         }
-        if (isPlaying === true && complete === true) {
+        if (isPlaying === true && complete === true && playbackProgress.position + 2 <= playbackProgress.duration) {
             await TrackPlayer.pause();  
             ProgressCheck();
         }    
     }
 
-    useInterval(() => {
-        if (isPlaying === true && position < slideLength) {
-        setPosition(position + 1000);
+    const playbackProgress = useProgress()
+
+    const [doneWithStory, setDoneWithStory] = useState(false)
+
+    // useEffect(() => {
+    //     if (position === slideLength) {
+    //         AddToHistory();
+    //     }
+    // }, [doneWithStory])
+
+    // useInterval(() => {
+    //     // if (isPlaying === true && position < slideLength) {
+    //     //     if (position + 1000 > slideLength) {
+    //     //         setPosition(slideLength);
+    //     //         setIsPlaying(false);
+    //     //         setDoneWithStory(true);
+    //     //     } else {
+    //     //         setPosition(position + 1000);   
+    //     //     }
+            
+    //     // }
+    //     // if (position >= slideLength) {
+    //     //     setPosition(0)
+    //     //     setIsPlaying(false);
+    //     //     AddToHistory();
+    //     // }
+
+    //     console.log(playbackProgress)
+
+    //   }, 1000);
+
+    //   useTrackPlayerEvents([Event.PlaybackQueueEnded], async event => {
+    //     if (event.type === Event.PlaybackQueueEnded && event.nextTrack !== undefined) {
+    //       console.log('track ended')
+    //       await TrackPlayer.reset();
+    //       setIsPlaying(false);
+    //       AddToHistory();
+    //     }
+    //   });
+
+    useEffect(() => {
+        console.log('did the track end?', playbackProgress)
+        if (
+            playbackProgress.position + 2 >= playbackProgress.duration && 
+            playbackProgress.duration !== 0 && 
+            isPlaying === true &&
+            playbackState === State.Paused
+        ) {
+           console.log('track ended')
+           AddToHistory();
         }
-        if (isPlaying === true && position >= slideLength) {
-            setPosition(0);
-            setIsPlaying(false);
-            AddToHistory();
-        }
-      }, 1000);
+    }, [playbackState])
     
     if (!Story) {
         return null;
     }
 
     //slider functions
-    const SetPosition = (value : any) => {
-        setPosition(value[0])
-    }
+    // const SetPosition = (value : any) => {
+    //     setPosition(value[0])
+    // }
 
     const StoryPosition = async (value : any) => {
-        TrackPlayer.seekTo(Math.round(value[0])/1000);
-        //await TrackPlayer.play();
+        TrackPlayer.seekTo(Math.floor(value[0]));
     }
+
+
 
     return (
     
@@ -820,7 +878,14 @@ const AudioPlayer  = () => {
                                 {/* this is the track player */}
                                 <View style={{height: Dimensions.get('window').height*0.3, justifyContent: 'center'}}>
                                     <View style={{width: Dimensions.get('window').width, justifyContent: 'space-around', alignSelf: 'center' , flexDirection: 'row', alignItems: 'center'}}>
-                                        <TouchableOpacity onPress={async () => {setPosition(position - 30000); await TrackPlayer.seekTo(Math.round(position - 30000)/1000);}}>
+                                        <TouchableOpacity onPress={async () => {
+                                            if (playbackProgress.position - 30 > 0 ){
+                                                await TrackPlayer.seekTo(Math.round(playbackProgress.position - 30));
+                                            } else {
+                                                await TrackPlayer.seekTo(0);
+                                            }
+                                            
+                                            }}>
                                                 <FontAwesome5 
                                                     name='chevron-left'
                                                     color='#ffffffCC'
@@ -835,7 +900,13 @@ const AudioPlayer  = () => {
                                                 />
                                             
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={async() => {setPosition(position + 30000); await TrackPlayer.seekTo(Math.round(position + 30000)/1000)}}>
+                                        <TouchableOpacity onPress={async() => { 
+                                            if (playbackProgress.position + 30 < playbackProgress.duration ){
+                                                await TrackPlayer.seekTo(Math.round(playbackProgress.position + 30));
+                                            } else {
+                                                await TrackPlayer.seekTo(playbackProgress.duration);
+                                            }
+                                            }}>
                                                 <FontAwesome5 
                                                     name='chevron-right'
                                                     color='#ffffffCC'
@@ -862,14 +933,10 @@ const AudioPlayer  = () => {
                                                 minimumTrackTintColor="cyan"
                                                 maximumTrackTintColor="#ffffffa5"
                                                 thumbTintColor='#fff'
-                                                //tapToSeek={true}
-                                                value={position}
-                                                step={1000}
-                                                //lowerLimit={0}
-                                                //upperLimit={slideLength}
+                                                value={playbackProgress.position}
+                                                step={1}
                                                 minimumValue={0}
-                                                maximumValue={slideLength} //function set to the length of the audio file
-                                                onValueChange={(value) => SetPosition(value)} //function: when slider changes, slider value = SetPosition
+                                                maximumValue={slideLength/1000} //function set to the length of the audio file
                                                 onSlidingComplete={(value) => StoryPosition(value)}
                                             />
                                         

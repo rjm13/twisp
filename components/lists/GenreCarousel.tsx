@@ -292,33 +292,33 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                                     <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center'}}>
                                         <FontAwesome5 
                                             name='book-open'
-                                            size={12}
+                                            size={11}
                                             color='#ffffffa5'
                                         />
-                                        <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                        <Text style={[styles.userId, {fontSize: 13, color: '#ffffffa5'}]}>
                                             {author}
                                         </Text>  
                                         <FontAwesome5 
                                             name='book-reader'
-                                            size={12}
+                                            size={11}
                                             color='#ffffffa5'
                                         />
-                                        <Text style={[styles.userId, {fontSize: 14, color: '#ffffffa5'}]}>
+                                        <Text style={[styles.userId, {fontSize: 13, color: '#ffffffa5'}]}>
                                             {narrator}
                                         </Text> 
                                     </View>
                                 </View>
                                     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
-                                            <Text style={{fontSize: 14, color: primary, textTransform: 'capitalize'}}>
+                                            <Text style={{fontSize: 13, color: primary, textTransform: 'capitalize'}}>
                                                 {genreName}
                                             </Text>
                                             <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                                                 <FontAwesome 
                                                     name='comment'
                                                     color='#ffffffa5'
-                                                    size={12}
+                                                    size={11}
                                                 />
-                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                <Text style={{marginLeft: 4, fontSize: 13, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                                     {numComments ? numComments : 0}
                                                 </Text>
                                             </View>
@@ -326,14 +326,14 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                                                 <FontAwesome5 
                                                     name='headphones'
                                                     color='#ffffffa5'
-                                                    size={12}
+                                                    size={11}
                                                 />
-                                                <Text style={{marginLeft: 4, fontSize: 14, color: '#ffffffa5', textTransform: 'capitalize'}}>
+                                                <Text style={{marginLeft: 4, fontSize: 13, color: '#ffffffa5', textTransform: 'capitalize'}}>
                                                     {numListens ? numListens : 0}
                                                 </Text>
                                             </View>
                                             
-                                            <FireRating ratingAvg={ratingAvg} fontSize={16} iconSize={14} />
+                                            <FireRating ratingAvg={ratingAvg} fontSize={13} iconSize={14} />
 
                                         
                                             
@@ -488,8 +488,8 @@ const styles = StyleSheet.create({
 
     },
     title: {
-      fontSize: 18,
-      fontWeight: 'bold',
+      fontSize: 16,
+      fontWeight: '600',
       color: '#fff',
       flexWrap: 'wrap',
       width: 275, 

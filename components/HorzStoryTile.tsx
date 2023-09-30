@@ -85,7 +85,7 @@ const HorzStoryTile = ({
                     </View>
                     <View style={{ backgroundColor: '#000000B5', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, paddingHorizontal: 10, paddingVertical: 6}}> 
                         <View style={{marginBottom: 0}}>
-                            <Text style={{width: 200, color: '#fff', fontSize: 15, fontWeight: 'bold'}}>
+                            <Text style={{width: 200, color: '#fff', fontSize: 14, fontWeight: '600'}}>
                                 {title}
                             </Text>
                         </View>
