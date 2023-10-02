@@ -132,38 +132,44 @@ const GenreCarousel = ({genreid} : any) => {
                             } 
                         )
                     )
+
+                    console.log('number of stories initial is', response.data.storiesByGenre.items.length)
                    
                     if (response) {
-                        let randomarr = [];
     
                         for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
                             if (count < 10) {
                                 RandomStories.push(response.data.storiesByGenre.items[i])
                                 count++
                             }
-                            if (count < 10 && i === response.data.storiesByGenre.items.length - 1 && response.data.storiesByGenre.nextToken) {   
-                                fetchStorys(response.data.storiesByGenre.nextToken)
-                            }
                         }
+
+                        console.log('count is', count)
+
                         if (count === 10) {
                             //let random = [...RandomStories]
+                            let arrcount = Array.from(Array(count).keys())
                             for (let i = 0; i < count; i++) {
-                                let x = Math.floor(Math.random() * count)
-                                if (randomarr.includes(x) === false) {
-                                    randomarr.push(x)
-                                    finalRandom.push(RandomStories[x])
-                                } 
-                            }  
+                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                                finalRandom.push(RandomStories[x])
+                                const index = arrcount.indexOf(x);
+                                arrcount.splice(index, 1);
+                            }   
                             setCarouselStories(finalRandom);   
                         }
+
+                        if (count < 10 && response.data.storiesByGenre.nextToken) {  
+                            fetchStorys(response.data.storiesByGenre.nextToken)
+                        }
+
                         if (count < 10 && response.data.storiesByGenre.nextToken === null) {
                             //let random = [...RandomStories]
+                            let arrcount = Array.from(Array(count).keys())
                             for (let i = 0; i < count; i++) {
-                                let x = Math.floor(Math.random() * count)
-                                if (randomarr.includes(x) === false) {
-                                    randomarr.push(x)
-                                    finalRandom.push(RandomStories[x])
-                                } 
+                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                                finalRandom.push(RandomStories[x])
+                                const index = arrcount.indexOf(x);
+                                arrcount.splice(index, 1);
                             }  
                             setCarouselStories(finalRandom);   
                         }
