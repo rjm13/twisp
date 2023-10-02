@@ -112,11 +112,12 @@ const GenreCarousel = ({genreid} : any) => {
 
     useEffect(() => {
 
-        let genreArr = [];
+        let count = 0
 
-        let count = 0;
-            
-        //gets the most recently rated stories in a genre with a rating over 6, sorts by the most recently created
+        let RandomStories = []
+
+        let finalRandom = []
+
         const fetchStorys = async (nextToken : any) => {
                 
             if (genreid) {
@@ -126,44 +127,65 @@ const GenreCarousel = ({genreid} : any) => {
                             storiesByGenre, {
                                 nextToken,
                                 genreID: genreid,
-                                sortDirection: 'DESC',
                                 filter: {
-                                    // ratingAvg: {
-                                    //     gt: 6
-                                    // },
-                                    approved: {
-                                        eq: true
-                                    },
                                     hidden: {
                                         eq: false
                                     },
+                                    approved: {
+                                        eq: true
+                                    },
                                     imageUri: {
                                         attributeExists: true
-                                    },
+                                    }
                                 }
                             } 
                         )
                     )
-                 
-                    for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
-                        if (count < 10) {
-                            genreArr.push(response.data.storiesByGenre.items[i])
-                            count++
+
+                    console.log('number of stories initial is', response.data.storiesByGenre.items.length)
+                   
+                    if (response) {
+    
+                        for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+                            if (count < 10) {
+                                RandomStories.push(response.data.storiesByGenre.items[i])
+                                count++
+                            }
                         }
-                    }
-                    
-                    if (count === 10) {
-                        setCarouselStories(genreArr)
+
+                        console.log('count is', count)
+
+                        if (count === 10) {
+                            //let random = [...RandomStories]
+                            let arrcount = Array.from(Array(count).keys())
+                            for (let i = 0; i < count; i++) {
+                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                                finalRandom.push(RandomStories[x])
+                                const index = arrcount.indexOf(x);
+                                arrcount.splice(index, 1);
+                            }   
+                            setCarouselStories(finalRandom);   
+                        }
+
+                        if (count < 10 && response.data.storiesByGenre.nextToken) {  
+                            fetchStorys(response.data.storiesByGenre.nextToken)
+                        }
+
+                        if (count < 10 && response.data.storiesByGenre.nextToken === null) {
+                            //let random = [...RandomStories]
+                            let arrcount = Array.from(Array(count).keys())
+                            for (let i = 0; i < count; i++) {
+                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                                finalRandom.push(RandomStories[x])
+                                const index = arrcount.indexOf(x);
+                                arrcount.splice(index, 1);
+                            }  
+                            setCarouselStories(finalRandom);   
+                        }
+                         
                     }
 
-                    if (count < 10 && response.data.storiesByGenre.nextToken) {
-                        fetchStorys(response.data.storiesByGenre.nextToken);
-                    }
 
-                    if (count < 10 && response.data.storiesByGenre.nextToken === null) {
-                        setCarouselStories(genreArr)
-                    }
-       
                 } catch (e) {
                     console.log(e);}
             }

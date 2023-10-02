@@ -75,8 +75,8 @@ const StoryScreen  = ({navigation} : any) => {
 //updates the screen after a new rating is made
     const [didUpdate, setDidUpdate] = useState(false);
 
-    const [nextToken, setNextToken] = useState()
-   
+    //queueing the item state when pressed
+    const [isQ, setQd] = useState(false);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -92,7 +92,7 @@ const StoryScreen  = ({navigation} : any) => {
                 createdAt: new Date(),
             }}
         ))
-        console.log(createPin)
+        console.log('pin created: ', createPin)
     
         pins.push(storyID);
         setUserPins(pins)
@@ -132,6 +132,27 @@ const StoryScreen  = ({navigation} : any) => {
         getThePins(); 
         setUserPins(arr)
     }
+
+        //on render, determine if the story in alraedy pinned or not
+    useEffect(() => {
+            // if (userPins.includes(storyID) === true) {
+            //     setQd(true)
+            // } else {
+            //     setQd(false)
+            // }
+
+    }, [storyID])
+        
+    const onQPress = () => {
+        if ( isQ === false ) {
+            setQd(true);
+            PinStory({storyID: storyID})
+        }
+        if ( isQ === true ) {
+            setQd(false);
+            unPinStory({storyID: storyID});
+        }  
+    };
     
 //ref to scroll to comment section
     const scrollRef = useRef();
@@ -180,7 +201,7 @@ const StoryScreen  = ({navigation} : any) => {
         }
     );
 
-
+    //determines the placement of the audio widget when this screen is open
     useEffect(() => {
         setIsRootScreen(true)
     },[])
@@ -201,7 +222,7 @@ const StoryScreen  = ({navigation} : any) => {
 
             try {
 
-                const storyData = await API.graphql(graphqlOperation(getStory, {nextToken, id: storyID}))
+                const storyData = await API.graphql(graphqlOperation(getStory, {id: storyID}))
 
                 if (storyData.data.getStory.genre.genre === 'after dark') {
                     const afterDarkTags = await API.graphql(graphqlOperation(
@@ -269,15 +290,6 @@ const StoryScreen  = ({navigation} : any) => {
     }, [storyID, commentUpdated, didUpdate])
 
     const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
-
-    //on render, determine if the story in alraedy pinned or not
-    useEffect(() => {
-            if (userPins.includes(storyID) === true) {
-                setQd(true)
-            } else {
-                setQd(false)
-            }
-    }, [storyID])
         
 
 //rating state (if rated or not)
@@ -341,25 +353,8 @@ const StoryScreen  = ({navigation} : any) => {
         />
       );
 
-//queueing the item state when pressed
-    const [isQ, setQd] = useState(false);
-        
-    const onQPress = () => {
-        if ( isQ === false ) {
-            setQd(true);
-            PinStory({storyID: storyID})
-        }
-        if ( isQ === true ) {
-            setQd(false);
-            unPinStory({storyID: storyID});
-        }  
-    };
-
-
 //Ratings Modal
     const [visible, setVisible] = useState(false);
-    const showRatingModal = () => setVisible(true);
-    const hideRatingModal = () => setVisible(false);
 
 //Flag Modal
     // const [visibleFlag, setVisibleFlag] = useState(false);
@@ -394,7 +389,6 @@ const StoryScreen  = ({navigation} : any) => {
 
         let userInfo = await Auth.currentAuthenticatedUser();
 
-        const reactionid = uuid.v4().toString();
         const ratingid = uuid.v4().toString();        
 
         let arr = userRates
@@ -486,7 +480,7 @@ const StoryScreen  = ({navigation} : any) => {
         }
 
         setUserRates(arr)
-        hideRatingModal();
+        setVisible(false)
         setIsUpdating(false);
         setDidUpdate(!didUpdate)
     }
@@ -651,39 +645,47 @@ const StoryScreen  = ({navigation} : any) => {
     
     }, [update])
 
-        //fetch if pinned or not
-        useEffect(() => {
+    //fetch if pinned or not
+    useEffect(() => {
 
-            const getThePinners = async (nextToken : any) => {
-    
-                const userInfo = await Auth.currentAuthenticatedUser();
-    
-                const userPinnedData = await API.graphql(graphqlOperation(
-                    pinnedStoriesByUserByStory,{
-                        nextToken,
-                        userID: userInfo.attributes.sub,
-                        storyID: {
-                            eq: storyID
-                        }
-                    }
-                ))
-    
-                if (userPinnedData.data.pinnedStoriesByUserByStory.items.length > 0) {
-                    setQd(true)
-                }
+        const getThePinners = async (nextToken : any) => {
 
-                if (userPinnedData.data.pinnedStoriesByUserByStory.nextToken && userPinnedData.data.pinnedStoriesByUserByStory.items.length === 0) {
-                    getThePinners(userPinnedData.data.pinnedStoriesByUserByStory.nextToken); 
-                }
+            if (storyID === null) {
+                return
             }
-    
-            getThePinners(null);
-        }, [])
+
+            const userInfo = await Auth.currentAuthenticatedUser();
+
+            const userPinnedData = await API.graphql(graphqlOperation(
+                pinnedStoriesByUserByStory,{
+                    nextToken,
+                    userID: userInfo.attributes.sub,
+                    storyID: {
+                        eq: storyID
+                    }
+                }
+            ))
+
+            if (userPinnedData.data.pinnedStoriesByUserByStory.items.length > 0) {
+                setQd(true)
+            }
+
+            if (userPinnedData.data.pinnedStoriesByUserByStory.nextToken && userPinnedData.data.pinnedStoriesByUserByStory.items.length === 0) {
+                getThePinners(userPinnedData.data.pinnedStoriesByUserByStory.nextToken); 
+            }
+        }
+
+        getThePinners(null);
+    }, [])
 
     //fetch if finished or not
     useEffect(() => {
 
         const getTheFinishers = async () => {
+
+            if (storyID === null) {
+                return
+            }
 
             const userInfo = await Auth.currentAuthenticatedUser();
 
@@ -696,7 +698,7 @@ const StoryScreen  = ({navigation} : any) => {
                 }
             ))
 
-                if (userFinishData.data.finishedStoriesByUserByStory.items[0]) {
+                if (userFinishData.data.finishedStoriesByUserByStory.items.length > 0) {
                     setIsFinished(true)
                 }
         }
@@ -711,6 +713,10 @@ const StoryScreen  = ({navigation} : any) => {
             
             const getTheRatings = async () => {
 
+                if (storyID === null) {
+                    return
+                }
+
                 const userInfo = await Auth.currentAuthenticatedUser();
 
                 const userRatingData = await API.graphql(graphqlOperation(
@@ -721,7 +727,7 @@ const StoryScreen  = ({navigation} : any) => {
                         }
                     }))
 
-                    if (userRatingData.data.ratingsByUser.items[0]) {
+                    if (userRatingData.data.ratingsByUser.items > 0) {
                         setIsRated(true);
                         setRatingID(userRatingData.data.ratingsByUser.items[0].id);
                         setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
@@ -738,9 +744,9 @@ const StoryScreen  = ({navigation} : any) => {
 //check if the story is finished but not rated
     useEffect(() => {
         if (isRated === false && isFinished === true ) {
-            showRatingModal();
+            setVisible(true)
         } else {
-            hideRatingModal();
+            setVisible(false)
         }
     }, [isRated, isFinished])
         
@@ -897,7 +903,6 @@ const StoryScreen  = ({navigation} : any) => {
                         visible={visible} 
                         onRequestClose={() => {setVisible(!visible);}}
                     >             
-                        {/* <TouchableOpacity onPress={hideRatingModal} style={{ }}> */}
                             <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000'}}>
 
                                 <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
@@ -1271,7 +1276,7 @@ const StoryScreen  = ({navigation} : any) => {
                                         </View>
                                     </View>
 
-                                    <TouchableWithoutFeedback onPress={showRatingModal}>
+                                    <TouchableWithoutFeedback onPress={() => setVisible(true)}>
                                         <View style={{justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center'}}>
                                             <Text style={{textAlign: 'center', color: '#e0e0e0a5', fontSize: 12}}>
                                                 ({Story?.ratingAmt})

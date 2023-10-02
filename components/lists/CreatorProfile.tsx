@@ -100,9 +100,11 @@ const CreatorProfile = ({status} : any) => {
 
                     setCurrentUser(currentuser.data.getUser);
                     setUser(response.data.getCreatorProfile);
-                    let responseBuk = await Storage.get(response.data.getCreatorProfile.imageUri)
-                    setImageU(responseBuk);
-
+                    if (response.data.getCreatorProfile.imageUri) {
+                        let responseBuk = await Storage.get(response.data.getCreatorProfile.imageUri)
+                        setImageU(responseBuk);
+                        console.log(responseBuk)
+                    }
                 } catch (e) {
                     console.log(e);}
         }
@@ -482,7 +484,7 @@ const CreatorProfile = ({status} : any) => {
                     <View style={{ alignItems: 'center'}}>
                         {imageU !== '' ? (
                             <Image 
-                                source={{ uri: imageU}}
+                            source={imageU ? {uri: imageU} : require('../../assets/blankprofile.png')}
                                 style={{width: 120, height: 120, backgroundColor: '#363636',borderRadius: 60, marginTop: 0,}}
                             />
                         ) : null}
@@ -516,17 +518,10 @@ const CreatorProfile = ({status} : any) => {
 
             <Animated.View style={{opacity: animatedOpacity}}>
 
-                
-                <View style={{ alignItems: 'center', marginHorizontal: 20, marginTop: 10, marginBottom: 10}}>
-                    <Text style={{ color: '#ffffffa5', fontSize: 14, textAlign: 'center'}}>
-                        {User?.bio}
-                    </Text>         
-                </View>
-
                 <View style={{justifyContent: 'center', flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{ paddingVertical: 10, marginVertical: 10, alignContent: 'center', flexDirection: 'row', marginBottom: 10, alignSelf: 'center'}}>                                             
+                    <View style={{ paddingVertical: 10, marginVertical: 10, alignContent: 'center', flexDirection: 'row', marginBottom: 0, alignSelf: 'center'}}>                                             
                         <FontAwesome5 
-                            name='book-open'
+                            name={creatorType === 'Author' ? 'book-open' : creatorType === 'Illustrator' ? 'palette' : creatorType === 'Narrator' ? 'book-reader' : 'book-open'}
                             size={publisher ? 14 : 12}
                             color={publisher ? '#fff' : '#ffffffa5'}
                             style={{ marginHorizontal: 5, alignSelf: 'center'}}
@@ -536,6 +531,13 @@ const CreatorProfile = ({status} : any) => {
                         </Text> 
                     </View> 
                 </View>
+                
+                <View style={{ alignItems: 'center', marginHorizontal: 20, marginTop: 10, marginBottom: 10}}>
+                    <Text style={{ color: '#ffffffa5', fontSize: 14, textAlign: 'center'}}>
+                        {User?.bio}
+                    </Text>         
+                </View>
+
             </Animated.View>
 
             
