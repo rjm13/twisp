@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import { 
-    StyleSheet, 
     Text, 
     Image, 
     TouchableOpacity, 
     View, 
     TextInput, 
-    Platform, 
-    ActivityIndicator, 
+    Platform,
     TouchableWithoutFeedback, 
     ScrollView,
     Dimensions,
@@ -21,7 +19,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {LinearGradient} from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { Audio } from 'expo-av';
@@ -31,8 +28,6 @@ import * as Progress from 'react-native-progress';
 
 import useStyles from '../styles';
 import { AppContext } from '../AppContext'
-
-import TimeConversion from '../components/functions/TimeConversion';
 
 import { API, graphqlOperation, Auth, Storage } from "aws-amplify";
 import { 
@@ -65,9 +60,7 @@ import {
 
 const UploadAudio = ({navigation} : any) => { 
 
-    const { 
-        expoPushToken
-    } = useContext(AppContext);
+    const { expoPushToken } = useContext(AppContext);
     
     const styles = useStyles();
 
@@ -102,11 +95,7 @@ const UploadAudio = ({navigation} : any) => {
         seriesPart: 1,
     });
 
-
-    //set state for the number authored so that upon upload can increase it by +1
-    const [numAuthored, setNumAuthored] = useState(0)
-
-    //get the user in order to prefill the author's name
+    //get the user data
     useEffect(() => {
         const fetchUser = async () => {
 
@@ -118,7 +107,6 @@ const UploadAudio = ({navigation} : any) => {
             ))
                 if (userData) {
                     setData({...data, publisherID: userData.data.getUser.id});
-                    setNumAuthored(userData.data.getUser.numAuthored);
             }
 
             } catch (e) {
@@ -138,32 +126,27 @@ const UploadAudio = ({navigation} : any) => {
 //upload audio object to graphql database
     const [isPublishing, setIsPublishing] = useState(false);
 
-//determine where the image is coming from, locally or otherwise
-    const [isLocalImage, setIsLocalImage] = useState(false);
-
-//determine where the audio is coming from, locally or otherwise
-    const [isLocalAudio, setIsLocalAudio] = useState(false);
-
+//set the genre tags
     const [genreTags, setGenreTags] = useState([])
-
 
 //select the series state
     const [series, setSeries] = useState('');
 
+    const [seriesid, setSeriesid] = useState()
+
+//on upload, these functions check to see if a tag exists. If it doesn't it creates a new one
     const ListAllGenreTags = async (extag: any) => {
 
         let gtags = [...genreTags];
 
         const Search = async (nextToken : any) => {
 
-            console.log('here is')
+            console.log('here is', extag)
 
             const response = await API.graphql(graphqlOperation(
                 genreTagsByTagId, {
                     nextToken,
-                    tagId: {
-                        eq: extag
-                    },
+                    tagId: extag,
                     filter: {
                         genreId: {
                             eq: data.genreID
@@ -172,10 +155,11 @@ const UploadAudio = ({navigation} : any) => {
                 }
             ))
 
-            console.log('genretag is', response)
+            console.log('genretag is', response.data.genreTagsByTagId)
 
-            if (response.data.listGenreTags.items.length > 0) {
+            if (response.data.genreTagsByTagId.items.length > 0) {
                 gtags.push(response.data.genreTagsByTagId.items[0])
+                console.log('exists')
                 return ('exists');
             } 
             
@@ -195,6 +179,8 @@ const UploadAudio = ({navigation} : any) => {
             const newgt = await API.graphql(graphqlOperation(
                 createGenreTag, {input: {tagId: extag, genreId: data.genreID}}
             )) 
+            console.log('extag is', extag)
+            console.log('new genre tag is', newgt.data.createGenreTag)
             gtags.push(newgt.data.createGenreTag.items[0])
             setGenreTags(gtags)
         }
@@ -213,12 +199,12 @@ const UploadAudio = ({navigation} : any) => {
 
             if (response.data.tagsByName.items.length > 0) {
                 return (response.data.tagsByName.items[0].id)
-            }
+            } 
 
             if (response.data.tagsByName.nextToken && response.data.tagsByName.items.length === 0) {
                 let nextToken = response.data.tagsByName.nextToken
                 Search(nextToken)
-            } 
+            }
         }
 
         return (Search (null));
@@ -321,8 +307,6 @@ const UploadAudio = ({navigation} : any) => {
       });
       }
 
-      const [seriesid, setSeriesid] = useState()
-
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
@@ -368,6 +352,7 @@ const UploadAudio = ({navigation} : any) => {
             const s3ResponseImage = await Storage.put(filenameImage, blobImage);
             
             const responseAudio = await fetch(localAudioUri);
+            console.log(responseAudio)
             const blob = await responseAudio.blob();
             const filename = uuid.v4().toString();
             //let extension = "audio/" + localAudioUri.split('.').pop()
@@ -379,6 +364,7 @@ const UploadAudio = ({navigation} : any) => {
                 },
                 contentType: 'audio/mp3'
             })
+
         let result = await API.graphql(
             graphqlOperation(createStory, { input: 
                 {
@@ -466,7 +452,7 @@ const UploadAudio = ({navigation} : any) => {
                     //if the tag exists, create a StoryTag with the tagID and storyID
                     if (extag !== undefined) {
                         await API.graphql(graphqlOperation(
-                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id, }}
+                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id }}
                         ))
 
                         ListAllGenreTags(extag);
@@ -478,14 +464,16 @@ const UploadAudio = ({navigation} : any) => {
                         ))
 
                         if (newTag) {
-                            await API.graphql(graphqlOperation(
+                            const newst = await API.graphql(graphqlOperation(
                                 createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
                             ))
                             console.log('genre id is', data.genreID)
                             console.log('tagid is', newTag.data.createTag.id)
-                            await API.graphql(graphqlOperation(
+                            console.log('new story tag is', newst.data.createStoryTag )
+                            const gt = await API.graphql(graphqlOperation(
                                 createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
                             ))
+                            console.log('genre tag is', gt.data.createGenreTag)
                         }
                     }
                 }
@@ -550,7 +538,7 @@ const UploadAudio = ({navigation} : any) => {
 
         console.log(result);
 
-        if (result.size < 80000000) {
+        if (result.size < 120000000) {
 
         setLocalAudioUri(result.uri);
         setAudioName(result.name);
@@ -560,10 +548,8 @@ const UploadAudio = ({navigation} : any) => {
         );
         let duration = await sound.getStatusAsync();
         setData({...data, time: duration.durationMillis});
-        setIsLocalAudio(true);
-        //console.log(duration);
         } else {
-            alert ('This file exeeds our size limit for upload. Please select an audio file that is less than 80MB.')
+            alert ('This file exeeds our size limit for upload. Please select an audio file that is less than 120MB.')
         }
     };
 
@@ -576,8 +562,6 @@ const UploadAudio = ({navigation} : any) => {
         quality: 1,
         });
 
-        //console.log(result);
-
         let height = result.height
         let width = result.width
         let image = result.uri
@@ -586,14 +570,13 @@ const UploadAudio = ({navigation} : any) => {
         if (!result.cancelled) {
         let im = await ImageCompress(image, {width, height})
         setLocalImageUri(im);
-        //setData({...data, artistID: user.id, artistName: user.artistPseudo})
-        setIsLocalImage(true);
         }
     };
   
 //Modal dropdown for selecting a genre. Height of the dropdown is dependent on the number of genres
     const [Genres, setGenres] = useState([]);
 
+//fetch the genres for the genre select modal
     useEffect(() => {
 
         let genrearray = []
@@ -612,18 +595,12 @@ const UploadAudio = ({navigation} : any) => {
 
     },[])
 
-    const Genre = Genres.map((item, index) => item.genre)
-
-    const ConvertToString = (val : any) => {
-        setData({...data, genreID: Genres[val].id, genre: Genres[val].genre, nsfw: Genres[val].id === '1108a619-1c0e-4064-8fce-41f1f6262070' ? true : false});
-    }
-
-    //Modal dropdown for selecting  an author. Height of the dropdown is dependent on the number of genres
+//Modal dropdown for selecting  an author. Height of the dropdown is dependent on the number of genres
     const [Authors, setAuthors] = useState([]);
     const [Narrators, setNarrators] = useState([]);
     const [Illustrators, setIllustrators] = useState([]);
 
-    //Modal dropdown for selecting a series. Height of the dropdown is dependent on the number of genres
+//Modal dropdown for selecting a series. Height of the dropdown is dependent on the number of genres
     const [seriesArr, setSeriesArr] = useState([]);
     const [pickedCreator, setPickedCreator] = useState('');
 
@@ -631,6 +608,7 @@ const UploadAudio = ({navigation} : any) => {
     const [seriesStory, setSeriesStory] = useState('');
     const [seriesStoryName, setSeriesStoryName] = useState('');
 
+//select a creator for the story
     useEffect(() => {
 
         let seriesArray = [];
@@ -845,41 +823,39 @@ const UploadAudio = ({navigation} : any) => {
         const hideNewSeriesModal = () => setNewSeriesModal(false);
 
 
-
-      const showModal2 = () => setVisible2(true);
+        const showModal2 = () => setVisible2(true);
 
         const hideModal2 = () => setVisible2(false);
+
+        const hideModal = () => setVisible(false);
   
-      const showModal = () => {
+        const showModal = () => {
 
-        let lower = data.title.toLowerCase();
+        //this converts the title to lowercase so that it can be searched for
+            let lower = data.title.toLowerCase();
 
-        let parsed = data.title.toLowerCase();
-
+            let parsed = data.title.toLowerCase();
        
-        if (data.title.startsWith('The ' || 'the ')) {
-            parsed = data.title.slice(4).toLowerCase()
-        }
+            if (data.title.startsWith('The ' || 'the ')) {
+                parsed = data.title.slice(4).toLowerCase()
+            }
 
-        if (data.title.startsWith('a ' || 'A ')) {
-            parsed = data.title.slice(2).toLowerCase()
-        }
+            if (data.title.startsWith('a ' || 'A ')) {
+                parsed = data.title.slice(2).toLowerCase()
+            }
         
-        setData({...data, titleLowerCase: parsed, titleLowerCaseNoThe: lower});
+            setData({...data, titleLowerCase: parsed, titleLowerCaseNoThe: lower});
       
-        termsAgree === true &&
-        audioName !== '' &&
-        data.author !== '' &&
-        data.genre !== '' &&
-        data.description !== '' &&
-        data.summary !== '' &&
-        data.title !== '' ?
+            termsAgree === true &&
+            audioName !== '' &&
+            data.author !== '' &&
+            data.genre !== '' &&
+            data.description !== '' &&
+            data.summary !== '' &&
+            data.title !== '' ?
 
-        setVisible(true) : null;
-      }
-
-      const hideModal = () => setVisible(false);
- 
+            setVisible(true) : null;
+        }
       
 //terms state management
       const [termsAgree, setTermsAgree] = useState(false);
@@ -910,7 +886,6 @@ const UploadAudio = ({navigation} : any) => {
             return;
         } else {
             Tags.push(...TagsArray, {id: uuid.v4().toString(), name: tagText.replace(/ /g, '')})
-            //.replace(/[`~0-9!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')});
             setTagsArray(Tags);
             clear.current.clear();
         }
@@ -1134,7 +1109,7 @@ const UploadAudio = ({navigation} : any) => {
                             size={12}
                             color='#ffffffa5'
                         />
-                        <Text style={[styles.paragraph, {marginLeft: 10}]}>
+                        <Text style={[styles.paragraph, {textTransform: 'capitalize', marginLeft: 10}]}>
                             {data.author}
                         </Text>  
                         <FontAwesome5 
@@ -1191,20 +1166,22 @@ const UploadAudio = ({navigation} : any) => {
                         </Text>
                     </View>
 
-                    <View style={{marginVertical: 10,flexDirection: 'row', borderBottomWidth: 1, borderColor: 'gray',}}>
-                        <Text style={{ marginRight: 10,  color: '#ffffffa5',  paddingBottom: 20,}}>
-                            Series:
-                        </Text>
-                        <View>
-                            <Text style={{width: Dimensions.get('window').width*0.8 ,fontWeight: 'bold', color: '#ffffff', paddingBottom: 20,}}>
-                                {series}
+                    {series ? (
+                        <View style={{marginVertical: 10,flexDirection: 'row', borderBottomWidth: 1, borderColor: 'gray',}}>
+                            <Text style={{ marginRight: 10,  color: '#ffffffa5',  paddingBottom: 20,}}>
+                                Series:
                             </Text>
-                            <Text style={{fontWeight: 'bold', color: '#00ffffa5', paddingBottom: 20,}}>
-                                Part {data.seriesPart}
-                            </Text>
+                            <View>
+                                <Text style={{width: Dimensions.get('window').width*0.8 ,fontWeight: 'bold', color: '#ffffff', paddingBottom: 20,}}>
+                                    {series}
+                                </Text>
+                                <Text style={{fontWeight: 'bold', color: '#00ffffa5', paddingBottom: 20,}}>
+                                    Part {data.seriesPart}
+                                </Text>
+                            </View>
+                            
                         </View>
-                        
-                    </View>
+                    ) : null}
 
                     <View>
                         <Image 
@@ -1536,18 +1513,6 @@ const UploadAudio = ({navigation} : any) => {
                             />  
                     </View>
                 </TouchableOpacity>
-                
-
-                {/* <View style={styles.inputfield}>
-                    <TextInput 
-                        placeholder='....'
-                        placeholderTextColor='#ffffffa5'
-                        style={styles.textInputTitle}
-                        maxLength={30}
-                        onChangeText={val => setData({...data, author: val})}
-                        autoCapitalize='words'
-                    />
-                </View> */}
 
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Narrator *
@@ -1576,16 +1541,6 @@ const UploadAudio = ({navigation} : any) => {
                             />  
                     </View>
                 </TouchableOpacity>
-                {/* <View style={styles.inputfield}>
-                    <TextInput 
-                        placeholder='Select Narrator'
-                        placeholderTextColor='#ffffffa5'
-                        style={styles.textInputTitle}
-                        maxLength={30}
-                        onChangeText={val => setData({...data, narrator: val})}
-                        autoCapitalize='words'
-                    />
-                </View> */}
 
                 <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 30, marginBottom: 10, alignSelf: 'flex-start'}]}>
                     Cover Artist *
@@ -1613,16 +1568,6 @@ const UploadAudio = ({navigation} : any) => {
                             />  
                     </View>
                 </TouchableOpacity>
-                {/* <View style={styles.inputfield}>
-                    <TextInput 
-                        placeholder='....'
-                        placeholderTextColor='#ffffffa5'
-                        style={styles.textInputTitle}
-                        maxLength={30}
-                        onChangeText={val => setData({...data, artist: val})}
-                        autoCapitalize='words'
-                    />
-                </View> */}
 
                 <View style={{marginTop: 20, width: Dimensions.get('window').width, marginHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     <Text style={[styles.subtitle, {marginLeft: 20, marginTop: 20, marginBottom: 0, alignSelf: 'flex-start'}]}>
@@ -1636,6 +1581,7 @@ const UploadAudio = ({navigation} : any) => {
                             </Text>
                         </View>
                     </TouchableOpacity> */}
+
                 </View>
 
                 <View style={{marginVertical: 20, alignSelf: 'center',}}>
@@ -2003,79 +1949,5 @@ const UploadAudio = ({navigation} : any) => {
 
 );
 }
-
-const styles = StyleSheet.create({
-container: {
-    //alignItems: 'center',
-},
-title: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 0,
-},
-inputheader: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 20,
-    marginBottom: 10,
-    alignSelf: 'flex-start'
-},
-inputfield: {
-    width: '90%',
-    backgroundColor: '#363636a5',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    flexDirection: 'row', 
-    justifyContent: 'space-between'
-    
-},
-textInputTitle: {
-    color: '#fff',
-    fontWeight: 'bold',
-    width: '90%'
-},
-textInput: {
-    color: '#fff',
-    width: '92%'
-},
-userId: {
-    fontSize: 12,
-    color: '#ffffffa5',
-    marginRight: 15,
-    marginLeft: 5,
-    textTransform: 'capitalize'
-},
-uploadbutton: {
-    paddingHorizontal: 20, 
-    paddingVertical: 10,
-    marginBottom: 60, 
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-    borderColor: '#00ffff',
-    borderWidth: 0.5,
-},
-timer: {
-    color: '#ffffff',
-    fontSize: 16,
-},
-tagtext: {
-    color: 'cyan',
-    fontSize: 14,
-    backgroundColor: '#1A4851a5',
-    borderColor: '#00ffffa5',
-    borderWidth: 0.5,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 13,
-    textTransform: 'lowercase',
-    overflow: 'hidden',
-    marginBottom: 1
-},
-});
 
 export default UploadAudio;

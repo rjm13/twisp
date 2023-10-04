@@ -45,7 +45,8 @@ import {
     storyTagsByStoryId,
     pinnedStoriesByUserByStory,
     listReactionTypes,
-    finishedStoriesByUserByStory
+    finishedStoriesByUserByStory,
+    contributorsByStory
 } from '../src/graphql/queries';
 
 import { 
@@ -727,7 +728,7 @@ const StoryScreen  = ({navigation} : any) => {
                         }
                     }))
 
-                    if (userRatingData.data.ratingsByUser.items > 0) {
+                    if (userRatingData.data.ratingsByUser.items.length > 0) {
                         setIsRated(true);
                         setRatingID(userRatingData.data.ratingsByUser.items[0].id);
                         setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
@@ -739,6 +740,29 @@ const StoryScreen  = ({navigation} : any) => {
             getTheRatings();
         
     }, [didUpdate])
+
+    const [contributors, setContributors] = useState([])
+
+//fetch the contributors
+    useEffect(() => {
+        const getTheContributors = async () => {
+
+            if (storyID === null) {
+                return
+            }
+
+            const userContribData = await API.graphql(graphqlOperation(
+                contributorsByStory,{
+                    storyID: storyID,
+                }))
+
+                if (userContribData.data.contributorsByStory.items.length > 0) {
+                    setContributors(userContribData.data.contributorsByStory.items);
+                }
+        }
+
+        getTheContributors();
+    }, [storyID])
 
 
 //check if the story is finished but not rated

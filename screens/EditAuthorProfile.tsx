@@ -392,7 +392,7 @@ const EditAuthorProfile = ({navigation} : any) => {
                             placeholder={user?.pseudonym}
                             placeholderTextColor='gray'
                             style={[styles.paragraph, {fontSize: 16, marginLeft: 10, textTransform: 'capitalize', width: Dimensions.get('window').width - 120}]}
-                            maxLength={20}
+                            maxLength={40}
                             multiline={false}
                             onChangeText={val => setPseudonym(val)}
                         />
