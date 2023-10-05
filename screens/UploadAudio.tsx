@@ -119,6 +119,7 @@ const UploadAudio = ({navigation} : any) => {
 //temp states for the image and audio uris
     const [localImageUri, setLocalImageUri] = useState('');
     const [localAudioUri, setLocalAudioUri] = useState('');
+    const [audioSize, setAudioSize] = useState(0);
 
 //progress of upload
     const [progressText, setProgressText] = useState(0);
@@ -306,6 +307,7 @@ const UploadAudio = ({navigation} : any) => {
           body: JSON.stringify(message)
       });
       }
+
 
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
@@ -527,7 +529,245 @@ const UploadAudio = ({navigation} : any) => {
         }
     }
 
+    const PublishLargeStory = async () => {
+
+        setIsPublishing(true);
+
+        try {
+
+            if (seriesStory.length > 0) {
+                const result = await API.graphql(
+                    graphqlOperation(createSeries, { input: 
+                        {
+                            type: 'Series',
+                            name: seriesStoryName,
+                            genreID: data.genreID,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            creatorID: pickedCreator
+                        }
+                }))
+
+                const resultish = await API.graphql(
+                    graphqlOperation(updateStory, { input: 
+                        {
+                            id: seriesStory,
+                            seriesID: result.data.createSeries.id,
+                            updatedAt: new Date(),
+                        }
+                }))
+
+                console.log(resultish.data)
+
+                setSeriesid(result.data.createSeries.id)
+                console.log('new series id is', result.data.createSeries.id)
+            }
+
+            let userInfo = await Auth.currentAuthenticatedUser();
+
+            const responseImage = await fetch(localImageUri);
+            const blobImage = await responseImage.blob();
+            const filenameImage = uuid.v4().toString();
+            const s3ResponseImage = await Storage.put(filenameImage, blobImage);
+
+            // get File stats
+            const { size } = await RNFS.stat(localAudioUri);
+
+// here we are simulating an array of bytes
+            const fileObject = {
+            // set the size
+            size: size,
+
+            // here we will read file as per bodyStart & bodyEnd, this will avoid reading complete file in the memory.
+            slice: (bodyStart : any, bodyEnd : any) => {
+                // Here in this sample code, we are using react-native-fs to read files.
+                return RNFS.read(localAudioUri, bodyEnd - bodyStart, bodyStart, 'base64')
+                .then((data : any) => Buffer.from(data, 'base64'))
+                .catch((error : any) => {
+                    console.log(error)
+                });
+                },
+            };
+
+            const filename = uuid.v4().toString();
+
+            // Upload call, for parameters, refer to Amplify docs.
+            const s3ResponseAudio = await Storage.put(filename, fileObject, {
+                progressCallback(uploadProgress) {
+                    setProgressText(
+                        Math.round((uploadProgress.loaded / uploadProgress.total) * 100)
+                    );
+                },
+                contentType: 'audio/mp3',
+                //level: 'protected',
+                //provider: 'StorageChunkUpload',
+            });
+
+        let result = await API.graphql(
+            graphqlOperation(createStory, { input: 
+                {
+                    title: data.title,
+                    titleLowerCase: data.titleLowerCase,
+                    titleLowerCaseNoThe: data.titleLowerCaseNoThe,
+                    summary: data.summary,
+                    description: data.description,
+                    genreID: data.genreID,
+                    author: data.author,
+                    creatorID: data.creatorID,
+                    narratorID: data.narratorID,
+                    illustratorID: data.illustratorID,
+                    narrator: data.narrator,
+                    artist: data.artist,
+                    time: data.time,
+                    approved: false,
+                    hidden: false,
+                    status: false,
+                    imageUri: s3ResponseImage.key,
+                    audioUri: s3ResponseAudio.key,
+                    publisherID: data.publisherID,
+                    nsfw: data.genre === 'after dark' ? true : data.nsfw,
+                    ratingAvg: 0,
+                    ratingAmt: 0,
+                    type: 'PendingStory',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    seriesID: seriesid ? seriesid : null,
+                    seriesPart: data.seriesPart,
+                    numComments: 0,
+                    numListens: 0,
+                }
+        }))
+
+        console.log('story id is', result.data.createStory.id)
+
+        if (data.genre === 'after dark') {
+            //if the user has added after dark tags to the story
+            if (TagsArray.length > 0) {
+                //then for each tag, check to see if it already exists
+                for (let i = 0; i < TagsArray.length; i++) {
+                    let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+
+                    let extag = await ListAllEroticTags(tagCheck);
+
+                    //if the tag exists, create a StoryTag with the tagID and storyID
+                    if (extag !== undefined) {
+                        await API.graphql(graphqlOperation(
+                            createEroticStoryTag, {input: {eroticTagId: extag, storyId: result.data.createStory.id, }}
+                        ))
+
+                        ListAllGenreEroticTags(extag);
+                        
+                    //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                    } else if (extag === undefined) {
+                        let newTag = await API.graphql(graphqlOperation(
+                            createEroticTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                        ))
+
+                        if (newTag) {
+                            const newthing = await API.graphql(graphqlOperation(
+                                createEroticStoryTag, {input: {eroticTagId: newTag.data.createEroticTag.id, storyId: result.data.createStory.id}}
+                            ))
+                            console.log('new tag is', newthing.data.createEroticStoryTag.id)
+                            let newthing2 = await API.graphql(graphqlOperation(
+                                createEroticaTag, {input: {eroticTagId: newTag.data.createEroticTag.id, genreId: data.genreID}}
+                            ))
+                            console.log('new tag is', newthing2.data.createEroticaTag.id)
+                        }
+                    }
+                }
+            } 
+        } 
+
+        else {
+        //if the user has added tags for this story
+            if (TagsArray.length > 0) {
+                //then for each tag, check to see if it already exists
+                for (let i = 0; i < TagsArray.length; i++) {
+                    let tagCheck = TagsArray[i].name.toLowerCase().replace(/ /g, '')
+
+                    let extag = await ListAllTags(tagCheck);
+
+                    //if the tag exists, create a StoryTag with the tagID and storyID
+                    if (extag !== undefined) {
+                        await API.graphql(graphqlOperation(
+                            createStoryTag, {input: {tagId: extag, storyId: result.data.createStory.id }}
+                        ))
+
+                        ListAllGenreTags(extag);
+                        
+                    //if the tag does not exist, create the tag and then the StoryTag with the tagID and storyID
+                    } else if (extag === undefined) {
+                        let newTag = await API.graphql(graphqlOperation(
+                            createTag, {input: {createdAt: new Date(), type: 'Tag', tagName: TagsArray[i].name.toLowerCase().replace(/ /g, ''), count: 0}}
+                        ))
+
+                        if (newTag) {
+                            const newst = await API.graphql(graphqlOperation(
+                                createStoryTag, {input: {tagId: newTag.data.createTag.id, storyId: result.data.createStory.id}}
+                            ))
+                            console.log('genre id is', data.genreID)
+                            console.log('tagid is', newTag.data.createTag.id)
+                            console.log('new story tag is', newst.data.createStoryTag )
+                            const gt = await API.graphql(graphqlOperation(
+                                createGenreTag, {input: {tagId: newTag.data.createTag.id, genreId: data.genreID}}
+                            ))
+                            console.log('genre tag is', gt.data.createGenreTag)
+                        }
+                    }
+                }
+            }
+        }
+
+        if (contributors.length > 0) {
+            for (let i = 0; i < contributors.length; i++) {
+                const contribe = await API.graphql(graphqlOperation(
+                    createContributor, {
+                        input: {
+                            //type: 'Contributor'
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            storyID: result.data.createStory.id,
+                            name: contributors[i].name,
+                            contribution: contributors[i].contribution,
+                            link: contributors[i].link
+                        }
+                    }
+                ))
+                console.log(contribe.data.createContributor)
+            }
+        }
+
+        await API.graphql(graphqlOperation(
+            createMessage, {
+                input: {
+                    type: 'Message',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    receiverID: userInfo.attributes.sub,
+                    content: 'Your story, ' + data.title + ' is under review.\n\nIt may take up to 48 hours for approval. You will be notified when your story goes live.',
+                    title: 'Thank you for submitting your story!',
+                    isReadByReceiver: false,
+                    status: 'noreply',
+                }
+            }
+        ));
+
+        //await SendPush();
+
+        setIsPublishing(false);
+        navigation.goBack();
+
+        //console.log(result);
+            } catch (e) {
+                alert('Connection error. Please try again.')
+                setIsPublishing(false);
+                console.error(e);
+        }
+    }
+
 //audio picker
+    
+
     const [audioName, setAudioName] = useState('');
 
     const pickAudio = async () => {
@@ -541,6 +781,7 @@ const UploadAudio = ({navigation} : any) => {
         if (result.size < 120000000) {
 
         setLocalAudioUri(result.uri);
+        setAudioSize(result.size);
         setAudioName(result.name);
         let { sound } = await Audio.Sound.createAsync(
             {uri: result.uri},
@@ -562,12 +803,12 @@ const UploadAudio = ({navigation} : any) => {
         quality: 1,
         });
 
-        let height = result.height
-        let width = result.width
-        let image = result.uri
+        let height = result.assets[0].height
+        let width = result.assets[0].width
+        let image = result.assets[0].uri
 
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
         let im = await ImageCompress(image, {width, height})
         setLocalImageUri(im);
         }
@@ -1296,7 +1537,7 @@ const UploadAudio = ({navigation} : any) => {
             </Modal>
 
 {/* author modal */}
-            <Modal visible={modalVisible} onDismiss={showModalVisible} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible(false);}}>
+            <Modal visible={modalVisible} onDismiss={hideModalVisible} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible(false);}}>
                 <TouchableOpacity onPress={hideModalVisible} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
                     <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
                        
@@ -1307,7 +1548,8 @@ const UploadAudio = ({navigation} : any) => {
                                     <TouchableOpacity onPress={() => {
                                         setData({...data, author: item.penName, creatorID: item.id});
                                         setPickedCreator(item.id);
-                                        hideModalVisible();
+                                        //hideModalVisible();
+                                        setModalVisible(false)
                                     }}
                                     >
                                         <View style={{marginVertical: 6, backgroundColor: '#171717a5', borderRadius: 8, overflow: 'hidden', width: Dimensions.get('window').width*0.7}}>
@@ -1326,7 +1568,7 @@ const UploadAudio = ({navigation} : any) => {
             </Modal>
 
 {/* narrator modal */}
-            <Modal visible={modalVisible2} onDismiss={showModalVisible2} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible2(false);}}>
+            <Modal visible={modalVisible2} onDismiss={hideModalVisible2} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible2(false);}}>
                 <TouchableOpacity onPress={hideModalVisible2} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
                     <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
                        
@@ -1356,7 +1598,7 @@ const UploadAudio = ({navigation} : any) => {
             </Modal>
 
 {/* illustrator modal */}
-            <Modal visible={modalVisible3} onDismiss={showModalVisible3} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible3(false);}}>
+            <Modal visible={modalVisible3} onDismiss={hideModalVisible3} animationType="slide" transparent={true} onRequestClose={() => {setModalVisible3(false);}}>
                 <TouchableOpacity onPress={hideModalVisible3} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
                     <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000a5'}}>
                        
@@ -1386,7 +1628,7 @@ const UploadAudio = ({navigation} : any) => {
             </Modal>
 
 {/* series modal */}
-            <Modal visible={seriesModal} onDismiss={showSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setSeriesModal(false);}}>
+            <Modal visible={seriesModal} onDismiss={hideSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setSeriesModal(false);}}>
                 <TouchableOpacity onPress={hideSeriesModal} style={{backgroundColor: '#000000'}}>
 
                     <TouchableOpacity onPress={() => {showNewSeriesModal();}}>
@@ -1428,7 +1670,7 @@ const UploadAudio = ({navigation} : any) => {
             </Modal>
 
 {/* new series modal */}
-            <Modal visible={newSeriesModal} onDismiss={showNewSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setNewSeriesModal(false);}}>
+            <Modal visible={newSeriesModal} onDismiss={hideNewSeriesModal} animationType="slide" transparent={true} onRequestClose={() => {setNewSeriesModal(false);}}>
                 <TouchableOpacity onPress={hideNewSeriesModal} style={{backgroundColor: '#000000'}}>
 
                     <Text style={{marginTop: 40, fontWeight: '600', fontSize: 18, textAlign: 'center', paddingHorizontal: 20, paddingVertical: 20, color: '#ffffff'}}>
@@ -1646,7 +1888,7 @@ const UploadAudio = ({navigation} : any) => {
                 {contributors.map((item, index) => {
                     return (
                         <View style={{}}>
-                            <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8, padding: 10, backgroundColor: '#171717', borderRadius: 12, overflow: 'hidden', width: Dimensions.get('window').width-80}}>
+                            <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8, padding: 10, backgroundColor: '#171717', borderRadius: 12, overflow: 'hidden', width: Dimensions.get('window').width*0.86}}>
                                 <View>
                                     <Text style={{fontWeight: '600', color: '#fff', fontSize: 13}}>
                                         {item.name}
