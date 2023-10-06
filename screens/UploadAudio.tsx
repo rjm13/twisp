@@ -282,14 +282,14 @@ const UploadAudio = ({navigation} : any) => {
 
     //request permission to access camera roll
     // useEffect(() => {
-    //     (async () => {
-    //       if (Platform.OS !== 'web') {
-    //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    //         if (status !== 'granted') {
-    //           alert('Sorry, we need camera roll permissions to make this work!');
-    //         }
-    //       }
-    //     })();
+        const request = async () => {
+          if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              alert('Sorry, we need camera roll permissions to make this work!');
+            }
+          }
+        };
     //   }, []);
 
       const SendPush = async () => {
@@ -343,16 +343,6 @@ const UploadAudio = ({navigation} : any) => {
         }
         requestStoragePermission()
       }, [])
-
-      useEffect(() => {
-        const fun = async () => {
-            console.log('run this')
-            const response = await RNFetchBlob.fs.stat(localAudioUri);
-            console.log(response)
-        }
-        fun();
-
-      }, [localAudioUri])
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
@@ -887,6 +877,7 @@ const UploadAudio = ({navigation} : any) => {
 
 //image picker
     const pickImage = async () => {
+        await request()
         let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
