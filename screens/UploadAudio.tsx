@@ -15,6 +15,8 @@ import {
 }
 from 'react-native';
 
+import {PermissionsAndroid, ToastAndroid} from 'react-native';
+
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -56,7 +58,10 @@ import {
     eroticaTagsByEroticTagId
 } from '../src/graphql/queries';
 
+import * as RNFS from 'react-native-fs';
+import RNFetchBlob from 'rn-fetch-blob';
 
+global.Buffer = require('buffer').Buffer;
 
 const UploadAudio = ({navigation} : any) => { 
 
@@ -276,16 +281,16 @@ const UploadAudio = ({navigation} : any) => {
     }
 
     //request permission to access camera roll
-    useEffect(() => {
-        (async () => {
-          if (Platform.OS !== 'web') {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-              alert('Sorry, we need camera roll permissions to make this work!');
-            }
-          }
-        })();
-      }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //       if (Platform.OS !== 'web') {
+    //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    //         if (status !== 'granted') {
+    //           alert('Sorry, we need camera roll permissions to make this work!');
+    //         }
+    //       }
+    //     })();
+    //   }, []);
 
       const SendPush = async () => {
 
@@ -308,7 +313,46 @@ const UploadAudio = ({navigation} : any) => {
       });
       }
 
+    
+      useEffect(() => {
+        const requestStoragePermission = async () => {
 
+            console.log(Platform.OS)
+
+            if (Platform.OS !== "android") return true
+        
+            const pm1 = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_AUDIO);
+            const pm2 = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES);
+        
+            console.log(pm1, pm2)
+            if (pm1 === true && pm2 === true) return true
+        
+            const userResponse = await PermissionsAndroid.requestMultiple([
+                PermissionsAndroid.PERMISSIONS.READ_MEDIA_AUDIO,
+                PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+            ]);
+
+            console.log(userResponse)
+        
+            if (userResponse['android.permission.READ_MEDIA_AUDIO'] === 'granted' &&
+                userResponse['android.permission.READ_MEDIA_IMAGES'] === 'granted') {
+                return true
+            } else {
+                return false
+            }
+        }
+        requestStoragePermission()
+      }, [])
+
+      useEffect(() => {
+        const fun = async () => {
+            console.log('run this')
+            const response = await RNFetchBlob.fs.stat(localAudioUri);
+            console.log(response)
+        }
+        fun();
+
+      }, [localAudioUri])
 
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
@@ -570,8 +614,46 @@ const UploadAudio = ({navigation} : any) => {
             const filenameImage = uuid.v4().toString();
             const s3ResponseImage = await Storage.put(filenameImage, blobImage);
 
+           
+
             // get File stats
-            const { size } = await RNFS.stat(localAudioUri);
+
+            let file = localAudioUri
+
+                if (Platform.OS === 'ios') {
+
+                const split = file.split('/');
+              
+                const name = split.pop();
+              
+                const inbox = split.pop();
+              
+                const realPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
+              
+                file = decodeURI(realPath);
+
+                console.log(file)
+              
+              } else {
+              
+                console.log(localAudioUri)
+
+                const newFile = await RNFetchBlob.fs.stat(localAudioUri);
+              
+                file = newFile.path;
+
+                console.log('new file is', newFile)
+              
+              }
+
+              const { size } = await RNFS.stat(localAudioUri);
+              //const  respo  = await RNFetchBlob.fs.stat(localAudioUri);
+
+              //console.log('size is', size)
+
+              //let filer = respo.path
+
+            //console.log(respo)
 
 // here we are simulating an array of bytes
             const fileObject = {
@@ -581,7 +663,7 @@ const UploadAudio = ({navigation} : any) => {
             // here we will read file as per bodyStart & bodyEnd, this will avoid reading complete file in the memory.
             slice: (bodyStart : any, bodyEnd : any) => {
                 // Here in this sample code, we are using react-native-fs to read files.
-                return RNFS.read(localAudioUri, bodyEnd - bodyStart, bodyStart, 'base64')
+                return RNFS.read(file, bodyEnd - bodyStart, bodyStart, 'base64')
                 .then((data : any) => Buffer.from(data, 'base64'))
                 .catch((error : any) => {
                     console.log(error)
@@ -599,8 +681,8 @@ const UploadAudio = ({navigation} : any) => {
                     );
                 },
                 contentType: 'audio/mp3',
-                //level: 'protected',
-                //provider: 'StorageChunkUpload',
+                level: 'protected',
+                provider: 'StorageChunkUpload',
             });
 
         let result = await API.graphql(
@@ -773,10 +855,19 @@ const UploadAudio = ({navigation} : any) => {
     const pickAudio = async () => {
         let result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
-        copyToCacheDirectory: false,
+        //copyToCacheDirectory: false,
         });
 
         console.log(result);
+
+        //const directory = await pickDirectory(result); //this is a function from react native document picker
+
+            //if (!directory)
+                //return;
+
+            // let directory = decodeURIComponent(result.uri);
+
+            // console.log('new url is', directory);
 
         if (result.size < 120000000) {
 
@@ -804,8 +895,11 @@ const UploadAudio = ({navigation} : any) => {
         });
 
         let height = result.assets[0].height
+        console.log('h', result.assets[0].height)
         let width = result.assets[0].width
+        console.log('w', result.assets[0].width)
         let image = result.assets[0].uri
+        console.log('u', result.assets[0].uri)
 
 
         if (!result.canceled) {
@@ -1468,7 +1562,7 @@ const UploadAudio = ({navigation} : any) => {
                             
                             ) : (
                         <View>
-                            <TouchableOpacity onPress={PublishStory} style={{marginVertical: 40}}>
+                            <TouchableOpacity onPress={() => audioSize > 80000000 ? PublishLargeStory() : PublishStory()} style={{marginVertical: 40}}>
                                 <View
                                     style={{ 
                                         paddingHorizontal: 20,
@@ -1517,7 +1611,7 @@ const UploadAudio = ({navigation} : any) => {
                         <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
                             {Genres.map(item => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity key={item.id} onPress={() => {
                                         setData({...data, genre: item.genre, genreID: item.id});
                                         hideModal2();
                                     }}
@@ -1545,7 +1639,7 @@ const UploadAudio = ({navigation} : any) => {
                             <View style={{height: 40}}/>
                             {Authors.map(item => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity key={item.id} onPress={() => {
                                         setData({...data, author: item.penName, creatorID: item.id});
                                         setPickedCreator(item.id);
                                         //hideModalVisible();
@@ -1576,7 +1670,7 @@ const UploadAudio = ({navigation} : any) => {
                             <View style={{height: 40}}/>
                             {Narrators.map(item => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity key ={item.id} onPress={() => {
                                         setData({...data, narrator: item.penName, narratorID: item.id});
                                         //setPickedCreator(item.id);
                                         hideModalVisible2();
@@ -1606,7 +1700,7 @@ const UploadAudio = ({navigation} : any) => {
                             <View style={{height: 40}}/>
                             {Illustrators.map(item => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity key={item.id} onPress={() => {
                                         setData({...data, artist: item.penName, illustratorID: item.id});
                                         //setPickedCreator(item.id);
                                         hideModalVisible3();
@@ -1650,7 +1744,7 @@ const UploadAudio = ({navigation} : any) => {
                         <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000', height: Dimensions.get('window').height}}>
                             {seriesArr.map(item => {
                                 return (
-                                    <TouchableOpacity onPress={() => {
+                                    <TouchableOpacity key={item.id} onPress={() => {
                                         setData({...data, seriesPart: item.seriesPart + 1, seriesID: item.id});
                                         setSeries(item.name)
                                         hideSeriesModal();
@@ -1887,7 +1981,7 @@ const UploadAudio = ({navigation} : any) => {
 
                 {contributors.map((item, index) => {
                     return (
-                        <View style={{}}>
+                        <View key={item.id} style={{}}>
                             <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginBottom: 8, padding: 10, backgroundColor: '#171717', borderRadius: 12, overflow: 'hidden', width: Dimensions.get('window').width*0.86}}>
                                 <View>
                                     <Text style={{fontWeight: '600', color: '#fff', fontSize: 13}}>

@@ -15,7 +15,9 @@ import {
     ActivityIndicator,
     Platform,
     KeyboardAvoidingView,
-    Modal
+    Modal,
+    Linking,
+    TouchableWithoutFeedbackBase
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -917,8 +919,64 @@ const StoryScreen  = ({navigation} : any) => {
         )
     }
 
+    const [contributorsModal, setContributorsModal] = useState(false);
+
+    const OpenLink = (link : any) => {
+  
+                if (link.startsWith('http')) {
+                    Linking.openURL(link).catch(err => console.error("Couldn't load page", err));
+                }
+                if (link.startsWith('www')) {
+                    Linking.openURL('https://' + link).catch(err => console.error("Couldn't load page", err));
+                } else {
+                    Linking.openURL('https://www.' + link).catch(err => console.error("Couldn't load page", err));
+                }
+            } 
+    
+
     return (
             <View style={styles.container}>
+{/* contributors modal */}
+                <Modal 
+                        statusBarTranslucent={true} 
+                        animationType="slide" 
+                        transparent={true} 
+                        visible={contributorsModal} 
+                        onRequestClose={() => {setContributorsModal(false);}}
+                    >            
+                        <TouchableWithoutFeedback onPress={() => setContributorsModal(false)}>
+                            <View style={{alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height, width: Dimensions.get('window').width, backgroundColor: '#000000a5'}}>
+                                <View style={{borderRadius: 15, borderWidth: 0.2, borderColor: '#363636a5', height: Dimensions.get('window').height*0.7, width: Dimensions.get('window').width*0.8, backgroundColor: '#000000'}}>
+                                    <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+                                        <View style={{alignItems: 'center', marginTop: 60}}>
+                                            <Text style={{marginBottom: 20, fontSize: 20, fontWeight: 'bold', color: '#fff'}}>
+                                                Additional Contributors
+                                            </Text>
+                                            {contributors.map(({ id, name, contribution, link } : any) => (
+                                                <View key={id} style={{marginTop: 10, marginRight: 10}}>
+                                                        <View style={{}}>
+                                                            <Text style={{fontSize: 16, fontWeight: '600', color: '#fff'}}>
+                                                                {name}
+                                                            </Text>
+                                                            <Text style={{fontSize: 14, fontWeight: '400', color: '#ffffffa5'}}>
+                                                                {contribution}
+                                                            </Text>
+                                                            <TouchableOpacity onPress={() => OpenLink(link)}>
+                                                                <Text style={{textDecorationLine: 'underline', fontSize: 13, fontWeight: '400', color: '#00ffffa5'}}>
+                                                                    {link}
+                                                                </Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                </View>
+                                            ))}
+                                        </View>
+                                    </ScrollView>
+                                </View>
+                            </View> 
+                            </TouchableWithoutFeedback>
+                            
+                            
+                </Modal>
 {/* Rate the story modal */}
                     <Modal 
                         statusBarTranslucent={true} 
@@ -1239,6 +1297,17 @@ const StoryScreen  = ({navigation} : any) => {
                                         {Story?.title}
                                     </Text>
 
+                                {Story?.seriesPart > 1 ? (
+                                    <TouchableOpacity>
+                                        <View>
+                                            <Text style={{textAlign: 'center', color: '#00ffffa5', fontWeight: '600', fontSize: 16, marginTop: 16, marginBottom: 16}}>
+                                                Part {Story?.seriesPart}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ) : null}
+                               
+
                                     <View style={{ width: '100%', flexDirection: 'row', marginVertical: 10, justifyContent: 'space-between'}}>
                                         <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.creatorID, creatorType: 'Author'})}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center'}}>
@@ -1320,6 +1389,8 @@ const StoryScreen  = ({navigation} : any) => {
                                     
                                 </View>
 
+                                
+
                                 <View>
                                     <Text style={{textAlign: 'center', color: '#fff', fontSize: 14, marginTop: 32, marginBottom: 16}}>
                                         {Story?.summary}
@@ -1397,6 +1468,17 @@ const StoryScreen  = ({navigation} : any) => {
                                         {Story?.description}
                                     </Text>
                                 </View> 
+
+                                {contributors.length > 0 ? (
+                                    <View style={{marginTop: 10, marginBottom: 40}}>
+                                        <TouchableOpacity onPress={() => setContributorsModal(true)}>
+                                            <Text style={{textDecorationLine: 'underline', color: '#989898', fontSize: 14, padding: 10}}>
+                                                Additional Contributors
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : null}
+                                
 
                                 <View style={{width: '100%', marginTop: 20}} >
                                     <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10,}}>

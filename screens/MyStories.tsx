@@ -185,12 +185,14 @@ const MyStories = ({navigation} : any) => {
                         publisherID: userInfo.attributes.sub
                 }))
 
+                console.log(userStories.data.storiesByPublisher.items.length)
+
                 for (let i = 0; i < userStories.data.storiesByPublisher.items.length; i++) {
                     storiesarr.push(userStories.data.storiesByPublisher.items[i])
                 }
 
                 if (userStories.data.storiesByPublisher.nextToken) {
-                    setStories(userStories.data.storiesByPublisher.nextToken);
+                    fetchStories(userStories.data.storiesByPublisher.nextToken);
                 }
 
                 if (userStories.data.storiesByPublisher.nextToken === null) {
@@ -286,8 +288,8 @@ const MyStories = ({navigation} : any) => {
                         data={Stories}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}
-                        extraData={Stories}
-                        maxToRenderPerBatch={20}
+                        initialNumToRender={50}
+                        maxToRenderPerBatch={50}
                         refreshControl={
                             <RefreshControl
                             refreshing={isFetching}

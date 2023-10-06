@@ -30,9 +30,6 @@ import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 const ForYouCarousel = () => {
 
-    const [currentIndex, setCurrentIndex] = useState(0)
-
-    const [nextToken, setNextToken] = useState()
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
@@ -103,7 +100,8 @@ const ForYouCarousel = () => {
                 width: Dimensions.get('window').width*0.9,
                 height: Dimensions.get('window').height*0.44,
                 borderRadius: 15,
-                margin: 10
+                margin: 10,
+                alignSelf: 'center'
             }}>
                 <AnimatedGradient customColors={presetColors.loading} speed={2000} />
             </View>

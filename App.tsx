@@ -20,7 +20,9 @@ import * as WebBrowser from 'expo-web-browser';
 
 import Amplify from '@aws-amplify/core';
 import config from './src/aws-exports.js';
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, Hub, Storage } from 'aws-amplify';
+import { StorageChunkUpload } from 'amplify-s3-chunk-upload';
+import { Credentials } from '@aws-amplify/core';
 
 //Amplify.configure(config);
 
@@ -32,8 +34,14 @@ Amplify.configure({
   },
 });
 
+
 import { AppContext } from './AppContext';
 import AudioTrackPlayer from './components/AudioTrackPlayer';
+
+// Load StorageChunkUpload Plugin
+const storagePlugin = new StorageChunkUpload({}, Credentials);
+Storage.addPluggable(storagePlugin);
+storagePlugin.configure(config);
 
 
 async function urlOpener(url, redirectUrl) {
