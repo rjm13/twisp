@@ -313,7 +313,7 @@ const UploadAudio = ({navigation} : any) => {
       });
       }
 
-    
+    //get the android media permissions
       useEffect(() => {
         const requestStoragePermission = async () => {
 
@@ -344,6 +344,25 @@ const UploadAudio = ({navigation} : any) => {
         requestStoragePermission()
       }, [])
 
+
+    // const uniquefilename = uuid.v4().toString();
+
+    // const s3ResponseAudio =
+    //     Storage.put(uniquefilename, blob, {
+    //         progressCallback(uploadProgress) {
+    //             setProgressText(
+    //                 Math.round((uploadProgress.loaded / uploadProgress.total) * 100)
+    //             );
+    //         },
+    //         resumable: true,
+    //         contentType: 'audio/mp3'
+    // })
+
+    const CancelUpload = () => {
+        //Storage.cancel(s3ResponseAudio)
+        setCancelUploadModal(false)
+    }
+
 //PRIMARY FUNCTION for uploading all of the story data to the s3 bucket and app sync API
 //There are 4 different functions depending on if a file must be uploaded to the s3 bucket or not
     const PublishStory = async () => {
@@ -352,54 +371,56 @@ const UploadAudio = ({navigation} : any) => {
 
         try {
 
-            if (seriesStory.length > 0) {
-                const result = await API.graphql(
-                    graphqlOperation(createSeries, { input: 
-                        {
-                            type: 'Series',
-                            name: seriesStoryName,
-                            genreID: data.genreID,
-                            createdAt: new Date(),
-                            updatedAt: new Date(),
-                            creatorID: pickedCreator
-                        }
-                }))
-
-                const resultish = await API.graphql(
-                    graphqlOperation(updateStory, { input: 
-                        {
-                            id: seriesStory,
-                            seriesID: result.data.createSeries.id,
-                            updatedAt: new Date(),
-                        }
-                }))
-
-                console.log(resultish.data)
-
-                setSeriesid(result.data.createSeries.id)
-                console.log('new series id is', result.data.createSeries.id)
-            }
-
             let userInfo = await Auth.currentAuthenticatedUser();
 
             const responseImage = await fetch(localImageUri);
             const blobImage = await responseImage.blob();
             const filenameImage = uuid.v4().toString();
             const s3ResponseImage = await Storage.put(filenameImage, blobImage);
+
+            console.log('image uploaded')
             
             const responseAudio = await fetch(localAudioUri);
             console.log(responseAudio)
             const blob = await responseAudio.blob();
             const filename = uuid.v4().toString();
-            //let extension = "audio/" + localAudioUri.split('.').pop()
             const s3ResponseAudio = await Storage.put(filename, blob, {
                 progressCallback(uploadProgress) {
                     setProgressText(
                         Math.round((uploadProgress.loaded / uploadProgress.total) * 100)
                     );
                 },
+                //resumable: true,
                 contentType: 'audio/mp3'
             })
+
+        if (seriesStory.length > 0) {
+            const result = await API.graphql(
+                graphqlOperation(createSeries, { input: 
+                    {
+                        type: 'Series',
+                        name: seriesStoryName,
+                        genreID: data.genreID,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        creatorID: pickedCreator
+                    }
+            }))
+
+            const resultish = await API.graphql(
+                graphqlOperation(updateStory, { input: 
+                    {
+                        id: seriesStory,
+                        seriesID: result.data.createSeries.id,
+                        updatedAt: new Date(),
+                    }
+            }))
+
+            console.log(resultish.data)
+
+            setSeriesid(result.data.createSeries.id)
+            console.log('new series id is', result.data.createSeries.id)
+        }
 
         let result = await API.graphql(
             graphqlOperation(createStory, { input: 
@@ -563,39 +584,12 @@ const UploadAudio = ({navigation} : any) => {
         }
     }
 
+//if a story is greater than 100mb, it must be uploaded in chunks
     const PublishLargeStory = async () => {
 
         setIsPublishing(true);
 
         try {
-
-            if (seriesStory.length > 0) {
-                const result = await API.graphql(
-                    graphqlOperation(createSeries, { input: 
-                        {
-                            type: 'Series',
-                            name: seriesStoryName,
-                            genreID: data.genreID,
-                            createdAt: new Date(),
-                            updatedAt: new Date(),
-                            creatorID: pickedCreator
-                        }
-                }))
-
-                const resultish = await API.graphql(
-                    graphqlOperation(updateStory, { input: 
-                        {
-                            id: seriesStory,
-                            seriesID: result.data.createSeries.id,
-                            updatedAt: new Date(),
-                        }
-                }))
-
-                console.log(resultish.data)
-
-                setSeriesid(result.data.createSeries.id)
-                console.log('new series id is', result.data.createSeries.id)
-            }
 
             let userInfo = await Auth.currentAuthenticatedUser();
 
@@ -612,17 +606,18 @@ const UploadAudio = ({navigation} : any) => {
 
                 if (Platform.OS === 'ios') {
 
-                const split = file.split('/');
+                // const split = file.split('/');
               
-                const name = split.pop();
+                // const name = split.pop();
               
-                const inbox = split.pop();
+                // const inbox = split.pop();
               
-                const realPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
+                // const realPath = `${RNFS.TemporaryDirectoryPath}${inbox}/${name}`;
               
-                file = decodeURI(realPath);
+                // file = decodeURI(realPath);
 
-                console.log(file)
+                // console.log('file is', file)
+
               
               } else {
               
@@ -671,9 +666,37 @@ const UploadAudio = ({navigation} : any) => {
                     );
                 },
                 contentType: 'audio/mp3',
-                level: 'protected',
+                //level: 'protected',
                 provider: 'StorageChunkUpload',
             });
+
+            if (seriesStory.length > 0) {
+                const result = await API.graphql(
+                    graphqlOperation(createSeries, { input: 
+                        {
+                            type: 'Series',
+                            name: seriesStoryName,
+                            genreID: data.genreID,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            creatorID: pickedCreator
+                        }
+                }))
+
+                const resultish = await API.graphql(
+                    graphqlOperation(updateStory, { input: 
+                        {
+                            id: seriesStory,
+                            seriesID: result.data.createSeries.id,
+                            updatedAt: new Date(),
+                        }
+                }))
+
+                console.log(resultish.data)
+
+                setSeriesid(result.data.createSeries.id)
+                console.log('new series id is', result.data.createSeries.id)
+            }
 
         let result = await API.graphql(
             graphqlOperation(createStory, { input: 
@@ -1148,6 +1171,8 @@ const UploadAudio = ({navigation} : any) => {
 
         const hideNewSeriesModal = () => setNewSeriesModal(false);
 
+    //series select modal
+        const [cancelUploadModal, setCancelUploadModal] = useState(false);
 
         const showModal2 = () => setVisible2(true);
 
@@ -1536,19 +1561,25 @@ const UploadAudio = ({navigation} : any) => {
                         {isPublishing ? (
                             <View style={{marginVertical: 40, alignContent: 'center'}}>
                                 {/* <ActivityIndicator size="large" color="cyan"/>  */}
-                            <Text style={{marginBottom: 10, fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
-                                {progressText} %
-                            </Text>
+                                <Text style={{marginBottom: 10, fontSize: 16, textAlign: 'center', color: '#fff', marginTop: 10}}>
+                                    {progressText} %
+                                </Text>
 
-                            <Progress.Bar 
-                                progress={Number(progressText)/100} 
-                                width={Dimensions.get('window').width/2} 
-                                color={'#00ffff'}
-                                unfilledColor={'#000'}
-                                borderWidth={1}
-                                borderColor={'#00ffff'}
-                                borderRadius={4}
-                            />
+                                <Progress.Bar 
+                                    progress={Number(progressText)/100} 
+                                    width={Dimensions.get('window').width/2} 
+                                    color={'#00ffff'}
+                                    unfilledColor={'#000'}
+                                    borderWidth={1}
+                                    borderColor={'#00ffff'}
+                                    borderRadius={4}
+                                />
+                                {/* <TouchableOpacity onPress={() => setCancelUploadModal(true)}>
+                                    <Text style={{textDecorationLine: 'underline', padding: 20, marginBottom: 10, fontSize: 16, textAlign: 'center', color: '#00ffffa5', marginTop: 10}}>
+                                        Cancel
+                                    </Text>
+                                </TouchableOpacity> */}
+                                
                             </View>
                             
                             ) : (
@@ -1773,6 +1804,29 @@ const UploadAudio = ({navigation} : any) => {
                            
                         </View>
                     </ScrollView>
+                </TouchableOpacity>
+                
+            </Modal>
+
+{/* cancel modal */}
+            <Modal visible={cancelUploadModal} onDismiss={() => setCancelUploadModal(false)} animationType="slide" transparent={true} onRequestClose={() => {setCancelUploadModal(false);}}>
+                <TouchableOpacity onPress={() => setCancelUploadModal(false)} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height, backgroundColor: '#171717a5'}}>
+                    <View style={{alignSelf: 'center', backgroundColor: '#000000', width: Dimensions.get('window').width*0.7, height: Dimensions.get('window').height*0.5}}>
+                        <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
+                            Cancel this upload?
+                        </Text>
+                        <TouchableOpacity onPress={() => CancelUpload()}>
+                            <Text style={{borderColor: '#00ffffa5', borderWidth: 0.5, borderRadius: 15, overflow: 'hidden', backgroundColor: '#000', paddingVertical: 6, paddingHorizontal: 10, color: '#00ffffa5', fontSize: 16, fontWeight: '600'}}>
+                                Cancel
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setCancelUploadModal(false)}>
+                            <Text style={{borderRadius: 15, overflow: 'hidden', backgroundColor: '#00ffffa5',paddingVertical: 6, paddingHorizontal: 10, color: '#000', fontSize: 16, fontWeight: '600'}}>
+                                Continue
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                   
                 </TouchableOpacity>
                 
             </Modal>

@@ -412,7 +412,7 @@ const PendingStories = ({navigation} : any) => {
                     <View style={styles.tile}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
                             <View style={{ width: '78%'}}>
-                                    <Text style={styles.name}>
+                                    <Text style={[styles.name, {width: '96%'}]}>
                                         {title}
                                     </Text> 
                                 
@@ -510,7 +510,7 @@ const PendingStories = ({navigation} : any) => {
                                 <ActivityIndicator size='small' color='cyan'/>
                             ) : (
                                 <TouchableOpacity onLongPress={() => ApproveStory({id, title, authorID, NSFW, nsfw, genreName, creatorID})}>
-                                    <Text style={{color: '#000', backgroundColor: 'cyan', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6}}>
+                                    <Text style={{color: '#000', backgroundColor: 'cyan', overflow: 'hidden', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 6}}>
                                         Approve
                                     </Text>
                                 </TouchableOpacity>

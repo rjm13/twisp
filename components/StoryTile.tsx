@@ -293,7 +293,7 @@ useEffect(() => {
                                     </View>
                                     
                                          {isVisible ? (
-                                            <View style={{marginRight: 10}}>
+                                            <View style={{marginRight: 0}}>
                                             <TouchableOpacity onPress={onPlay}>
                                                 <View style={{ 
                                                     flexDirection: 'row', 
