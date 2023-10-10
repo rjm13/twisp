@@ -850,6 +850,7 @@ const UploadAudio = ({navigation} : any) => {
         //await SendPush();
 
         setIsPublishing(false);
+        console.log('story uploaded');
         navigation.goBack();
 
         //console.log(result);
@@ -1797,6 +1798,8 @@ const UploadAudio = ({navigation} : any) => {
                         <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
                            <FlatList 
                             data={seriesStories}
+                            maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                             keyExtractor={item => item.id}
                             renderItem={renderItem}
                            />

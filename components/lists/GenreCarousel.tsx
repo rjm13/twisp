@@ -368,7 +368,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                                             paddingVertical: 2,
                                             paddingHorizontal: 8,
                                             backgroundColor: '#ffffff4D',
-                                            borderColor: '#ffffffCC',
+                                            borderColor: '#ffffffcc',
                                             }}>
                                                 <FontAwesome5 
                                                     name='play'
@@ -379,7 +379,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                                                 <Text style={{
                                                     fontSize: 14,
                                                     fontWeight: 'normal',
-                                                    color: '#ffffffCC',
+                                                    color: '#ffffffcc',
                                                 
                                                 }}>
                                                     {TimeConversion(time)}
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
     time: {
         fontSize: 14,
         fontWeight: 'normal',
-        color: '#ffffffCC',
+        color: '#ffffffcc',
         marginLeft: 3,
     },
     

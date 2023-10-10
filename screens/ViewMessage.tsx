@@ -90,20 +90,21 @@ const ViewMessage = ({navigation} : any) => {
             >
                 <View style={{justifyContent: 'space-between', height: Dimensions.get('window').height}}>
                     <View>
-                        <View style={{ flexDirection: 'row', marginTop: 40, marginLeft: 20, alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', marginTop: 60, marginLeft: 20, alignItems: 'flex-start'}}>
                             <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                                 <View style={{padding: 30, margin: -30}}>
                                     <FontAwesome5 
                                         name='chevron-left'
                                         color='#fff'
                                         size={20}
+                                        style={{marginTop: 4}}
                                     />
                                 </View>
                             </TouchableWithoutFeedback>
 
-                            <View style={{height: 60}}/>
+                            {/* <View style={{height: 60}}/> */}
 
-                            <Text style={[styles.header, {marginLeft: 20, flexWrap: 'wrap', width: Dimensions.get('window').width*0.8}]}>
+                            <Text style={[styles.header, {marginLeft: 20, marginTop: 0, flexWrap: 'wrap', width: Dimensions.get('window').width*0.8, textAlignVertical: 'top'}]}>
                                 {message?.title}
                             </Text>
 
@@ -147,7 +148,7 @@ const ViewMessage = ({navigation} : any) => {
                             
                           
                                 <View>
-                                    <Text style={{fontSize: 16, color: '#fff', marginTop: 14}}>
+                                    <Text style={{fontSize: 16, color: '#fff', marginTop: 44}}>
                                         {message?.content}
                                     </Text>
                                     <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>

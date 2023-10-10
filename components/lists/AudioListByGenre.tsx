@@ -303,6 +303,8 @@ const AudioStoryList = ({genreID, genreName} : any) => {
                     data={genreStories}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                     refreshControl={
                         <RefreshControl
                         refreshing={isFetching}

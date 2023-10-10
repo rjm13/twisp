@@ -663,7 +663,8 @@ const PendingStories = ({navigation} : any) => {
                     keyExtractor={item => item.id}
                     extraData={stories}
                     renderItem={renderItem}
-                    maxToRenderPerBatch={20}
+                    maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                     refreshControl={
                         <RefreshControl
                         refreshing={isFetching}

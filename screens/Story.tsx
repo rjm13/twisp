@@ -1555,8 +1555,8 @@ const StoryScreen  = ({navigation} : any) => {
                                                     showsVerticalScrollIndicator={false}
                                                     scrollEnabled={false}
                                                     extraData={commentList}
-                                                    initialNumToRender={10}
-                                                    maxToRenderPerBatch={20}
+                                                    maxToRenderPerBatch={100}
+                                                    initialNumToRender={100}
                                                     ListFooterComponent={ () => {
                                                         return (
                                                             <View style={{height:  Platform.OS === 'ios' ? 500 : 300}}>

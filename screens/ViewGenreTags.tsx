@@ -116,6 +116,8 @@ const GenreTags = ({navigation} : any) => {
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{flexWrap: 'wrap', width: Dimensions.get('window').width}}
                             horizontal={true}
+                            maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                             ListFooterComponent={() => {
                                 return (
                                     <View style ={{height: 100}}/>

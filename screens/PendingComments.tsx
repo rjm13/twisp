@@ -165,7 +165,8 @@ const PendingComments = ({navigation} : any) => {
                 extraData={comments}
                 renderItem={renderComment}
                 showsVerticalScrollIndicator={false}
-                maxToRenderPerBatch={20}
+                maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                     refreshControl={
                         <RefreshControl
                         refreshing={isFetching}

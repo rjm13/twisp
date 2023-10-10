@@ -260,8 +260,8 @@ const BrowseAuthor = ({navigation} : any) => {
                         extraData={AuthorArray}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
-                        initialNumToRender={20}
-                        maxToRenderPerBatch={20}
+                        maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                         refreshControl={
                             <RefreshControl
                                 refreshing={isFetching}

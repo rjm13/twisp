@@ -141,8 +141,8 @@ const AfterDarkTagSearch = ({navigation} : any) => {
                 keyExtractor={(item) => item.id}
                 extraData={searchedStories}
                 showsVerticalScrollIndicator={false}   
-                initialNumToRender={20}
-                maxToRenderPerBatch={20} 
+                maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                 ListFooterComponent={ () => {
                     return (
                         <View style={{ height:  150}}/>

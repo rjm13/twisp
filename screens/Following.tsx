@@ -199,8 +199,8 @@ const FollowingScreen = ({navigation} : any) => {
                         extraData={users}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
-                        maxToRenderPerBatch={20}
-                        initialNumToRender={20}
+                        maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl

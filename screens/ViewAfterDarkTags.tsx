@@ -125,6 +125,8 @@ const ViewAfterDarkTags = ({navigation} : any) => {
                             keyExtractor={item => item.id}
                             renderItem={renderItem}
                             showsVerticalScrollIndicator={false}
+                            maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                             contentContainerStyle={{ flexWrap: 'wrap',width: Dimensions.get('window').width}}
                             horizontal={true}
                             ListFooterComponent={() => {

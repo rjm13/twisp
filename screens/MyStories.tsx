@@ -288,8 +288,8 @@ const MyStories = ({navigation} : any) => {
                         data={Stories}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}
-                        initialNumToRender={50}
-                        maxToRenderPerBatch={50}
+                        initialNumToRender={100}
+                        maxToRenderPerBatch={100}
                         refreshControl={
                             <RefreshControl
                             refreshing={isFetching}

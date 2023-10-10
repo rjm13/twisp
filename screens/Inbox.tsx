@@ -159,7 +159,8 @@ const Inbox = ({navigation} : any) => {
                         keyExtractor={item => item.id}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
-                        maxToRenderPerBatch={20}
+                        initialNumToRender={100}
+                        maxToRenderPerBatch={100}
                         refreshControl={
                             <RefreshControl
                             refreshing={isFetching}

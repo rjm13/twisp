@@ -133,7 +133,8 @@ const InProgressList = () => {
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     extraData={inProgressStories}
-                    maxToRenderPerBatch={20}
+                    maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                     refreshControl={
                         <RefreshControl
                         refreshing={isFetching}

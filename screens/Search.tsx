@@ -393,8 +393,8 @@ const SearchScreen = ({navigation} : any) => {
                 keyExtractor={item => item.id}
                 extraData={searchedStories}
                 showsVerticalScrollIndicator={false}   
-                initialNumToRender={10}
-                maxToRenderPerBatch={10} 
+                maxToRenderPerBatch={100}
+                    initialNumToRender={100} 
                 ListFooterComponent={ () => {
                     return (
                         <View style={{ height:  150, alignItems: 'center', marginTop: 40}}>

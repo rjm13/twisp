@@ -123,7 +123,8 @@ const AudioStoryList = () => {
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     extraData={favedStories}
-                    maxToRenderPerBatch={20}
+                    maxToRenderPerBatch={100}
+                    initialNumToRender={100}
                     refreshControl={
                         <RefreshControl
                         refreshing={isFetching}

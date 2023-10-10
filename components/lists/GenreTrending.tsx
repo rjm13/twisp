@@ -99,7 +99,7 @@ const GenreTrending = ({genreid} : any) => {
         if (item.genre) {
             icon = item.genre.icon
             genreName = item.genre.genre
-            primary = item.genre.primary
+            primary = item.genre.color
         }
         
         return (
