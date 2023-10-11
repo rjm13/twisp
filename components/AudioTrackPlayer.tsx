@@ -349,21 +349,28 @@ const AudioPlayer  = () => {
 
         let arr = userPins;
 
-        let userInfo = await Auth.currentAuthenticatedUser();
-
         const getThePins = async () => {
 
+            if (storyID === null) {
+                console.log(storyID)
+                return
+            }
+
+            let userInfo = await Auth.currentAuthenticatedUser();
 
             let getPin = await API.graphql(graphqlOperation(
                 pinnedStoriesByUserByStory, {
                     userID: userInfo.attributes.sub,
                     storyID: {
                         eq: storyID
-                    }
+                    },
+                    limit: 1
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items) {
+            console.log(getPin.data.pinnedStoriesByUserByStory.items)
+
+            if (getPin.data.pinnedStoriesByUserByStory.items[0].story.id === storyID) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
@@ -436,7 +443,7 @@ const AudioPlayer  = () => {
             //delete the inProgress story, if it exists
             await API.graphql(graphqlOperation(
                 deleteInProgressStory, {input: {
-                    id: inProgressID
+                    "id": inProgressID
                 }}
             ))
 
@@ -489,13 +496,18 @@ const AudioPlayer  = () => {
             ))
             console.log('created new progress story')
             setInProgressID(response.data.createInProgressStory.id)
+            setProgUpdate(!progUpdate)
         }    
     }
 
 //update the story that is in progress
     const UpdateProgress = async () => {
         if (playbackProgress.position !== 0) {
+            if (inProgressID === null) {
+                return
+            }
             let time = Math.floor(playbackProgress.position*1000)
+            console.log('updated time is', time)
             await API.graphql(graphqlOperation(
                 updateInProgressStory, {input: {
                     id: inProgressID,
@@ -503,6 +515,7 @@ const AudioPlayer  = () => {
                 }}
             ))
             console.log('updated progress to ', time)
+            setProgUpdate(!progUpdate)
 
         }
         
@@ -519,7 +532,7 @@ const AudioPlayer  = () => {
             console.log('update progress')
             UpdateProgress()
         }
-        setProgUpdate(!progUpdate)
+        //setProgUpdate(!progUpdate)
     }
     
     function millisToMinutesAndSeconds () {

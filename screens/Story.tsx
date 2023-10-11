@@ -120,7 +120,7 @@ const StoryScreen  = ({navigation} : any) => {
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items) {
+            if (getPin.data.pinnedStoriesByUserByStory.items.length > 0) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
@@ -638,15 +638,15 @@ const StoryScreen  = ({navigation} : any) => {
 
             setUserImage(UserImage)
             //check if its pinned
-            if (userPins.includes(storyID) === true) {
-                setQd(true)
-            }
+            // if (userPins.includes(storyID) === true) {
+            //     setQd(true)
+            // }
             
             
         }
     fetchUser();
     
-    }, [update])
+    }, [update, storyID])
 
     //fetch if pinned or not
     useEffect(() => {
@@ -679,7 +679,41 @@ const StoryScreen  = ({navigation} : any) => {
         }
 
         getThePinners(null);
-    }, [])
+    }, [storyID])
+
+    //fetch the ratings info
+    useEffect(() => {
+
+        //check if it's rated
+         
+         const getTheRatings = async () => {
+
+             if (storyID === null) {
+                 return
+             }
+
+             const userInfo = await Auth.currentAuthenticatedUser();
+
+             const userRatingData = await API.graphql(graphqlOperation(
+                 ratingsByUser,{
+                     userID: userInfo.attributes.sub,
+                     storyID: {
+                         eq: storyID
+                     }
+                 }))
+
+                 if (userRatingData.data.ratingsByUser.items.length > 0) {
+                     setIsRated(true);
+                     setRatingID(userRatingData.data.ratingsByUser.items[0].id);
+                     setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
+                     setUserReaction(userRatingData.data.ratingsByUser.items[0].reactionTypeID)
+                     setRatingOldNum(userRatingData.data.ratingsByUser.items[0].rating);
+                 }
+         }
+
+         getTheRatings();
+     
+ }, [didUpdate, storyID])
 
     //fetch if finished or not
     useEffect(() => {
@@ -707,41 +741,8 @@ const StoryScreen  = ({navigation} : any) => {
         }
 
         getTheFinishers();
-    }, [])
+    }, [storyID])
 
-//fetch the ratings info
-    useEffect(() => {
-
-           //check if it's rated
-            
-            const getTheRatings = async () => {
-
-                if (storyID === null) {
-                    return
-                }
-
-                const userInfo = await Auth.currentAuthenticatedUser();
-
-                const userRatingData = await API.graphql(graphqlOperation(
-                    ratingsByUser,{
-                        userID: userInfo.attributes.sub,
-                        storyID: {
-                            eq: storyID
-                        }
-                    }))
-
-                    if (userRatingData.data.ratingsByUser.items.length > 0) {
-                        setIsRated(true);
-                        setRatingID(userRatingData.data.ratingsByUser.items[0].id);
-                        setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
-                        setUserReaction(userRatingData.data.ratingsByUser.items[0].reactionTypeID)
-                        setRatingOldNum(userRatingData.data.ratingsByUser.items[0].rating);
-                    }
-            }
-
-            getTheRatings();
-        
-    }, [didUpdate])
 
     const [contributors, setContributors] = useState([])
 
@@ -774,7 +775,7 @@ const StoryScreen  = ({navigation} : any) => {
         } else {
             setVisible(false)
         }
-    }, [isRated, isFinished])
+    }, [isRated])
         
     const renderItem = ({ item } : any) => {
 
@@ -838,7 +839,7 @@ const StoryScreen  = ({navigation} : any) => {
         {
         id: '1',
         reaction: 'huh',
-        icon: 'trash'
+        icon: 'bee'
         }
     ]);
 
@@ -983,115 +984,118 @@ const StoryScreen  = ({navigation} : any) => {
                         animationType="slide" 
                         transparent={true} 
                         visible={visible} 
-                        onRequestClose={() => {setVisible(!visible);}}
-                    >             
-                            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#000000'}}>
+                        onRequestClose={() => {setVisible(false);}}
+                        onDismiss={() => {setVisible(false);}}
+                    >           
+                            <View style={{height: Dimensions.get('window').height, width: Dimensions.get('window').width}}>  
+                                <ScrollView showsVerticalScrollIndicator={false} style={{}}>
 
-                                <View style={{alignSelf: 'center', alignItems: 'center', alignContent: 'center', justifyContent: 'center', backgroundColor: '#000000'}}>
-                                    <View style={{width: Dimensions.get('window').width}}>
-                                        <AntDesign 
-                                            name='close'
-                                            size={22}
-                                            color='#fff'
-                                            style={{paddingVertical: 40, paddingHorizontal: 20}}
-                                            onPress={() => setVisible(false)}
-                                        />
-                                    </View>
-
-                                    <View style={{marginBottom: 10, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center'}}>
-                                        <Text style={{textAlign: 'center', color: '#fff', fontSize: 26, fontWeight: '600'}}>
-                                            {Story?.title}
-                                        </Text>
-                                    </View>
-
-                                    <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
-                                        <Text style={{margin: 20, fontSize: 20, fontWeight: '600', color: '#fff'}}>
-                                            How did you like the story?
-                                        </Text>
-                                        <Text style={{margin: 20, textAlign: 'center', fontSize: 28, color: '#fff'}}>
-                                            {ratingNum}/10
-                                        </Text>
-                                        <View style={{marginBottom: 20, flexDirection: 'row'}}>
-                                            <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
-                                            <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
-                                        </View>
-                                    </View>
-                                    
-                                    <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  justifyContent: 'center', backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
-                                        <FlatList 
-                                            data={reactions}
-                                            renderItem={renderReactionItem}
-                                            numColumns={3}
-                                            style={{alignSelf: 'center', marginTop: 20, width: Dimensions.get('window').width, backgroundColor: 'transparent',  marginBottom: 20}}
-                                            columnWrapperStyle={{ flex: 1, justifyContent: "space-around" , marginHorizontal: 10}}
-                                            keyExtractor={(item) => item.id}
-                                            scrollEnabled={false}
-                                            ListHeaderComponent={() => {return (
-                                                <View style={{alignSelf: 'center', marginVertical: 20}}>
-                                                    <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
-                                                        How do you feel?
-                                                    </Text>
-                                                </View>
-                                            )}}
-                                        />
-                                    </View>
-                                    
-
-                                    <KeyboardAvoidingView
-                                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                                        //style={{flex: 1}}
-                                    >
-                                        <View style={{backgroundColor: '#171717', padding: 20, marginVertical: 30, borderRadius: 15, }}>
-                                            <View style={{ flexDirection: 'row', }}>
-                                            <TextInput 
-                                                placeholder='Leave a comment'
-                                                placeholderTextColor='#ffFFFFa5'
-                                                style={{
-                                                    color: '#ffffff',
-                                                    fontSize: 14,
-                                                    marginLeft: 0,
-                                                    marginRight: 30,    
-                                                    width: Dimensions.get('window').width*0.7,
-                                                    //alignSelf: 'center',
-                                                    height: 120,
-                                                    textAlignVertical: 'top'
-                                                }}
-                                                maxLength={250}
-                                                multiline={true}
-                                                numberOfLines={10}
-                                                onChangeText={comment => setComment(comment)}
-                                                value={comment}
-                                                ref={focus}
+                                    <View style={{alignItems: 'center', backgroundColor: '#000000'}}>
+                                        <View style={{width: Dimensions.get('window').width}}>
+                                            <AntDesign 
+                                                name='close'
+                                                size={22}
+                                                color='#fff'
+                                                style={{paddingVertical: 40, paddingHorizontal: 20}}
+                                                onPress={() => setVisible(false)}
                                             />
-                                                </View>
-                                            </View>
-                                        </KeyboardAvoidingView>
-
-
-                                    {isUpdating === true ? (
-                                        <ActivityIndicator size='large' color='cyan '/>
-                                    ) :
-                                    <TouchableOpacity onPress={() => ratingNum && userReaction ? SubmitRating() : alert('Please select both a rating and a reaction')}>
-                                        <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
-                                                <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
-                                                    Submit
-                                                </Text>
                                         </View>
-                                    </TouchableOpacity>
-                                    }
-                                    <View style={{height: 100}}/>
 
-                                </View>
-                                
-                            </ScrollView>
+                                        <View style={{marginBottom: 10, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center'}}>
+                                            <Text style={{textAlign: 'center', color: '#fff', fontSize: 26, fontWeight: '600'}}>
+                                                {Story?.title}
+                                            </Text>
+                                        </View>
+
+                                        <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
+                                            <Text style={{margin: 20, fontSize: 20, fontWeight: '600', color: '#fff'}}>
+                                                How did you like the story?
+                                            </Text>
+                                            <Text style={{margin: 20, textAlign: 'center', fontSize: 28, color: '#fff'}}>
+                                                {ratingNum}/10
+                                            </Text>
+                                            <View style={{marginBottom: 20, flexDirection: 'row'}}>
+                                                <FontAwesome onPress={() => setRatingNum(1)} style={{marginHorizontal: 4 }} name={ratingNum < 1 ? 'star-o' : 'star'} size={22} color={ratingNum < 1 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(2)} style={{marginHorizontal: 4 }} name={ratingNum < 2 ? 'star-o' : 'star'} size={22} color={ratingNum < 2 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(3)} style={{marginHorizontal: 4 }} name={ratingNum < 3 ? 'star-o' : 'star'} size={22} color={ratingNum < 3 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(4)} style={{marginHorizontal: 4 }} name={ratingNum < 4 ? 'star-o' : 'star'} size={22} color={ratingNum < 4 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(5)} style={{marginHorizontal: 4 }} name={ratingNum < 5 ? 'star-o' : 'star'} size={22} color={ratingNum < 5 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(6)} style={{marginHorizontal: 4 }} name={ratingNum < 6 ? 'star-o' : 'star'} size={22} color={ratingNum < 6 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(7)} style={{marginHorizontal: 4 }} name={ratingNum < 7 ? 'star-o' : 'star'} size={22} color={ratingNum < 7 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(8)} style={{marginHorizontal: 4 }} name={ratingNum < 8 ? 'star-o' : 'star'} size={22} color={ratingNum < 8 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(9)} style={{marginHorizontal: 4 }} name={ratingNum < 9 ? 'star-o' : 'star'} size={22} color={ratingNum < 9 ? 'white' : 'gold'}/>
+                                                <FontAwesome onPress={() => setRatingNum(10)} style={{marginHorizontal: 4 }} name={ratingNum < 10 ? 'star-o' : 'star'} size={22} color={ratingNum < 10 ? 'white' : 'gold'}/>                                
+                                            </View>
+                                        </View>
+                                        
+                                        <View style={{marginVertical: 20, paddingVertical: 10, alignItems: 'center',  justifyContent: 'center', backgroundColor: '#171717a5', width: Dimensions.get('window').width-20, alignSelf: 'center' }}>
+                                            <FlatList 
+                                                data={reactions}
+                                                renderItem={renderReactionItem}
+                                                numColumns={3}
+                                                style={{alignSelf: 'center', marginTop: 20, width: Dimensions.get('window').width, backgroundColor: 'transparent',  marginBottom: 20}}
+                                                columnWrapperStyle={{ flex: 1, justifyContent: "space-around" , marginHorizontal: 10}}
+                                                keyExtractor={(item) => item.id}
+                                                scrollEnabled={false}
+                                                ListHeaderComponent={() => {return (
+                                                    <View style={{alignSelf: 'center', marginVertical: 20}}>
+                                                        <Text style={{color: '#fff', fontSize: 20, fontWeight: '600'}}>
+                                                            How do you feel?
+                                                        </Text>
+                                                    </View>
+                                                )}}
+                                            />
+                                        </View>
+                                        
+
+                                        <KeyboardAvoidingView
+                                            behavior={Platform.OS === "ios" ? "padding" : "height"}
+                                            //style={{flex: 1}}
+                                        >
+                                            <View style={{backgroundColor: '#171717', padding: 20, marginVertical: 30, borderRadius: 15, }}>
+                                                <View style={{ flexDirection: 'row', }}>
+                                                <TextInput 
+                                                    placeholder='Leave a comment'
+                                                    placeholderTextColor='#ffFFFFa5'
+                                                    style={{
+                                                        color: '#ffffff',
+                                                        fontSize: 14,
+                                                        marginLeft: 0,
+                                                        marginRight: 30,    
+                                                        width: Dimensions.get('window').width*0.7,
+                                                        //alignSelf: 'center',
+                                                        height: 120,
+                                                        textAlignVertical: 'top'
+                                                    }}
+                                                    maxLength={250}
+                                                    multiline={true}
+                                                    numberOfLines={10}
+                                                    onChangeText={comment => setComment(comment)}
+                                                    value={comment}
+                                                    ref={focus}
+                                                />
+                                                    </View>
+                                                </View>
+                                            </KeyboardAvoidingView>
+
+
+                                        {isUpdating === true ? (
+                                            <ActivityIndicator size='large' color='cyan '/>
+                                        ) :
+                                        <TouchableOpacity onPress={() => ratingNum && userReaction ? SubmitRating() : alert('Please select both a rating and a reaction')}>
+                                            <View style={{marginTop: 40, paddingVertical: 6, paddingHorizontal: 30, backgroundColor: '#00ffff', margin: 10, borderRadius: 30}}>
+                                                    <Text style={{color: '#000000', fontSize: 18, fontWeight: 'bold', }}>
+                                                        Submit
+                                                    </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        }
+                                        <View style={{height: 100}}/>
+
+                                    </View>
+                                    
+                                </ScrollView>
+                            </View>
                         {/* </TouchableOpacity> */}
                     </Modal>
 

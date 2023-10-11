@@ -6,7 +6,8 @@ import {
     TouchableWithoutFeedback, 
     TextInput, 
     ActivityIndicator, 
-    Keyboard
+    Keyboard,
+    ScrollView
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -138,6 +139,7 @@ const CreateUser = async () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.container, {justifyContent: 'center'}]}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ margin: 20, paddingTop: 70}}>
                     {userExist ? (
                             <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
@@ -257,6 +259,7 @@ const CreateUser = async () => {
                         I already have an account.
                     </Text>
                 </TouchableOpacity>
+                </ScrollView>
             <StatusBar style={"light"} backgroundColor='transparent'/>
         </View>
         </TouchableWithoutFeedback>

@@ -5,7 +5,8 @@ import {
     StyleSheet, 
     Dimensions, 
     TouchableOpacity, 
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ScrollView
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -21,6 +22,7 @@ const PublishingMain = ({navigation} : any) => {
 
     return (
         <View style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <LinearGradient
                 colors={['black', '#363636a5', 'black']}
                 style={{height: Dimensions.get('window').height}}
@@ -50,7 +52,7 @@ const PublishingMain = ({navigation} : any) => {
                         name='book-open'
                         color='#fff'
                         size={30}
-                        style={{alignSelf: 'center', marginTop: 40}}
+                        style={{alignSelf: 'center', marginTop: 0}}
                     />
 
                     <View style={{alignSelf: 'center', justifyContent: 'center', alignContent: 'center', marginHorizontal: 20, marginVertical: 40}}>
@@ -99,16 +101,17 @@ const PublishingMain = ({navigation} : any) => {
                     </View>
 
                     <TouchableOpacity 
-                        style={{alignContent: 'center', justifyContent: 'center', marginTop: 60, marginHorizontal: 30, backgroundColor: 'cyan', height: 80, borderRadius: 10}}
+                        style={{alignContent: 'center', justifyContent: 'center', marginTop: 0, marginHorizontal: 30, backgroundColor: 'cyan', height: 60, borderRadius: 10}}
                         onPress={() => {navigation.navigate('PublisherSetup', {user: User})}}
                     >
                         <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>
-                            Create a Publisher Profile
+                            Get Started
                         </Text>
                     </TouchableOpacity>
                 </View>
 
             </LinearGradient>
+            </ScrollView>
         </View>
     );
 }

@@ -295,7 +295,7 @@ const ProfileScreen = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
 
-                    <View style={{ height: 80}}> 
+                    <View style={{ height: 180}}> 
                     </View>
                     
                 </ScrollView>  

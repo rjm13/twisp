@@ -135,10 +135,12 @@ const Redirect = ({route, navigation} : any) => {
                         const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
                         
                         
-                        if (typeof customerInfo.entitlements.active !== "undefined") {
+                        if (Object.entries(customerInfo.entitlements.active).length) {
+                            console.log('premium status', customerInfo.entitlements.active)
                             setPremium(true);
                         } else {
-                            setPremium(false)
+                            //set to true by default
+                            setPremium(true)
                         }
                       } catch (e) {
                        console.log(e)

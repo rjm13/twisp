@@ -249,7 +249,7 @@ export default function App() {
           ADon,
           setADon: (val: boolean) => setADon(val),
           progUpdate,
-          setProgUpdate: (val: boolean) => setRefreshApp(val),
+          setProgUpdate: (val: boolean) => setProgUpdate(val),
           refreshApp,
           setRefreshApp: (val: boolean) => setRefreshApp(val),
           premium,

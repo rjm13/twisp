@@ -305,6 +305,10 @@ const Settings = ({navigation} : any) => {
 
                 <View style={styles.optionsitem}>
                 </View>  
+                <View style={styles.optionsitem}>
+                </View> 
+                <View style={styles.optionsitem}>
+                </View> 
             </View>
 
             {/* <View style={{ marginHorizontal: 20, marginVertical: 20}}>

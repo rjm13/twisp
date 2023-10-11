@@ -100,7 +100,7 @@ const PublishingSetup = ({navigation} : any) => {
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{marginHorizontal: 20, marginTop: 50}}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>

@@ -380,10 +380,14 @@ const CreatorProfile = ({status} : any) => {
                 }
             ))
 
+            console.log(userFollowingData.data.connectionsByFollowerByCreator.items)
+
             if (userFollowingData.data.connectionsByFollowerByCreator.items.length > 0) {
-                await API.graphql(graphqlOperation(
+                const del = await API.graphql(graphqlOperation(
                     deleteFollowConnection, {input: {"id": userFollowingData.data.connectionsByFollowerByCreator.items[0].id}}
                 ))
+
+                console.log(del.data.deleteFollowConnection)
                 const index = userFollowing.indexOf(userID);
     
                 const x = userFollowing.splice(index, 1);
@@ -397,6 +401,7 @@ const CreatorProfile = ({status} : any) => {
                 getTheFollowing(userFollowingData.data.connectionsByFollowerByCreator.nextToken);
             }
         }
+        getTheFollowing(null)
         
     }
 

@@ -7,7 +7,8 @@ import {
     TouchableOpacity, 
     TouchableWithoutFeedback,
     Platform,
-    Linking
+    Linking,
+    ScrollView
 } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -136,13 +137,14 @@ const PremiumHome = ({navigation} : any) => {
 
     return (
         <View style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <LinearGradient
                 colors={['black', '#363636a5', 'black']}
                 style={{height: Dimensions.get('window').height, justifyContent: 'center'}}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
-                <View style={styles.container}>
+                <View>
 
                     <View style={{alignSelf: 'center', justifyContent: 'center', alignContent: 'center', marginHorizontal: 20}}>
                         <Text style={{ textAlign: 'center', color: '#fff', fontSize: 32, fontWeight: 'bold'}}>
@@ -247,13 +249,13 @@ const PremiumHome = ({navigation} : any) => {
                             </Text>
                         </View> */}
 
-                        <View style={{flexDirection: 'row', marginBottom: 20}}>
-                            <FontAwesome5 
+                        <View style={{flexDirection: 'row', marginBottom: 0}}>
+                            {/* <FontAwesome5 
                                 name='check'
                                 size={18}
                                 color='#00ffff'
                                 style={{marginRight: 20, alignSelf: 'center'}}
-                            />
+                            /> */}
                             <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
                                 Access all curated content
                             </Text>
@@ -283,9 +285,8 @@ const PremiumHome = ({navigation} : any) => {
                             Get Premium
                         </Text>
                     </TouchableOpacity>
-                    
-                </View>
-                    <Text style={{color: '#ffffffa5', textAlign: 'center', fontSize: 12, marginTop: 60, marginBottom: 0, paddingHorizontal: 20}}>
+
+                    <Text style={{color: '#ffffffa5', textAlign: 'center', fontSize: 12, marginTop: 20, marginBottom: 0, paddingHorizontal: 20}}>
                         Subscriptions renew automatically unless cancelled.
                     </Text>
                     <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
@@ -293,9 +294,11 @@ const PremiumHome = ({navigation} : any) => {
                             Terms and conditions
                         </Text>
                     </TouchableWithoutFeedback>
-                    
 
+                    
+                </View>
             </LinearGradient>
+            </ScrollView>
         </View>
     );
 }
