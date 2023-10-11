@@ -232,8 +232,6 @@ const AudioPlayer  = () => {
                     let trackObject = await TrackPlayer.getQueue();
                     
                     setSlideLength(trackObject[0].duration);
-                    //console.log('duration is', playbackProgress.duration)
-                    //setSlideLength(playbackProgress.duration*1000)
                     
                 }
             } catch (e) {
@@ -267,7 +265,7 @@ const AudioPlayer  = () => {
 
             if (UserData.data.inProgressStoriesByUserByStory.items.length > 0) {
                 setInProgressID(UserData.data.inProgressStoriesByUserByStory.items[0].id);
-                console.log('progress beings at ', UserData.data.inProgressStoriesByUserByStory.items[0].time/1000 )
+                console.log('progress begins at ', UserData.data.inProgressStoriesByUserByStory.items[0].time/1000 )
                 setInitialPosition(Math.floor(UserData.data.inProgressStoriesByUserByStory.items[0].time/1000))
                 //await TrackPlayer.seekTo(UserData.data.inProgressStoriesByUserByStory.items[0].time/1000)
                 //setPosition(UserData.data.inProgressStoriesByUserByStory.items[0].time);

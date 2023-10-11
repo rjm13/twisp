@@ -144,8 +144,6 @@ useEffect(() => {
             setUser(UserData.data.getUser)
 
             for (let i = 0; i < UserData.data.getUser.Rated.items.length; i++) {
-                // console.log(UserData.data.getUser.Rated.items[i].storyID)
-                // console.log(storyID)
                 if (UserData.data.getUser.Rated.items[i].storyID === storyID) {
                     setIsRated(true);
                 }
@@ -265,7 +263,6 @@ const AddToHistory = async () => {
 
     //if item is not in history then...
     if (isFinished === false) {
-        console.log('isFinished is', isFinished)
         //create the history object
         const fin = await API.graphql(graphqlOperation(
                 createFinishedStory, {input: {

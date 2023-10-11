@@ -201,7 +201,7 @@ const ProfileScreen = ({navigation} : any) => {
                                     Inbox
                                 </Text>
                                 {newMessages > 0 ? (
-                                    <Text style={{fontWeight: 'bold', paddingTop: 1, paddingHorizontal: 8, backgroundColor: '#00ffff', borderRadius: 9, marginLeft: 10, overflow: 'hidden'}}>
+                                    <Text style={{fontWeight: 'bold', paddingTop: 1, paddingHorizontal: 8, backgroundColor: '#00ffffa5', borderRadius: 10, marginLeft: 10, overflow: 'hidden'}}>
                                         {newMessages}
                                     </Text>
                                    ) : null}

@@ -332,7 +332,6 @@ const ForYouCarousel = () => {
                             storiesByUpdated, {
                                 nextToken,
                                 type: 'Story',
-                                sortOrder: 'DESC',
                                 filter: {
                                     approved: {
                                         eq: true,
@@ -360,10 +359,19 @@ const ForYouCarousel = () => {
                     console.log('number of stories initial is', response.data.storiesByUpdated.items.length)
                    
                     if (response) {
+
+                        let leng = 0
+
+                        let arr = Array.from(Array(response.data.storiesByUpdated.items.length).keys())
     
                         for (let i = 0; i < response.data.storiesByUpdated.items.length; i++) {
+                            leng = response.data.storiesByUpdated.items.length
+                            let x = arr[Math.floor(Math.random()*arr.length)];
+                            const index = arr.indexOf(x);
+                            arr.splice(index, 1);
+
                             if (count < 10) {
-                                RandomStories.push(response.data.storiesByUpdated.items[i])
+                                RandomStories.push(response.data.storiesByUpdated.items[x])
                                 count++
                             }
                         }
@@ -372,14 +380,14 @@ const ForYouCarousel = () => {
 
                         if (count === 10) {
                             //let random = [...RandomStories]
-                            let arrcount = Array.from(Array(count).keys())
-                            for (let i = 0; i < count; i++) {
-                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
-                                finalRandom.push(RandomStories[x])
-                                const index = arrcount.indexOf(x);
-                                arrcount.splice(index, 1);
-                            }   
-                            setStorys(finalRandom);   
+                            // let arrcount = Array.from(Array(count).keys())
+                            // for (let i = 0; i < count; i++) {
+                            //     let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                            //     finalRandom.push(RandomStories[x])
+                            //     const index = arrcount.indexOf(x);
+                            //     arrcount.splice(index, 1);
+                            // }   
+                            setStorys(RandomStories);   
                         }
 
                         if (count < 10 && response.data.storiesByUpdated.nextToken) {  
@@ -389,14 +397,14 @@ const ForYouCarousel = () => {
 
                         if (count < 10 && response.data.storiesByUpdated.nextToken === null) {
                             //let random = [...RandomStories]
-                            let arrcount = Array.from(Array(count).keys())
-                            for (let i = 0; i < count; i++) {
-                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
-                                finalRandom.push(RandomStories[x])
-                                const index = arrcount.indexOf(x);
-                                arrcount.splice(index, 1);
-                            }  
-                            setStorys(finalRandom);   
+                            // let arrcount = Array.from(Array(count).keys())
+                            // for (let i = 0; i < count; i++) {
+                            //     let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                            //     finalRandom.push(RandomStories[x])
+                            //     const index = arrcount.indexOf(x);
+                            //     arrcount.splice(index, 1);
+                            // }  
+                            setStorys(RandomStories);   
                         }
                          
                     }

@@ -145,10 +145,20 @@ const GenreCarousel = ({genreid} : any) => {
                     console.log('number of stories initial is', response.data.storiesByGenre.items.length)
                    
                     if (response) {
+
+                        let leng = 0
+
+                        let arr = Array.from(Array(response.data.storiesByGenre.items.length).keys())
     
                         for (let i = 0; i < response.data.storiesByGenre.items.length; i++) {
+
+                            leng = response.data.storiesByGenre.items.length
+                            let x = arr[Math.floor(Math.random()*arr.length)];
+                            const index = arr.indexOf(x);
+                            arr.splice(index, 1);
+
                             if (count < 10) {
-                                RandomStories.push(response.data.storiesByGenre.items[i])
+                                RandomStories.push(response.data.storiesByGenre.items[x])
                                 count++
                             }
                         }
@@ -157,14 +167,14 @@ const GenreCarousel = ({genreid} : any) => {
 
                         if (count === 10) {
                             //let random = [...RandomStories]
-                            let arrcount = Array.from(Array(count).keys())
-                            for (let i = 0; i < count; i++) {
-                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
-                                finalRandom.push(RandomStories[x])
-                                const index = arrcount.indexOf(x);
-                                arrcount.splice(index, 1);
-                            }   
-                            setCarouselStories(finalRandom);   
+                            // let arrcount = Array.from(Array(count).keys())
+                            // for (let i = 0; i < count; i++) {
+                            //     let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                            //     finalRandom.push(RandomStories[x])
+                            //     const index = arrcount.indexOf(x);
+                            //     arrcount.splice(index, 1);
+                            // }   
+                            setCarouselStories(RandomStories);   
                         }
 
                         if (count < 10 && response.data.storiesByGenre.nextToken) {  
@@ -173,14 +183,14 @@ const GenreCarousel = ({genreid} : any) => {
 
                         if (count < 10 && response.data.storiesByGenre.nextToken === null) {
                             //let random = [...RandomStories]
-                            let arrcount = Array.from(Array(count).keys())
-                            for (let i = 0; i < count; i++) {
-                                let x = arrcount[Math.floor(Math.random()*arrcount.length)];
-                                finalRandom.push(RandomStories[x])
-                                const index = arrcount.indexOf(x);
-                                arrcount.splice(index, 1);
-                            }  
-                            setCarouselStories(finalRandom);   
+                            // let arrcount = Array.from(Array(count).keys())
+                            // for (let i = 0; i < count; i++) {
+                            //     let x = arrcount[Math.floor(Math.random()*arrcount.length)];
+                            //     finalRandom.push(RandomStories[x])
+                            //     const index = arrcount.indexOf(x);
+                            //     arrcount.splice(index, 1);
+                            // }  
+                            setCarouselStories(RandomStories);   
                         }
                          
                     }

@@ -86,11 +86,9 @@ export default function App() {
     const connectRevenueCat = async () => {
       Purchases.setDebugLogsEnabled(true)
       if (Platform.OS === 'android') {
-        console.log('entrou 3')
         Purchases.configure({apiKey: 'goog_ZnvczOwEEgDMwVVNvfxMKwPmFgX' })
       }
       if (Platform.OS === 'ios') {
-        console.log('entrou 3')
         Purchases.configure({apiKey: 'appl_kWcWMJjdDmIvLdsnnGavdbkSevg' })
       }
     }
@@ -157,7 +155,7 @@ export default function App() {
         projectId: Constants.expoConfig.extra.eas.projectId,
       })).data;
       
-      console.log(token)
+      console.log('expo token is', token)
       
     } else {
       alert('Must use physical device for Push Notifications');
@@ -171,7 +169,6 @@ export default function App() {
         lightColor: '#FF231F7C',
       });
     }
-    //console.log(token);
     return token;
   }
 

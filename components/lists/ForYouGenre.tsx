@@ -60,7 +60,6 @@ const ForYouGenre = ({genreid} : any) => {
                                 nextToken,
                                 genreID: genreid,
                                 type: 'Story',
-                                sortDirection: 'DESC',
                                 filter: {
                                     // ratingAvg: {
                                     //     gt: 6

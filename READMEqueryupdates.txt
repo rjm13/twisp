@@ -101,6 +101,19 @@ storyTagsByTagId {
 	}
 }
 
+finishedStoriesByGenre {
+	items {
+		story {
+			genre {
+				id
+				genre
+				icon
+				color
+			}
+		}
+	}
+}
+
 getUser {
 	published {
 		items {

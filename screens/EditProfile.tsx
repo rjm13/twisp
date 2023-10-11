@@ -105,8 +105,6 @@ const EditProfile = ({navigation} : any) => {
                     setImageU(imageresponse)
                 }
 
-                console.log(userData.data.getUser);
-
             } catch (e) {
                 console.log(e);
             }

@@ -8952,6 +8952,12 @@ export const finishedStoriesByGenre = /* GraphQL */ `
           ratingAvg
           ratingAmt
           genreID
+          genre {
+            id
+            color
+            genre
+            icon
+          }
           hidden
           status
           numListens

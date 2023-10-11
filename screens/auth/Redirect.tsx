@@ -134,8 +134,6 @@ const Redirect = ({route, navigation} : any) => {
                         
                         const { customerInfo, created } = await Purchases.logIn(userInfo.attributes.sub);
                         
-
-                        console.log('subscriber is', customerInfo )
                         
                         if (typeof customerInfo.entitlements.active !== "undefined") {
                             setPremium(true);
@@ -149,7 +147,7 @@ const Redirect = ({route, navigation} : any) => {
                     const userData = await API.graphql(graphqlOperation(
                         getUser,{ id: userInfo.attributes.sub}))
 
-                        console.log('user data is', userData)
+                        console.log('user is', userData.data.getUser.id)
         
                     if (userData.data.getUser) {
 
@@ -158,7 +156,6 @@ const Redirect = ({route, navigation} : any) => {
                         } 
                         if (userData.data.getUser.setting2 !== null) {
                             setADon(userData.data.getUser.setting2)
-                            console.log('setting2 is', userData.data.getUser.setting2)
                         } 
 
                         setUserID(userData.data.getUser.id);
