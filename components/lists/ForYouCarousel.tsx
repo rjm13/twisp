@@ -30,7 +30,7 @@ import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 const ForYouCarousel = () => {
 
-    const { userPins } = useContext(AppContext);
+    const { userPins, refreshApp } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
     const PinStory = async ({storyID} : any) => {
@@ -417,7 +417,7 @@ const ForYouCarousel = () => {
 
         fetchStorys(null);
 
-    },[])
+    },[refreshApp])
 
     const renderItem = ({ item, index }: any) => {
 

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { 
     ScrollView, 
     TouchableWithoutFeedback,
     View,
-    Text
+    Text,
+    AppState
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,11 +27,43 @@ import {deleteFinishedStory} from '../src/graphql/mutations';
 
 const HomeScreen = ({navigation} : any) => {
 
-    const styles = useStyles();
-
     //deep link global context for sharing a story
-    const { deepLink } = useContext(AppContext);
-    const { setDeepLink } = useContext(AppContext);
+    const { deepLink, refreshApp } = useContext(AppContext);
+    const { setDeepLink, setRefreshApp } = useContext(AppContext);
+
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+          if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            console.log('app is in the foreground')
+            //setRefreshApp(!refreshApp)
+            console.log(refreshApp)
+          }
+    
+          appState.current = nextAppState;
+          setAppStateVisible(appState.current);
+          console.log('AppState', appState.current);
+        });
+    
+        return () => {
+          subscription.remove();
+        };
+      }, []);
+
+      useEffect(() => {
+        if (appStateVisible === 'active') {
+            console.log('app changed')
+            setRefreshApp(!refreshApp)
+        }
+
+      }, [appStateVisible])
+
+    const styles = useStyles();
 
     //set from the user object, the top genres selected by the user
     const [TopThree, setTopThree] = useState([])

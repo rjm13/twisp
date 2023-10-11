@@ -168,7 +168,6 @@ const HistoryList = () => {
                     data={finishedStories}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
-                    extraData={finishedStories}
                     maxToRenderPerBatch={100}
                     initialNumToRender={100}
                     refreshControl={

@@ -42,6 +42,9 @@ const context = {
 
     playbackSpeed: 1,
     setPlaybackSpeed: (val: number) => {},
+
+    refreshApp: false,
+    setRefreshApp: (val: boolean) => {},
 }
 
 export const AppContext = React.createContext(context);

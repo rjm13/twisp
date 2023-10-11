@@ -196,6 +196,8 @@ export default function App() {
 
   const [progUpdate, setProgUpdate] = useState<boolean>(false);
 
+  const [refreshApp, setRefreshApp] = useState<boolean>(false);
+
   const [deepLink, setDeepLink] = useState<string|null>(null);
 
   const [premium, setPremium] = useState<boolean>(false);
@@ -247,7 +249,9 @@ export default function App() {
           ADon,
           setADon: (val: boolean) => setADon(val),
           progUpdate,
-          setProgUpdate: (val: boolean) => setProgUpdate(val),
+          setProgUpdate: (val: boolean) => setRefreshApp(val),
+          refreshApp,
+          setRefreshApp: (val: boolean) => setRefreshApp(val),
           premium,
           setPremium: (val: boolean) => setPremium(val),
           userPins,
