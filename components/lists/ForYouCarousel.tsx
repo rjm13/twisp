@@ -30,8 +30,8 @@ import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 const ForYouCarousel = () => {
 
-    const { userPins, refreshApp } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
+    const { userPins, refreshPins, refreshApp } = useContext(AppContext);
+    const { setUserPins, setRefreshPins } = useContext(AppContext);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -50,7 +50,8 @@ const ForYouCarousel = () => {
         console.log(createPin)
     
         pins.push(storyID);
-        setUserPins(pins)
+        setUserPins(pins);
+        setRefreshPins(Math.random())
     
     }
 
@@ -72,20 +73,23 @@ const ForYouCarousel = () => {
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items) {
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]?.storyID === storyID) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
                 console.log(deleteConnection)
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1); 
+
+                setUserPins(arr)
+                setRefreshPins(Math.random())
             }
-
-            const index = arr.indexOf(storyID);
-
-            arr.splice(index, 1); 
         }
         
         getThePins(); 
-        setUserPins(arr)
+        
     }
 
     //global context for nsfw filter
@@ -153,10 +157,12 @@ const ForYouCarousel = () => {
         
         const onQPress = () => {
             if ( isQ === false ) {
+                console.log('pinning')
                 setQd(true);
                 PinStory({storyID: id})
             }
             if ( isQ === true ) {
+                console.log('unpinning')
                 setQd(false);
                 unPinStory({storyID: id});
             }  

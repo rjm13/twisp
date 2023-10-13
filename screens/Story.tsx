@@ -72,8 +72,8 @@ const StoryScreen  = ({navigation} : any) => {
     const route = useRoute();
     const {storyID, update} = route.params;
 
-    const { userPins, userRates, userFinished } = useContext(AppContext);
-    const { setUserPins, setUserRates, setIsRootScreen, setStoryID } = useContext(AppContext);
+    const { userPins, userRates, refreshPins } = useContext(AppContext);
+    const { setUserPins, setUserRates, setIsRootScreen, setStoryID, setRefreshPins } = useContext(AppContext);
 
 //updates the screen after a new rating is made
     const [didUpdate, setDidUpdate] = useState(false);
@@ -99,6 +99,7 @@ const StoryScreen  = ({navigation} : any) => {
     
         pins.push(storyID);
         setUserPins(pins)
+        setRefreshPins(Math.random())
     
     }
 
@@ -120,31 +121,36 @@ const StoryScreen  = ({navigation} : any) => {
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items.length > 0) {
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]?.storyID === storyID) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
                 console.log(deleteConnection)
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1); 
+
+                setUserPins(arr)
+                setRefreshPins(Math.random())
+            } else {
+                return
             }
-
-            const index = arr.indexOf(storyID);
-
-            arr.splice(index, 1); 
         }
         
         getThePins(); 
-        setUserPins(arr)
+       
     }
 
         //on render, determine if the story in alraedy pinned or not
-    useEffect(() => {
+    //useEffect(() => {
             // if (userPins.includes(storyID) === true) {
             //     setQd(true)
             // } else {
             //     setQd(false)
             // }
 
-    }, [storyID])
+    //}, [storyID])
         
     const onQPress = () => {
         if ( isQ === false ) {
@@ -206,8 +212,13 @@ const StoryScreen  = ({navigation} : any) => {
 
     //determines the placement of the audio widget when this screen is open
     useEffect(() => {
-        setIsRootScreen(true)
+        setIsRootScreen(true);
     },[])
+
+    useEffect(() => {
+        setIsFinished(false);
+        setIsRated(null);
+    }, [storyID])
 
 //set global state context to the storyID to play the story
     const onPlay = () => {setStoryID(storyID);}
@@ -311,13 +322,13 @@ const StoryScreen  = ({navigation} : any) => {
     const animation = useRef(new Animated.Value(0)).current;
 
     const animatedColor = animation.interpolate({
-        inputRange: [0, 500],
+        inputRange: [200, 300],
         outputRange: ['transparent', '#171717'],
         extrapolate: 'clamp',
         });
 
     const animatedOpacity = animation.interpolate({
-        inputRange: [0, 500],
+        inputRange: [200, 300],
         outputRange: [0, 1],
         extrapolate: 'clamp',
         });
@@ -368,7 +379,7 @@ const StoryScreen  = ({navigation} : any) => {
 //rating functions
 
     //check if the story is rated or not
-    const [isRated, setIsRated] = useState(false);
+    const [isRated, setIsRated] = useState(null);
 
     //the rating average
     const [ratingNum, setRatingNum] = useState(null);
@@ -669,8 +680,12 @@ const StoryScreen  = ({navigation} : any) => {
                 }
             ))
 
-            if (userPinnedData.data.pinnedStoriesByUserByStory.items.length > 0) {
+            console.log(userPinnedData.data.pinnedStoriesByUserByStory.items)
+
+            if (userPinnedData.data.pinnedStoriesByUserByStory.items[0]?.storyID === storyID) {
                 setQd(true)
+            } else {
+                setQd(false)
             }
 
             if (userPinnedData.data.pinnedStoriesByUserByStory.nextToken && userPinnedData.data.pinnedStoriesByUserByStory.items.length === 0) {
@@ -708,6 +723,8 @@ const StoryScreen  = ({navigation} : any) => {
                      setRatingNum(userRatingData.data.ratingsByUser.items[0].rating);
                      setUserReaction(userRatingData.data.ratingsByUser.items[0].reactionTypeID)
                      setRatingOldNum(userRatingData.data.ratingsByUser.items[0].rating);
+                 } else {
+                    setIsRated(false)
                  }
          }
 
@@ -775,7 +792,7 @@ const StoryScreen  = ({navigation} : any) => {
         } else {
             setVisible(false)
         }
-    }, [isRated])
+    }, [isFinished, isRated])
         
     const renderItem = ({ item } : any) => {
 
@@ -921,6 +938,8 @@ const StoryScreen  = ({navigation} : any) => {
     }
 
     const [contributorsModal, setContributorsModal] = useState(false);
+
+    const [imageVisible, setImageVisible] = useState(false)
 
     const OpenLink = (link : any) => {
   
@@ -1099,6 +1118,26 @@ const StoryScreen  = ({navigation} : any) => {
                         {/* </TouchableOpacity> */}
                     </Modal>
 
+                    <Modal 
+                        //statusBarTranslucent={true} 
+                        animationType="fade" 
+                        transparent={true} 
+                        visible={imageVisible} 
+                        onRequestClose={() => {setImageVisible(false);}}
+                        onDismiss={() => {setImageVisible(false);}}
+                    > 
+                        <TouchableWithoutFeedback onPress={() => setImageVisible(false)}>
+                            <View style={{backgroundColor: '#171717a5', height: Dimensions.get('window').height, width: Dimensions.get('window').width}}>
+                            <Image 
+                                source={{uri: imageU}}
+                                resizeMode='contain'
+                                style={{  backgroundColor: '#171717a5', width: Dimensions.get('window').width , height: '100%' }}
+                            />
+                            </View> 
+                        </TouchableWithoutFeedback>
+                        
+                    </Modal>
+
 {/* flag this story modal */}
                     {/* <Modal visible={visibleFlag} onDismiss={hideFlagModal} contentContainerStyle={containerStyleFlag}>
                         <View style={{alignItems: 'center'}}>
@@ -1207,18 +1246,18 @@ const StoryScreen  = ({navigation} : any) => {
 
                 <ImageBackground 
                     source={{uri: imageU}}
-                    style={{  backgroundColor: '#171717', width: Dimensions.get('window').width, height: 330,  position: 'absolute'  }}
+                    style={{  justifyContent: 'center', backgroundColor: '#171717', width: Dimensions.get('window').width, height: 330,  position: 'absolute'  }}
                 >
-                    {Story?.imageUri ? (null) : (
-                        <View style={{ alignSelf: 'center', marginTop: 140}}>
-                            <FontAwesome5 
-                                name={Story?.genre?.icon}
-                                color='#ffffffa5'
-                                size={50}
-                            />
-                        </View>
-                    )}
-                     
+                        {Story?.imageUri ? (null) : (
+                            <View style={{ alignSelf: 'center', marginTop: 140}}>
+                                <FontAwesome5 
+                                    name={Story?.genre?.icon}
+                                    color='#ffffffa5'
+                                    size={50}
+                                />
+                            </View>
+                        )}
+                    
                 </ImageBackground>
 
                 <Animated.View style={{ alignItems: 'center', backgroundColor: animatedColor, flexDirection: 'row', paddingTop: 40, paddingBottom: 20, width: Dimensions.get('window').width, justifyContent: 'space-between'}}>
@@ -1263,32 +1302,34 @@ const StoryScreen  = ({navigation} : any) => {
                         showsVerticalScrollIndicator={false}
                     >
                         
-                        <View style={{ height: 220, backgroundColor: 'transparent', alignItems: 'flex-start'}}>
-                            {Story?.imageUri ? (
-                                <View style={{width: Dimensions.get('window').width - 20, marginTop: 186, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.illustratorID, creatorType: 'Illustrator'})}>
-                                        <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717a5', flexDirection: 'row'}}>
-                                            <FontAwesome5 
-                                                name='palette'
-                                                size={14}
-                                                color='#fff'
-                                                style={{marginRight: 10}}
-                                            />
-                                            <Text style={{color: '#fff', textTransform: 'capitalize'}}>
-                                                {Story?.artist}
-                                            </Text>
-                                        </View> 
-                                    </TouchableOpacity>
-                                    <View>
-                                        {Story?.nsfw === true ? (
-                                            <Text style={{color: 'red', borderRadius: 15, overflow: 'hidden', paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717', }}>
-                                                Explicit
-                                            </Text>
-                                        ) : null}
+                        <TouchableWithoutFeedback onPress={() => setImageVisible(true)}>
+                            <View style={{ height: 220, backgroundColor: 'transparent', alignItems: 'flex-start'}}>
+                                {Story?.imageUri ? (
+                                    <View style={{width: Dimensions.get('window').width - 20, marginTop: 186, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <TouchableOpacity onPress={() => navigation.navigate('CreatorScreen', {userID: Story?.illustratorID, creatorType: 'Illustrator'})}>
+                                            <View style={{alignItems: 'center', borderRadius: 15, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717a5', flexDirection: 'row'}}>
+                                                <FontAwesome5 
+                                                    name='palette'
+                                                    size={14}
+                                                    color='#fff'
+                                                    style={{marginRight: 10}}
+                                                />
+                                                <Text style={{color: '#fff', textTransform: 'capitalize'}}>
+                                                    {Story?.artist}
+                                                </Text>
+                                            </View> 
+                                        </TouchableOpacity>
+                                        <View>
+                                            {Story?.nsfw === true ? (
+                                                <Text style={{color: 'red', borderRadius: 15, overflow: 'hidden', paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#171717', }}>
+                                                    Explicit
+                                                </Text>
+                                            ) : null}
+                                        </View>
                                     </View>
-                                </View>
-                            ) : null}
-                        </View>
+                                ) : null}
+                            </View>
+                        </ TouchableWithoutFeedback>
                         <LinearGradient 
                             colors={['#202020', '#171717', '#000', '#000']}
                             style={{ overflow: 'hidden', borderRadius: 20, paddingVertical: 5, paddingHorizontal: 0}}

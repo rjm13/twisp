@@ -45,6 +45,9 @@ const context = {
 
     refreshApp: false,
     setRefreshApp: (val: boolean) => {},
+
+    refreshPins: false,
+    setRefreshPins: (val: Number) => {},
 }
 
 export const AppContext = React.createContext(context);

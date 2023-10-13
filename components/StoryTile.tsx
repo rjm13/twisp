@@ -44,9 +44,8 @@ const StoryTile = ({
     numListens,
 } : any) => {
 
-    const [nextToken, setNextToken] = useState()
-    const { userPins } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
+    const { userPins, refreshPins } = useContext(AppContext);
+    const { setUserPins, setRefreshPins } = useContext(AppContext);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -65,7 +64,8 @@ const StoryTile = ({
         console.log(createPin)
     
         pins.push(storyID);
-        setUserPins(pins)
+        setUserPins(pins);
+        setRefreshPins(Math.random())
     
     }
 
@@ -87,20 +87,23 @@ const StoryTile = ({
                 }
             ))
 
-            if (getPin.data.pinnedStoriesByUserByStory.items) {
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]?.storyID === storyID) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
                 console.log(deleteConnection)
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1); 
+
+                setUserPins(arr);
+                setRefreshPins(Math.random())
             }
-
-            const index = arr.indexOf(storyID);
-
-            arr.splice(index, 1); 
         }
         
         getThePins(); 
-        setUserPins(arr)
+        
     }
         
 //temporary signed image uri
@@ -152,7 +155,7 @@ useEffect(() => {
     if (userPins.includes(id) === true) {
         setQd(true)
     }
-}, [])
+}, [refreshPins])
 
 //play the audio story by setting the global context to the story id
     const { setStoryID } = useContext(AppContext);

@@ -130,7 +130,7 @@ export default function App() {
           Capability.JumpForward,
           //Capability.Stop,
         ],
-      progressUpdateEventInterval: 10,
+      progressUpdateEventInterval: 30,
       icon: require('./assets/twisp-bw-small.png')
       });
       //await TrackPlayer.setRepeatMode(RepeatMode.Queue);
@@ -198,6 +198,8 @@ export default function App() {
 
   const [refreshApp, setRefreshApp] = useState<boolean>(false);
 
+  const [refreshPins, setRefreshPins] = useState<Number>(0);
+
   const [deepLink, setDeepLink] = useState<string|null>(null);
 
   const [premium, setPremium] = useState<boolean>(false);
@@ -252,6 +254,8 @@ export default function App() {
           setProgUpdate: (val: boolean) => setProgUpdate(val),
           refreshApp,
           setRefreshApp: (val: boolean) => setRefreshApp(val),
+          refreshPins,
+          setRefreshPins: (val: Number) => setRefreshPins(val),
           premium,
           setPremium: (val: boolean) => setPremium(val),
           userPins,

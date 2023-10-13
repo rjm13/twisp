@@ -24,6 +24,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {graphqlOperation, API, Storage, Auth} from 'aws-amplify';
 
@@ -225,7 +226,7 @@ const AudioPlayer  = () => {
                     await TrackPlayer.add([{
                         url: response,
                         title: storyData.data.getStory.title,
-                        artist: storyData.data.getStory.author,
+                        artist: storyData.data.getStory.creator.penName,
                         artwork: imageresponse, // Load artwork from the network
                         duration: storyData.data.getStory.time // Duration in seconds
                     }]);
@@ -516,10 +517,7 @@ const AudioPlayer  = () => {
             ))
             console.log('updated progress to ', time)
             setProgUpdate(!progUpdate)
-
         }
-        
-        
     }
 
 //check if a progress story for this user already exists
@@ -633,12 +631,13 @@ const AudioPlayer  = () => {
     //   });
 
     useEffect(() => {
-        console.log('did the track end?', playbackProgress)
+
+        console.log('did the track end?', isPlaying, playbackState, playbackProgress)
         if (
-            playbackProgress.position + 2 >= playbackProgress.duration && 
+            playbackProgress.position + 5 >= playbackProgress.duration && 
             playbackProgress.duration !== 0 && 
             isPlaying === true &&
-            playbackState === State.Paused
+            playbackState === State.Stopped
         ) {
            console.log('track ended')
            AddToHistory();
@@ -897,8 +896,8 @@ const AudioPlayer  = () => {
                                             }
                                             
                                             }}>
-                                                <FontAwesome5 
-                                                    name='chevron-left'
+                                                <Feather 
+                                                    name='chevrons-left'
                                                     color='#ffffffCC'
                                                     size={50}
                                                 />
@@ -918,8 +917,8 @@ const AudioPlayer  = () => {
                                                 await TrackPlayer.seekTo(playbackProgress.duration);
                                             }
                                             }}>
-                                                <FontAwesome5 
-                                                    name='chevron-right'
+                                                <Feather 
+                                                    name='chevrons-right'
                                                     color='#ffffffCC'
                                                     size={50}
                                                 />

@@ -15,6 +15,8 @@ import {
     Modal
 } from 'react-native';
 
+import ImageCompress from '../components/functions/CompressImage'
+
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -24,7 +26,7 @@ import { useRoute } from '@react-navigation/native';
 
 import uuid from 'react-native-uuid';
 
-import { API, graphqlOperation, } from "aws-amplify";
+import { API, graphqlOperation, Storage } from "aws-amplify";
 import { 
     createTag, 
     createEroticTag, 
@@ -75,6 +77,11 @@ const EditAudio = ({navigation} : any) => {
                     arr.push(storyData.data.getStory.tags.items[i].tag)
                 }
                 setCurrentTags(arr)
+            }
+
+            let response = await Storage.get(Story?.imageUri)
+            if (response) {
+                setImageU(response)
             }
 
             const tagData = await API.graphql(graphqlOperation(
@@ -327,16 +334,16 @@ const ListAllEroticTags =  (tagCheck : any) => {
         if (newImageData === true) {
             Object.assign(UpdateObject, {description: data.imageUri})
         }
-        // if (localImageUri !== '') {
+        if (localImageUri !== '') {
         
-        //     const response = await fetch(localImageUri);
-        //     const blob = await response.blob();
-        //     const filename = uuid.v4().toString();
-        //     const s3ResponseImage = await Storage.put(filename, blob);
-        //     const result = await Storage.get(s3ResponseImage.key);
-        //     Object.assign(UpdateObject, {imageUri: result})
+            const response = await fetch(localImageUri);
+            const blob = await response.blob();
+            const filename = uuid.v4().toString();
+            const s3ResponseImage = await Storage.put(filename, blob);
+            const result = await Storage.get(s3ResponseImage.key);
+            Object.assign(UpdateObject, {imageUri: result, type: 'PendingStory'})
     
-        // }
+        }
 
 
         try {
@@ -437,16 +444,16 @@ const ListAllEroticTags =  (tagCheck : any) => {
         if (newImageData === true) {
             Object.assign(UpdateObject, {description: data.imageUri})
         }
-        // if (localImageUri !== '') {
+        if (localImageUri !== '') {
         
-        //     const response = await fetch(localImageUri);
-        //     const blob = await response.blob();
-        //     const filename = uuid.v4().toString();
-        //     const s3ResponseImage = await Storage.put(filename, blob);
-        //     const result = await Storage.get(s3ResponseImage.key);
-        //     Object.assign(UpdateObject, {imageUri: result})
+            const response = await fetch(localImageUri);
+            const blob = await response.blob();
+            const filename = uuid.v4().toString();
+            const s3ResponseImage = await Storage.put(filename, blob);
+            const result = await Storage.get(s3ResponseImage.key);
+            Object.assign(UpdateObject, {imageUri: result, type: 'PendingStory'})
     
-        // }
+        }
 
 
         try {
@@ -542,20 +549,37 @@ const ListAllEroticTags =  (tagCheck : any) => {
 
 
 //image picker
-    // const pickImage = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //     allowsEditing: true,
-    //     aspect: [4, 3],
-    //     quality: 1,
-    //     });
+const request = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+//image picker
+const pickImage = async () => {
+    await request()
+    let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+    });
 
-    //     console.log(result);
+    let height = result.assets[0].height
+    console.log('h', result.assets[0].height)
+    let width = result.assets[0].width
+    console.log('w', result.assets[0].width)
+    let image = result.assets[0].uri
+    console.log('u', result.assets[0].uri)
 
-    //     if (!result.cancelled) {
-    //     setLocalImageUri(result.uri);
-    //     }
-    // };
+
+    if (!result.canceled) {
+    let im = await ImageCompress(image, {width, height})
+    setLocalImageUri(im);
+    }
+};
   
   
 //Modal
@@ -627,6 +651,19 @@ const ListAllEroticTags =  (tagCheck : any) => {
         setCurrentStoryTags(StoryTags)
         setToRemove(Remove)
     }
+
+    const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg');
+
+    // useEffect(() => {
+    //     const fetchImage = async () => {
+    //         let response = await Storage.get(Story?.imageUri)
+    //         if (response) {
+    //             setImageU(response)
+    //         }
+
+    //     }
+    //     fetchImage();
+    // }, [])
 
   return (
         <ScrollView>
@@ -713,7 +750,7 @@ const ListAllEroticTags =  (tagCheck : any) => {
                                     </ScrollView>
                                 </View>
 
-                                {/* {localImageUri !== '' ? (
+                                {localImageUri !== '' ? (
                                     <View style={{marginBottom: 20}}>
                                         <Text style={styles.inputheadermodal}>
                                             Cover Art
@@ -728,7 +765,7 @@ const ListAllEroticTags =  (tagCheck : any) => {
                                             }} 
                                             />
                                     </View>
-                                ) : null} */}
+                                ) : null}
                             </View>
                             
                             <View style={{width: '100%', alignItems: 'center'}}>
@@ -919,24 +956,24 @@ const ListAllEroticTags =  (tagCheck : any) => {
                         </TouchableOpacity>
                     </View>
 
-                    {/* <Image 
-                        source={{uri: localImageUri === '' ? Story?.imageUri : localImageUri}}
+                    <Image 
+                        source={{uri: localImageUri === '' ? imageU : localImageUri}}
                         style={{backgroundColor: 'gray', marginVertical: 20, borderRadius: 15, width: Dimensions.get('window').width - 40, height: 200}}
                     />
 
                     <Text style={styles.inputheader}>
                         Cover Art
-                    </Text> */}
+                    </Text>
 
-                    {/* <View style={{ width: '100%', marginBottom: 20, marginTop: 0, }}>
+                    <View style={{ width: '100%', marginBottom: 20, marginTop: 0, }}>
                         <TouchableOpacity onPress={pickImage}>
                             <View style={{ marginHorizontal: 20, padding: 10, borderRadius: 8, backgroundColor: '#363636'}}>
                                 <Text style={{ color: '#ffffffa5'}}>
-                                    {localImageUri !== '' ? localImageUri : 'Select artwork'}
+                                    Select artwork
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                    </View> */}
+                    </View>
 
                     <View style={{ margin: 40, flexDirection: 'row'}}>
                         <FontAwesome5 

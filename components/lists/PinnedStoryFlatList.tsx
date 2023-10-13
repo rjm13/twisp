@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
     View, 
     StyleSheet, 
@@ -14,7 +14,11 @@ import {graphqlOperation, API, Auth} from 'aws-amplify';
 
 import StoryTile from '../StoryTile';
 
+import { AppContext } from '../../AppContext';
+
 const AudioStoryList = () => {
+
+    const { refreshPins } = useContext(AppContext);
 
     //state for the array of pinned stories for that user
     const [pinnedStories, setPinnedStories] = useState([])
@@ -61,7 +65,7 @@ const AudioStoryList = () => {
           }
         }
         fetchStories(null); 
-      }, [didUpdate])
+      }, [didUpdate, refreshPins])
 
     //on render, get the user and then list the following connections for that user
     // useEffect(() => {
