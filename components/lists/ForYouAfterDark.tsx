@@ -96,10 +96,11 @@ const GenreCarousel = ({genreid} : any) => {
     const LoadingItem = () => {
         return (
             <View style={{
-                width: 300,
-                height: 280,
+                width: Dimensions.get('window').width-40,
+                height: Dimensions.get('window').height*0.4,
                 borderRadius: 15,
-                margin: 10
+                margin: 10,
+                alignSelf: 'center'
             }}>
                 <AnimatedGradient customColors={presetColors.loading} speed={2000} />
             </View>
@@ -272,7 +273,7 @@ const GenreCarousel = ({genreid} : any) => {
                     {imageU !== '' ? (
                         <ImageBackground
                             source={{uri: imageU}}
-                            style={{backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.44, justifyContent: 'flex-end', borderRadius: 15}}
+                            style={{backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.40, justifyContent: 'flex-end', borderRadius: 15}}
                             imageStyle={{borderRadius: 15}}
                         >
                     
@@ -284,7 +285,7 @@ const GenreCarousel = ({genreid} : any) => {
                             borderTopRightRadius: isVisible === true ? 15 : 0,
                             borderTopLeftRadius: isVisible === true ? 15 : 0,
                             width: Dimensions.get('window').width*0.9,
-                            height: isVisible === true ? Dimensions.get('window').height*0.44 : undefined,
+                            height: isVisible === true ? Dimensions.get('window').height*0.40 : undefined,
                             padding: 10, 
                             justifyContent: 'space-between'
                     }}>
@@ -454,7 +455,7 @@ const GenreCarousel = ({genreid} : any) => {
                 data={carouselStories}
                 renderItem={renderItem}
                 width={Dimensions.get('window').width}
-                height={Dimensions.get('window').height*0.48}
+                height={Dimensions.get('window').height*0.4}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => console.log('current index:', index)}
                 pagingEnabled={true}
@@ -467,7 +468,7 @@ const GenreCarousel = ({genreid} : any) => {
                 }}
                 style={{
                     width: Dimensions.get('window').width,
-                    marginTop: 20
+                    marginVertical: 20
                  }}
             />
         </SafeAreaView>

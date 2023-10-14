@@ -199,10 +199,11 @@ const GenreCarousel = ({genreid} : any) => {
     const LoadingItem = () => {
         return (
             <View style={{
-                width: Dimensions.get('window').width*0.44,
-                height: Dimensions.get('window').width*0.9,
+                width: Dimensions.get('window').width-40,
+                height: Dimensions.get('window').height*0.4,
                 borderRadius: 15,
-                margin: 10
+                margin: 10,
+                alignSelf: 'center'
             }}>
                 <AnimatedGradient customColors={presetColors.loading} speed={2000} />
             </View>
@@ -278,7 +279,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                 {imageU !== '' ? (
                     <ImageBackground
                         source={{uri: imageU}}
-                        style={{backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.44, justifyContent: 'flex-end', borderRadius: 15}}
+                        style={{backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.40, justifyContent: 'flex-end', borderRadius: 15}}
                         imageStyle={{borderRadius: 15}}
                     >
                 
@@ -464,7 +465,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                 data={carouselStories}
                 renderItem={renderItem}
                 width={Dimensions.get('window').width}
-                    height={Dimensions.get('window').height*0.48}
+                    height={Dimensions.get('window').height*0.4}
                 scrollAnimationDuration={1000}
                 onSnapToItem={(index) => console.log('current index:', index)}
                 pagingEnabled={true}
@@ -477,7 +478,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                 }}
                 style={{
                     width: Dimensions.get('window').width,
-                    marginTop: 0
+                    marginTop: 20
                  }}
             />
         </SafeAreaView>

@@ -10,7 +10,7 @@ import {
   Image,
   FlatList,
   ScrollView,
-  Platform
+  ImageBackground
 } 
 from 'react-native';
 
@@ -76,6 +76,19 @@ const AudioStoryHome = ({navigation} : any) => {
   //genre tile item should show genre name, color, and image
   const Item = ({genre, id, color, imageUri, icon} : any) => {
 
+    const [imageU, setImageU] = useState('');
+
+    useEffect(() => {
+      const fetchImage = async () => {
+          let response = await Storage.get(imageUri)
+          if (response) {
+              setImageU(response)
+          }
+
+      }
+      fetchImage();
+  }, [])
+
     //state that locks the after dark tile
     const [locked, setIsLocked] = useState(false);
 
@@ -92,20 +105,20 @@ const AudioStoryHome = ({navigation} : any) => {
       <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri})) : (navigation.navigate('GenreHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri}))) : alert('Go to your settings to unlock this content.')}>
         <View style={{
           flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
-            {imageUri ? (
-              <Image
-                source={{ uri: imageUri}}
-                style={{width: 100, height: 100, borderRadius: 15, position: 'absolute', backgroundColor: 'gray', right: 0}}
+            {imageU ? (
+              <ImageBackground
+                source={{ uri: imageU}}
+                style={{borderRadius: 15, width: '100%', height: '100%', position: 'absolute', backgroundColor: 'gray', right: 0}}
               />
             ) : null}
 
-              <LinearGradient 
+              {/* <LinearGradient 
                 colors={[color, color, color, color, 'transparent']}
                 locations={[0.0, 0.33, 0.66, 0.7, 1.0]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={[styles.genrebox]}
-              >
+              > */}
                 <View style={{justifyContent: 'center', borderRadius: 15, backgroundColor: locked === true ? '#363636a5' : 'transparent', width: '100%', height: '100%'}}>
                   <Text style={styles.genre}>
                     {genre}
@@ -120,7 +133,7 @@ const AudioStoryHome = ({navigation} : any) => {
                   ) : null}
                   
                 </View>
-              </LinearGradient>
+              {/* </LinearGradient> */}
           </View>
         </TouchableWithoutFeedback>
     );

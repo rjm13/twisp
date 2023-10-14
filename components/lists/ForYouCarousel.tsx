@@ -101,8 +101,8 @@ const ForYouCarousel = () => {
     const LoadingItem = () => {
         return (
             <View style={{
-                width: Dimensions.get('window').width*0.9,
-                height: Dimensions.get('window').height*0.44,
+                width: Dimensions.get('window').width-40,
+                height: Dimensions.get('window').height*0.4,
                 borderRadius: 15,
                 margin: 10,
                 alignSelf: 'center'
@@ -183,7 +183,7 @@ const ForYouCarousel = () => {
                     {imageU !== '' ? (
                         <ImageBackground
                             source={{uri: imageU}}
-                            style={{alignSelf: 'center', backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.44, justifyContent: 'flex-end', borderRadius: 15}}
+                            style={{alignSelf: 'center', backgroundColor: '#171717', width: Dimensions.get('window').width*0.9, height: Dimensions.get('window').height*0.40, justifyContent: 'flex-end', borderRadius: 15}}
                             imageStyle={{borderRadius: 15}}
                         >
                     
@@ -195,7 +195,7 @@ const ForYouCarousel = () => {
                             borderTopRightRadius: isVisible === true ? 15 : 0,
                             borderTopLeftRadius: isVisible === true ? 15 : 0,
                             width: Dimensions.get('window').width*0.9,
-                            height: isVisible === true ? Dimensions.get('window').height*0.44 : undefined,
+                            height: isVisible === true ? Dimensions.get('window').height*0.40 : undefined,
                             padding: 10, 
                             justifyContent: 'space-between'
                     }}>
@@ -470,7 +470,7 @@ const ForYouCarousel = () => {
                     data={Storys}
                     renderItem={renderItem}
                     width={Dimensions.get('window').width}
-                    height={Dimensions.get('window').height*0.48}
+                    height={Dimensions.get('window').height*0.44}
                     scrollAnimationDuration={1000}
                     //onSnapToItem={(index) => setCurrentIndex(index)}
                     pagingEnabled={true}
@@ -478,7 +478,7 @@ const ForYouCarousel = () => {
                     mode="parallax"
                     modeConfig={{
                         parallaxScrollingScale: 1,
-                        parallaxScrollingOffset: 100,
+                        parallaxScrollingOffset: 76,
                         parallaxAdjacentItemScale: 0.8,
                     }}
                     style={{

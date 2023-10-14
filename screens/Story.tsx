@@ -606,12 +606,21 @@ const StoryScreen  = ({navigation} : any) => {
                     
                     {reaction ? (
                         <View style={{backgroundColor: '#000000a5', paddingVertical: 2, paddingHorizontal: 8, borderWidth: 0.5, borderColor: '#000000a5', borderRadius: 10, overflow: 'hidden', flexDirection: 'row', alignItems: 'center'}}>
-                            <MaterialCommunityIcons 
-                                name='emoticon-cool-outline'
+                            {icon === 'cannabis' ? (
+                                <FontAwesome5 
+                                name={icon}
                                 color='#ffffffa5'
                                 size={18}
                                 style={{marginRight: 10}}
                             />
+                            ) :
+                                <MaterialCommunityIcons 
+                                    name={icon}
+                                    color='#ffffffa5'
+                                    size={18}
+                                    style={{marginRight: 10}}
+                                />
+                            }
                             <Text style={{textTransform: 'lowercase', fontSize: 14, color: '#ffffffa5', fontWeight: '400'}}>
                                 Felt {reaction}
                             </Text>
@@ -878,7 +887,20 @@ const StoryScreen  = ({navigation} : any) => {
 
     const [userReaction, setUserReaction] = useState(null)
 
-    const ReactionItem = ({id, icon, reaction} : any) => {
+    const ReactionItem = ({id, icon, reaction, imageUri} : any) => {
+
+       const [reactionUri, setReactionUri] = useState('')
+
+        useEffect(() => {
+            const fetchImage = async () => {
+                let response = await Storage.get(imageUri)
+                if (response) {
+                    setReactionUri(response)
+                }
+
+            }
+            fetchImage();
+        }, [])
 
         const [pickedReaction, setPickedReaction] = useState(false);
 
@@ -906,11 +928,11 @@ const StoryScreen  = ({navigation} : any) => {
                 <View key={id} style={{margin: 10, borderWidth: 1, borderRadius: 15, overflow: 'hidden', borderColor: pickedReaction === true ? '#00ffff' : '#fff',  backgroundColor: pickedReaction === true ? '#00ffff33' : 'transparent', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', width: Dimensions.get('window').width*0.25, height: Dimensions.get('window').width*0.28}}>
                     
                         <View style={{ padding: 10, marginVertical: 10, alignItems: 'center'}}>
-                            <MaterialCommunityIcons 
-                                name={icon}
-                                size={40}
-                                color='#fff'
-                                style={{marginBottom: 10}}
+                           
+                            <Image 
+                                source={{uri: reactionUri}}
+                                style={{height: 50, width: 50}}
+                                resizeMode='contain'
                             />
                             <Text style={{
                                 color: '#fff',
@@ -933,6 +955,7 @@ const StoryScreen  = ({navigation} : any) => {
                 id={item.id}
                 icon={item.icon}
                 reaction={item.reaction}
+                imageUri={item.imageUri}
             />
         )
     }
