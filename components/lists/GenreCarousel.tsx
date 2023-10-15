@@ -21,6 +21,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { AppContext } from '../../AppContext';
 import TimeConversion from '../functions/TimeConversion';
+import ShareStory from '../../components/functions/ShareStory';
 import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
 import { storiesByGenre, pinnedStoriesByUserByStory } from '../../src/graphql/queries';
@@ -291,7 +292,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                         borderTopRightRadius: isVisible === true ? 15 : 0,
                         borderTopLeftRadius: isVisible === true ? 15 : 0,
                         width: Dimensions.get('window').width*0.9,
-                        height: isVisible === true ? Dimensions.get('window').height*0.44 : undefined,
+                        height: isVisible === true ? Dimensions.get('window').height*0.40 : undefined,
                         padding: 10, 
                         justifyContent: 'space-between'
                 }}>
@@ -371,39 +372,49 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
                                 </TouchableWithoutFeedback>
                         <View> 
                             <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
-                                    <TouchableOpacity onPress={onPlay}>
-                                        <View style={{ 
-                                            flexDirection: 'row', 
-                                            alignItems: 'center', 
-                                            borderRadius: 30,
-                                            paddingVertical: 2,
-                                            paddingHorizontal: 8,
-                                            backgroundColor: '#ffffff4D',
-                                            borderColor: '#ffffffcc',
-                                            }}>
-                                                <FontAwesome5 
-                                                    name='play'
-                                                    color='#ffffff'
-                                                    size={10}
-                                                    style={{marginRight: 8}}
-                                                />
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 'normal',
-                                                    color: '#ffffffcc',
-                                                
+                                    <View style={{marginLeft: 10}}>
+                                            <TouchableOpacity onPress={onPlay}>
+                                                <View style={{ 
+                                                    flexDirection: 'row', 
+                                                    alignItems: 'center', 
+                                                    borderRadius: 30,
+                                                    paddingVertical: 2,
+                                                    paddingHorizontal: 10,
+                                                    backgroundColor: '#363636a5',
+                                                    marginLeft: -10,
+                                                    borderWidth: 0.5,
+                                                    borderColor: '#ffffffa5'
+                                                    
                                                 }}>
-                                                    {TimeConversion(time)}
-                                                </Text> 
-                                        </View>
-                                    </TouchableOpacity>
+                                                    <FontAwesome5 
+                                                        name='play'
+                                                        color='#ffffff'
+                                                        size={10}
+                                                        style={{marginRight: 2}}
+                                                    />
+                                                    <Text style={styles.time}>
+                                                        {TimeConversion(time)}
+                                                    </Text> 
+                                                </View>
+                                            </TouchableOpacity>
+                                    </View> 
                                     
-                                    <AntDesign
-                                        name={isQ ? 'pushpin' : 'pushpino'}
-                                        size={22}
-                                        color={isQ ? 'cyan' : 'white'}
-                                        onPress={onQPress}
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome
+                                        name='share'
+                                        size={20}
+                                        color='white'
+                                        style={{paddingHorizontal: 10}}
+                                        onPress={() => ShareStory({id: id, title: title})}
                                     />
+                                    <AntDesign
+                                            name={isQ ? 'pushpin' : 'pushpino'}
+                                            size={22}
+                                            color={isQ ? 'cyan' : 'white'}
+                                            style={{paddingLeft: 10}}
+                                            onPress={onQPress}
+                                        />
+                                </View>
                                 </View>
                             </View>
                         </View>

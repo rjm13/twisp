@@ -112,7 +112,6 @@ export default function App() {
           Capability.SeekTo,
           Capability.JumpBackward,
           Capability.JumpForward,
-          Capability.Stop,
         ],
         compactCapabilities: [
           Capability.Play,
@@ -120,7 +119,6 @@ export default function App() {
           Capability.SeekTo,
           Capability.JumpBackward,
           Capability.JumpForward,
-          //Capability.Stop,
         ],
         notificationCapabilities: [
           Capability.Play,
@@ -128,7 +126,6 @@ export default function App() {
           Capability.SeekTo,
           Capability.JumpBackward,
           Capability.JumpForward,
-          //Capability.Stop,
         ],
       progressUpdateEventInterval: 30,
       icon: require('./assets/twisp-bw-small.png')

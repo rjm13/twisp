@@ -28,7 +28,9 @@ const PlayButton = ({time, id} : any) => {
                 backgroundColor: '#171717a5',
                 borderColor: '#ffffffCC',
                 margin: 10,
-                alignSelf: 'flex-start'
+                alignSelf: 'flex-start',
+                
+
                 }}>
                     <FontAwesome5 
                         name='play'

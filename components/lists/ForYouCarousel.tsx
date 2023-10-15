@@ -25,6 +25,7 @@ import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 import { AppContext } from '../../AppContext';
 import TimeConversion from '../functions/TimeConversion';
 import FireRating from '../FireRating';
+import ShareStory from '../../components/functions/ShareStory';
 
 import AnimatedGradient, {presetColors} from '../functions/AnimatedGradient';
 
@@ -273,39 +274,51 @@ const ForYouCarousel = () => {
                                     
                             <View> 
                                 <View style={{ justifyContent: 'space-between', alignItems: 'center', marginVertical: 10, marginHorizontal: 0, flexDirection: 'row',  }}>
-                                        <TouchableOpacity onPress={onPlay}>
-                                            <View style={{ 
-                                                flexDirection: 'row', 
-                                                alignItems: 'center', 
-                                                borderRadius: 30,
-                                                paddingVertical: 2,
-                                                paddingHorizontal: 8,
-                                                backgroundColor: '#ffffff4D',
-                                                borderColor: '#ffffffCC',
+                                <View style={{marginLeft: 10}}>
+                                            <TouchableOpacity onPress={onPlay}>
+                                                <View style={{ 
+                                                    flexDirection: 'row', 
+                                                    alignItems: 'center', 
+                                                    borderRadius: 30,
+                                                    paddingVertical: 2,
+                                                    paddingHorizontal: 10,
+                                                    backgroundColor: '#363636a5',
+                                                    marginLeft: -10,
+                                                    borderWidth: 0.5,
+                                                    borderColor: '#ffffffa5'
+                                                    
                                                 }}>
                                                     <FontAwesome5 
                                                         name='play'
                                                         color='#ffffff'
                                                         size={10}
-                                                        style={{marginRight: 8}}
+                                                        style={{marginRight: 2}}
                                                     />
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 'normal',
-                                                        color: '#ffffffCC',
-                                                    
-                                                    }}>
+                                                    <Text style={styles.time}>
                                                         {TimeConversion(time)}
                                                     </Text> 
-                                            </View>
-                                        </TouchableOpacity>
-                                        
-                                        <AntDesign
+                                                </View>
+                                            </TouchableOpacity>
+                                    </View> 
+
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <FontAwesome
+                                        name='share'
+                                        size={20}
+                                        color='white'
+                                        style={{paddingHorizontal: 10}}
+                                        onPress={() => ShareStory({id: id, title: title})}
+                                    />
+                                    <AntDesign
                                             name={isQ ? 'pushpin' : 'pushpino'}
                                             size={22}
                                             color={isQ ? 'cyan' : 'white'}
+                                            style={{paddingLeft: 10}}
                                             onPress={onQPress}
                                         />
+                                </View>
+                                        
+                                        
                                     </View>
                                 </View>
                             </View>
@@ -423,7 +436,7 @@ const ForYouCarousel = () => {
 
         fetchStorys(null);
 
-    },[refreshApp])
+    },[])
 
     const renderItem = ({ item, index }: any) => {
 

@@ -24,6 +24,8 @@ import { Auth, graphqlOperation, API } from 'aws-amplify';
 import {getUser, listGenres, listFinishedStories} from '../src/graphql/queries';
 import {deleteFinishedStory} from '../src/graphql/mutations';
 
+import BackgroundTimer from 'react-native-background-timer';
+
 
 const HomeScreen = ({navigation} : any) => {
 
@@ -58,7 +60,8 @@ const HomeScreen = ({navigation} : any) => {
       useEffect(() => {
         if (appStateVisible === 'active') {
             console.log('app changed')
-            setRefreshApp(!refreshApp)
+            console.log(appState)
+            //setRefreshApp(!refreshApp)
         }
 
       }, [appStateVisible])
@@ -132,6 +135,12 @@ const HomeScreen = ({navigation} : any) => {
         setText(txt)
         
     }, [])
+
+    // BackgroundTimer.runBackgroundTimer(() => { 
+    //         //setRefreshApp(!refreshApp)
+    //         let rando =  Math.random()
+    //         console.log(rando)
+    // }, 100000);
 
     
 

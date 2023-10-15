@@ -290,12 +290,13 @@ useEffect(() => {
                                             {numListens ? numListens : 0}
                                         </Text>
                                     </View>
-                                    {isVisible ? null : (
+                                    
+                                   
                                         <FireRating ratingAvg={ratingAvg} />
-                                    )}
+                                    
                                     </View>
                                     
-                                         {isVisible ? (
+                                         {/* {isVisible ? (
                                             <View style={{marginRight: 0}}>
                                             <TouchableOpacity onPress={onPlay}>
                                                 <View style={{ 
@@ -319,7 +320,7 @@ useEffect(() => {
                                                 </View>
                                             </TouchableOpacity>
                                         </View>
-                                        ) : null}
+                                        ) : null} */}
                                     
                                 </View>
                         </View>
@@ -380,8 +381,33 @@ useEffect(() => {
                             <View>
                                 <View style={{justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row'}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <FireRating ratingAvg={ratingAvg} fontSize={17} height={14} width={12} iconSize={18} /> 
-                                        
+                                    {/* <FireRating ratingAvg={ratingAvg} fontSize={17} height={14} width={12} iconSize={18} />  */}
+                                    <View style={{marginRight: 0}}>
+                                            <TouchableOpacity onPress={onPlay}>
+                                                <View style={{ 
+                                                    flexDirection: 'row', 
+                                                    alignItems: 'center', 
+                                                    borderRadius: 30,
+                                                    paddingVertical: 2,
+                                                    paddingHorizontal: 10,
+                                                    backgroundColor: '#363636a5',
+                                                    marginLeft: -10,
+                                                    borderWidth: 0.5,
+                                                    borderColor: '#ffffffa5'
+                                                    
+                                                }}>
+                                                    <FontAwesome5 
+                                                        name='play'
+                                                        color='#ffffff'
+                                                        size={10}
+                                                        style={{marginRight: 2}}
+                                                    />
+                                                    <Text style={styles.time}>
+                                                        {TimeConversion(time)}
+                                                    </Text> 
+                                                </View>
+                                            </TouchableOpacity>
+                                    </View> 
                                     </View>
                                     
                                 </View>
@@ -437,7 +463,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 15,
-        fontWeight: '700',
+        fontWeight: '500',
         color: '#fff',
         flexWrap: 'wrap',
         width: 225,
@@ -469,9 +495,9 @@ const styles = StyleSheet.create({
         color: '#ffffffa5',
     },
     time: {
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: 'normal',
-        color: '#ffffffa5',
+        color: '#fff',
         marginHorizontal: 5,
     },
     category: {
