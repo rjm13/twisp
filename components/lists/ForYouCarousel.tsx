@@ -121,7 +121,7 @@ const ForYouCarousel = () => {
             if (userPins.includes(id) === true) {
                 setQd(true)
             }
-        }, [])
+        }, [refreshPins])
 
 
         const [imageU, setImageU] = useState('');

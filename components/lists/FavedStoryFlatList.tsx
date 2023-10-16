@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { 
     View, 
     StyleSheet, 
@@ -13,8 +13,12 @@ import { ratingsByUser } from '../../src/graphql/queries';
 import {graphqlOperation, API, Auth} from 'aws-amplify';
 import StoryTile from '../StoryTile';
 
+import { AppContext } from '../../AppContext';
+
 
 const AudioStoryList = () => {
+
+    const { refreshPins } = useContext(AppContext);
 
     //state for the array of pinned stories for that user
     const [favedStories, setFavedStories] = useState([])

@@ -32,8 +32,8 @@ import {graphqlOperation, API, Auth, Storage} from 'aws-amplify';
 const GenreCarousel = ({genreid} : any) => {
 
     const [nextToken, setNextToken] = useState()
-    const { userPins } = useContext(AppContext);
-    const { setUserPins } = useContext(AppContext);
+    const { userPins, refreshPins } = useContext(AppContext);
+    const { setUserPins, setRefreshPins } = useContext(AppContext);
 
     const PinStory = async ({storyID} : any) => {
     
@@ -53,6 +53,7 @@ const GenreCarousel = ({genreid} : any) => {
     
         pins.push(storyID);
         setUserPins(pins)
+        setRefreshPins(Math.random())
     
     }
 
@@ -88,6 +89,7 @@ const GenreCarousel = ({genreid} : any) => {
         
         getThePins(); 
         setUserPins(arr)
+        setRefreshPins(Math.random())
     }
 
     const { nsfwOn } = useContext(AppContext);
@@ -219,7 +221,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
         if (userPins.includes(id) === true) {
             setQd(true)
         }
-    }, [])
+    }, [refreshPins])
 
 
     const [imageU, setImageU] = useState('');

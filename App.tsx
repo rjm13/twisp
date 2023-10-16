@@ -193,9 +193,19 @@ export default function App() {
 
   const [progUpdate, setProgUpdate] = useState<boolean>(false);
 
-  const [refreshApp, setRefreshApp] = useState<boolean>(false);
+  const [refreshApp, setRefreshApp] = useState<number>(0);
 
-  const [refreshPins, setRefreshPins] = useState<Number>(0);
+  const [refreshPins, setRefreshPins] = useState<number>(0);
+
+  const [refreshFYC, setRefreshFYC] = useState<number>(0);
+
+  const [refreshGC, setRefreshGC] = useState<number>(0);
+
+  const [refreshADC, setRefreshADC] = useState<number>(0);  
+
+  const [refreshPP, setRefreshPP] = useState<number>(0);
+
+  const [refreshFP, setRefreshFP] = useState<number>(0);
 
   const [deepLink, setDeepLink] = useState<string|null>(null);
 
@@ -250,9 +260,19 @@ export default function App() {
           progUpdate,
           setProgUpdate: (val: boolean) => setProgUpdate(val),
           refreshApp,
-          setRefreshApp: (val: boolean) => setRefreshApp(val),
+          setRefreshApp: (val: number) => setRefreshApp(val),
           refreshPins,
-          setRefreshPins: (val: Number) => setRefreshPins(val),
+          setRefreshPins: (val: number) => setRefreshPins(val),
+          refreshFYC,
+          setRefreshFYC: (val: number) => setRefreshFYC(val),
+          refreshGC,
+          setRefreshGC: (val: number) => setRefreshGC(val),
+          refreshADC,
+          setRefreshADC: (val: number) => setRefreshADC(val),
+          refreshPP,
+          setRefreshPP: (val: number) => setRefreshPP(val),
+          refreshFP,
+          setRefreshFP: (val: number) => setRefreshFP(val),
           premium,
           setPremium: (val: boolean) => setPremium(val),
           userPins,

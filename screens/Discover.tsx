@@ -104,7 +104,7 @@ const AudioStoryHome = ({navigation} : any) => {
     return (
       <TouchableWithoutFeedback onPress = {() => locked === false ? (genre === 'after dark' ? (navigation.navigate('AfterDarkHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri})) : (navigation.navigate('GenreHome', {genreID: id, genreName: genre, genreIcon: icon, genreColor: color, genreImage: imageUri}))) : alert('Go to your settings to unlock this content.')}>
         <View style={{
-          flexDirection: 'row', height: 100, borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
+          flexDirection: 'row', height: 100, overflow: 'hidden', borderRadius: 15, alignItems: 'center', marginVertical: 10, width: Dimensions.get('window').width-40, alignSelf: 'center'}}>
             {imageU ? (
               <ImageBackground
                 source={{ uri: imageU}}

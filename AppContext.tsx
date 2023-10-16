@@ -43,11 +43,32 @@ const context = {
     playbackSpeed: 1,
     setPlaybackSpeed: (val: number) => {},
 
-    refreshApp: false,
-    setRefreshApp: (val: boolean) => {},
+    refreshApp: 0,
+    setRefreshApp: (val: number) => {},
 
-    refreshPins: false,
-    setRefreshPins: (val: Number) => {},
+    //this is refreshes pinned list from the story screen
+    refreshPins: 0,
+    setRefreshPins: (val: number) => {},
+
+    //refreshes the for you carousel
+    refreshFYC: 0,
+    setRefreshFYC: (val: number) => {},
+
+    //fresh the genre carousel
+    refreshGC: 0,
+    setRefreshGC: (val: number) => {},
+
+    //refresh after dark carousel
+    refreshADC: 0,
+    setRefreshADC: (val: number) => {},
+
+    //refresh the pinned playlist
+    refreshPP: 0,
+    setRefreshPP: (val: number) => {},
+
+    //refresh the faved playlist
+    refreshFP: 0,
+    setRefreshFP: (val: number) => {},
 }
 
 export const AppContext = React.createContext(context);
