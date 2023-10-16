@@ -2,7 +2,7 @@
   "expo": {
     "name": "Twisp",
     "slug": "twisp",
-    "version": "1.1.47",
+    "version": "1.1.48",
     "orientation": "portrait",
     "icon": "./assets/TwispLogoios.png",
     "userInterfaceStyle": "automatic",
@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.martianspidermedia.blipprod",
-      "buildNumber": "1.1.47",
+      "buildNumber": "1.1.48",
       "associatedDomains": ["applinks:twisp.space"],
       "entitlements": {
         "com.apple.developer.applesignin": ["Default"]
@@ -48,7 +48,7 @@
       },
       "package": "com.martianspidermedia.blipprod",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 81,
+      "versionCode": 82,
       "minSdkVersion": 24,
       "compileSdkVersion": 34,
       "targetSdkVersion": 34,
