@@ -7,7 +7,8 @@ import {
     TextInput, 
     ActivityIndicator, 
     Keyboard,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -138,9 +139,8 @@ const CreateUser = async () => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={[styles.container, {justifyContent: 'center'}]}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ margin: 20, paddingTop: 70}}>
+        <View style={[styles.container, {justifyContent: 'center', height: Dimensions.get('window').height}]}>
+                <View style={{ margin: 20, paddingTop: 0, alignSelf: 'center'}}>
                     {userExist ? (
                             <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
                                 <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
@@ -188,9 +188,9 @@ const CreateUser = async () => {
                     </View>
                 </View>
 
-                <View style={{ borderBottomWidth: 1, borderColor: '#ffffffa5', marginBottom: 10, marginTop: 20, marginHorizontal: 20}}>
+                {/* <View style={{ borderBottomWidth: 1, borderColor: '#ffffffa5', marginBottom: 10, marginTop: 20, marginHorizontal: 20}}>
 
-            </View>
+            </View> */}
 
                 <View>
                     <Text style={[styles.title, {marginHorizontal: 0, marginBottom: 4, marginTop: 10}]}>
@@ -240,7 +240,7 @@ const CreateUser = async () => {
                     </View>
                 </View>
 
-            </View>
+                </View>
 
                 {signingUp === true ? (
                 <ActivityIndicator size="small" color='#00ffff' />
@@ -259,7 +259,7 @@ const CreateUser = async () => {
                         I already have an account.
                     </Text>
                 </TouchableOpacity>
-                </ScrollView>
+           
             <StatusBar style={"light"} backgroundColor='transparent'/>
         </View>
         </TouchableWithoutFeedback>

@@ -18,6 +18,7 @@ export type RootStackParamList = {
     UploadAudio: undefined;
     CreatorScreen: undefined;
     AfterDarkTagSearch: undefined;
+    EmailSignIn: undefined;
   
   };
   

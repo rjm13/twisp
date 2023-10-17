@@ -26,11 +26,7 @@ import { getUser } from '../../src/graphql/queries';
 
 const SignIn = ({navigation} : any) => {
 
-    const { setUserID } = useContext(AppContext);
-
     const styles = useStyles();
-
-    const [seePass, setSeePass] = useState(false);
 
     const [isErr, setIsErr] = useState(false);
 
@@ -102,93 +98,13 @@ const SignIn = ({navigation} : any) => {
         }
         setSigningIn(false)
     }
-
-    
-
-    const CreateUser = async () => {
-
-        const {password} = data;
-
-        const username = data.username.replace(/ /g, '');
-    
-        const userInfo = await Auth.currentAuthenticatedUser(
-            { bypassCache: true }
-          );
-    
-          if (userInfo === 'The user is not authenticated') {
-            setSigningIn(false);
-            return;
-          }
-
-          if (userInfo.attributes.email_verified === false) {
-              await Auth.resendSignUp(username)
-              .then(navigation.navigate('ConfirmEmail', {username, password}))
-              setSigningIn(false);
-          }
-    
-          else if (userInfo) {
-          //get the user from Backend with the user SUB from Auth
-            const userData = await API.graphql(
-              graphqlOperation(
-                getUser, 
-                { id: userInfo.attributes.sub,
-                }
-              )
-            )
-    
-            if (userData.data.getUser) {
-                setUserID(userData.data.getUser);
-                setIsErr(false);
-                navigation.navigate('Redirect', {trigger: Math.random()});
-                
-            };
-          }
-        }
-
-    const [data, setData] = useState({
-        username: '',
-        password: '',
-    });
-
-    const handlePassword = (val : any) => {
-        setData({
-            ... data,
-            password: val
-        });
-    }
-
-    const handleUsername = (val : any) => {
-        setData({
-            ... data,
-            username: val
-        });
-    }
-
-    async function signIn() {
-        setSigningIn(true);
-        const {username, password} = data;
-        try {
-            await Auth.signIn(username.replace(/ /g, ''), password)
-            .then (CreateUser)
-            //setSigningIn(false);
-        } 
-        catch (error) {
-            console.log(error.message)
-            setErr(error?.message.toString())
-            setIsErr(true);
-            setSigningIn(false);
-        }
-        //setSigningIn(false);
-    } 
             
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
             <View style={[styles.container, {justifyContent: 'center', height: Dimensions.get('window').height}]}>
             
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.container, {justifyContent: 'center', height: Dimensions.get('window').height}]}>
-
-                <View style={{ margin: 20}}>
+                {/* <View style={{ margin: 20}}>
                     {isErr ? (
                     <View style={{ alignItems: 'center', justifyContent: 'center', margin: 10}}>
                         <Text style={{borderRadius: 15, backgroundColor: '#ffffffa5', paddingHorizontal: 20, paddingVertical: 10, color: 'red', fontSize: 13, }}>
@@ -260,61 +176,93 @@ const SignIn = ({navigation} : any) => {
                     <View style={{alignSelf: 'center', width: Dimensions.get('window').width - 60, borderTopWidth: 1, borderColor: '#000000a5',}}>
                         
                     </View>
-                </View>
+                </View> */}
 
         {signingIn === true ? (
                 <ActivityIndicator size="small" color='cyan'/>
                 ) : (
 
-            <View>
-                <TouchableOpacity onPress={() => signingIn === false ? signIn() : null}>
-                    <View style={[styles.socialbuttonlayout, {justifyContent: 'center', backgroundColor: '#00ffff'}]}>
-                        <Image 
-                            source={require('../../assets/twisp-b-small.png')}
-                            style={{width: 20, height: 20, margin: 0, marginVertical: 5}}
-                        />
-                        <Text style={[styles.socialbuttontext, {width: Dimensions.get('window').width*0.62, color: '#000'}]}>
-                            Continue with Email
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+            <View style={{justifyContent: 'space-between', height: '100%', paddingVertical: 60}}>
+                <View style={{alignItems: 'center'}}>
+                    <Image 
+                        source={require('../../assets/twisp-bw-small.png')}
+                        style={{width: 100, height: 100, margin: 0, marginVertical: 0}}
+                    />
+                </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('SignUp') }>
-                    <Text style={[styles.buttontext, { alignSelf: 'center', margin: 30, color: '#fff'}]}>
-                        Create an account
+                <View style={{alignItems: 'center',  marginTop: -60}}>
+                    <Text style={{fontWeight: '600', color: '#fff', fontSize: 26}}>
+                        Welcome to Twisp
                     </Text>
-                </TouchableOpacity>
+                    <Text style={{fontWeight: '400', color: '#fff', fontSize: 18, marginTop: 10}}>
+                        Audio Short Stories
+                    </Text>
+                </View>
 
-                <View style={{marginTop: 0, alignSelf: 'center', height: 40, borderTopWidth: 1, borderColor: '#ffffffa5', width: Dimensions.get('window').width*0.5}}/>
+                
 
-                <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
-                    <View style={[styles.socialbuttonlayout, {justifyContent: 'center'}]}>
-                        <Image 
-                            source={require('../../assets/google-logo.png')}
-                            style={{width: 30, height: 30, margin: 0}}
-                        />
-                        <Text style={[styles.socialbuttontext]}>
-                            Continue with Google
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity onPress={() => signingIn === false ? navigation.navigate('EmailSignIn') : null}>
+                        <View style={[styles.socialbuttonlayout, {marginVertical: 10, justifyContent: 'center', backgroundColor: '#00ffff'}]}>
+                            <Image 
+                                source={require('../../assets/twisp-b-small.png')}
+                                style={{width: 20, height: 20, margin: 0, marginVertical: 5}}
+                            />
+                            <Text style={[styles.socialbuttontext, {width: Dimensions.get('window').width*0.62, color: '#000'}]}>
+                                Continue with Email
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
-                    <View style={[styles.socialbuttonlayout, {marginTop: 20, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5', justifyContent: 'center'}]}>
-                        <Image 
-                            source={require('../../assets/apple-logo.png')}
-                            style={{width: 30, height: 30, margin: 0}}
-                        />
-                        <Text style={[styles.socialbuttontext, {backgroundColor: '#000'}]}>
-                            Continue with Apple
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => signingIn === false ? signInWithGoogle() : null}>
+                        <View style={[styles.socialbuttonlayout, {marginVertical: 10, justifyContent: 'center'}]}>
+                            <Image 
+                                source={require('../../assets/google-logo.png')}
+                                style={{width: 30, height: 30, margin: 0}}
+                            />
+                            <Text style={[styles.socialbuttontext]}>
+                                Continue with Google
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => signingIn === false ? signInWithApple() : null}>
+                        <View style={[styles.socialbuttonlayout, {marginVertical: 10, backgroundColor: '#000', borderWidth: 1, borderColor: '#ffffffa5', justifyContent: 'center'}]}>
+                            <Image 
+                                source={require('../../assets/apple-logo.png')}
+                                style={{width: 30, height: 30, margin: 0}}
+                            />
+                            <Text style={[styles.socialbuttontext, {backgroundColor: '#000'}]}>
+                                Continue with Apple
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 40}}>
+                    <TouchableOpacity onPress={() => Linking.openURL('mailto:admin@martianspidermedia.com') }>
+                        <View style={{ }}>
+                            <Text style={[styles.paragraph, {color: '#ffffffa5', alignSelf: 'center'}]}>
+                                Contact us
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => Linking.openURL('https://www.blipstories.com/terms') }>
+                        <View style={{ }}>
+                            <Text style={[styles.paragraph, {color: '#ffffffa5', alignSelf: 'center'}]}>
+                                Terms of Use
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                
             </View> 
-        )}
 
+        )}
+                
             <StatusBar style='light' backgroundColor='transparent'/>
-            </ScrollView>
+            
             </View>
         </TouchableWithoutFeedback>
     );

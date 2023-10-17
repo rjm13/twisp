@@ -436,6 +436,8 @@ const CreatorProfile = ({status} : any) => {
             renderItem={renderItem}
             keyExtractor={item => item.id} 
             scrollEnabled={false}
+            initialNumToRender={100}
+            maxToRenderPerBatch={100}
             ListFooterComponent={ () => {
                 return (
                 <View style={{ height:  120}}/>

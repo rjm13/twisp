@@ -19,6 +19,7 @@ import AfterDarkTagSearch from '../screens/AfterDarkTagSearch';
 import RedirectScreen from '../screens/auth/Redirect';
 import SignUpScreen from '../screens/auth/SignUp';
 import SignInScreen from '../screens/auth/SignIn';
+import EmailSignIn from '../screens/auth/EmailSignIn';
 import ForgotPasswordScreen from '../screens/auth/ForgotPassword';
 import ForgotPasswordConScreen from '../screens/auth/ForgotPasswordConfirm';
 import ConfirmEmailScreen from '../screens/auth/ConfirmEmail';
@@ -136,6 +137,7 @@ function RootNavigator() {
       
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="EmailSignIn" component={EmailSignIn} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="ForgotPasswordCon" component={ForgotPasswordConScreen} />
       <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
