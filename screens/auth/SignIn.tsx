@@ -186,11 +186,11 @@ const SignIn = ({navigation} : any) => {
                 <View style={{alignItems: 'center'}}>
                     <Image 
                         source={require('../../assets/twisp-bw-small.png')}
-                        style={{width: 100, height: 100, margin: 0, marginVertical: 0}}
+                        style={{width: Dimensions.get('window').height*0.1, height: Dimensions.get('window').height*0.1, margin: 0, marginVertical: 0}}
                     />
                 </View>
 
-                <View style={{alignItems: 'center',  marginTop: -60}}>
+                <View style={{alignItems: 'center',  marginTop: 0}}>
                     <Text style={{fontWeight: '600', color: '#fff', fontSize: 26}}>
                         Welcome to Twisp
                     </Text>
