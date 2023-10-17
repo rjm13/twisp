@@ -120,6 +120,8 @@ const Redirect = ({route, navigation} : any) => {
 
                 else {
 
+                    console.log('user info is', userInfo.attributes)
+
                     // if (userInfo.signInUserSession.idToken.payload["cognito:groups"].includes('Premium') === true) {
                     //setPremium(true)
                     //     console.log(userInfo.signInUserSession.idToken.payload["cognito:groups"])
@@ -139,6 +141,7 @@ const Redirect = ({route, navigation} : any) => {
                             console.log('premium status', customerInfo.entitlements.active)
                             setPremium(true);
                         } else {
+                            console.log('not premium', customerInfo.entitlements.active)
                             //set to true by default
                             setPremium(true)
                         }
@@ -147,11 +150,14 @@ const Redirect = ({route, navigation} : any) => {
                       }
 
                     const userData = await API.graphql(graphqlOperation(
-                        getUser,{ id: userInfo.attributes.sub}))
+                        getUser,{ id: userInfo.attributes.sub}
+                    ))
 
-                        console.log('user is', userData.data.getUser.id)
+                    //console.log('user is', userData.data.getUser.id)
         
                     if (userData.data.getUser) {
+
+                        console.log('what i miss')
 
                         if (userData.data.getUser.setting1 !== null) {
                             setNSFWOn(userData.data.getUser.setting1);
@@ -283,11 +289,13 @@ const Redirect = ({route, navigation} : any) => {
                             navigation.navigate('Welcome')
                         } else {
                             setIsLoading(false);
+                            console.log('caught')
                         }
                     }
                 }
             } catch {
                 setIsLoading(false);
+                console.log('catch')
             }
         }
         fetchUser();
