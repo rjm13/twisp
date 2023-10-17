@@ -50,6 +50,7 @@ async function urlOpener(url, redirectUrl) {
 
   const { type, url: newUrl } = await WebBrowser.openAuthSessionAsync(url, redirectUrl, {
     showTitle: false,
+    preferEphemeralSession: true
   });
 
   //WebBrowser.openBrowserAsync(url, {showTitle: true})
