@@ -9,7 +9,8 @@ import {
     TouchableOpacity, 
     TouchableWithoutFeedback,
     Platform,
-    SafeAreaView
+    SafeAreaView,
+    AppState
 } from 'react-native';
 
 //import PreStoryAd from './PreStoryAd';
@@ -76,11 +77,35 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const AudioPlayer  = () => {
 
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+          if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            console.log('app is in the foreground')
+            //setRefreshApp(!refreshApp)
+            //console.log(refreshApp)
+          }
+    
+          appState.current = nextAppState;
+          setAppStateVisible(appState.current);
+          console.log('AppState', appState.current);
+        });
+    
+        return () => {
+          subscription.remove();
+        };
+      }, []);
+
     const { userPins } = useContext(AppContext);
     const { setUserPins } = useContext(AppContext);
 
     const { userFinished } = useContext(AppContext);
-    const { setUserFinished } = useContext(AppContext);
+    const { setUserFinished, setRefreshPins } = useContext(AppContext);
 
 //get the global page state for the audio player
     const { isRootScreen } = useContext(AppContext);
@@ -188,18 +213,18 @@ const AudioPlayer  = () => {
     const [imageU, setImageU] = useState('https://static.vecteezy.com/system/resources/thumbnails/010/282/085/small/black-background-studio-blank-black-and-gray-background-studio-backdrop-wallpaper-inside-room-abstract-dark-gray-gradient-spotlight-floor-texture-background-free-photo.jpg')
     const [user, setUser] = useState({})
 
-    useEffect(() => {
-        if (isPlaying === true) {
-            const DoStuff = async () => {
-                //setPosition(0);
-                //setInitialPosition(0);
-                setIsPlaying(false);
-                ProgressCheck()
-                await TrackPlayer.reset()
-            }
-            DoStuff()
-        }
-    }, [storyID])
+    // useEffect(() => {
+    //     //if (isPlaying === true) {
+    //         const DoStuff = async () => {
+    //             //setPosition(0);
+    //             //setInitialPosition(0);
+    //             //setIsPlaying(false);
+    //             //ProgressCheck()
+    //             //await TrackPlayer.reset()
+    //         }
+    //         DoStuff()
+    //     //}
+    // }, [storyID])
 
 //fetch the story and user attributes and audioUri from the s3 bucket
     useEffect(() => {
@@ -228,7 +253,7 @@ const AudioPlayer  = () => {
                         title: storyData.data.getStory.title,
                         artist: storyData.data.getStory.creator.penName,
                         artwork: imageresponse, // Load artwork from the network
-                        duration: storyData.data.getStory.time // Duration in seconds
+                        duration: storyData.data.getStory.time/1000 // Duration in seconds
                     }]);
                     let trackObject = await TrackPlayer.getQueue();
                     
@@ -311,12 +336,14 @@ const AudioPlayer  = () => {
         if (isPlaying === true) {
             //setPosition(0);
             setIsPlaying(false);
+            TrackPlayer.reset()
             ProgressCheck()
             fetchStory();
             fetchUser();
             fetchFinished(null);
             fetchProgress(null);
         } else {
+            TrackPlayer.reset()
             fetchStory();
             fetchUser();
             fetchFinished(null);
@@ -346,18 +373,15 @@ const AudioPlayer  = () => {
     }
 
 //unpin a story
-    const unPinStory = async ({storyID} : any) => {
+    const unPinStory = async (storyID : any) => {
 
         let arr = userPins;
 
         const getThePins = async () => {
 
-            if (storyID === null) {
-                console.log(storyID)
-                return
-            }
-
             let userInfo = await Auth.currentAuthenticatedUser();
+
+            console.log('story to delete', storyID)
 
             let getPin = await API.graphql(graphqlOperation(
                 pinnedStoriesByUserByStory, {
@@ -365,26 +389,30 @@ const AudioPlayer  = () => {
                     storyID: {
                         eq: storyID
                     },
-                    limit: 1
                 }
             ))
 
-            console.log(getPin.data.pinnedStoriesByUserByStory.items)
+            console.log(getPin.data.pinnedStoriesByUserByStory.items[0].story.title)
 
-            if (getPin.data.pinnedStoriesByUserByStory.items[0].story.id === storyID) {
+            if (getPin.data.pinnedStoriesByUserByStory.items[0]?.storyID === storyID) {
                 let deleteConnection = await API.graphql(graphqlOperation(
                     deletePinnedStory, {input: {"id": getPin.data.pinnedStoriesByUserByStory.items[0].id}}
                 ))
                 console.log(deleteConnection)
+
+                const index = arr.indexOf(storyID);
+
+                arr.splice(index, 1); 
+
+                setUserPins(arr)
+                setRefreshPins(Math.random())
+            } else {
+                return
             }
-
-            const index = arr.indexOf(storyID);
-
-            arr.splice(index, 1); 
         }
         
         getThePins(); 
-        setUserPins(arr)
+       
     }
 
 //rating state (if rated or not)
@@ -407,7 +435,7 @@ const AudioPlayer  = () => {
 
 
 //add the story to the history list when finished by creating a new history item
-    const AddToHistory = async () => {
+    const AddToHistory = async (storytoaddID : any) => {
         
         //check if the story is already in the history
         let userInfo = await Auth.currentAuthenticatedUser();
@@ -416,11 +444,12 @@ const AudioPlayer  = () => {
 
         //if item is not in history then...
         if (isFinished === false) {
+            console.log('is finished', isFinished)
             //create the history object
             await API.graphql(graphqlOperation(
                     createFinishedStory, {input: {
                         userID: userInfo.attributes.sub, 
-                        storyID: storyID, 
+                        storyID: storytoaddID, 
                         type: 'FinishedStory', 
                         createdAt: new Date(),
                         updatedAt: new Date(),
@@ -428,52 +457,76 @@ const AudioPlayer  = () => {
                     }}
                 ))
 
-            await API.graphql(graphqlOperation(
-                updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
+            const upda = await API.graphql(graphqlOperation(
+                updateStory, {input: {id: storytoaddID, numListens: Story?.numListens + 1}}
             ))
+
+            console.log(upda)
 
             console.log('added to history')
 
-            arr.push(storyID)
+            arr.push(storytoaddID)
 
             setUserFinished(arr)
 
             //unpin the story, if pinned
-            unPinStory(storyID);
+            unPinStory(storytoaddID);
 
             //delete the inProgress story, if it exists
-            await API.graphql(graphqlOperation(
-                deleteInProgressStory, {input: {
-                    "id": inProgressID
-                }}
-            ))
-
-            setProgUpdate(!progUpdate);
-
-            setInProgressID(null);
+            if (inProgressID !== null) {
+                const deleteprog = await API.graphql(graphqlOperation(
+                    deleteInProgressStory, {input: {
+                        id: inProgressID
+                    }}
+                ))
+                console.log('deleted', deleteprog)
+                setProgUpdate(!progUpdate);
+                setInProgressID(null);
+            }
 
             //navigate to the story page and open the ratings modal, if not already rated
                 RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
-                onClose();
+                setStoryID(null);
+                setStory(null);
+                setInitialPosition(0)
+                //setIsPlaying(false);
+                setComplete(false);
+                //setInProgressID(null)
+                await TrackPlayer.reset()
         } else {
-            await API.graphql(graphqlOperation(
-                updateStory, {input: {id: storyID, numListens: Story?.numListens + 1}}
-            ))
-            //delete the inProgress story, if it exists
-            await API.graphql(graphqlOperation(
-                deleteInProgressStory, {input: {
-                    id: inProgressID
-                }}
+            console.log('its finished', isFinished)
+            const upda = await API.graphql(graphqlOperation(
+                updateStory, {input: {id: storytoaddID, numListens: Story?.numListens + 1}}
             ))
 
-            setProgUpdate(!progUpdate);
+            console.log('story is', upda)
+            //delete the inProgress story, if it exists
+
+            if (inProgressID !== null) {
+                const deleteprog = await API.graphql(graphqlOperation(
+                    deleteInProgressStory, {input: {
+                        id: inProgressID
+                    }}
+                ))
+                console.log('deleted', deleteprog)
+                setProgUpdate(!progUpdate);
+                setInProgressID(null);
+            }
+
+            console.log('got this far')
 
             //unpin the story, if pinned
-            unPinStory(storyID);
+            unPinStory(storytoaddID);
 
-            setInProgressID(null);
-            RootNavigation.navigate('StoryScreen', { storyID: storyID, update: Math.random() });
-            onClose();
+            
+            RootNavigation.navigate('StoryScreen', { storyID: storytoaddID, update: Math.random() });
+            setStoryID(null);
+            setStory(null);
+            setInitialPosition(0)
+            //setIsPlaying(false);
+            setComplete(false);
+            //setInProgressID(null)
+            await TrackPlayer.reset()
         }
         
     
@@ -540,8 +593,8 @@ const AudioPlayer  = () => {
     } 
 
     function convertToTime () {
-        let minutes = Math.floor(slideLength / 60000);
-        let seconds = Math.floor((slideLength % 60000) / 1000);
+        let minutes = Math.floor(slideLength / 60);
+        let seconds = Math.floor((slideLength % 60));
         return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
     }  
 
@@ -621,28 +674,28 @@ const AudioPlayer  = () => {
 
     //   }, 1000);
 
-    //   useTrackPlayerEvents([Event.PlaybackQueueEnded], async event => {
-    //     if (event.type === Event.PlaybackQueueEnded && event.nextTrack !== undefined) {
-    //       console.log('track ended')
-    //       await TrackPlayer.reset();
-    //       setIsPlaying(false);
-    //       AddToHistory();
-    //     }
-    //   });
-
-    useEffect(() => {
-
-        console.log('did the track end?', isPlaying, playbackState, playbackProgress)
-        if (
-            playbackProgress.position + 5 >= playbackProgress.duration && 
-            playbackProgress.duration !== 0 && 
-            isPlaying === true &&
-            playbackState === State.Stopped
-        ) {
-           console.log('track ended')
-           AddToHistory();
+      useTrackPlayerEvents([Event.PlaybackQueueEnded], async event => {
+        if (event.type === Event.PlaybackQueueEnded) {
+          console.log('track ended')
+          //await TrackPlayer.reset();
+          //setIsPlaying(false);
+          AddToHistory(storyID);
         }
-    }, [playbackState])
+      });
+
+    // useEffect(() => {
+
+    //     console.log('did the track end?', isPlaying, playbackState, playbackProgress)
+    //     if (
+    //         playbackProgress.position + 5 >= playbackProgress.duration && 
+    //         playbackProgress.duration !== 0 && 
+    //         isPlaying === true &&
+    //         playbackState === State.Stopped
+    //     ) {
+    //        console.log('track ended')
+    //        AddToHistory(storyID);
+    //     }
+    // }, [playbackState])
     
     if (!Story) {
         return null;
@@ -946,7 +999,7 @@ const AudioPlayer  = () => {
                                                 value={playbackProgress.position}
                                                 step={1}
                                                 minimumValue={0}
-                                                maximumValue={slideLength/1000} //function set to the length of the audio file
+                                                maximumValue={slideLength} //function set to the length of the audio file
                                                 onSlidingComplete={(value) => StoryPosition(value)}
                                             />
                                         

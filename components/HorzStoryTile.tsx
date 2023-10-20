@@ -52,7 +52,7 @@ const HorzStoryTile = ({
 //push the s3 image key to get the signed uri
     useEffect(() => {
         const fetchImage = async () => {
-            let response = await Storage.get(imageUri);
+            let response = await Storage.get(imageUri, { expires: 3600 });
             setImageU(response);
         }
         fetchImage()

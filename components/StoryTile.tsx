@@ -111,8 +111,8 @@ const StoryTile = ({
       
 //push the s3 image key to get the signed uri
     useEffect(() => {
-        const fetchImage = async () => {
-            let response = await Storage.get(imageUri);
+        const fetchImage = async () => {``
+            let response = await Storage.get(imageUri, { expires: 3600 });
             setImageU(response);
         }
         fetchImage()

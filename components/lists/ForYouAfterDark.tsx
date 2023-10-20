@@ -216,7 +216,7 @@ const GenreCarousel = ({genreid} : any) => {
         
         useEffect(() => {
             const fetchImage = async () => {
-                let response = await Storage.get(imageUri);
+                let response = await Storage.get(imageUri, { expires: 3600 });
                 setImageU(response);
             }
             fetchImage()

@@ -228,7 +228,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
     
     useEffect(() => {
         const fetchImage = async () => {
-            let response = await Storage.get(imageUri);
+            let response = await Storage.get(imageUri, { expires: 3600 });
             setImageU(response);
         }
         fetchImage()
@@ -463,7 +463,7 @@ const Item = ({title, genreName, primary, icon, summary, imageUri, author, narra
           time={item.time}
           id={item.id}
           numComments={item.numComments}
-          numlistens={item.numListens}
+          numListens={item.numListens}
           ratingAvg={item.ratingAvg}
           //liked={item.liked}
           //rating={item.rating}
