@@ -248,7 +248,7 @@ const SignIn = ({navigation} : any) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => Linking.openURL('https://www.blipstories.com/terms') }>
+                    <TouchableOpacity onPress={() => Linking.openURL('https://www.twisp.us/terms') }>
                         <View style={{ }}>
                             <Text style={[styles.paragraph, {color: '#ffffffa5', alignSelf: 'center'}]}>
                                 Terms of Use

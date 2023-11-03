@@ -174,7 +174,7 @@ const PublishingSetup = ({navigation} : any) => {
                                 <Text style={{color: '#fff', marginLeft: 10, fontSize: 12,}}>
                                     I agree to the 
                                 </Text>
-                                <TouchableOpacity onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
+                                <TouchableOpacity onPress={() => Linking.openURL('http://www.twisp.us/terms')}>
                                     <Text style={{color: '#fff', marginLeft: 4, fontSize: 12,}}>
                                         Publishing Terms and Conditions
                                     </Text>

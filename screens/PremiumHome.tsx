@@ -289,7 +289,7 @@ const PremiumHome = ({navigation} : any) => {
                     <Text style={{color: '#ffffffa5', textAlign: 'center', fontSize: 12, marginTop: 20, marginBottom: 0, paddingHorizontal: 20}}>
                         Subscriptions renew automatically unless cancelled.
                     </Text>
-                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
+                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.twisp.us/terms')}>
                         <Text style={{textDecorationLine: 'underline', color: '#ffffffa5', textAlign: 'center', fontSize: 12, paddingHorizontal: 20, marginBottom: -20}}>
                             Terms and conditions
                         </Text>

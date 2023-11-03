@@ -2277,7 +2277,7 @@ const UploadAudio = ({navigation} : any) => {
                         <Text style={{ color: '#ffffffa5', fontSize: 12, marginRight: 4, marginLeft: 20, textAlign: 'left'}}>
                             I agree to the
                         </Text>
-                        <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
+                        <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.twisp.us/terms')}>
                             <Text style={{ color: '#ffffffa5', fontSize: 12, textAlign: 'left', textDecorationLine: 'underline'}}>
                                 Publishing Terms and Conditions.
                             </Text>

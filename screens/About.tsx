@@ -55,7 +55,7 @@ const AboutScreen = ({navigation} : any) => {
                         </View>
                     </View>
 
-                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
+                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.twisp.us/terms')}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                             <Text style={{ color: '#fff', fontSize: 16}}>
                                 Terms and Conditions
@@ -81,7 +81,7 @@ const AboutScreen = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/faq')}>
+                    <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.twisp.us/faq')}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                             <Text style={{ color: '#fff', fontSize: 16}}>
                                 FAQ
@@ -94,7 +94,7 @@ const AboutScreen = ({navigation} : any) => {
                         </View>
                     </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback onPress={() => Linking.openURL('mailto:blipsupport@blipstories.com') }>
+                    <TouchableWithoutFeedback onPress={() => Linking.openURL('mailto:admin@martianspidermedia.com') }>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 40, marginVertical: 20}}>
                             <Text style={{ color: '#fff', fontSize: 16}}>
                                 Contact Us

@@ -194,7 +194,7 @@ const Publisher = ({navigation} : any) => {
                     </View>
 
                     <View style={{marginVertical: 40, marginBottom: 120}}>
-                        <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.blipstories.com/terms')}>
+                        <TouchableWithoutFeedback onPress={() => Linking.openURL('http://www.twisp.us/terms')}>
                             <View style={{ justifyContent: 'center', marginHorizontal: 40, marginVertical: 20}}>
                                 <Text style={{ textAlign: 'center', color: '#fff', fontSize: 14}}>
                                     Terms and Conditions
